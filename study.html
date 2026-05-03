@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Landor's Study — Your Learning Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #F0A500;
+  --dark: #0A0A0F;
+  --panel: #111118;
+  --panel2: #16161F;
+  --border: rgba(240,165,0,0.15);
+  --text: #E8E8F0;
+  --muted: #888899;
+  --red: #FF4757;
+  --orange: #FF6B35;
+  --yellow: #FFD32A;
+  --green: #2ED573;
+  --blue: #1E90FF;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--dark); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: linear-gradient(rgba(240,165,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(240,165,0,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+.container { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 48px 28px 80px; }
+
+/* NAV */
+.nav { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 32px; }
+.nav a { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--gold); text-decoration: none; text-transform: uppercase; border: 1px solid var(--border); padding: 7px 14px; border-radius: 6px; transition: all 0.2s; }
+.nav a:hover { background: rgba(240,165,0,0.08); border-color: var(--gold); }
+
+/* HEADER */
+.eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 14px; opacity: 0.8; }
+.title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(52px,10vw,88px); line-height: 0.88; color: var(--text); letter-spacing: 2px; margin-bottom: 18px; }
+.title span { color: var(--gold); }
+.subtitle { font-size: 14px; color: var(--muted); font-weight: 300; line-height: 1.7; max-width: 580px; margin-bottom: 36px; }
+
+/* ROCKET CURVE */
+.curve-wrap { margin-bottom: 36px; }
+.curve-wrap svg { width: 100%; height: 70px; overflow: visible; }
+
+/* STEP INDICATOR */
+.steps { display: flex; margin-bottom: 32px; }
+.step { flex: 1; padding: 10px 14px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; text-align: center; border: 1px solid var(--border); color: var(--muted); transition: all 0.2s; }
+.step:first-child { border-radius: 8px 0 0 8px; }
+.step:last-child { border-radius: 0 8px 8px 0; }
+.step.active { background: rgba(240,165,0,0.08); color: var(--gold); border-color: rgba(240,165,0,0.4); }
+.step-num { font-family: 'Bebas Neue', sans-serif; font-size: 22px; display: block; margin-bottom: 2px; color: var(--gold); }
+.step a { color: inherit; text-decoration: none; display: block; }
+
+/* CARDS */
+.card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 24px; margin-bottom: 16px; }
+.card-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+.input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+@media (max-width: 580px) { .input-row { grid-template-columns: 1fr; } }
+.inp { background: var(--dark); border: 1px solid var(--border); border-radius: 8px; padding: 13px 16px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); width: 100%; outline: none; transition: border-color 0.2s; }
+.inp:focus { border-color: var(--gold); }
+.inp::placeholder { color: var(--muted); }
+
+/* KNOWLEDGE LEVEL */
+.level-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.level-row { display: flex; gap: 8px; margin-bottom: 16px; }
+.lvl-btn { flex: 1; padding: 11px 8px; border-radius: 8px; font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 600; text-align: center; cursor: pointer; border: 1px solid; transition: all 0.15s; text-transform: uppercase; letter-spacing: 1px; }
+.lvl-none { background: rgba(136,136,153,0.06); color: var(--muted); border-color: rgba(136,136,153,0.2); }
+.lvl-none.active { background: rgba(136,136,153,0.2); border-color: var(--muted); }
+.lvl-basic { background: rgba(46,213,115,0.06); color: var(--green); border-color: rgba(46,213,115,0.2); }
+.lvl-basic.active { background: rgba(46,213,115,0.2); border-color: var(--green); }
+.lvl-inter { background: rgba(255,211,42,0.06); color: var(--yellow); border-color: rgba(255,211,42,0.2); }
+.lvl-inter.active { background: rgba(255,211,42,0.2); border-color: var(--yellow); }
+.lvl-adv { background: rgba(255,107,53,0.06); color: var(--orange); border-color: rgba(255,107,53,0.2); }
+.lvl-adv.active { background: rgba(255,107,53,0.2); border-color: var(--orange); }
+
+/* SLIDER */
+.slider-wrap { margin-bottom: 6px; }
+.slider-row { display: flex; align-items: center; gap: 16px; }
+.slider-lbl { font-size: 13px; color: var(--muted); flex: 1; }
+.slider { flex: 2; accent-color: var(--gold); cursor: pointer; }
+.slider-val { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--gold); width: 120px; text-align: right; }
+.slider-note { font-size: 11px; color: var(--muted); margin-top: 6px; font-family: 'DM Mono', monospace; }
+
+.analyze-btn { background: var(--gold); color: #000; border: none; border-radius: 8px; padding: 16px 40px; font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1.5px; cursor: pointer; width: 100%; margin-top: 8px; transition: background 0.2s, transform 0.1s; }
+.analyze-btn:hover { background: #FFB800; }
+.analyze-btn:active { transform: scale(0.99); }
+.analyze-btn:disabled { background: #333; color: #666; cursor: not-allowed; }
+
+/* LOADING */
+.loading-box { display: none; text-align: center; padding: 64px 20px; }
+.loading-box.show { display: block; }
+.spin-wrap { display: inline-block; position: relative; width: 56px; height: 56px; margin-bottom: 22px; }
+.spin-wrap::before { content: ''; position: absolute; inset: 0; border: 2px solid rgba(240,165,0,0.2); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.75s linear infinite; }
+.spin-icon { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-title { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--gold); letter-spacing: 2px; margin-bottom: 8px; }
+.loading-sub { font-size: 12px; color: var(--muted); }
+
+.error-box { display: none; background: rgba(255,71,87,0.08); border: 1px solid rgba(255,71,87,0.25); border-radius: 10px; padding: 16px 20px; color: #FF7785; font-size: 13px; margin-bottom: 20px; }
+.error-box.show { display: block; }
+
+/* RESULTS */
+.results-box { display: none; }
+.results-box.show { display: block; }
+.divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+.section-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+
+/* SUMMARY */
+.summary-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 20px 24px; margin-bottom: 16px; }
+.summary-text { font-size: 14px; color: var(--text); line-height: 1.75; font-weight: 300; }
+
+/* COST CARDS */
+.cost-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 20px; }
+@media (max-width: 580px) { .cost-grid { grid-template-columns: 1fr 1fr; } }
+.cost-card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+.cost-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.cost-val { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--gold); line-height: 1; }
+.cost-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+/* ROADMAP TABLE */
+.col-heads { display: grid; grid-template-columns: 1fr 90px 90px 90px 70px; gap: 10px; padding: 0 16px; margin-bottom: 6px; }
+.col-h { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); text-align: center; }
+.col-h:first-child { text-align: left; }
+.col-h:last-child { text-align: right; }
+.phase-header { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; margin: 16px 0 8px; }
+.ph-green { color: var(--green); }
+.ph-yellow { color: var(--yellow); }
+.ph-orange { color: var(--orange); }
+.course-row { display: grid; grid-template-columns: 1fr 90px 90px 90px 70px; gap: 10px; align-items: center; padding: 12px 16px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 6px; }
+.course-name { font-size: 13px; color: var(--text); font-weight: 500; }
+.course-provider { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.course-why { font-size: 11px; color: var(--muted); margin-top: 4px; font-style: italic; }
+.badge { font-family: 'DM Mono', monospace; font-size: 10px; padding: 3px 8px; border-radius: 4px; text-align: center; font-weight: 700; display: inline-block; }
+.badge-free { background: rgba(46,213,115,0.15); color: var(--green); }
+.badge-paid { background: rgba(255,211,42,0.12); color: var(--yellow); }
+.time-cell { font-size: 11px; color: var(--muted); text-align: center; line-height: 1.4; }
+.time-you { font-size: 12px; color: var(--gold); font-weight: 600; text-align: center; }
+.cost-cell { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text); text-align: right; }
+
+/* INSIGHT */
+.insight-card { background: var(--panel); border-left: 4px solid var(--gold); border-radius: 0 14px 14px 0; padding: 20px 24px; margin-bottom: 16px; }
+.insight-text { font-size: 14px; color: var(--text); line-height: 1.75; font-weight: 300; }
+
+/* PDF PREVIEW */
+.pdf-section { margin-bottom: 16px; }
+.pdf-preview { background: #FFFFFF; border-radius: 12px; padding: 24px; color: #1A1A2E; margin-bottom: 12px; }
+.pdf-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 2px solid #F0A500; }
+.pdf-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: #1A1A2E; }
+.pdf-subtitle { font-size: 11px; color: #888; margin-top: 2px; font-family: Arial, sans-serif; }
+.pdf-logo { font-family: 'DM Mono', monospace; font-size: 10px; color: #F0A500; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; }
+.pdf-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+.pdf-stat { padding: 8px 10px; background: #F9F9F9; border-radius: 6px; }
+.pdf-stat-label { font-family: Arial, sans-serif; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: #999; margin-bottom: 2px; }
+.pdf-stat-val { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; color: #1A1A2E; }
+.pdf-week-row { display: grid; grid-template-columns: 70px 1fr 80px; gap: 8px; align-items: center; padding: 6px 0; border-bottom: 1px solid #F0F0F0; font-family: Arial, sans-serif; }
+.pdf-wk-num { font-size: 11px; font-weight: 700; color: #F0A500; }
+.pdf-wk-task { font-size: 11px; color: #333; }
+.pdf-wk-hrs { font-size: 10px; color: #999; text-align: right; }
+.pdf-disclaimer { margin-top: 12px; padding-top: 10px; border-top: 1px solid #EEE; font-family: Arial, sans-serif; font-size: 9px; color: #BBB; display: flex; justify-content: space-between; }
+.download-btn { background: var(--panel); color: var(--gold); border: 1px solid rgba(240,165,0,0.4); border-radius: 8px; padding: 14px 28px; font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 600; cursor: pointer; width: 100%; letter-spacing: 2px; text-transform: uppercase; transition: all 0.2s; }
+.download-btn:hover { background: rgba(240,165,0,0.08); border-color: var(--gold); }
+
+/* NEXT STEP */
+.next-card { background: rgba(46,213,115,0.06); border: 1px solid rgba(46,213,115,0.2); border-radius: 12px; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+.next-text { font-size: 13px; color: var(--text); line-height: 1.6; }
+.next-text strong { color: var(--green); }
+.next-btn { background: var(--green); color: #000; border: none; border-radius: 8px; padding: 11px 22px; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; letter-spacing: 1px; text-transform: uppercase; flex-shrink: 0; }
+
+/* FOOTER */
+.footer { margin-top: 48px; padding-top: 22px; border-top: 1px solid var(--border); font-size: 11px; color: var(--muted); line-height: 1.7; font-family: 'DM Mono', monospace; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- NAV -->
+  <div class="nav">
+    <a href="/">← Landor's Curve</a>
+    <a href="/pivot">Landor's Pivot</a>
+  </div>
+
+  <!-- HEADER -->
+  <div class="eyebrow">The Learning Roadmap</div>
+  <h1 class="title">LANDOR'S<br><span>STUDY</span></h1>
+  <p class="subtitle">You know where you're going. Now build the exact roadmap to get there — personalized to your schedule, with real costs, real timelines, and a printable plan you can follow week by week.</p>
+
+  <!-- ROCKET CURVE -->
+  <div class="curve-wrap">
+    <svg viewBox="0 0 860 75" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="rktg" x1="0%" y1="100%" x2="85%" y2="0%">
+          <stop offset="0%" style="stop-color:#FF4757;stop-opacity:0.6"/>
+          <stop offset="45%" style="stop-color:#FFD32A;stop-opacity:0.85"/>
+          <stop offset="80%" style="stop-color:#2ED573;stop-opacity:1"/>
+          <stop offset="100%" style="stop-color:#2ED573;stop-opacity:0.2"/>
+        </linearGradient>
+        <linearGradient id="rktfg" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#FF4757;stop-opacity:0.08"/>
+          <stop offset="100%" style="stop-color:#2ED573;stop-opacity:0.04"/>
+        </linearGradient>
+      </defs>
+      <path d="M 0 72 C 150 70, 320 62, 500 42 C 620 26, 700 8, 750 -5" fill="none" stroke="url(#rktg)" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M 750 -5 C 780 -20, 820 -40, 870 -65" fill="none" stroke="#2ED573" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.45"/>
+      <path d="M 0 72 C 150 70, 320 62, 500 42 C 620 26, 700 8, 750 -5 L 750 75 L 0 75 Z" fill="url(#rktfg)"/>
+      <text x="8" y="68" font-family="DM Mono, monospace" font-size="8" fill="#FF4757" opacity="0.65">DISPLACEMENT</text>
+      <text x="320" y="38" font-family="DM Mono, monospace" font-size="8" fill="#FFD32A" opacity="0.8">LEARNING</text>
+      <text x="648" y="5" font-family="DM Mono, monospace" font-size="8" fill="#2ED573">MASTERY ↗ ∞</text>
+      <circle cx="0" cy="72" r="3.5" fill="#FF4757" opacity="0.65"/>
+      <circle cx="500" cy="42" r="3.5" fill="#FFD32A" opacity="0.85"/>
+      <circle cx="748" cy="-5" r="4" fill="#2ED573"/>
+    </svg>
+  </div>
+
+  <!-- STEP INDICATOR -->
+  <div class="steps">
+    <div class="step"><a href="/"><span class="step-num">1</span>Landor's Curve</a></div>
+    <div class="step"><a href="/pivot"><span class="step-num">2</span>Landor's Pivot</a></div>
+    <div class="step active"><span class="step-num">3</span>Landor's Study</div>
+  </div>
+
+  <!-- INPUT -->
+  <div class="card">
+    <div class="card-label">Build Your Personal Learning Roadmap</div>
+    <div class="input-row">
+      <input class="inp" id="targetCareer" type="text" placeholder="Target career (e.g. AI Audio Consultant)" />
+      <input class="inp" id="currentField" type="text" placeholder="Your current field (e.g. Audio Engineer)" />
+    </div>
+    <div class="level-label">Your current knowledge level in the target area</div>
+    <div class="level-row">
+      <div class="lvl-btn lvl-none active" onclick="setLevel('none',this)">None</div>
+      <div class="lvl-btn lvl-basic" onclick="setLevel('beginner',this)">Beginner</div>
+      <div class="lvl-btn lvl-inter" onclick="setLevel('intermediate',this)">Intermediate</div>
+      <div class="lvl-btn lvl-adv" onclick="setLevel('advanced',this)">Advanced</div>
+    </div>
+    <div class="slider-wrap">
+      <div class="slider-row">
+        <div class="slider-lbl">Available study hours per week</div>
+        <input type="range" class="slider" id="hoursSlider" min="2" max="40" value="8" oninput="updateSlider(this.value)" />
+        <div class="slider-val" id="sliderVal">8 hrs/week</div>
+      </div>
+      <div class="slider-note">Low = 2-5 hrs (evenings only) &nbsp;|&nbsp; Medium = 8-15 hrs (evenings + weekends) &nbsp;|&nbsp; High = 20-40 hrs (dedicated full or part-time)</div>
+    </div>
+    <button class="analyze-btn" id="analyzeBtn" onclick="analyze()">BUILD MY STUDY PLAN</button>
+  </div>
+
+  <div class="error-box" id="errBox"></div>
+
+  <div class="loading-box" id="loadBox">
+    <div class="spin-wrap"><div class="spin-icon">📚</div></div>
+    <div class="loading-title" id="loadTitle">BUILDING YOUR ROADMAP</div>
+    <div class="loading-sub" id="loadSub">Matching courses to your background...</div>
+  </div>
+
+  <div class="results-box" id="resBox">
+    <div class="divider"></div>
+    <div class="section-label">Your Learning Journey Summary</div>
+    <div class="summary-card"><div class="summary-text" id="summaryText">—</div></div>
+
+    <div class="section-label">Total Investment Overview</div>
+    <div class="cost-grid">
+      <div class="cost-card"><div class="cost-label">Total Cost</div><div class="cost-val" id="totalCost">—</div><div class="cost-sub">Full roadmap</div></div>
+      <div class="cost-card"><div class="cost-label">Free Content</div><div class="cost-val" id="freeSavings">—</div><div class="cost-sub">No cost to start</div></div>
+      <div class="cost-card"><div class="cost-label">Your Timeline</div><div class="cost-val" id="timeline">—</div><div class="cost-sub">At your pace</div></div>
+      <div class="cost-card"><div class="cost-label">Monthly Avg</div><div class="cost-val" id="monthly">—</div><div class="cost-sub">Spread over time</div></div>
+    </div>
+
+    <div class="section-label">Your Personalized Roadmap</div>
+    <div class="col-heads">
+      <div class="col-h">Course / Certification</div>
+      <div class="col-h">Type</div>
+      <div class="col-h">Standard</div>
+      <div class="col-h">Your Time</div>
+      <div class="col-h">Cost</div>
+    </div>
+    <div id="roadmapEl"></div>
+
+    <div class="divider"></div>
+    <div class="section-label">Personal Insight</div>
+    <div class="insight-card"><div class="insight-text" id="insightText">—</div></div>
+
+    <div class="divider"></div>
+    <div class="section-label">Your Printable Study Plan</div>
+    <div class="pdf-section">
+      <div class="pdf-preview" id="pdfPreview">
+        <div class="pdf-header">
+          <div>
+            <div class="pdf-title">Landor's Study Plan</div>
+            <div class="pdf-subtitle" id="pdfSubtitle">—</div>
+          </div>
+          <div class="pdf-logo">LANDORSCURVE.COM</div>
+        </div>
+        <div class="pdf-stats">
+          <div class="pdf-stat"><div class="pdf-stat-label">Study Hours/Week</div><div class="pdf-stat-val" id="pdfHours">—</div></div>
+          <div class="pdf-stat"><div class="pdf-stat-label">Total Timeline</div><div class="pdf-stat-val" id="pdfTimeline">—</div></div>
+          <div class="pdf-stat"><div class="pdf-stat-label">Total Investment</div><div class="pdf-stat-val" id="pdfCost">—</div></div>
+        </div>
+        <div id="pdfSchedule"></div>
+        <div class="pdf-disclaimer">
+          <span>Generated by Landor's Study · LandorsCurve.com · 2026</span>
+          <span>Prices estimated as of 2025. Verify before enrolling.</span>
+        </div>
+      </div>
+      <button class="download-btn" onclick="downloadPDF()">Download My Study Plan (PDF)</button>
+    </div>
+
+    <div class="divider"></div>
+    <div class="next-card">
+      <div class="next-text"><strong>Your roadmap is ready.</strong> Want to check how your current field scores on the displacement curve, or recalculate your pivot options based on new skills?</div>
+      <button class="next-btn" onclick="window.location.href='/'">Back to Landor's Curve</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    LANDOR'S STUDY — Personalized Learning Roadmap<br>
+    Analysis powered by Claude AI, drawing from O*NET, Bureau of Labor Statistics, Brookings Institution, McKinsey Global Institute, and Goldman Sachs labor market research. Course costs estimated as of 2025 — verify before enrolling.<br>
+    Results are analytical estimates. Career decisions should incorporate additional professional guidance. © 2026 LandorsCurve.com
+  </div>
+</div>
+
+<script>
+let currentLevel = 'none';
+
+const MSGS = [
+  ['BUILDING YOUR ROADMAP', 'Matching courses to your background...'],
+  ['CALCULATING TIMELINES', 'Adjusting to your available hours...'],
+  ['RESEARCHING COSTS', 'Finding free and paid options...'],
+  ['CREATING YOUR SCHEDULE', 'Building your week-by-week plan...'],
+  ['ALMOST READY', 'Finalizing your personal roadmap...'],
+];
+
+function setLevel(level, el) {
+  currentLevel = level;
+  document.querySelectorAll('.lvl-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function updateSlider(val) {
+  document.getElementById('sliderVal').textContent = val + ' hrs/week';
+}
+
+async function analyze() {
+  const targetCareer = document.getElementById('targetCareer').value.trim();
+  const currentField = document.getElementById('currentField').value.trim();
+  const hoursPerWeek = document.getElementById('hoursSlider').value;
+
+  if (!targetCareer) {
+    document.getElementById('errBox').textContent = 'Please enter your target career or skill area.';
+    document.getElementById('errBox').classList.add('show');
+    return;
+  }
+
+  document.getElementById('resBox').classList.remove('show');
+  document.getElementById('errBox').classList.remove('show');
+  document.getElementById('loadBox').classList.add('show');
+  document.getElementById('analyzeBtn').disabled = true;
+
+  let mi = 0;
+  const msgInt = setInterval(() => {
+    if (mi < MSGS.length) {
+      document.getElementById('loadTitle').textContent = MSGS[mi][0];
+      document.getElementById('loadSub').textContent = MSGS[mi][1];
+      mi++;
+    }
+  }, 2000);
+
+  try {
+    const res = await fetch('/api/study', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ targetCareer, currentField, knowledgeLevel: currentLevel, hoursPerWeek: parseInt(hoursPerWeek) })
+    });
+
+    clearInterval(msgInt);
+    document.getElementById('loadBox').classList.remove('show');
+    document.getElementById('analyzeBtn').disabled = false;
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || 'Server error');
+    }
+
+    const r = await res.json();
+    render(r, targetCareer, currentField, hoursPerWeek);
+  } catch (err) {
+    clearInterval(msgInt);
+    document.getElementById('loadBox').classList.remove('show');
+    document.getElementById('analyzeBtn').disabled = false;
+    document.getElementById('errBox').textContent = 'Analysis failed: ' + err.message;
+    document.getElementById('errBox').classList.add('show');
+  }
+}
+
+function render(r, targetCareer, currentField, hours) {
+  document.getElementById('summaryText').textContent = r.summary || '—';
+  document.getElementById('totalCost').textContent = r.totalCost ? '$' + r.totalCost.toLocaleString() : '$0';
+  document.getElementById('freeSavings').textContent = r.freeSavings ? '$' + r.freeSavings.toLocaleString() : '$0';
+  document.getElementById('timeline').textContent = r.yourTimeline ? r.yourTimeline + ' mo' : '—';
+  document.getElementById('monthly').textContent = r.monthlyAverage ? '~$' + r.monthlyAverage : '—';
+
+  const phaseColors = { green: 'ph-green', yellow: 'ph-yellow', orange: 'ph-orange' };
+  let roadmapHTML = '';
+  (r.phases || []).forEach(phase => {
+    const colorClass = phaseColors[phase.color] || 'ph-green';
+    roadmapHTML += `<div class="phase-header ${colorClass}">${phase.phase} — ${phase.label} <span style="opacity:0.6;font-weight:400">(${phase.timeframe})</span></div>`;
+    (phase.courses || []).forEach(course => {
+      const badgeClass = course.type === 'free' ? 'badge-free' : 'badge-paid';
+      roadmapHTML += `
+        <div class="course-row">
+          <div>
+            <div class="course-name">${course.name}</div>
+            <div class="course-provider">${course.provider}</div>
+            <div class="course-why">${course.why || ''}</div>
+          </div>
+          <div style="text-align:center"><span class="badge ${badgeClass}">${course.costLabel || (course.type === 'free' ? 'FREE' : '$?')}</span></div>
+          <div class="time-cell">${course.standardTime || '—'}</div>
+          <div class="time-you">${course.yourTime || '—'}</div>
+          <div class="cost-cell">${course.type === 'free' ? 'Free' : ('$' + (course.cost || 0).toLocaleString())}</div>
+        </div>`;
+    });
+  });
+  document.getElementById('roadmapEl').innerHTML = roadmapHTML;
+
+  document.getElementById('insightText').textContent = r.insight || '—';
+
+  document.getElementById('pdfSubtitle').textContent = targetCareer + (currentField ? ' · From ' + currentField : '');
+  document.getElementById('pdfHours').textContent = hours + ' hrs/week';
+  document.getElementById('pdfTimeline').textContent = (r.yourTimeline || '—') + ' months';
+  document.getElementById('pdfCost').textContent = r.totalCost ? '$' + r.totalCost.toLocaleString() : '$0';
+
+  const schedHTML = (r.weeklySchedule || []).map(w => `
+    <div class="pdf-week-row">
+      <div class="pdf-wk-num">${w.week}</div>
+      <div class="pdf-wk-task">${w.task}</div>
+      <div class="pdf-wk-hrs">${w.hours}</div>
+    </div>`).join('');
+  document.getElementById('pdfSchedule').innerHTML = schedHTML;
+
+  document.getElementById('resBox').classList.add('show');
+  document.getElementById('resBox').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function downloadPDF() {
+  const preview = document.getElementById('pdfPreview');
+  const target = document.getElementById('targetCareer').value.trim() || 'My Study Plan';
+  const w = window.open('', '_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>Landor's Study Plan</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 40px; color: #1A1A2E; max-width: 800px; margin: 0 auto; }
+    @media print { body { padding: 20px; } }
+  </style>
+  </head><body>${preview.innerHTML}</body></html>`);
+  w.document.close();
+  setTimeout(() => { w.print(); }, 500);
+}
+
+document.getElementById('hoursSlider').addEventListener('input', function() {
+  updateSlider(this.value);
+});
+</script>
+</body>
+</html>

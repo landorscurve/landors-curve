@@ -1,9 +1,0 @@
-{
-  "rewrites": [
-    { "source": "/pivot", "destination": "/pivot.html" },
-    { "source": "/study", "destination": "/study.html" },
-    { "source": "/api/analyze", "destination": "/api/analyze.js" },
-    { "source": "/api/pivot", "destination": "/api/pivot.js" },
-    { "source": "/api/study", "destination": "/api/study.js" }
-  ]
-}

@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/pivot", "destination": "/pivot.html" },
+    { "source": "/api/analyze", "destination": "/api/analyze.js" },
+    { "source": "/api/pivot", "destination": "/api/pivot.js" }
+  ]
+}

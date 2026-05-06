@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Landor's Curve — The Acceleration of Deskilling</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #F0A500;
+  --dark: #0A0A0F;
+  --panel: #111118;
+  --panel2: #16161F;
+  --border: rgba(240,165,0,0.15);
+  --text: #E8E8F0;
+  --muted: #888899;
+  --red: #FF4757;
+  --orange: #FF6B35;
+  --yellow: #FFD32A;
+  --green: #2ED573;
+  --blue: #1E90FF;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--dark); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: linear-gradient(rgba(240,165,0,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(240,165,0,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none; z-index: 0;
+}
+
+/* NAV */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,10,15,0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px;
+}
+.nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--gold); letter-spacing: 2px; text-decoration: none; }
+.nav-links { display: flex; gap: 2px; }
+.nav-links a {
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--muted); text-decoration: none;
+  padding: 6px 12px; border-radius: 4px; transition: all 0.2s;
+}
+.nav-links a:hover { color: var(--gold); background: rgba(240,165,0,0.08); }
+@media (max-width: 720px) { .nav-links { display: none; } }
+
+/* LAYOUT */
+.wrap { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 0 28px; }
+.section { padding: 72px 0; }
+.full-bleed { background: var(--panel); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.divider-line { border: none; border-top: 1px solid var(--border); }
+
+/* TYPE */
+.eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; opacity: 0.8; }
+.section-heading { font-family: 'Bebas Neue', sans-serif; font-size: clamp(28px,4vw,40px); color: var(--text); letter-spacing: 1px; margin-bottom: 12px; line-height: 1; }
+.section-sub { font-size: 14px; color: var(--muted); line-height: 1.7; max-width: 540px; }
+
+/* HERO */
+.hero { padding: 72px 0 40px; }
+.hero-kicker { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 18px; opacity: 0.8; }
+.hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(60px,10vw,100px); line-height: 0.88; color: var(--text); letter-spacing: 2px; margin-bottom: 10px; }
+.hero-title span { color: var(--gold); }
+.hero-sub-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(18px,3vw,26px); color: var(--muted); letter-spacing: 1px; margin-bottom: 28px; }
+.hero-body { font-size: 15px; color: var(--muted); line-height: 1.8; max-width: 580px; margin-bottom: 28px; }
+.hero-hook { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 2px; color: var(--gold); opacity: 0.8; margin-bottom: 0; }
+
+/* DEFINITION BOX */
+.def-box {
+  background: rgba(240,165,0,0.05);
+  border: 1px solid rgba(240,165,0,0.18);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 10px 10px 0;
+  padding: 16px 20px;
+  margin: 28px 0 0;
+  max-width: 580px;
+}
+.def-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+.def-text { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+/* CURVE */
+.curve-wrap { margin: 36px 0 0; }
+.curve-wrap svg { width: 100%; height: 70px; overflow: visible; }
+
+/* ANALYZER */
+.analyzer-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 28px; margin-bottom: 12px; }
+.analyzer-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+.search-row { display: flex; gap: 12px; margin-bottom: 20px; }
+.search-input { flex: 1; background: var(--dark); border: 1px solid var(--border); border-radius: 8px; padding: 15px 20px; font-family: 'DM Sans', sans-serif; font-size: 16px; color: var(--text); outline: none; transition: border-color 0.2s; }
+.search-input:focus { border-color: var(--gold); }
+.search-input::placeholder { color: var(--muted); }
+.search-btn { background: var(--gold); color: #000; border: none; border-radius: 8px; padding: 15px 32px; font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1.5px; cursor: pointer; transition: background 0.2s, transform 0.1s; white-space: nowrap; }
+.search-btn:hover { background: #FFB800; }
+.search-btn:active { transform: scale(0.98); }
+.search-btn:disabled { background: #333; color: #666; cursor: not-allowed; }
+.chip-legend { display: flex; gap: 16px; margin-bottom: 10px; flex-wrap: wrap; }
+.chip-legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; }
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+.chips-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.chips-group { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 9px; }
+.chip { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-family: 'DM Mono', monospace; cursor: pointer; transition: all 0.18s; border: 1px solid transparent; }
+.chip-risk { background: rgba(255,71,87,0.08); color: #FF6B7A; border-color: rgba(255,71,87,0.2); }
+.chip-risk:hover { background: rgba(255,71,87,0.2); border-color: var(--red); }
+.chip-medium { background: rgba(255,211,42,0.08); color: #FFD32A; border-color: rgba(255,211,42,0.2); }
+.chip-medium:hover { background: rgba(255,211,42,0.18); border-color: var(--yellow); }
+.chip-safe { background: rgba(46,213,115,0.08); color: #2ED573; border-color: rgba(46,213,115,0.2); }
+.chip-safe:hover { background: rgba(46,213,115,0.18); border-color: var(--green); }
+.sources-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+.src-badge { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px; font-size: 10px; color: var(--muted); font-family: 'DM Mono', monospace; transition: all 0.3s; }
+.src-badge.active { border-color: var(--gold); color: var(--gold); background: rgba(240,165,0,0.08); }
+
+/* LOADING / ERROR */
+.error-box { display: none; background: rgba(255,71,87,0.08); border: 1px solid rgba(255,71,87,0.25); border-radius: 10px; padding: 16px 20px; color: #FF7785; font-size: 13px; margin-bottom: 20px; }
+.error-box.show { display: block; }
+.loading-box { display: none; text-align: center; padding: 64px 20px; }
+.loading-box.show { display: block; }
+.spin-wrap { display: inline-block; position: relative; width: 56px; height: 56px; margin-bottom: 22px; }
+.spin-wrap::before { content: ''; position: absolute; inset: 0; border: 2px solid rgba(240,165,0,0.2); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.75s linear infinite; }
+.spin-icon { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-title { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--gold); letter-spacing: 2px; margin-bottom: 8px; }
+.loading-sub { font-size: 12px; color: var(--muted); }
+
+/* RESULTS */
+.results-box { display: none; margin-top: 8px; }
+.results-box.show { display: block; }
+.res-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+.res-name { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 1px; flex: 1; min-width: 200px; }
+.risk-pill { padding: 9px 22px; border-radius: 6px; font-family: 'Bebas Neue', sans-serif; font-size: 19px; letter-spacing: 1px; }
+.rp-critical { background: rgba(255,71,87,0.15); color: var(--red); border: 1px solid rgba(255,71,87,0.35); }
+.rp-high { background: rgba(255,107,53,0.15); color: var(--orange); border: 1px solid rgba(255,107,53,0.35); }
+.rp-medium { background: rgba(255,211,42,0.15); color: var(--yellow); border: 1px solid rgba(255,211,42,0.35); }
+.rp-low { background: rgba(46,213,115,0.15); color: var(--green); border: 1px solid rgba(46,213,115,0.35); }
+.score-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 24px 28px; margin-bottom: 16px; }
+.score-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+.score-row { display: flex; align-items: flex-end; gap: 20px; margin-bottom: 14px; }
+.score-num { font-family: 'Bebas Neue', sans-serif; font-size: 56px; line-height: 1; }
+.score-desc { font-size: 13px; color: var(--muted); padding-bottom: 6px; line-height: 1.4; max-width: 340px; }
+.track { height: 10px; background: var(--panel2); border-radius: 5px; overflow: hidden; margin-bottom: 8px; }
+.track-fill { height: 100%; border-radius: 5px; transition: width 1.3s cubic-bezier(0.16,1,0.3,1); width: 0%; }
+.track-ends { display: flex; justify-content: space-between; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.grid-full { grid-column: 1 / -1; }
+@media (max-width: 580px) { .grid-2 { grid-template-columns: 1fr; } }
+.info-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; }
+.info-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+.info-text { font-size: 13px; color: var(--text); line-height: 1.75; font-weight: 300; }
+.stat-line { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; }
+.stat-line:last-child { border-bottom: none; }
+.stat-k { color: var(--muted); }
+.stat-v { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text); text-align: right; max-width: 55%; }
+.lbar { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.lbar:last-child { margin-bottom: 0; }
+.lbar-lbl { font-size: 11px; color: var(--muted); width: 90px; flex-shrink: 0; }
+.lbar-track { flex: 1; height: 5px; background: var(--panel2); border-radius: 3px; overflow: hidden; }
+.lbar-fill { height: 100%; border-radius: 3px; transition: width 1.5s cubic-bezier(0.16,1,0.3,1); width: 0%; }
+.lbar-val { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); width: 30px; text-align: right; }
+.tag-wrap { display: flex; flex-wrap: wrap; gap: 7px; }
+.tag { padding: 5px 11px; border-radius: 4px; font-family: 'DM Mono', monospace; font-size: 11px; }
+.tag-r { background: rgba(255,71,87,0.1); color: #FF7785; }
+.tag-s { background: rgba(46,213,115,0.1); color: #5EE89A; }
+.src-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.src-item { display: flex; gap: 12px; font-size: 12px; line-height: 1.6; }
+.src-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); margin-top: 6px; flex-shrink: 0; }
+.src-name { color: var(--gold); font-family: 'DM Mono', monospace; font-size: 11px; white-space: nowrap; }
+
+/* TOOLS */
+.tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+@media (max-width: 560px) { .tools-grid { grid-template-columns: 1fr; } }
+.tool-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 24px; text-decoration: none; display: block; transition: border-color 0.2s; }
+.tool-card:hover { border-color: rgba(240,165,0,0.4); }
+.tool-accent { width: 28px; height: 3px; border-radius: 2px; margin-bottom: 14px; }
+.tool-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; margin-bottom: 6px; }
+.tool-sub { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
+.tool-cta { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.65; }
+
+/* STUDENT BOX */
+.student-box {
+  background: rgba(30,144,255,0.05);
+  border: 1px solid rgba(30,144,255,0.2);
+  border-radius: 14px;
+  padding: 22px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.student-box-text { flex: 1; }
+.student-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--blue); margin-bottom: 6px; }
+.student-body { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.student-btn { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 9px 18px; border-radius: 6px; border: 1px solid rgba(30,144,255,0.35); color: var(--blue); text-decoration: none; white-space: nowrap; transition: all 0.2s; background: rgba(30,144,255,0.06); }
+.student-btn:hover { background: rgba(30,144,255,0.15); border-color: var(--blue); }
+
+/* THREE RULES */
+.rules-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+@media (max-width: 640px) { .rules-grid { grid-template-columns: 1fr; } }
+.rule-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
+.rule-num { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; }
+.rule-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; margin-bottom: 10px; line-height: 1.15; }
+.rule-body { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+/* FRAMEWORK */
+.fw-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+@media (max-width: 700px) { .fw-grid { grid-template-columns: 1fr; } }
+@media (min-width: 701px) and (max-width: 900px) { .fw-grid { grid-template-columns: 1fr 1fr; } }
+.fw-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 22px 24px; display: flex; flex-direction: column; }
+.fw-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.fw-title { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--text); letter-spacing: 1px; margin-bottom: 8px; line-height: 1.1; }
+.fw-desc { font-size: 12px; color: var(--muted); line-height: 1.6; flex: 1; margin-bottom: 18px; }
+.fw-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.fw-btn { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 7px 14px; border-radius: 6px; cursor: pointer; text-decoration: none; transition: all 0.2s; border: 1px solid; display: inline-block; }
+.fw-btn-gold { background: rgba(240,165,0,0.08); color: var(--gold); border-color: rgba(240,165,0,0.3); }
+.fw-btn-gold:hover { background: rgba(240,165,0,0.18); border-color: var(--gold); }
+.fw-btn-muted { background: transparent; color: var(--muted); border-color: var(--border); }
+.fw-btn-muted:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+
+/* SERIES */
+.series-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+@media (max-width: 640px) { .series-grid { grid-template-columns: 1fr; } }
+.series-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 22px 24px; text-decoration: none; display: block; transition: border-color 0.2s; }
+.series-card:hover { border-color: rgba(240,165,0,0.3); }
+.series-card.active-site { border-color: rgba(240,165,0,0.4); }
+.series-num { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.series-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--gold); letter-spacing: 1px; margin-bottom: 6px; }
+.series-body { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
+.series-link { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; color: var(--muted); opacity: 0.6; }
+
+/* ABOUT */
+.about-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; align-items: start; }
+@media (max-width: 640px) { .about-grid { grid-template-columns: 1fr; } }
+.about-name { font-family: 'Bebas Neue', sans-serif; font-size: 44px; color: var(--gold); line-height: 0.9; letter-spacing: 2px; }
+.about-text { font-size: 14px; color: var(--muted); line-height: 1.8; }
+.about-text strong { color: var(--text); }
+
+/* CALLOUT */
+.callout-wrap { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 52px 40px; text-align: center; }
+.callout-line1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(20px,3.5vw,30px); color: var(--text); letter-spacing: 1px; margin-bottom: 6px; }
+.callout-line2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(20px,3.5vw,30px); color: var(--gold); letter-spacing: 1px; margin-bottom: 32px; }
+.callout-btn { display: inline-block; background: var(--gold); color: #000; border: none; border-radius: 8px; padding: 14px 40px; font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1.5px; cursor: pointer; text-decoration: none; transition: background 0.2s; }
+.callout-btn:hover { background: #FFB800; }
+
+/* FOOTER */
+.footer { border-top: 1px solid var(--border); padding: 28px 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+.footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 16px; color: var(--gold); letter-spacing: 2px; }
+.footer-copy { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); opacity: 0.45; }
+.footer-links { display: flex; gap: 16px; }
+.footer-links a { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; color: var(--muted); text-decoration: none; text-transform: uppercase; }
+.footer-links a:hover { color: var(--gold); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="/" class="nav-logo">Landor's Curve</a>
+  <div class="nav-links">
+    <a href="#analyzer">Analyzer</a>
+    <a href="#tools">Tools</a>
+    <a href="#rules">Framework</a>
+    <a href="#papers">Papers</a>
+    <a href="#series">Series</a>
+    <a href="#about">About</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-kicker">The Tools Keep Moving</div>
+    <h1 class="hero-title">LANDOR'S<br><span>CURVE</span></h1>
+    <div class="hero-sub-title">The Acceleration of Deskilling</div>
+    <p class="hero-body">The skill floor keeps moving. As tools improve, the time people have to adapt gets shorter. Jobs do not always disappear overnight. More often, they absorb more skills, more tools, and more responsibilities until the old version of the job no longer exists.</p>
+    <p class="hero-hook">Every new tool changes what the job requires.</p>
+    <div class="def-box">
+      <div class="def-label">What is deskilling?</div>
+      <div class="def-text">Deskilling is when technology simplifies parts of a job while raising the total expectations placed on the worker. The tool helps, but the role expands.</div>
+    </div>
+
+    <div class="curve-wrap">
+      <svg viewBox="0 0 860 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="cg" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#2ED573;stop-opacity:0.7"/>
+            <stop offset="35%" style="stop-color:#FFD32A;stop-opacity:0.85"/>
+            <stop offset="65%" style="stop-color:#FF6B35;stop-opacity:0.95"/>
+            <stop offset="100%" style="stop-color:#FF4757;stop-opacity:1"/>
+          </linearGradient>
+          <linearGradient id="fg" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#2ED573;stop-opacity:0.05"/>
+            <stop offset="100%" style="stop-color:#FF4757;stop-opacity:0.1"/>
+          </linearGradient>
+        </defs>
+        <path d="M 0 66 C 180 65, 380 60, 540 44 S 740 8, 860 0" fill="none" stroke="url(#cg)" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M 0 66 C 180 65, 380 60, 540 44 S 740 8, 860 0 L 860 70 L 0 70 Z" fill="url(#fg)"/>
+        <text x="6" y="62" font-family="DM Mono,monospace" font-size="8" fill="#2ED573" opacity="0.65">ANCIENT</text>
+        <text x="214" y="58" font-family="DM Mono,monospace" font-size="8" fill="#FFD32A" opacity="0.75">INDUSTRIAL</text>
+        <text x="490" y="30" font-family="DM Mono,monospace" font-size="8" fill="#FF6B35" opacity="0.85">DIGITAL</text>
+        <text x="726" y="10" font-family="DM Mono,monospace" font-size="8" fill="#FF4757">AI ERA ↗</text>
+        <circle cx="0" cy="66" r="3.5" fill="#2ED573" opacity="0.6"/>
+        <circle cx="280" cy="62" r="3.5" fill="#FFD32A" opacity="0.75"/>
+        <circle cx="560" cy="35" r="3.5" fill="#FF6B35" opacity="0.9"/>
+        <circle cx="845" cy="2" r="4" fill="#FF4757"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ANALYZER -->
+<div id="analyzer" class="wrap" style="padding-bottom:72px;">
+  <div class="analyzer-card">
+    <div class="analyzer-label">Locate Your Profession on Landor's Curve</div>
+    <div class="search-row">
+      <input class="search-input" id="profInput" type="text" placeholder="Enter any profession or job title..." />
+      <button class="search-btn" id="searchBtn" onclick="analyze()">ANALYZE</button>
+    </div>
+    <div class="chip-legend">
+      <div class="chip-legend-item"><div class="legend-dot" style="background:var(--red)"></div>Higher pressure</div>
+      <div class="chip-legend-item"><div class="legend-dot" style="background:var(--yellow)"></div>Moderate shift</div>
+      <div class="chip-legend-item"><div class="legend-dot" style="background:var(--green)"></div>More stable</div>
+    </div>
+    <div class="chips-label">Try these</div>
+    <div class="chips-group">
+      <span class="chip chip-risk" onclick="go('Audio Engineer')">Audio Engineer</span>
+      <span class="chip chip-risk" onclick="go('Paralegal')">Paralegal</span>
+      <span class="chip chip-risk" onclick="go('Graphic Designer')">Graphic Designer</span>
+      <span class="chip chip-risk" onclick="go('Actor')">Actor</span>
+      <span class="chip chip-risk" onclick="go('Customer Service Rep')">Customer Service Rep</span>
+      <span class="chip chip-risk" onclick="go('Radiologist')">Radiologist</span>
+    </div>
+    <div class="chips-group">
+      <span class="chip chip-medium" onclick="go('Truck Driver')">Truck Driver</span>
+      <span class="chip chip-medium" onclick="go('Nurse Practitioner')">Nurse Practitioner</span>
+      <span class="chip chip-medium" onclick="go('HR Manager')">HR Manager</span>
+      <span class="chip chip-medium" onclick="go('Architect')">Architect</span>
+      <span class="chip chip-medium" onclick="go('Film Director')">Film Director</span>
+    </div>
+    <div class="chips-group">
+      <span class="chip chip-safe" onclick="go('Plumber')">Plumber</span>
+      <span class="chip chip-safe" onclick="go('Surgeon')">Surgeon</span>
+      <span class="chip chip-safe" onclick="go('Criminal Defense Attorney')">Criminal Defense Attorney</span>
+      <span class="chip chip-safe" onclick="go('Child Psychologist')">Child Psychologist</span>
+      <span class="chip chip-safe" onclick="go('Electrician')">Electrician</span>
+    </div>
+  </div>
+
+  <div class="sources-row">
+    <span class="src-badge" id="sb-onet">O*NET</span>
+    <span class="src-badge" id="sb-bls">BLS</span>
+    <span class="src-badge" id="sb-brookings">Brookings</span>
+    <span class="src-badge" id="sb-gs">Goldman Sachs</span>
+    <span class="src-badge" id="sb-mckinsey">McKinsey</span>
+    <span class="src-badge" id="sb-era">Landor's Era</span>
+  </div>
+
+  <div class="error-box" id="errBox"></div>
+  <div class="loading-box" id="loadBox">
+    <div class="spin-wrap"><div class="spin-icon">📡</div></div>
+    <div class="loading-title" id="loadTitle">ANALYZING</div>
+    <div class="loading-sub" id="loadSub">Cross-referencing O*NET, BLS, Brookings and McKinsey data...</div>
+  </div>
+
+  <div class="results-box" id="resBox">
+    <div class="res-header">
+      <div class="res-name" id="resName">—</div>
+      <div class="risk-pill" id="resPill">—</div>
+    </div>
+    <div class="score-card">
+      <div class="score-label">Landor's Curve — Displacement Risk Score</div>
+      <div class="score-row">
+        <div class="score-num" id="scoreNum">—</div>
+        <div class="score-desc" id="scoreDesc">—</div>
+      </div>
+      <div class="track"><div class="track-fill" id="trackFill"></div></div>
+      <div class="track-ends"><span>MORE STABLE</span><span>HIGHER PRESSURE</span></div>
+    </div>
+    <div class="grid-2">
+      <div class="info-card"><div class="info-title">Key Data</div><div id="statsEl"></div></div>
+      <div class="info-card"><div class="info-title">Landor's Curve Index</div><div id="lbarsEl"></div></div>
+      <div class="info-card grid-full"><div class="info-title">Analysis</div><div class="info-text" id="analysisEl">—</div></div>
+      <div class="info-card"><div class="info-title">Tasks Being Automated</div><div class="tag-wrap" id="tagsRisk"></div></div>
+      <div class="info-card"><div class="info-title">Tasks That Remain Human</div><div class="tag-wrap" id="tagsSafe"></div></div>
+      <div class="info-card grid-full"><div class="info-title">What Roles Will Remain</div><div class="info-text" id="jobsEl">—</div></div>
+      <div class="info-card grid-full"><div class="info-title">Sources and Research</div><ul class="src-list" id="sourcesEl"></ul></div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- TOOLS -->
+<div id="tools" class="wrap">
+  <div class="section">
+    <div class="eyebrow">Applied Tools</div>
+    <div class="section-heading">Where Do You Go From Here?</div>
+    <p class="section-sub" style="margin-bottom:32px;">The question is not whether technology will change the work. The question is how you will change with it.</p>
+    <div class="tools-grid">
+      <a href="/pivot" class="tool-card">
+        <div class="tool-accent" style="background:var(--yellow);"></div>
+        <div class="tool-title" style="color:var(--yellow);">Landor's Pivot</div>
+        <div class="tool-sub">Do you have years of experience in a working field? Landor's Pivot is for working professionals deciding whether their next move is deeper mastery or learning to operate new systems. Enter your lifetime skill hours and use what you already know to find a stronger path forward.</div>
+        <div class="tool-cta" style="color:var(--yellow);">Open Calculator →</div>
+      </a>
+      <a href="/study" class="tool-card">
+        <div class="tool-accent" style="background:var(--green);"></div>
+        <div class="tool-title" style="color:var(--green);">Landor's Study</div>
+        <div class="tool-sub">Is your field quickly deskilling? Landor's Study is for workers and career changers who can see their current role changing faster than expected. Enter your field and compare safer adjacent paths with free, certification, and degree-based options.</div>
+        <div class="tool-cta" style="color:var(--green);">Open Tool →</div>
+      </a>
+    </div>
+    <div class="student-box">
+      <div class="student-box-text">
+        <div class="student-label">Are you a student or parent?</div>
+        <div class="student-body">Landor's Curve is built for workers with years of experience who are navigating or considering career changes or upgrades. If you are just starting out and choosing a school, major, trade, or first career path, PathDecider may be a better place to start.</div>
+      </div>
+      <a href="https://pathdecider.com" target="_blank" class="student-btn">Visit PathDecider →</a>
+    </div>
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- THREE RULES -->
+<div id="rules" class="full-bleed">
+  <div class="wrap">
+    <div class="section">
+      <div class="eyebrow">The Framework</div>
+      <div class="section-heading">The Three Rules of Landor's Curve</div>
+      <p class="section-sub" style="margin-bottom:32px;">Each rule describes a pattern that has repeated across every major technological shift in history.</p>
+      <div class="rules-grid">
+        <div class="rule-card" style="border-top:3px solid var(--orange);">
+          <div class="rule-num" style="color:var(--orange);">Rule 1 — Acceleration</div>
+          <div class="rule-title">Each wave changes work faster than the last.</div>
+          <div class="rule-body">Swordsmiths had generations to adapt. Typists had decades. Today, the shift can happen within a few years of a tool entering the market.</div>
+        </div>
+        <div class="rule-card" style="border-top:3px solid var(--yellow);">
+          <div class="rule-num" style="color:var(--yellow);">Rule 2 — Rising Skill Floor</div>
+          <div class="rule-title">Routine tasks are absorbed. Expectations move higher.</div>
+          <div class="rule-body">Technology handles the repetitive work. In return, the job absorbs new responsibilities. The floor of what the role requires keeps rising.</div>
+        </div>
+        <div class="rule-card" style="border-top:3px solid var(--green);">
+          <div class="rule-num" style="color:var(--green);">Rule 3 — Mastery or Operation</div>
+          <div class="rule-title">The most stable paths are mastery or operation.</div>
+          <div class="rule-body">Workers who deepen their craft beyond what tools can replicate, or who learn to operate the tools themselves, tend to hold the most durable positions.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- FRAMEWORK / PAPERS -->
+<div id="papers" class="wrap">
+  <div class="section">
+    <div class="eyebrow">Official Framework</div>
+    <div class="section-heading">Papers and Decks</div>
+    <p class="section-sub" style="margin-bottom:32px;">The complete Landor's Curve framework, available as papers and visual decks for reading, teaching, and reference.</p>
+    <div class="fw-grid">
+
+      <div class="fw-card" style="border-top:3px solid var(--gold);">
+        <div class="fw-tag">Paper — Complete Framework</div>
+        <div class="fw-title">The Complete Framework</div>
+        <div class="fw-desc">The full statement of Landor's Curve, including the Descent, the Rebound, and the Ratio. The definitive document.</div>
+        <div class="fw-btns">
+          <a href="https://drive.google.com/open?id=1F4yT24ouQ8gGP2iuWDzgiNUkWGZ8quLo&usp=drive_fs" target="_blank" class="fw-btn fw-btn-gold">Read Paper</a>
+          <a href="https://drive.google.com/open?id=1F4yT24ouQ8gGP2iuWDzgiNUkWGZ8quLo&usp=drive_fs" target="_blank" class="fw-btn fw-btn-muted">Open in Drive</a>
+        </div>
+      </div>
+
+      <div class="fw-card" style="border-top:3px solid var(--orange);">
+        <div class="fw-tag">Visual Deck</div>
+        <div class="fw-title">Landor's Curve Deck</div>
+        <div class="fw-desc">A visual companion deck explaining the acceleration curve, the rising skill floor, and the Master and Operator paths. Built for teaching and speaking.</div>
+        <div class="fw-btns">
+          <a href="https://drive.google.com/open?id=1JOth0zu1o2pVm4u-DX0loRGM70ZgLNxw&usp=drive_fs" target="_blank" class="fw-btn fw-btn-gold">View Deck</a>
+          <a href="https://drive.google.com/open?id=1JOth0zu1o2pVm4u-DX0loRGM70ZgLNxw&usp=drive_fs" target="_blank" class="fw-btn fw-btn-muted">Open in Drive</a>
+        </div>
+      </div>
+
+      <div class="fw-card" style="border-top:3px solid var(--green);">
+        <div class="fw-tag">Paper — The Rebound</div>
+        <div class="fw-title">Landor's Rebound</div>
+        <div class="fw-desc">The new professions that rise from technological change. Six categories of emerging careers created by the same shifts that changed the old ones.</div>
+        <div class="fw-btns">
+          <a href="https://drive.google.com/open?id=174smsXOTZ9m3FIYbpkldhL1taEXPiALz&usp=drive_fs" target="_blank" class="fw-btn fw-btn-gold">Read Paper</a>
+          <a href="https://drive.google.com/open?id=174smsXOTZ9m3FIYbpkldhL1taEXPiALz&usp=drive_fs" target="_blank" class="fw-btn fw-btn-muted">Open in Drive</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- PART OF THE SERIES -->
+<div id="series" class="full-bleed">
+  <div class="wrap">
+    <div class="section">
+      <div class="eyebrow">Part of the Series</div>
+      <div class="section-heading">Three Frameworks. One Direction.</div>
+      <p class="section-sub" style="margin-bottom:32px;">Each site in this series examines a different dimension of how technology reshapes work and civilization.</p>
+      <div class="series-grid">
+        <a href="https://almastate.com" target="_blank" class="series-card">
+          <div class="series-num">01 — Framework</div>
+          <div class="series-title">Alma State</div>
+          <div class="series-body">When technology becomes so embedded in daily life that its absence becomes unimaginable. The framework for understanding technological permanence.</div>
+          <div class="series-link">almastate.com →</div>
+        </a>
+        <div class="series-card active-site" style="cursor:default;">
+          <div class="series-num">02 — Framework</div>
+          <div class="series-title">Landor's Curve</div>
+          <div class="series-body">How technology changes the skills required to stay professionally useful. The acceleration of deskilling across every industry and era.</div>
+          <div class="series-link" style="color:var(--gold);opacity:0.8;">landorscurve.com — You are here</div>
+        </div>
+        <a href="https://pathdecider.com" target="_blank" class="series-card">
+          <div class="series-num">03 — Tools</div>
+          <div class="series-title">PathDecider</div>
+          <div class="series-body">Tools for students, parents, and career changers choosing practical education and career paths. Built for those at the beginning of the journey.</div>
+          <div class="series-link">pathdecider.com →</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- ABOUT -->
+<div id="about" class="wrap">
+  <div class="section">
+    <div class="eyebrow">Origin</div>
+    <div class="about-grid">
+      <div><div class="about-name">ABOUT<br>THE<br>CURVE</div></div>
+      <div>
+        <p class="about-text" style="margin-bottom:18px;">Landor's Curve was developed by <strong>Orlando Rashid</strong> after three decades of watching technology reshape recording studios, production sets, classrooms, and creative industries.</p>
+        <p class="about-text" style="margin-bottom:18px;">Over a thirty-year career, he has worked as an audio recording engineer, director, documentary filmmaker, show creator, video director, producer, editor, and instructor at Musicians Institute, LACM, the American Film Institute, and Columbia College Hollywood.</p>
+        <p class="about-text">He recently spoke at the American Embassy in Beijing on the impact of AI in music, and he is an AI and Music instructor. His work has earned him a Guinness World Record acknowledgment and multiple teaching awards.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- CALLOUT -->
+<div class="wrap" style="padding:72px 0;">
+  <div class="callout-wrap">
+    <div class="callout-line1">The tools will keep moving.</div>
+    <div class="callout-line2">Where are you moving next?</div>
+    <a href="#analyzer" class="callout-btn">Run the Analyzer</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-logo">Landor's Curve</div>
+  <div class="footer-copy">© 2026 Orlando Rashid — LandorsCurve.com</div>
+  <div class="footer-links">
+    <a href="/pivot">Pivot</a>
+    <a href="/study">Study</a>
+    <a href="https://almastate.com" target="_blank">Alma State</a>
+    <a href="https://pathdecider.com" target="_blank">PathDecider</a>
+  </div>
+</footer>
+
+<script>
+const SRCS = ['sb-onet','sb-bls','sb-brookings','sb-gs','sb-mckinsey','sb-era'];
+let srcInt, msgInt;
+const MSGS = [
+  ['CROSS-REFERENCING O*NET','Pulling occupation task and skills data...'],
+  ['CHECKING BLS DATA','Reading 10-year employment projections...'],
+  ['ANALYZING BROOKINGS','Fetching AI exposure index data...'],
+  ['REVIEWING RESEARCH','Goldman Sachs and McKinsey automation studies...'],
+  ['PLOTTING THE CURVE','Calculating Landor displacement position...'],
+];
+function go(v) { document.getElementById('profInput').value = v; analyze(); }
+function startSrc() {
+  let i = 0;
+  srcInt = setInterval(() => {
+    SRCS.forEach(s => document.getElementById(s).classList.remove('active'));
+    document.getElementById(SRCS[i % SRCS.length]).classList.add('active');
+    i++;
+  }, 700);
+}
+function stopSrc() { clearInterval(srcInt); SRCS.forEach(s => document.getElementById(s).classList.remove('active')); }
+async function analyze() {
+  const prof = document.getElementById('profInput').value.trim();
+  if (!prof) return;
+  document.getElementById('resBox').classList.remove('show');
+  document.getElementById('errBox').classList.remove('show');
+  document.getElementById('loadBox').classList.add('show');
+  document.getElementById('searchBtn').disabled = true;
+  startSrc();
+  let mi = 0;
+  msgInt = setInterval(() => {
+    if (mi < MSGS.length) { document.getElementById('loadTitle').textContent = MSGS[mi][0]; document.getElementById('loadSub').textContent = MSGS[mi][1]; mi++; }
+  }, 2000);
+  try {
+    const res = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ profession: prof })
+    });
+    clearInterval(msgInt); stopSrc();
+    document.getElementById('loadBox').classList.remove('show');
+    document.getElementById('searchBtn').disabled = false;
+    if (!res.ok) { const err = await res.json(); throw new Error(err.error || 'Server error'); }
+    const r = await res.json();
+    render(r);
+  } catch (err) {
+    clearInterval(msgInt); stopSrc();
+    document.getElementById('loadBox').classList.remove('show');
+    document.getElementById('searchBtn').disabled = false;
+    document.getElementById('errBox').textContent = 'Analysis failed: ' + err.message;
+    document.getElementById('errBox').classList.add('show');
+  }
+}
+function render(r) {
+  document.getElementById('resName').textContent = r.profession || '—';
+  const pill = document.getElementById('resPill');
+  pill.textContent = r.riskLevel || '—';
+  pill.className = 'risk-pill rp-' + (r.riskColor || 'medium');
+  document.getElementById('scoreNum').textContent = (r.riskScore || 0) + '/100';
+  document.getElementById('scoreDesc').textContent = r.meterDesc || '';
+  const fill = document.getElementById('trackFill');
+  fill.style.background = r.meterColor || '#FFD32A';
+  setTimeout(() => { fill.style.width = (r.riskScore || 0) + '%'; }, 120);
+  document.getElementById('statsEl').innerHTML = (r.stats || []).map(s =>
+    `<div class="stat-line"><span class="stat-k">${s.key}</span><span class="stat-v">${s.val}</span></div>`).join('');
+  const li = r.landorIndex || {};
+  document.getElementById('lbarsEl').innerHTML = `
+    <div class="lbar"><div class="lbar-lbl">Historical rate</div><div class="lbar-track"><div class="lbar-fill" id="lb1" style="background:var(--blue)"></div></div><div class="lbar-val">${li.historicalSpeed||0}%</div></div>
+    <div class="lbar"><div class="lbar-lbl">AI speed now</div><div class="lbar-track"><div class="lbar-fill" id="lb2" style="background:var(--orange)"></div></div><div class="lbar-val">${li.currentAISpeed||0}%</div></div>
+    <div class="lbar"><div class="lbar-lbl">Adapt difficulty</div><div class="lbar-track"><div class="lbar-fill" id="lb3" style="background:var(--yellow)"></div></div><div class="lbar-val">${li.adaptationDifficulty||0}%</div></div>`;
+  setTimeout(() => {
+    document.getElementById('lb1').style.width = (li.historicalSpeed||0) + '%';
+    document.getElementById('lb2').style.width = (li.currentAISpeed||0) + '%';
+    document.getElementById('lb3').style.width = (li.adaptationDifficulty||0) + '%';
+  }, 250);
+  document.getElementById('analysisEl').textContent = r.analysis || '—';
+  document.getElementById('jobsEl').textContent = r.jobsRemain || '—';
+  document.getElementById('tagsRisk').innerHTML = (r.tasksAtRisk||[]).map(t=>`<span class="tag tag-r">${t}</span>`).join('');
+  document.getElementById('tagsSafe').innerHTML = (r.tasksSurvive||[]).map(t=>`<span class="tag tag-s">${t}</span>`).join('');
+  document.getElementById('sourcesEl').innerHTML = (r.sources||[]).map(s=>
+    `<li class="src-item"><div class="src-dot"></div><div><span class="src-name">${s.name}</span> — <span style="color:var(--muted)">${s.detail}</span></div></li>`).join('');
+  document.getElementById('resBox').classList.add('show');
+  document.getElementById('resBox').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+document.getElementById('profInput').addEventListener('keydown', e => { if (e.key==='Enter') analyze(); });
+</script>
+</body>
+</html>

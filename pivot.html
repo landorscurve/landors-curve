@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Landor's Pivot — Career Pivot Calculator</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<title>Pivot — Landor's Curve</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
@@ -32,9 +33,21 @@ body::before {
   pointer-events: none; z-index: 0;
 }
 .container { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 48px 28px 80px; }
-.nav { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 32px; flex-wrap: wrap; }
-.nav a { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--gold); text-decoration: none; text-transform: uppercase; border: 1px solid var(--border); padding: 7px 14px; border-radius: 6px; transition: all 0.2s; }
-.nav a:hover { background: rgba(240,165,0,0.08); border-color: var(--gold); }
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,10,15,0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px;
+  margin-bottom: 0;
+}
+.nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--gold); letter-spacing: 2px; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+.nav-links { display: flex; gap: 2px; }
+.nav-links a { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 6px 12px; border-radius: 4px; transition: all 0.2s; border: none; }
+.nav-links a:hover { color: var(--gold); background: rgba(240,165,0,0.08); }
+@media (max-width: 720px) { .nav-links { display: none; } }
 .title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(52px,10vw,88px); line-height: 0.88; color: var(--text); letter-spacing: 2px; margin-bottom: 18px; }
 .title span { color: var(--gold); }
 .subtitle { font-size: 14px; color: var(--muted); font-weight: 300; line-height: 1.7; max-width: 580px; margin-bottom: 36px; }
@@ -167,13 +180,18 @@ input[type="file"]#resumeFile { display: none; }
 </style>
 </head>
 <body>
-<div class="container">
-  <div class="nav">
-    <a href="/">← Landor's Curve</a>
-    <a href="/study">Landor's Study</a>
+<nav class="nav">
+  <a href="/" class="nav-logo"><img src="/favicon.ico" style="width:22px;height:22px;border-radius:4px;" alt="LC"> Landor's Curve</a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/study">What's Next</a>
+    <a href="/safe-list">Safe List</a>
+    <a href="/pivot" style="color:var(--gold);">Pivot</a>
   </div>
+</nav>
+<div class="container">
 
-  <h1 class="title">LANDOR'S<br><span>PIVOT</span></h1>
+  <h1 class="title"><span>PIVOT</span></h1>
   <p class="subtitle">As the curve accelerates displacement, new opportunities rise on the other side. Your experience and skill set are more valuable than you think. Enter what you know and how long you have known it. We will calculate career options you may have never considered, and some that did not even exist until now.</p>
 
   <div class="curve-wrap">
@@ -272,13 +290,13 @@ input[type="file"]#resumeFile { display: none; }
     <div class="insight-card"><div class="insight-text" id="insightText">—</div></div>
     <div class="divider"></div>
     <div class="next-card">
-      <div class="next-text"><strong>Ready to find safer adjacent careers?</strong> Export your top career to Landor's Study and get a full learning roadmap with free, certification, and degree paths.</div>
-      <button class="next-btn" onclick="exportToStudy()">Export to Landor's Study →</button>
+      <div class="next-text"><strong>Ready to find safer adjacent careers?</strong> Export your top career to What's Next and get a full learning roadmap with free, certification, and degree paths.</div>
+      <button class="next-btn" onclick="exportToStudy()">Export to What's Next →</button>
     </div>
   </div>
 
   <div class="footer">
-    LANDOR'S PIVOT — Career Pivot Calculator<br>
+    PIVOT — Career Pivot Calculator<br>
     Analysis powered by Claude AI, drawing from O*NET, Bureau of Labor Statistics, Brookings Institution, McKinsey Global Institute, and Goldman Sachs labor market research.<br>
     Results are analytical estimates. Career decisions should incorporate additional professional guidance. © 2026 LandorsCurve.com
   </div>

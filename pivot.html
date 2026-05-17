@@ -681,5 +681,22 @@ function exportToStudy() {
 addRow('', '', ['Mon','Tue','Wed','Thu','Fri'], 8);
 addRow('', '', ['Mon','Tue','Wed','Thu','Fri'], 8);
 </script>
+<script>
+function toggleDropdown() {
+  document.getElementById('toolsDropdown').classList.toggle('open');
+}
+function openMobile() {
+  document.getElementById('mobileMenu').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobile() {
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('click', function(e) {
+  const dd = document.getElementById('toolsDropdown');
+  if (dd && !dd.contains(e.target)) dd.classList.remove('open');
+});
+</script>
 </body>
 </html>

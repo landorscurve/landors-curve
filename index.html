@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Landor's Curve — The Acceleration of Deskilling</title>
+<title>Landor's Curve — How Technology Is Changing What Work Requires</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -44,12 +44,9 @@ body::before {
 }
 .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--gold); letter-spacing: 2px; text-decoration: none; }
 .nav-links { display: flex; gap: 2px; }
-.nav-links a {
-  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px;
-  text-transform: uppercase; color: var(--muted); text-decoration: none;
-  padding: 6px 12px; border-radius: 4px; transition: all 0.2s;
-}
+.nav-links a { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 6px 12px; border-radius: 4px; transition: all 0.2s; }
 .nav-links a:hover { color: var(--gold); background: rgba(240,165,0,0.08); }
+.nav-links a.safelist { color: var(--green); }
 @media (max-width: 720px) { .nav-links { display: none; } }
 
 /* LAYOUT */
@@ -57,37 +54,46 @@ body::before {
 .section { padding: 72px 0; }
 .full-bleed { background: var(--panel); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .divider-line { border: none; border-top: 1px solid var(--border); }
-
-/* TYPE */
 .eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; opacity: 0.8; }
 .section-heading { font-family: 'Bebas Neue', sans-serif; font-size: clamp(28px,4vw,40px); color: var(--text); letter-spacing: 1px; margin-bottom: 12px; line-height: 1; }
 .section-sub { font-size: 14px; color: var(--muted); line-height: 1.7; max-width: 540px; }
 
 /* HERO */
-.hero { padding: 72px 0 40px; }
-.hero-kicker { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 18px; opacity: 0.8; }
-.hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(60px,10vw,100px); line-height: 0.88; color: var(--text); letter-spacing: 2px; margin-bottom: 10px; }
-.hero-title span { color: var(--gold); }
-.hero-sub-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(18px,3vw,26px); color: var(--muted); letter-spacing: 1px; margin-bottom: 28px; }
-.hero-body { font-size: 15px; color: var(--muted); line-height: 1.8; max-width: 580px; margin-bottom: 28px; }
-.hero-hook { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 2px; color: var(--gold); opacity: 0.8; margin-bottom: 0; }
-
-/* DEFINITION BOX */
-.def-box {
-  background: rgba(240,165,0,0.05);
-  border: 1px solid rgba(240,165,0,0.18);
-  border-left: 3px solid var(--gold);
-  border-radius: 0 10px 10px 0;
-  padding: 16px 20px;
-  margin: 28px 0 0;
-  max-width: 580px;
+.hero { padding: 80px 0 48px; }
+.hero-question {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(42px, 7vw, 72px);
+  line-height: 1;
+  color: var(--text);
+  letter-spacing: 1px;
+  margin-bottom: 28px;
+  max-width: 760px;
 }
-.def-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
-.def-text { font-size: 13px; color: var(--muted); line-height: 1.65; }
+.hero-question span { color: var(--gold); }
+.hero-body { font-size: 16px; color: var(--muted); line-height: 1.8; max-width: 580px; margin-bottom: 0; }
+
+/* STORY QUOTE */
+.story-wrap { padding: 56px 0 0; }
+.story-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--gold);
+  border-radius: 0 14px 14px 0;
+  padding: 32px 36px;
+  max-width: 680px;
+}
+.story-text { font-size: 15px; color: var(--text); line-height: 1.85; font-weight: 300; font-style: italic; margin-bottom: 16px; }
+.story-text strong { font-style: normal; color: var(--gold); font-weight: 600; }
+.story-attribution { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
 
 /* CURVE */
-.curve-wrap { margin: 36px 0 0; }
-.curve-wrap svg { width: 100%; height: 200px; overflow: visible; }
+.curve-section { padding: 56px 0 48px; }
+.curve-label-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.curve-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+.curve-wrap svg { width: 100%; overflow: visible; }
+.curve-legend { display: flex; gap: 24px; margin-top: 14px; flex-wrap: wrap; }
+.curve-legend-item { display: flex; align-items: center; gap: 8px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; }
+.legend-line { width: 24px; height: 2px; border-radius: 2px; }
 
 /* ANALYZER */
 .analyzer-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 28px; margin-bottom: 12px; }
@@ -100,10 +106,10 @@ body::before {
 .search-btn:hover { background: #FFB800; }
 .search-btn:active { transform: scale(0.98); }
 .search-btn:disabled { background: #333; color: #666; cursor: not-allowed; }
+.chips-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
 .chip-legend { display: flex; gap: 16px; margin-bottom: 10px; flex-wrap: wrap; }
 .chip-legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; }
 .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
-.chips-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
 .chips-group { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 9px; }
 .chip { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-family: 'DM Mono', monospace; cursor: pointer; transition: all 0.18s; border: 1px solid transparent; }
 .chip-risk { background: rgba(255,71,87,0.08); color: #FF6B7A; border-color: rgba(255,71,87,0.2); }
@@ -115,8 +121,6 @@ body::before {
 .sources-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
 .src-badge { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px; font-size: 10px; color: var(--muted); font-family: 'DM Mono', monospace; transition: all 0.3s; }
 .src-badge.active { border-color: var(--gold); color: var(--gold); background: rgba(240,165,0,0.08); }
-
-/* LOADING / ERROR */
 .error-box { display: none; background: rgba(255,71,87,0.08); border: 1px solid rgba(255,71,87,0.25); border-radius: 10px; padding: 16px 20px; color: #FF7785; font-size: 13px; margin-bottom: 20px; }
 .error-box.show { display: block; }
 .loading-box { display: none; text-align: center; padding: 64px 20px; }
@@ -127,8 +131,6 @@ body::before {
 @keyframes spin { to { transform: rotate(360deg); } }
 .loading-title { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--gold); letter-spacing: 2px; margin-bottom: 8px; }
 .loading-sub { font-size: 12px; color: var(--muted); }
-
-/* RESULTS */
 .results-box { display: none; margin-top: 8px; }
 .results-box.show { display: block; }
 .res-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
@@ -171,33 +173,12 @@ body::before {
 .src-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); margin-top: 6px; flex-shrink: 0; }
 .src-name { color: var(--gold); font-family: 'DM Mono', monospace; font-size: 11px; white-space: nowrap; }
 
-/* TOOLS */
-.tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
-@media (max-width: 560px) { .tools-grid { grid-template-columns: 1fr; } }
-.tool-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 24px; text-decoration: none; display: block; transition: border-color 0.2s; }
-.tool-card:hover { border-color: rgba(240,165,0,0.4); }
-.tool-accent { width: 28px; height: 3px; border-radius: 2px; margin-bottom: 14px; }
-.tool-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; margin-bottom: 6px; }
-.tool-sub { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
-.tool-cta { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.65; }
-
-/* STUDENT BOX */
-.student-box {
-  background: rgba(30,144,255,0.05);
-  border: 1px solid rgba(30,144,255,0.2);
-  border-radius: 14px;
-  padding: 22px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-.student-box-text { flex: 1; }
-.student-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--blue); margin-bottom: 6px; }
-.student-body { font-size: 13px; color: var(--muted); line-height: 1.6; }
-.student-btn { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 9px 18px; border-radius: 6px; border: 1px solid rgba(30,144,255,0.35); color: var(--blue); text-decoration: none; white-space: nowrap; transition: all 0.2s; background: rgba(30,144,255,0.06); }
-.student-btn:hover { background: rgba(30,144,255,0.15); border-color: var(--blue); }
+/* QUESTIONS SECTION */
+.questions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 600px) { .questions-grid { grid-template-columns: 1fr; } }
+.question-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
+.question-q { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--gold); letter-spacing: 1px; margin-bottom: 10px; line-height: 1.15; }
+.question-a { font-size: 13px; color: var(--muted); line-height: 1.7; }
 
 /* THREE RULES */
 .rules-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
@@ -207,7 +188,26 @@ body::before {
 .rule-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; margin-bottom: 10px; line-height: 1.15; }
 .rule-body { font-size: 13px; color: var(--muted); line-height: 1.65; }
 
-/* FRAMEWORK */
+/* TOOLS */
+.tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+@media (max-width: 560px) { .tools-grid { grid-template-columns: 1fr; } }
+.tool-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 24px; text-decoration: none; display: block; transition: border-color 0.2s; }
+.tool-card:hover { border-color: rgba(240,165,0,0.4); }
+.tool-accent { width: 28px; height: 3px; border-radius: 2px; margin-bottom: 14px; }
+.tool-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; margin-bottom: 6px; }
+.tool-sub { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
+.tool-cta { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.65; }
+.tool-card-full { grid-column: 1 / -1; border-color: rgba(46,213,115,0.2); }
+
+/* PATHDECIDER BOX */
+.pathdecider-box { background: rgba(30,144,255,0.05); border: 1px solid rgba(30,144,255,0.2); border-radius: 14px; padding: 22px 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+.pathdecider-text { flex: 1; }
+.pathdecider-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--blue); margin-bottom: 6px; }
+.pathdecider-body { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.pathdecider-btn { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 9px 18px; border-radius: 6px; border: 1px solid rgba(30,144,255,0.35); color: var(--blue); text-decoration: none; white-space: nowrap; transition: all 0.2s; background: rgba(30,144,255,0.06); }
+.pathdecider-btn:hover { background: rgba(30,144,255,0.15); border-color: var(--blue); }
+
+/* PAPERS */
 .fw-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
 @media (max-width: 700px) { .fw-grid { grid-template-columns: 1fr; } }
 @media (min-width: 701px) and (max-width: 900px) { .fw-grid { grid-template-columns: 1fr 1fr; } }
@@ -221,17 +221,6 @@ body::before {
 .fw-btn-gold:hover { background: rgba(240,165,0,0.18); border-color: var(--gold); }
 .fw-btn-muted { background: transparent; color: var(--muted); border-color: var(--border); }
 .fw-btn-muted:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
-
-/* SERIES */
-.series-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
-@media (max-width: 640px) { .series-grid { grid-template-columns: 1fr; } }
-.series-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 22px 24px; text-decoration: none; display: block; transition: border-color 0.2s; }
-.series-card:hover { border-color: rgba(240,165,0,0.3); }
-.series-card.active-site { border-color: rgba(240,165,0,0.4); }
-.series-num { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
-.series-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--gold); letter-spacing: 1px; margin-bottom: 6px; }
-.series-body { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
-.series-link { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; color: var(--muted); opacity: 0.6; }
 
 /* ABOUT */
 .about-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; align-items: start; }
@@ -264,94 +253,120 @@ body::before {
   <div class="nav-links">
     <a href="#analyzer">Analyzer</a>
     <a href="#tools">Tools</a>
-    <a href="#rules">Framework</a>
+    <a href="#questions">Why This</a>
     <a href="#papers">Papers</a>
-    <a href="#series">Series</a>
     <a href="#about">About</a>
-    <a href="/safe-list" style="color:var(--green);">Safe List</a>
+    <a href="/safe-list" class="safelist">Safe List</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <div class="wrap">
   <div class="hero">
-    <div class="hero-kicker" style="font-size:13px;letter-spacing:3px;">Are you wondering how AI will affect your work?</div>
-    <h1 class="hero-title">LANDOR'S<br><span>CURVE</span></h1>
-    <div class="hero-sub-title">The Acceleration of Deskilling</div>
-    <p class="hero-body">The skill floor keeps moving. As tools improve, the time people have to adapt gets shorter. Jobs do not always disappear overnight. More often, they absorb more skills, more tools, and more responsibilities until the old version of the job no longer exists.</p>
-    <p class="hero-hook">Every new tool changes what the job requires.</p>
-    <div class="def-box">
-      <div class="def-label">What is deskilling?</div>
-      <div class="def-text">Deskilling is when technology simplifies parts of a job while raising the total expectations placed on the worker. The tool helps, but the role expands.</div>
-    </div>
+    <h1 class="hero-question">
+      Does it feel like the rules<br>of work are changing<br><span>faster than ever?</span>
+    </h1>
+    <p class="hero-body">Landor's Curve explores how professionals are adapting as work, expectations, and career roles rapidly change in an age of accelerating technology and AI.</p>
 
-    <div class="curve-wrap">
-      <svg viewBox="0 0 900 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="dg" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color:#2ED573;stop-opacity:0.9"/>
-            <stop offset="55%" style="stop-color:#FFD32A;stop-opacity:0.9"/>
-            <stop offset="100%" style="stop-color:#FF4757;stop-opacity:1"/>
-          </linearGradient>
-          <linearGradient id="ag" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color:#FF4757;stop-opacity:0.5"/>
-            <stop offset="55%" style="stop-color:#FFD32A;stop-opacity:0.75"/>
-            <stop offset="100%" style="stop-color:#2ED573;stop-opacity:1"/>
-          </linearGradient>
-          <linearGradient id="zone" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style="stop-color:#F0A500;stop-opacity:0.13"/>
-            <stop offset="100%" style="stop-color:#F0A500;stop-opacity:0.04"/>
-          </linearGradient>
-        </defs>
-
-        <!-- Alma State shaded zone -->
-        <rect x="388" y="24" width="182" height="152" rx="6"
-              fill="url(#zone)" stroke="#F0A500" stroke-width="0.7"
-              stroke-dasharray="5,4" opacity="0.85"/>
-
-        <!-- Alma State zone label -->
-        <text x="479" y="44" font-family="DM Mono,monospace" font-size="9"
-              fill="#F0A500" text-anchor="middle" letter-spacing="2" opacity="0.9">ALMA STATE</text>
-
-        <!-- Landor's Curve — displacement accelerates upward -->
-        <path d="M 50 162 C 220 159, 400 140, 545 100 S 750 38, 856 14"
-              fill="none" stroke="url(#dg)" stroke-width="2.5" stroke-linecap="round"/>
-
-        <!-- Alma State adoption curve — normalizes downward -->
-        <path d="M 50 24 C 140 32, 280 60, 420 100 S 650 156, 856 164"
-              fill="none" stroke="url(#ag)" stroke-width="2"
-              stroke-linecap="round" stroke-dasharray="7,5"/>
-
-        <!-- Y axis left label -->
-        <text x="18" y="18" font-family="DM Mono,monospace" font-size="8"
-              fill="#555566" letter-spacing="2">DISPLACEMENT RATE</text>
-
-        <!-- X axis label -->
-        <text x="18" y="188" font-family="DM Mono,monospace" font-size="8"
-              fill="#555566" letter-spacing="2">EACH TECHNOLOGICAL WAVE →</text>
-
-        <!-- Landor's Curve end label -->
-        <text x="850" y="12" font-family="DM Mono,monospace" font-size="8"
-              fill="#FF4757" text-anchor="end">LANDOR'S CURVE ↗</text>
-
-        <!-- Alma State end label -->
-        <text x="850" y="180" font-family="DM Mono,monospace" font-size="8"
-              fill="#2ED573" text-anchor="end">ALMA STATE ↘</text>
-      </svg>
+    <!-- FILMMAKER STORY -->
+    <div class="story-wrap">
+      <div class="story-card">
+        <div class="story-text">
+          "When I entered the industry, most creative roles were more specialized. Directors directed. Editors edited. Colorists colored.<br><br>
+          Those roles still exist at the highest levels of the industry. But across much of the working world, the middle layer has compressed. Many professionals are now increasingly expected to operate across multiple disciplines, editing, sound, graphics, social media, automation tools, and distribution workflows all at once.<br><br>
+          The role did not disappear. <strong>The expectations expanded.</strong>"
+        </div>
+        <div class="story-attribution">Orlando Rashid, audio engineer, documentary filmmaker, and educator</div>
+      </div>
     </div>
   </div>
 </div>
 
+<!-- CURVE -->
+<div class="wrap">
+  <div class="curve-section">
+    <div class="eyebrow">The Observation</div>
+    <div class="section-heading" style="margin-bottom:8px;">The Gap Is Growing</div>
+    <p class="section-sub" style="margin-bottom:28px;">Technology's capability is rising. The market's expectations of workers are rising with it. Human adaptation is trying to keep pace, but the gap between what tools can do and what people can absorb keeps widening.</p>
+
+    <div class="curve-label-row">
+      <span class="curve-label">← Earlier</span>
+      <span class="curve-label" style="text-align:center;">TIME</span>
+      <span class="curve-label">Now →</span>
+    </div>
+    <div class="curve-wrap">
+      <svg viewBox="0 0 900 180" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="techg" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#FF4757;stop-opacity:0.6"/>
+            <stop offset="100%" style="stop-color:#FF4757;stop-opacity:1"/>
+          </linearGradient>
+          <linearGradient id="expg" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#F0A500;stop-opacity:0.6"/>
+            <stop offset="100%" style="stop-color:#F0A500;stop-opacity:1"/>
+          </linearGradient>
+          <linearGradient id="humg" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#2ED573;stop-opacity:0.6"/>
+            <stop offset="100%" style="stop-color:#2ED573;stop-opacity:1"/>
+          </linearGradient>
+          <linearGradient id="gapfill" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#FF4757;stop-opacity:0.06"/>
+            <stop offset="100%" style="stop-color:#FF4757;stop-opacity:0.01"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Y axis label -->
+        <text x="8" y="14" font-family="DM Mono,monospace" font-size="8" fill="#555566" letter-spacing="2">EXPECTED COMPETENCY ↑</text>
+
+        <!-- Gap fill between tech and human -->
+        <path d="M 50 155 C 200 148, 380 130, 540 95 S 740 38, 870 8 L 870 62 C 740 90, 540 128, 380 148 C 200 162, 50 165, 50 165 Z"
+              fill="url(#gapfill)" opacity="0.8"/>
+
+        <!-- Technology capability — steepest rise -->
+        <path d="M 50 158 C 200 152, 380 134, 540 98 S 740 40, 870 8"
+              fill="none" stroke="url(#techg)" stroke-width="2.5" stroke-linecap="round"/>
+
+        <!-- Market expectations — close behind tech -->
+        <path d="M 50 162 C 200 157, 380 142, 540 110 S 740 58, 870 30"
+              fill="none" stroke="url(#expg)" stroke-width="2" stroke-linecap="round" stroke-dasharray="8,4"/>
+
+        <!-- Human adaptation — lagging -->
+        <path d="M 50 165 C 200 163, 380 156, 540 138 S 740 105, 870 82"
+              fill="none" stroke="url(#humg)" stroke-width="2" stroke-linecap="round" stroke-dasharray="4,6"/>
+
+        <!-- End labels -->
+        <text x="874" y="10" font-family="DM Mono,monospace" font-size="8" fill="#FF4757" text-anchor="start">TECHNOLOGY</text>
+        <text x="874" y="32" font-family="DM Mono,monospace" font-size="8" fill="#F0A500" text-anchor="start">EXPECTATIONS</text>
+        <text x="874" y="84" font-family="DM Mono,monospace" font-size="8" fill="#2ED573" text-anchor="start">ADAPTATION</text>
+
+        <!-- Gap label -->
+        <text x="680" y="72" font-family="DM Mono,monospace" font-size="8" fill="#FF475766" text-anchor="middle" letter-spacing="1">THE GAP</text>
+      </svg>
+    </div>
+    <div class="curve-legend">
+      <div class="curve-legend-item"><div class="legend-line" style="background:var(--red)"></div>Technology capability</div>
+      <div class="curve-legend-item"><div class="legend-line" style="background:var(--gold);border-top:2px dashed var(--gold);background:transparent"></div>Market expectations</div>
+      <div class="curve-legend-item"><div class="legend-line" style="background:var(--green)"></div>Human adaptation</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider-line">
+
 <!-- ANALYZER -->
-<div id="analyzer" class="wrap" style="padding-bottom:72px;">
+<div id="analyzer" class="wrap" style="padding:72px 0;">
+  <div class="eyebrow">The Tool</div>
+  <div class="section-heading" style="margin-bottom:8px;">Where Does Your Profession Stand?</div>
+  <p class="section-sub" style="margin-bottom:28px;">Enter any job or career and see how rapidly it is changing, and what is likely to shift next.</p>
+
   <div class="analyzer-card">
-    <div class="analyzer-label">Locate Your Profession on Landor's Curve</div>
+    <div class="analyzer-label">Check Any Profession</div>
     <div class="search-row">
       <input class="search-input" id="profInput" type="text" placeholder="Enter any profession or job title..." />
       <button class="search-btn" id="searchBtn" onclick="analyze()">ANALYZE</button>
     </div>
     <div class="chip-legend">
-      <div class="chip-legend-item"><div class="legend-dot" style="background:var(--red)"></div>Higher pressure</div>
+      <div class="chip-legend-item"><div class="legend-dot" style="background:var(--red)"></div>Faster change</div>
       <div class="chip-legend-item"><div class="legend-dot" style="background:var(--yellow)"></div>Moderate shift</div>
       <div class="chip-legend-item"><div class="legend-dot" style="background:var(--green)"></div>More stable</div>
     </div>
@@ -360,23 +375,22 @@ body::before {
       <span class="chip chip-risk" onclick="go('Audio Engineer')">Audio Engineer</span>
       <span class="chip chip-risk" onclick="go('Paralegal')">Paralegal</span>
       <span class="chip chip-risk" onclick="go('Graphic Designer')">Graphic Designer</span>
-      <span class="chip chip-risk" onclick="go('Actor')">Actor</span>
-      <span class="chip chip-risk" onclick="go('Customer Service Rep')">Customer Service Rep</span>
       <span class="chip chip-risk" onclick="go('Radiologist')">Radiologist</span>
+      <span class="chip chip-risk" onclick="go('Customer Service Rep')">Customer Service Rep</span>
     </div>
     <div class="chips-group">
-      <span class="chip chip-medium" onclick="go('Truck Driver')">Truck Driver</span>
       <span class="chip chip-medium" onclick="go('Nurse Practitioner')">Nurse Practitioner</span>
-      <span class="chip chip-medium" onclick="go('HR Manager')">HR Manager</span>
       <span class="chip chip-medium" onclick="go('Architect')">Architect</span>
       <span class="chip chip-medium" onclick="go('Film Director')">Film Director</span>
+      <span class="chip chip-medium" onclick="go('HR Manager')">HR Manager</span>
+      <span class="chip chip-medium" onclick="go('Software Developer')">Software Developer</span>
     </div>
     <div class="chips-group">
-      <span class="chip chip-safe" onclick="go('Plumber')">Plumber</span>
       <span class="chip chip-safe" onclick="go('Surgeon')">Surgeon</span>
-      <span class="chip chip-safe" onclick="go('Criminal Defense Attorney')">Criminal Defense Attorney</span>
-      <span class="chip chip-safe" onclick="go('Child Psychologist')">Child Psychologist</span>
       <span class="chip chip-safe" onclick="go('Electrician')">Electrician</span>
+      <span class="chip chip-safe" onclick="go('Child Psychologist')">Child Psychologist</span>
+      <span class="chip chip-safe" onclick="go('Plumber')">Plumber</span>
+      <span class="chip chip-safe" onclick="go('Criminal Defense Attorney')">Criminal Defense Attorney</span>
     </div>
   </div>
 
@@ -386,7 +400,7 @@ body::before {
     <span class="src-badge" id="sb-brookings">Brookings</span>
     <span class="src-badge" id="sb-gs">Goldman Sachs</span>
     <span class="src-badge" id="sb-mckinsey">McKinsey</span>
-    <span class="src-badge" id="sb-era">Landor's Era</span>
+    <span class="src-badge" id="sb-era">Curve Model</span>
   </div>
 
   <div class="error-box" id="errBox"></div>
@@ -402,17 +416,17 @@ body::before {
       <div class="risk-pill" id="resPill">—</div>
     </div>
     <div class="score-card">
-      <div class="score-label">Landor's Curve — Displacement Risk Score</div>
+      <div class="score-label">Measured Adaptation</div>
       <div class="score-row">
         <div class="score-num" id="scoreNum">—</div>
         <div class="score-desc" id="scoreDesc">—</div>
       </div>
       <div class="track"><div class="track-fill" id="trackFill"></div></div>
-      <div class="track-ends"><span>MORE STABLE</span><span>HIGHER PRESSURE</span></div>
+      <div class="track-ends"><span>MORE STABLE</span><span>FASTER CHANGE</span></div>
     </div>
     <div class="grid-2">
       <div class="info-card"><div class="info-title">Key Data</div><div id="statsEl"></div></div>
-      <div class="info-card"><div class="info-title">Landor's Curve Index</div><div id="lbarsEl"></div></div>
+      <div class="info-card"><div class="info-title">Adaptation Snapshot</div><div id="lbarsEl"></div></div>
       <div class="info-card grid-full"><div class="info-title">Analysis</div><div class="info-text" id="analysisEl">—</div></div>
       <div class="info-card"><div class="info-title">Tasks Being Automated</div><div class="tag-wrap" id="tagsRisk"></div></div>
       <div class="info-card"><div class="info-title">Tasks That Remain Human</div><div class="tag-wrap" id="tagsSafe"></div></div>
@@ -425,65 +439,98 @@ body::before {
 <hr class="divider-line">
 
 <!-- TOOLS -->
-<div id="tools" class="wrap">
-  <div class="section">
-    <div class="eyebrow">Applied Tools</div>
-    <div class="section-heading">Where Do You Go From Here?</div>
-    <p class="section-sub" style="margin-bottom:32px;">The question is not whether technology will change the work. The question is how you will change with it.</p>
-    <div class="tools-grid">
-      <a href="/pivot" class="tool-card">
-        <div class="tool-accent" style="background:var(--yellow);"></div>
-        <div class="tool-title" style="color:var(--yellow);">Landor's Pivot</div>
-        <div class="tool-sub">Do you have years of experience in a working field? Landor's Pivot is for working professionals deciding whether their next move is deeper mastery or learning to operate new systems. Enter your lifetime skill hours and use what you already know to find a stronger path forward.</div>
-        <div class="tool-cta" style="color:var(--yellow);">Open Calculator →</div>
-      </a>
-      <a href="/study" class="tool-card">
-        <div class="tool-accent" style="background:var(--green);"></div>
-        <div class="tool-title" style="color:var(--green);">Landor's Study</div>
-        <div class="tool-sub">Is your field quickly deskilling? Landor's Study is for workers and career changers who can see their current role changing faster than expected. Enter your field and compare safer adjacent paths with free, certification, and degree-based options.</div>
-        <div class="tool-cta" style="color:var(--green);">Open Tool →</div>
-      </a>
-      <a href="/safe-list" class="tool-card" style="grid-column: 1 / -1; border-color: rgba(46,213,115,0.2);">
-        <div class="tool-accent" style="background:var(--green);"></div>
-        <div class="tool-title" style="color:var(--green);">Landor's Safe List</div>
-        <div class="tool-sub">Which careers are under lower AI pressure? Browse careers ranked by stability, human judgment, physical presence, licensing, and long-term skill durability.</div>
-        <div class="tool-cta" style="color:var(--green);">Browse Safe List →</div>
-      </a>
-    </div>
-    <div class="student-box">
-      <div class="student-box-text">
-        <div class="student-label">Are you a student or parent?</div>
-        <div class="student-body">Landor's Curve is built for workers with years of experience who are navigating or considering career changes or upgrades. If you are just starting out and choosing a school, major, trade, or first career path, PathDecider may be a better place to start.</div>
-      </div>
-      <a href="https://pathdecider.com" target="_blank" class="student-btn">Visit PathDecider →</a>
-    </div>
-  </div>
-</div>
-
-<hr class="divider-line">
-
-<!-- THREE RULES -->
-<div id="rules" class="full-bleed">
+<div id="tools" class="full-bleed">
   <div class="wrap">
     <div class="section">
-      <div class="eyebrow">The Framework</div>
-      <div class="section-heading">The Three Rules of Landor's Curve</div>
-      <p class="section-sub" style="margin-bottom:32px;">Each rule describes a pattern that has repeated across every major technological shift in history.</p>
+      <div class="eyebrow">Applied Tools</div>
+      <div class="section-heading">What Do You Want to Do About It?</div>
+      <p class="section-sub" style="margin-bottom:32px;">Understanding the shift is step one. These tools help you figure out your next move.</p>
+      <div class="tools-grid">
+        <a href="/pivot" class="tool-card">
+          <div class="tool-accent" style="background:var(--yellow);"></div>
+          <div class="tool-title" style="color:var(--yellow);">Pivot</div>
+          <div class="tool-sub">Upload your résumé or enter your experience manually to see where your existing skills can take you next, including adjacent roles and emerging careers.</div>
+          <div class="tool-cta" style="color:var(--yellow);">Explore Your Pivot →</div>
+        </a>
+        <a href="/study" class="tool-card">
+          <div class="tool-accent" style="background:var(--green);"></div>
+          <div class="tool-title" style="color:var(--green);">What's Next</div>
+          <div class="tool-sub">Is your field changing faster than expected? Enter your current career and compare safer adjacent paths with free, certification, and degree-based options.</div>
+          <div class="tool-cta" style="color:var(--green);">Find Your Options →</div>
+        </a>
+        <a href="/safe-list" class="tool-card tool-card-full">
+          <div class="tool-accent" style="background:var(--green);"></div>
+          <div class="tool-title" style="color:var(--green);">Safe List</div>
+          <div class="tool-sub">Which careers are under lower AI pressure right now? Browse careers ranked by stability, human judgment, physical presence, licensing, and long-term skill durability.</div>
+          <div class="tool-cta" style="color:var(--green);">Browse Careers →</div>
+        </a>
+      </div>
+
+      <!-- PATHDECIDER CROSSOVER -->
+      <div class="pathdecider-box" style="margin-top:14px;">
+        <div class="pathdecider-text">
+          <div class="pathdecider-label">Are you a student or just starting out?</div>
+          <div class="pathdecider-body">Landor's Curve is built for people already in a career who are wondering what comes next. If you are choosing a school, major, trade, or first career path, PathDecider may be a better place to start.</div>
+        </div>
+        <a href="https://pathdecider.com" target="_blank" class="pathdecider-btn">Visit PathDecider →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- WHY THIS — CONVERSATIONAL QUESTIONS -->
+<div id="questions" class="wrap">
+  <div class="section">
+    <div class="eyebrow">The Conversation</div>
+    <div class="section-heading">Questions People Are Already Asking</div>
+    <p class="section-sub" style="margin-bottom:32px;">You have probably already noticed this happening. Here is what is behind what you are feeling.</p>
+    <div class="questions-grid">
+      <div class="question-card">
+        <div class="question-q">Why does it suddenly feel like one job requires five skills?</div>
+        <div class="question-a">Because tools have absorbed the repetitive parts of the job, and in return, the role expanded to absorb everything else. The job title stayed the same. The expectations did not.</div>
+      </div>
+      <div class="question-card">
+        <div class="question-q">Is AI replacing jobs or just changing expectations?</div>
+        <div class="question-a">Both, but mostly the second one right now. Most jobs are not disappearing overnight. They are absorbing more tools, more responsibilities, and more complexity until the old version of the job no longer exists.</div>
+      </div>
+      <div class="question-card">
+        <div class="question-q">Why do experienced professionals feel behind?</div>
+        <div class="question-a">Because experience was built on a set of expectations that have since moved. It is not that their skills stopped being valuable. The floor of what is expected kept rising underneath them.</div>
+      </div>
+      <div class="question-card">
+        <div class="question-q">Why does adaptation suddenly feel exhausting?</div>
+        <div class="question-a">Because the pace changed. Generations ago, a profession might shift once in a lifetime. Now it can shift multiple times in a decade. The human capacity to absorb change has not kept up with the speed at which change arrives.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- THREE OBSERVATIONS -->
+<div class="full-bleed">
+  <div class="wrap">
+    <div class="section">
+      <div class="eyebrow">The Model</div>
+      <div class="section-heading">The Three Observations</div>
+      <p class="section-sub" style="margin-bottom:32px;">Not predictions. Patterns that have already repeated across every major technological shift in history.</p>
       <div class="rules-grid">
         <div class="rule-card" style="border-top:3px solid var(--orange);">
-          <div class="rule-num" style="color:var(--orange);">Rule 1 — Acceleration</div>
+          <div class="rule-num" style="color:var(--orange);">Observation 1 — Acceleration</div>
           <div class="rule-title">Each wave changes work faster than the last.</div>
-          <div class="rule-body">Swordsmiths had generations to adapt. Typists had decades. Today, the shift can happen within a few years of a tool entering the market.</div>
+          <div class="rule-body">Swordsmiths had generations to adapt. Typists had decades. Today, the shift can happen within a few years of a new tool entering the market.</div>
         </div>
         <div class="rule-card" style="border-top:3px solid var(--yellow);">
-          <div class="rule-num" style="color:var(--yellow);">Rule 2 — Rising Skill Floor</div>
+          <div class="rule-num" style="color:var(--yellow);">Observation 2 — Rising Floor</div>
           <div class="rule-title">Routine tasks are absorbed. Expectations move higher.</div>
-          <div class="rule-body">Technology handles the repetitive work. In return, the job absorbs new responsibilities. The floor of what the role requires keeps rising.</div>
+          <div class="rule-body">Technology handles the repetitive work. In return, the job absorbs new responsibilities. The floor of what a role requires keeps rising whether the worker is ready or not.</div>
         </div>
         <div class="rule-card" style="border-top:3px solid var(--green);">
-          <div class="rule-num" style="color:var(--green);">Rule 3 — Mastery or Operation</div>
-          <div class="rule-title">The most stable paths are mastery or operation.</div>
-          <div class="rule-body">Workers who deepen their craft beyond what tools can replicate, or who learn to operate the tools themselves, tend to hold the most durable positions.</div>
+          <div class="rule-num" style="color:var(--green);">Observation 3 — Two Paths Forward</div>
+          <div class="rule-title">Deeper mastery or learning to operate the tools.</div>
+          <div class="rule-body">Workers who go deeper into what makes their work irreplaceable, or who learn to operate the tools reshaping their field, tend to hold the most durable positions.</div>
         </div>
       </div>
     </div>
@@ -492,76 +539,39 @@ body::before {
 
 <hr class="divider-line">
 
-<!-- FRAMEWORK / PAPERS -->
+<!-- PAPERS -->
 <div id="papers" class="wrap">
   <div class="section">
-    <div class="eyebrow">Official Framework</div>
-    <div class="section-heading">Papers and Decks</div>
-    <p class="section-sub" style="margin-bottom:32px;">The complete Landor's Curve framework, available as papers and visual decks for reading, teaching, and reference.</p>
+    <div class="eyebrow">The Papers</div>
+    <div class="section-heading">Read the Full Exploration</div>
+    <p class="section-sub" style="margin-bottom:32px;">The complete exploration, available as papers and visual decks for reading, teaching, and reference.</p>
     <div class="fw-grid">
-
       <div class="fw-card" style="border-top:3px solid var(--gold);">
-        <div class="fw-tag">Paper — Complete Framework</div>
+        <div class="fw-tag">Paper</div>
         <div class="fw-title">The Complete Framework</div>
-        <div class="fw-desc">The full statement of Landor's Curve, including the Descent, the Rebound, and the Ratio. The definitive document.</div>
+        <div class="fw-desc">The complete statement on deskilling, displacement, the rebound effect, and the compression ratio.</div>
         <div class="fw-btns">
           <a href="https://drive.google.com/open?id=1F4yT24ouQ8gGP2iuWDzgiNUkWGZ8quLo&usp=drive_fs" target="_blank" class="fw-btn fw-btn-gold">Read Paper</a>
           <a href="https://drive.google.com/open?id=1F4yT24ouQ8gGP2iuWDzgiNUkWGZ8quLo&usp=drive_fs" target="_blank" class="fw-btn fw-btn-muted">Open in Drive</a>
         </div>
       </div>
-
       <div class="fw-card" style="border-top:3px solid var(--orange);">
         <div class="fw-tag">Visual Deck</div>
-        <div class="fw-title">Landor's Curve Deck</div>
-        <div class="fw-desc">A visual companion deck explaining the acceleration curve, the rising skill floor, and the Master and Operator paths. Built for teaching and speaking.</div>
+        <div class="fw-title">Curve Deck</div>
+        <div class="fw-desc">A visual companion explaining the acceleration curve, the rising skill floor, and the two paths forward. Built for teaching and speaking.</div>
         <div class="fw-btns">
           <a href="https://drive.google.com/open?id=1JOth0zu1o2pVm4u-DX0loRGM70ZgLNxw&usp=drive_fs" target="_blank" class="fw-btn fw-btn-gold">View Deck</a>
           <a href="https://drive.google.com/open?id=1JOth0zu1o2pVm4u-DX0loRGM70ZgLNxw&usp=drive_fs" target="_blank" class="fw-btn fw-btn-muted">Open in Drive</a>
         </div>
       </div>
-
       <div class="fw-card" style="border-top:3px solid var(--green);">
-        <div class="fw-tag">Paper — The Rebound</div>
-        <div class="fw-title">Landor's Rebound</div>
-        <div class="fw-desc">The new professions that rise from technological change. Six categories of emerging careers created by the same shifts that changed the old ones.</div>
+        <div class="fw-tag">Paper</div>
+        <div class="fw-title">The Rebound</div>
+        <div class="fw-desc">The new professions that rise from technological change, and the six categories of emerging careers created by the same shifts that changed the old ones.</div>
         <div class="fw-btns">
           <a href="https://drive.google.com/open?id=174smsXOTZ9m3FIYbpkldhL1taEXPiALz&usp=drive_fs" target="_blank" class="fw-btn fw-btn-gold">Read Paper</a>
           <a href="https://drive.google.com/open?id=174smsXOTZ9m3FIYbpkldhL1taEXPiALz&usp=drive_fs" target="_blank" class="fw-btn fw-btn-muted">Open in Drive</a>
         </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<hr class="divider-line">
-
-<!-- PART OF THE SERIES -->
-<div id="series" class="full-bleed">
-  <div class="wrap">
-    <div class="section">
-      <div class="eyebrow">Part of the Series</div>
-      <div class="section-heading">Three Frameworks. One Direction.</div>
-      <p class="section-sub" style="margin-bottom:32px;">Each site in this series examines a different dimension of how technology reshapes work and civilization.</p>
-      <div class="series-grid">
-        <a href="https://almastate.com" target="_blank" class="series-card">
-          <div class="series-num">01 — Framework</div>
-          <div class="series-title">Alma State</div>
-          <div class="series-body">When technology becomes so embedded in daily life that its absence becomes unimaginable. The framework for understanding technological permanence.</div>
-          <div class="series-link">almastate.com →</div>
-        </a>
-        <div class="series-card active-site" style="cursor:default;">
-          <div class="series-num">02 — Framework</div>
-          <div class="series-title">Landor's Curve</div>
-          <div class="series-body">How technology changes the skills required to stay professionally useful. The acceleration of deskilling across every industry and era.</div>
-          <div class="series-link" style="color:var(--gold);opacity:0.8;">landorscurve.com — You are here</div>
-        </div>
-        <a href="https://pathdecider.com" target="_blank" class="series-card">
-          <div class="series-num">03 — Tools</div>
-          <div class="series-title">PathDecider</div>
-          <div class="series-body">Tools for students, parents, and career changers choosing practical education and career paths. Built for those at the beginning of the journey.</div>
-          <div class="series-link">pathdecider.com →</div>
-        </a>
       </div>
     </div>
   </div>
@@ -577,8 +587,8 @@ body::before {
       <div><div class="about-name">ABOUT<br>THE<br>CURVE</div></div>
       <div>
         <p class="about-text" style="margin-bottom:18px;">Landor's Curve was developed by <strong>Orlando Rashid</strong> after three decades of watching technology reshape recording studios, production sets, classrooms, and creative industries.</p>
-        <p class="about-text" style="margin-bottom:18px;">Over a thirty-year career, he has worked as an audio recording engineer, director, documentary filmmaker, show creator, video director, producer, editor, and instructor at Musicians Institute, LACM, the American Film Institute, and Columbia College Hollywood.</p>
-        <p class="about-text">He recently spoke at the American Embassy in Beijing on the impact of AI in music, and he is an AI and Music instructor. His work has earned him a Guinness World Record acknowledgment and multiple teaching awards.</p>
+        <p class="about-text" style="margin-bottom:18px;">Over a thirty-year career, he has worked as an audio recording engineer, director, documentary filmmaker, show creator, producer, editor, educator, and curriculum advisor. He has taught at Musicians Institute, LACM, and Columbia College Hollywood, and has consulted on post-production curriculum for institutions including the American Film Institute, Musicians Institute, and Columbia College Hollywood.</p>
+        <p class="about-text">His work spans multiple platinum records and has earned him a Guinness World Record acknowledgment, teaching awards, and involvement in several Emmy and Grammy-nominated projects.</p>
       </div>
     </div>
   </div>
@@ -598,12 +608,11 @@ body::before {
 <!-- FOOTER -->
 <footer class="footer">
   <div class="footer-logo">Landor's Curve</div>
-  <div class="footer-copy">© 2026 Orlando Rashid — LandorsCurve.com</div>
+  <div class="footer-copy">© 2026 Landor Media. LandorsCurve.com</div>
   <div class="footer-links">
     <a href="/pivot">Pivot</a>
-    <a href="/study">Study</a>
+    <a href="/study">What's Next</a>
     <a href="/safe-list">Safe List</a>
-    <a href="https://almastate.com" target="_blank">Alma State</a>
     <a href="https://pathdecider.com" target="_blank">PathDecider</a>
   </div>
 </footer>
@@ -616,7 +625,7 @@ const MSGS = [
   ['CHECKING BLS DATA','Reading 10-year employment projections...'],
   ['ANALYZING BROOKINGS','Fetching AI exposure index data...'],
   ['REVIEWING RESEARCH','Goldman Sachs and McKinsey automation studies...'],
-  ['PLOTTING THE CURVE','Calculating Landor displacement position...'],
+  ['MEASURING ADAPTATION','Mapping where your profession stands...'],
 ];
 function go(v) { document.getElementById('profInput').value = v; analyze(); }
 function startSrc() {
@@ -652,7 +661,7 @@ async function analyze() {
     if (!res.ok) { const err = await res.json(); throw new Error(err.error || 'Server error'); }
     const r = await res.json();
     render(r);
-  } catch (err) {
+  } catch(err) {
     clearInterval(msgInt); stopSrc();
     document.getElementById('loadBox').classList.remove('show');
     document.getElementById('searchBtn').disabled = false;
@@ -675,7 +684,7 @@ function render(r) {
   const li = r.landorIndex || {};
   document.getElementById('lbarsEl').innerHTML = `
     <div class="lbar"><div class="lbar-lbl">Historical rate</div><div class="lbar-track"><div class="lbar-fill" id="lb1" style="background:var(--blue)"></div></div><div class="lbar-val">${li.historicalSpeed||0}%</div></div>
-    <div class="lbar"><div class="lbar-lbl">AI speed now</div><div class="lbar-track"><div class="lbar-fill" id="lb2" style="background:var(--orange)"></div></div><div class="lbar-val">${li.currentAISpeed||0}%</div></div>
+    <div class="lbar"><div class="lbar-lbl">Current tech speed</div><div class="lbar-track"><div class="lbar-fill" id="lb2" style="background:var(--orange)"></div></div><div class="lbar-val">${li.currentAISpeed||0}%</div></div>
     <div class="lbar"><div class="lbar-lbl">Adapt difficulty</div><div class="lbar-track"><div class="lbar-fill" id="lb3" style="background:var(--yellow)"></div></div><div class="lbar-val">${li.adaptationDifficulty||0}%</div></div>`;
   setTimeout(() => {
     document.getElementById('lb1').style.width = (li.historicalSpeed||0) + '%';

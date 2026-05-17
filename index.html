@@ -11,7 +11,7 @@
 <style>
 :root {
   --gold: #F0A500;
-  --dark: #0A0A0F;
+  --dark: #050505;
   --panel: #111118;
   --panel2: #16161F;
   --border: rgba(240,165,0,0.15);
@@ -25,15 +25,8 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-body { background: var(--dark); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: linear-gradient(rgba(240,165,0,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(240,165,0,0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-  pointer-events: none; z-index: 0;
-}
+body { background: #050505; color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+body::before { display: none; }
 
 /* NAV */
 .nav {
@@ -102,7 +95,7 @@ body::before {
 .analyzer-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 28px; margin-bottom: 12px; }
 .analyzer-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
 .search-row { display: flex; gap: 12px; margin-bottom: 20px; }
-.search-input { flex: 1; background: var(--dark); border: 1px solid var(--border); border-radius: 8px; padding: 15px 20px; font-family: 'DM Sans', sans-serif; font-size: 16px; color: var(--text); outline: none; transition: border-color 0.2s; }
+.search-input { flex: 1; background: #050505; border: 1px solid var(--border); border-radius: 8px; padding: 15px 20px; font-family: 'DM Sans', sans-serif; font-size: 16px; color: var(--text); outline: none; transition: border-color 0.2s; }
 .search-input:focus { border-color: var(--gold); }
 .search-input::placeholder { color: var(--muted); }
 .search-btn { background: var(--gold); color: #000; border: none; border-radius: 8px; padding: 15px 32px; font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1.5px; cursor: pointer; transition: background 0.2s, transform 0.1s; white-space: nowrap; }

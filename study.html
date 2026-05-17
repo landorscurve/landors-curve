@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="/favicon.ico?v=2" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=2">
 <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=2">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Build a Learning Roadmap — Landor's Curve</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -226,15 +226,44 @@ body::before {
 .mobile-menu a.sub { padding-left: 32px; font-size: 10px; }
 @media (max-width: 720px) { .nav-links { display: none; } .nav-hamburger { display: flex; } }
 
+
+/* ── SHARED NAV ── */
+.nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:56px;}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold);letter-spacing:2px;text-decoration:none;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.nav-logo img{width:22px;height:22px;border-radius:4px;}
+.nav-links{display:flex;align-items:center;gap:2px;}
+.nav-links a{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:4px;transition:all 0.2s;white-space:nowrap;}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);background:rgba(240,165,0,0.08);}
+.nav-dropdown{position:relative;}
+.nav-dropdown-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);background:none;border:none;cursor:pointer;padding:6px 10px;border-radius:4px;transition:all 0.2s;display:flex;align-items:center;gap:4px;}
+.nav-dropdown-btn:hover,.nav-dropdown.open .nav-dropdown-btn{color:var(--gold);background:rgba(240,165,0,0.08);}
+.nav-dropdown-btn svg{width:10px;height:10px;transition:transform 0.2s;}
+.nav-dropdown.open .nav-dropdown-btn svg{transform:rotate(180deg);}
+.nav-dropdown-menu{display:none;position:absolute;top:calc(100% + 8px);left:0;background:var(--panel);border:1px solid var(--border);border-radius:10px;min-width:190px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.4);z-index:200;}
+.nav-dropdown.open .nav-dropdown-menu{display:block;}
+.nav-dropdown-menu a{display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:12px 16px;transition:all 0.15s;border-bottom:1px solid var(--border);}
+.nav-dropdown-menu a:last-child{border-bottom:none;}
+.nav-dropdown-menu a:hover{color:var(--gold);background:rgba(240,165,0,0.06);}
+.nav-hamburger{display:none;background:none;border:none;cursor:pointer;padding:6px;color:var(--gold);align-items:center;}
+.nav-hamburger svg{width:22px;height:22px;}
+.mobile-menu{display:none;position:fixed;inset:0;z-index:999;}
+.mobile-menu.open{display:block;}
+.mobile-menu-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.65);}
+.mobile-menu-panel{position:absolute;top:0;right:0;width:280px;height:100%;background:var(--panel);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;}
+.mobile-menu-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);}
+.mobile-menu-logo{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold);letter-spacing:2px;text-decoration:none;}
+.mobile-menu-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:24px;line-height:1;padding:0;}
+.mobile-menu-close:hover{color:var(--gold);}
+.mobile-menu a{display:block;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:14px 20px;border-bottom:1px solid rgba(240,165,0,0.06);transition:all 0.15s;}
+.mobile-menu a:hover{color:var(--gold);background:rgba(240,165,0,0.06);}
+.mobile-menu-section{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);opacity:0.45;padding:12px 20px 4px;}
+.mobile-menu a.sub{padding-left:32px;font-size:10px;}
+@media(max-width:720px){.nav-links{display:none;}.nav-hamburger{display:flex;}}
 </style>
 </head>
 <body>
-
 <nav class="nav">
-  <a href="/" class="nav-logo">
-    <img src="/favicon.ico?v=2" alt="LC">
-    Landor's Curve
-  </a>
+  <a href="/" class="nav-logo"><img src="/favicon.ico?v=2" alt="LC">Landor's Curve</a>
   <div class="nav-links">
     <a href="/">Home</a>
     <a href="/#analyzer">Analyzer</a>
@@ -252,9 +281,7 @@ body::before {
     <a href="/#about">About</a>
   </div>
   <button class="nav-hamburger" onclick="openMobile()" aria-label="Open menu">
-    <svg viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M1 1h20M1 8h20M1 15h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-    </svg>
+    <svg viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1h20M1 8h20M1 15h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
   </button>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
@@ -274,7 +301,6 @@ body::before {
     <a href="/#about" onclick="closeMobile()">About</a>
   </div>
 </div>
-
 <div class="wrap">
   <div class="hero">
     <div class="eyebrow">Career Transition Tool</div>
@@ -573,21 +599,10 @@ document.getElementById('hoursSlider').addEventListener('input', function() {
 });
 </script>
 <script>
-function toggleDropdown() {
-  document.getElementById('toolsDropdown').classList.toggle('open');
-}
-function openMobile() {
-  document.getElementById('mobileMenu').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeMobile() {
-  document.getElementById('mobileMenu').classList.remove('open');
-  document.body.style.overflow = '';
-}
-document.addEventListener('click', function(e) {
-  const dd = document.getElementById('toolsDropdown');
-  if (dd && !dd.contains(e.target)) dd.classList.remove('open');
-});
+function toggleDropdown(){document.getElementById('toolsDropdown').classList.toggle('open');}
+function openMobile(){document.getElementById('mobileMenu').classList.add('open');document.body.style.overflow='hidden';}
+function closeMobile(){document.getElementById('mobileMenu').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('click',function(e){var dd=document.getElementById('toolsDropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open');});
 </script>
 </body>
 </html>

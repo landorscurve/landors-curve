@@ -252,7 +252,28 @@ body::before { display: none; }
 .mobile-menu-section{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);opacity:0.45;padding:12px 20px 4px;}
 .mobile-menu a.sub{padding-left:32px;font-size:10px;}
 @media(max-width:720px){.nav-links{display:none;}.nav-hamburger{display:flex;}}
+
+/* MINI RESUME DROP */
+.resume-mini-wrap{margin-bottom:14px;}
+.resume-mini-zone{border:1px dashed rgba(240,165,0,0.25);border-radius:10px;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px;cursor:pointer;transition:all 0.2s;background:rgba(240,165,0,0.02);}
+.resume-mini-zone:hover{border-color:rgba(240,165,0,0.5);background:rgba(240,165,0,0.05);}
+.resume-mini-left{display:flex;align-items:center;gap:12px;}
+.resume-mini-icon{font-size:18px;opacity:0.7;}
+.resume-mini-text{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.resume-mini-sub{font-size:11px;color:var(--muted);opacity:0.5;margin-top:2px;}
+.resume-mini-btn{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:6px 14px;border-radius:5px;border:1px solid rgba(240,165,0,0.3);color:var(--gold);background:transparent;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all 0.2s;}
+.resume-mini-btn:hover{background:rgba(240,165,0,0.08);border-color:var(--gold);}
+input[type=file].resume-mini-input{display:none;}
+.resume-mini-status{display:none;align-items:center;gap:10px;padding:10px 16px;border-radius:8px;margin-top:8px;font-size:12px;}
+.resume-mini-status.show{display:flex;}
+.resume-mini-status.ok{background:rgba(46,213,115,0.07);border:1px solid rgba(46,213,115,0.2);color:var(--green);}
+.resume-mini-status.warn{background:rgba(255,211,42,0.07);border:1px solid rgba(255,211,42,0.2);color:var(--yellow);}
+.resume-mini-status.loading{background:rgba(240,165,0,0.06);border:1px solid rgba(240,165,0,0.15);color:var(--gold);}
+.resume-mini-spin{width:14px;height:14px;border:1.5px solid rgba(240,165,0,0.2);border-top-color:var(--gold);border-radius:50%;animation:spin 0.75s linear infinite;flex-shrink:0;}
+
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 </head>
 <body>
 <nav class="nav">
@@ -319,6 +340,22 @@ body::before { display: none; }
       <div class="slider-val" id="sliderVal">8 hrs/week</div>
     </div>
     <div class="slider-note">This adjusts how long each learning path will realistically take you.</div>
+<!-- MINI RESUME DROP -->
+  <div class="resume-mini-wrap">
+    <input type="file" id="miniFileInput" class="resume-mini-input" accept=".pdf,.doc,.docx" onchange="miniHandleFile(this.files[0])">
+    <label for="miniFileInput" class="resume-mini-zone" id="miniZone"
+           ondragover="miniDragOver(event)" ondragleave="miniDragLeave()" ondrop="miniDrop(event)">
+      <div class="resume-mini-left">
+        <div class="resume-mini-icon">📄</div>
+        <div>
+          <div class="resume-mini-text">Have a resume? Drop it to auto-fill</div>
+          <div class="resume-mini-sub">PDF or Word — never stored or uploaded</div>
+        </div>
+      </div>
+      <span class="resume-mini-btn">Choose File</span>
+    </label>
+    <div class="resume-mini-status" id="miniStatus"></div>
+  </div>
     <button class="build-btn" id="buildBtn" onclick="build()">BUILD ROADMAP</button>
     <p class="helper-text">Your roadmap may include free learning, certifications, adjacent careers, or degree-based paths.</p>
   </div>
@@ -605,6 +642,68 @@ function toggleDropdown(){document.getElementById('toolsDropdown').classList.tog
 function openMobile(){document.getElementById('mobileMenu').classList.add('open');document.body.style.overflow='hidden';}
 function closeMobile(){document.getElementById('mobileMenu').classList.remove('open');document.body.style.overflow='';}
 document.addEventListener('click',function(e){var dd=document.getElementById('toolsDropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open');});
+</script>
+<script>
+// ── MINI RESUME DROP — BUILD ROADMAP ────────────────────────────────────
+(function(){
+  if(typeof pdfjsLib!=='undefined'){
+    pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+})();
+
+function miniDragOver(e){e.preventDefault();document.getElementById('miniZone').style.borderColor='rgba(240,165,0,0.6)';}
+function miniDragLeave(){document.getElementById('miniZone').style.borderColor='rgba(240,165,0,0.25)';}
+function miniDrop(e){e.preventDefault();document.getElementById('miniZone').style.borderColor='rgba(240,165,0,0.25)';var f=e.dataTransfer.files[0];if(f)miniHandleFile(f);}
+
+async function miniHandleFile(file){
+  var name=file.name.toLowerCase();
+  if(!name.endsWith('.pdf')&&!name.endsWith('.doc')&&!name.endsWith('.docx')){
+    miniStatus('warn','Please upload a PDF or Word document.');return;
+  }
+  miniStatus('loading','Reading your resume...');
+  try{
+    var text=name.endsWith('.pdf')?await miniReadPDF(file):await miniReadDOCX(file);
+    var words=text.trim().split(/\s+/).filter(w=>w.length>0).length;
+    if(words<15){miniStatus('warn','Could not read enough text. Try a Word document.');return;}
+    miniStatus('loading','Extracting your career...');
+    var res=await fetch('/api/analyze-resume',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({resumeText:text.slice(0,7000)})});
+    if(!res.ok)throw new Error('API error');
+    var data=await res.json();
+    var skills=data.skills||[];
+    if(!skills.length){miniStatus('warn','Could not identify a career. Please type it manually.');return;}
+    // Fill the career input with top skill
+    var top=skills.reduce((a,b)=>((b.years||0)>(a.years||0)?b:a),skills[0]);
+    document.getElementById('currentCareer').value=top.skill||'';
+    miniStatus('ok','Career auto-filled from your resume. Review before running.');
+  }catch(e){miniStatus('warn','Could not process this file. Please fill in manually.');}
+}
+
+async function miniReadPDF(file){
+  if(typeof pdfjsLib==='undefined')throw new Error('PDF reader not loaded');
+  var buf=await file.arrayBuffer();
+  var pdf=await pdfjsLib.getDocument({data:buf}).promise;
+  var text='';
+  for(var i=1;i<=Math.min(pdf.numPages,6);i++){
+    var page=await pdf.getPage(i);
+    var content=await page.getTextContent();
+    text+=content.items.map(function(item){return item.str;}).join(' ')+'\n';
+  }
+  return text;
+}
+
+async function miniReadDOCX(file){
+  var buf=await file.arrayBuffer();
+  if(typeof mammoth!=='undefined'){
+    try{var r=await mammoth.extractRawText({arrayBuffer:buf});if(r.value&&r.value.trim().length>20)return r.value;}catch(e){}
+  }
+  return new Promise(function(resolve){var reader=new FileReader();reader.onload=function(e){resolve(e.target.result||'');};reader.onerror=function(){resolve('');};reader.readAsText(file);});
+}
+
+function miniStatus(type,msg){
+  var el=document.getElementById('miniStatus');
+  el.className='resume-mini-status show '+type;
+  el.innerHTML=(type==='loading'?'<div class="resume-mini-spin"></div>':'<span>'+(type==='ok'?'✓':'⚠')+' </span>')+'<span>'+msg+'</span>';
+}
 </script>
 </body>
 </html>

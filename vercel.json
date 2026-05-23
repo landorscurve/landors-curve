@@ -17,6 +17,10 @@
       "destination": "/rebound.html"
     },
     {
+      "source": "/about",
+      "destination": "/about.html"
+    },
+    {
       "source": "/api/analyze",
       "destination": "/api/analyze.js"
     },

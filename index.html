@@ -114,9 +114,14 @@ body::before { display: none; }
 .chip-medium:hover { background: rgba(255,211,42,0.18); border-color: var(--yellow); }
 .chip-safe { background: rgba(46,213,115,0.08); color: #2ED573; border-color: rgba(46,213,115,0.2); }
 .chip-safe:hover { background: rgba(46,213,115,0.18); border-color: var(--green); }
-.sources-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+.sources-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
 .src-badge { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px; font-size: 10px; color: var(--muted); font-family: 'DM Mono', monospace; transition: all 0.3s; }
 .src-badge.active { border-color: var(--gold); color: var(--gold); background: rgba(240,165,0,0.08); }
+.preset-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; align-items: center; }
+.preset-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); opacity: 0.5; margin-right: 4px; }
+.preset-btn { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; padding: 5px 12px; border-radius: 5px; border: 1px solid var(--border); color: var(--muted); background: transparent; cursor: pointer; transition: all 0.18s; }
+.preset-btn:hover { border-color: rgba(240,165,0,0.4); color: var(--gold); }
+.preset-btn.active { background: rgba(240,165,0,0.08); border-color: var(--gold); color: var(--gold); }
 .error-box { display: none; background: rgba(255,71,87,0.08); border: 1px solid rgba(255,71,87,0.25); border-radius: 10px; padding: 16px 20px; color: #FF7785; font-size: 13px; margin-bottom: 20px; }
 .error-box.show { display: block; }
 .loading-box { display: none; text-align: center; padding: 64px 20px; }
@@ -496,13 +501,23 @@ body::before { display: none; }
     </div>
   </div>
 
-  <div class="sources-row">
+  <div class="sources-row" id="sourcesRow">
     <span class="src-badge" id="sb-onet">O*NET</span>
     <span class="src-badge" id="sb-bls">BLS</span>
     <span class="src-badge" id="sb-brookings">Brookings</span>
     <span class="src-badge" id="sb-gs">Goldman Sachs</span>
     <span class="src-badge" id="sb-mckinsey">McKinsey</span>
-    <span class="src-badge" id="sb-era">Curve Model</span>
+    <span class="src-badge" id="sb-wef">WEF</span>
+    <span class="src-badge" id="sb-linkedin">LinkedIn</span>
+    <span class="src-badge" id="sb-oecd">OECD</span>
+  </div>
+  <div class="preset-row">
+    <span class="preset-label">Source preset:</span>
+    <button class="preset-btn active" id="preset-balanced" onclick="setPreset('balanced')">Balanced</button>
+    <button class="preset-btn" id="preset-conservative" onclick="setPreset('conservative')">Conservative</button>
+    <button class="preset-btn" id="preset-disruption" onclick="setPreset('disruption')">Disruption Weighted</button>
+    <button class="preset-btn" id="preset-emerging" onclick="setPreset('emerging')">Emerging Focus</button>
+    <a href="/about" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--muted);text-decoration:none;opacity:0.5;margin-left:6px;">About these sources →</a>
   </div>
 
   <div class="error-box" id="errBox"></div>
@@ -749,7 +764,26 @@ body::before { display: none; }
 </footer>
 
 <script>
-const SRCS = ['sb-onet','sb-bls','sb-brookings','sb-gs','sb-mckinsey','sb-era'];
+const SRCS = ['sb-onet','sb-bls','sb-brookings','sb-gs','sb-mckinsey','sb-wef','sb-linkedin','sb-oecd'];
+let currentPreset = 'balanced';
+
+const PRESETS = {
+  balanced:     { label:'Balanced',          sources:['O*NET','BLS','Brookings','Goldman Sachs','McKinsey','WEF','LinkedIn Workforce Reports','OECD'], badges:['sb-onet','sb-bls','sb-brookings','sb-gs','sb-mckinsey','sb-wef','sb-linkedin','sb-oecd'] },
+  conservative: { label:'Conservative',      sources:['BLS','O*NET'],                                                                                  badges:['sb-bls','sb-onet'] },
+  disruption:   { label:'Disruption Weighted',sources:['McKinsey','Goldman Sachs','Brookings'],                                                         badges:['sb-mckinsey','sb-gs','sb-brookings'] },
+  emerging:     { label:'Emerging Focus',    sources:['Brookings','WEF','LinkedIn Workforce Reports','OECD'],                                           badges:['sb-brookings','sb-wef','sb-linkedin','sb-oecd'] },
+};
+
+function setPreset(key) {
+  currentPreset = key;
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('preset-' + key).classList.add('active');
+  SRCS.forEach(id => document.getElementById(id).classList.remove('active'));
+  PRESETS[key].badges.forEach(id => document.getElementById(id).classList.add('active'));
+}
+
+// Init balanced preset badges
+setPreset('balanced');
 let srcInt, msgInt;
 const MSGS = [
   ['CROSS-REFERENCING O*NET','Pulling occupation task and skills data...'],
@@ -784,7 +818,7 @@ async function analyze() {
     const res = await fetch('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ profession: prof })
+      body: JSON.stringify({ profession: prof, preset: currentPreset, sources: PRESETS[currentPreset].sources })
     });
     clearInterval(msgInt); stopSrc();
     document.getElementById('loadBox').classList.remove('show');
@@ -828,6 +862,10 @@ function render(r) {
   document.getElementById('tagsSafe').innerHTML = (r.tasksSurvive||[]).map(t=>`<span class="tag tag-s">${t}</span>`).join('');
   document.getElementById('sourcesEl').innerHTML = (r.sources||[]).map(s=>
     `<li class="src-item"><div class="src-dot"></div><div><span class="src-name">${s.name}</span> — <span style="color:var(--muted)">${s.detail}</span></div></li>`).join('');
+  if (r.presetNote) {
+    document.getElementById('sourcesEl').innerHTML +=
+      `<li class="src-item" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)"><div class="src-dot" style="background:var(--gold)"></div><div><span class="src-name" style="color:var(--gold)">Preset Note</span> — <span style="color:var(--muted)">${r.presetNote}</span></div></li>`;
+  }
   document.getElementById('resBox').classList.add('show');
   document.getElementById('resBox').scrollIntoView({ behavior:'smooth', block:'start' });
 }

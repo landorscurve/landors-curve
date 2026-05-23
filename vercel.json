@@ -21,6 +21,10 @@
       "destination": "/about.html"
     },
     {
+      "source": "/sources",
+      "destination": "/sources.html"
+    },
+    {
       "source": "/target-resume",
       "destination": "/target-resume.html"
     },

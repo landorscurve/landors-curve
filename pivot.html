@@ -6,7 +6,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=2">
 <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=2">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pivot — Landor's Curve</title>
+<title>Career Assessment — Landor's Curve</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
@@ -272,15 +272,15 @@ input[type="file"]#resumeFile { display: none; }
         <svg viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       </button>
       <div class="nav-dropdown-menu">
-        <a href="/pivot">Pivot</a>
-        <a href="/study">Build Roadmap</a>
+        <a href="/pivot">Career Assessment</a>
+        <a href="/study">Learning Roadmap</a>
         <a href="/safe-list">Safe Careers List</a>
         <a href="/rebound">Rebound Radar</a>
         <a href="/target-resume">Target Resume</a>
         <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" style="border-top:1px solid rgba(240,165,0,0.25);margin-top:2px;color:var(--muted);font-size:9px;display:flex;justify-content:space-between;align-items:center;">PathDecider <span style="opacity:0.5;">↗</span></a>
       </div>
     </div>
-    <a href="/#papers">Papers</a>
+    <a href="/#papers">Sources</a>
     <a href="/about">About</a>
   </div>
   <button class="nav-hamburger" onclick="openMobile()" aria-label="Open menu">
@@ -297,24 +297,26 @@ input[type="file"]#resumeFile { display: none; }
     <a href="/" onclick="closeMobile()">Home</a>
     <a href="/#analyzer" onclick="closeMobile()">Analyzer</a>
     <div class="mobile-menu-section">Tools</div>
-    <a href="/pivot" class="sub" onclick="closeMobile()">Pivot</a>
-    <a href="/study" class="sub" onclick="closeMobile()">Build Roadmap</a>
+    <a href="/pivot" class="sub" onclick="closeMobile()">Career Assessment</a>
+    <a href="/study" class="sub" onclick="closeMobile()">Learning Roadmap</a>
     <a href="/safe-list" class="sub" onclick="closeMobile()">Safe Careers List</a>
     <a href="/rebound" class="sub" onclick="closeMobile()">Rebound Radar</a>
     <a href="/target-resume" class="sub" onclick="closeMobile()">Target Resume</a>
     <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" class="sub" onclick="closeMobile()" style="opacity:0.6;">PathDecider ↗</a>
-    <a href="/#papers" onclick="closeMobile()">Papers</a>
+    <a href="/#papers" onclick="closeMobile()">Sources</a>
     <a href="/about" onclick="closeMobile()">About</a>
   </div>
 </div>
 <div class="container">
 
   <div class="eyebrow" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;opacity:0.8;">Applied Tool</div>
-<h1 class="title"><span>PIVOT</span></h1>
+<h1 class="title"><span>CAREER ASSESSMENT</span></h1>
 <p class="subtitle" style="font-size:15px;color:var(--muted);font-weight:300;line-height:1.7;max-width:560px;margin-bottom:36px;">Use your existing experience to identify smarter career directions and adjacent opportunities.</p>
   <p class="subtitle">As the curve accelerates displacement, new opportunities rise on the other side. Your experience and skill set are more valuable than you think. Enter what you know and how long you have known it. We will calculate career options you may have never considered, and some that did not even exist until now.</p>
 
-  <div class="curve-wrap">
+  <p style="font-size:14px;color:var(--muted);line-height:1.8;max-width:580px;margin-bottom:12px;font-weight:300;">Upload your resume or enter your background to see the skills, strengths, and career options already hidden inside what you have done. This page is designed to assess what you may already qualify for without assuming you need more school, a new degree, or a major investment in yourself.</p>
+<p style="font-size:13px;color:var(--muted);line-height:1.75;max-width:580px;margin-bottom:28px;padding:12px 16px;border-left:2px solid rgba(240,165,0,0.3);background:rgba(240,165,0,0.03);border-radius:0 8px 8px 0;">Career Assessment helps you understand what you may already qualify for before assuming you need to start over. It looks at your experience, estimates your strongest areas of expertise, and suggests career options that may already fit your background.</p>
+<div class="curve-wrap">
     <svg viewBox="0 0 860 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="cg" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -403,15 +405,15 @@ input[type="file"]#resumeFile { display: none; }
     <div class="section-label">Your Crossover Strength Index</div>
     <div class="strength-card" id="strengthCard"></div>
     <div class="divider"></div>
-    <div class="section-label">Your Pivot Opportunities</div>
+    <div class="section-label">Career Options You May Already Fit</div>
     <div class="timeline-grid" id="timelineGrid"></div>
     <div class="divider"></div>
     <div class="section-label">Personal Insight</div>
     <div class="insight-card"><div class="insight-text" id="insightText">—</div></div>
     <div class="divider"></div>
     <div class="next-card">
-      <div class="next-text"><strong>Ready to find safer adjacent careers?</strong> Export your top career to Build Roadmap and get a full learning roadmap with free, certification, and degree paths.</div>
-      <button class="next-btn" onclick="exportToStudy()">Export to Build Roadmap →</button>
+      <div class="next-text"><strong>Ready to find safer adjacent careers?</strong> Export your top career to Learning Roadmap and get a full learning roadmap with free, certification, and degree paths.</div>
+      <button class="next-btn" onclick="exportToStudy()">Build a Learning Roadmap</button>
     </div>
   </div>
 
@@ -729,8 +731,8 @@ document.addEventListener('click',function(e){var dd=document.getElementById('to
 <div style="margin-top:40px;padding:22px 24px;background:var(--panel);border:1px solid var(--border);border-radius:14px;">
   <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;">Explore More Tools</div>
   <div style="display:flex;gap:10px;flex-wrap:wrap;">
-    <a href="/pivot" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);text-decoration:none;padding:8px 16px;border:1px solid rgba(240,165,0,0.3);border-radius:6px;">Pivot</a>
-    <a href="/study" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);text-decoration:none;padding:8px 16px;border:1px solid rgba(240,165,0,0.3);border-radius:6px;">Build Roadmap</a>
+    <a href="/pivot" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);text-decoration:none;padding:8px 16px;border:1px solid rgba(240,165,0,0.3);border-radius:6px;">Career Assessment</a>
+    <a href="/study" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);text-decoration:none;padding:8px 16px;border:1px solid rgba(240,165,0,0.3);border-radius:6px;">Learning Roadmap</a>
     <a href="/safe-list" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);text-decoration:none;padding:8px 16px;border:1px solid rgba(240,165,0,0.3);border-radius:6px;">Safe Careers List</a>
   </div>
 </div>

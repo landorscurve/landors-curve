@@ -45,47 +45,50 @@ body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;m
 
 /* LAYOUT */
 .wrap{max-width:960px;margin:0 auto;padding:0 28px;}
-.section{padding:56px 0;}
-.divider-line{border:none;border-top:1px solid var(--border);margin:0;}
-
-/* TYPE */
+.section{padding:52px 0;}
+.divider{border:none;border-top:1px solid var(--border);margin:0;}
 .eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;opacity:0.8;}
-.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,4vw,40px);color:var(--text);letter-spacing:1px;margin-bottom:16px;line-height:1;}
-.body-text{font-size:15px;color:var(--text);line-height:1.85;font-weight:300;max-width:680px;margin-bottom:16px;}
-.body-text:last-child{margin-bottom:0;}
-.muted-text{font-size:14px;color:var(--muted);line-height:1.8;max-width:680px;margin-bottom:14px;}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(26px,3.5vw,38px);color:var(--text);letter-spacing:1px;margin-bottom:18px;line-height:1;}
+.body{font-size:15px;color:var(--text);line-height:1.85;font-weight:300;max-width:680px;margin-bottom:16px;}
+.body:last-child{margin-bottom:0;}
+.muted{font-size:14px;color:var(--muted);line-height:1.8;max-width:680px;margin-bottom:14px;}
 
-/* CARDS */
-.panel-block{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:28px 32px;max-width:720px;margin-bottom:0;}
-.panel-block-gold{border-left:4px solid var(--gold);border-radius:0 14px 14px 0;}
+/* ORIGIN CARD */
+.origin-card{background:var(--panel);border:1px solid var(--border);border-left:4px solid var(--gold);border-radius:0 14px 14px 0;padding:28px 32px;max-width:720px;}
+
+/* PRODUCTS */
 .products-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px;}
-@media(max-width:580px){.products-grid{grid-template-columns:1fr;}}
+@media(max-width:560px){.products-grid{grid-template-columns:1fr;}}
 .product-card{background:var(--dark);border:1px solid var(--border);border-radius:10px;padding:18px 20px;}
 .product-name{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;margin-bottom:4px;}
 .product-tagline{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
 .product-desc{font-size:12px;color:var(--muted);line-height:1.65;}
+.tool-map{margin-top:16px;background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:18px 20px;}
+.tool-map-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);opacity:0.5;margin-bottom:12px;}
+.tool-map-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;}
+.tool-map-item{background:var(--dark);border-radius:6px;padding:10px 12px;}
+.tool-map-item-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--gold);margin-bottom:3px;}
+.tool-map-item-desc{font-size:11px;color:var(--muted);}
 
 /* PAPERS */
-.papers-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:20px;}
+.papers-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:16px;}
 @media(max-width:700px){.papers-grid{grid-template-columns:1fr;}}
 @media(min-width:701px) and (max-width:900px){.papers-grid{grid-template-columns:1fr 1fr;}}
 .paper-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:20px 22px;display:flex;flex-direction:column;}
 .paper-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
 .paper-title{font-family:'Bebas Neue',sans-serif;font-size:19px;color:var(--text);letter-spacing:1px;margin-bottom:8px;line-height:1.1;}
-.paper-desc{font-size:12px;color:var(--muted);line-height:1.6;flex:1;margin-bottom:16px;}
-.paper-note{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--muted);opacity:0.5;margin-bottom:14px;font-style:italic;}
-.paper-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:7px 14px;border-radius:6px;cursor:pointer;text-decoration:none;transition:all 0.2s;border:1px solid;display:inline-block;}
-.paper-btn-gold{background:rgba(240,165,0,0.08);color:var(--gold);border-color:rgba(240,165,0,0.3);}
-.paper-btn-gold:hover{background:rgba(240,165,0,0.18);border-color:var(--gold);}
+.paper-desc{font-size:12px;color:var(--muted);line-height:1.6;flex:1;margin-bottom:10px;}
+.paper-note{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--muted);opacity:0.45;margin-bottom:14px;font-style:italic;}
+.paper-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:7px 14px;border-radius:6px;text-decoration:none;transition:all 0.2s;border:1px solid;display:inline-block;background:rgba(240,165,0,0.08);color:var(--gold);border-color:rgba(240,165,0,0.3);}
+.paper-btn:hover{background:rgba(240,165,0,0.18);border-color:var(--gold);}
 
 /* DISCLAIMER */
 .disclaimer-block{background:rgba(240,165,0,0.04);border:1px solid rgba(240,165,0,0.15);border-radius:12px;padding:22px 26px;max-width:680px;}
 .disclaimer-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
-.disclaimer-text{font-size:13px;color:var(--muted);line-height:1.8;}
+.disclaimer-text{font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:10px;}
 
 /* FOUNDER */
 .founder-block{background:var(--panel);border:1px solid var(--border);border-left:4px solid var(--gold);border-radius:0 14px 14px 0;padding:28px 32px;max-width:720px;}
-.founder-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
 .founder-byline{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:20px;padding-top:18px;border-top:1px solid var(--border);}
 
 /* DISCLAIMER FOOTER */
@@ -157,51 +160,52 @@ body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;m
 <div class="wrap">
 
   <!-- SECTION 1: ABOUT -->
-  <div class="section" style="padding-bottom:40px;">
+  <div class="section" style="padding-bottom:36px;">
     <div class="eyebrow">Transparency</div>
-    <h1 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,8vw,80px);line-height:0.9;color:var(--text);letter-spacing:2px;margin-bottom:18px;">ABOUT<br><span style="color:var(--gold);">LANDOR'S CURVE</span></h1>
-    <p class="body-text">Landor's Curve is a set of tools and founder-developed frameworks for understanding how work changes, how careers evolve, and how people can make better decisions before investing time, money, and energy into a path.</p>
+    <h1 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,8vw,80px);line-height:0.9;color:var(--text);letter-spacing:2px;margin-bottom:20px;">ABOUT<br><span style="color:var(--gold);">LANDOR'S CURVE</span></h1>
+    <p class="body">Landor's Curve is a set of tools and founder-developed frameworks for understanding how work changes, how careers evolve, and how people can make better decisions before investing time, money, and energy into a path.</p>
   </div>
 
-  <div class="divider-line"></div>
+  <div class="divider"></div>
 
   <!-- SECTION 2: THE ORIGIN -->
   <div class="section">
     <div class="eyebrow">Section 1</div>
     <div class="section-title">The Origin</div>
-    <div class="panel-block panel-block-gold">
-      <p class="body-text" style="margin-bottom:14px;">Landor's Curve began with a simple observation: work does not change all at once. It bends.</p>
-      <p class="body-text" style="margin-bottom:14px;">Some roles disappear. Some become more valuable. Some are reshaped by technology, automation, AI, market demand, regulation, education, and human trust. The danger is that people often do not see the curve until they are already standing in it.</p>
-      <p class="body-text" style="margin-bottom:0;">This project was created to help people notice those changes earlier. Not to scare them, and not to tell them what they must do, but to help them ask better questions about the paths they are choosing or the careers they are already in.</p>
+    <div class="origin-card">
+      <p class="body" style="margin-bottom:16px;">Landor's Curve began with a simple observation: work does not change all at once. It bends.</p>
+      <p class="body" style="margin-bottom:16px;">Some roles disappear. Some become more valuable. Some are reshaped by technology, automation, AI, market demand, regulation, education, and human trust. The danger is that people often do not see the curve until they are already standing in it.</p>
+      <p class="body" style="margin-bottom:0;">This project was created to help people notice those changes earlier. Not to scare them, and not to tell them what they must do, but to help them ask better questions about the paths they are choosing or the careers they are already in.</p>
     </div>
   </div>
 
-  <div class="divider-line"></div>
+  <div class="divider"></div>
 
   <!-- SECTION 3: FOUNDER PHILOSOPHY -->
   <div class="section">
     <div class="eyebrow">Section 2</div>
     <div class="section-title">Founder Philosophy</div>
-    <p class="body-text">Trust is the foundation of everything we are building with Landor's Curve and PathDecider.</p>
-    <p class="body-text">These projects are not sponsored by schools, training programs, employers, or institutions trying to steer people toward a particular outcome. The goal is not to sell someone a degree, a certificate, or a dream that may not match reality. The goal is to help people ask better questions before they invest their time, money, and future.</p>
-    <p class="body-text">Over the years, I have seen too many students leave school with significant debt, only to struggle finding work in the field they studied for. I have also seen working adults feel trapped when technology, automation, or changing market expectations begin to reshape their profession. These tools were created from that concern.</p>
-    <p class="body-text">PathDecider is for people trying to choose wisely before they commit. Landor's Curve is for people trying to adapt wisely when the path begins to change.</p>
-    <p class="body-text">The mission is simple: help people make more informed decisions as work changes.</p>
-    <p class="body-text">Jobs have always changed. Some disappear, some evolve, and new ones appear. That has happened throughout history. But the speed of change now makes communication, transparency, and preparation more important than ever.</p>
-    <p class="body-text">We believe better information can help create better outcomes. If students, parents, workers, educators, and career changers can see the risks, opportunities, costs, and possible paths more clearly, they can make decisions with more confidence and less fear.</p>
-    <p class="body-text">We also believe useful tools should not be locked entirely behind a paywall. The free tools are genuinely useful, even if someone never pays. Paid reports and future paid tiers exist because deeper analysis, larger searches, document generation, hosting, and continued development require real resources.</p>
-    <p class="body-text">The goal is to build a system where better career insight is not reserved only for institutions with large budgets.</p>
-    <p class="body-text" style="margin-bottom:0;">Landor's Curve and PathDecider are being built to serve that purpose. They will continue to improve. They are built with care, transparency, and a commitment to helping people see what options they may have without being steered by paid placements, institutional pressure, or hidden agendas.</p>
+    <p class="body">Trust is the foundation of everything we are building with Landor's Curve and PathDecider.</p>
+    <p class="body">These projects are not sponsored by schools, training programs, employers, or institutions trying to steer people toward a particular outcome. The goal is not to sell someone a degree, a certificate, or a dream that may not match reality. The goal is to help people ask better questions before they invest their time, money, and future.</p>
+    <p class="body">Over the years, I have seen too many students leave school with significant debt, only to struggle finding work in the field they studied for. I have also seen working adults feel trapped when technology, automation, or changing market expectations begin to reshape their profession. These tools were created from that concern.</p>
+    <p class="body">PathDecider is for people trying to choose wisely before they commit. Landor's Curve is for people trying to adapt wisely when the path begins to change.</p>
+    <p class="body">The mission is simple: help people make more informed decisions as work changes.</p>
+    <p class="body">Jobs have always changed. Some disappear, some evolve, and new ones appear. That has happened throughout history. But the speed of change now makes communication, transparency, and preparation more important than ever.</p>
+    <p class="body">We believe better information can help create better outcomes. If students, parents, workers, educators, and career changers can see the risks, opportunities, costs, and possible paths more clearly, they can make decisions with more confidence and less fear.</p>
+    <p class="body">We also believe useful tools should not be locked entirely behind a paywall. The free tools are genuinely useful, even if someone never pays. Paid reports and future paid tiers exist because deeper analysis, larger searches, document generation, hosting, and continued development require real resources.</p>
+    <p class="body">The goal is to build a system where better career insight is not reserved only for institutions with large budgets.</p>
+    <p class="body" style="margin-bottom:0;">Landor's Curve and PathDecider are being built to serve that purpose. They will continue to improve as we improve them. They are built with care, transparency, and a commitment to helping people see what options they may have without being steered by paid placements, institutional pressure, or hidden agendas.</p>
   </div>
 
-  <div class="divider-line"></div>
+  <div class="divider"></div>
 
   <!-- SECTION 4: TWO PRODUCTS -->
   <div class="section">
     <div class="eyebrow">Section 3</div>
     <div class="section-title">Two Products. One Direction.</div>
-    <p class="muted-text">PathDecider helps people choose wisely before they commit to a school, program, or career path. Landor's Curve helps people adapt wisely when the path they are already on begins to change.</p>
-    <p class="muted-text">Both tools come from the same belief: better information should help people make better decisions before they spend years, money, and energy moving in a direction they do not fully understand.</p>
+    <p class="muted">PathDecider helps people choose wisely before they commit to a school, program, or career path.</p>
+    <p class="muted">Landor's Curve helps people adapt wisely when the path they are already on begins to change.</p>
+    <p class="muted">Both tools come from the same belief: better information should help people make better decisions before they spend years, money, and energy moving in a direction they do not fully understand.</p>
     <div class="products-grid">
       <div class="product-card">
         <div class="product-name" style="color:var(--blue);">PathDecider</div>
@@ -216,64 +220,50 @@ body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;m
         <a href="/" style="display:inline-block;margin-top:12px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);text-decoration:none;opacity:0.8;">Explore the tools →</a>
       </div>
     </div>
-
-    <!-- Inner tool map -->
-    <div style="margin-top:20px;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:20px 22px;">
-      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);opacity:0.5;margin-bottom:14px;">Within Landor's Curve</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;">
-        <div style="background:var(--dark);border-radius:6px;padding:10px 12px;">
-          <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--gold);margin-bottom:3px;">ANALYZER</div>
-          <div style="font-size:11px;color:var(--muted);">What is happening to your profession</div>
-        </div>
-        <div style="background:var(--dark);border-radius:6px;padding:10px 12px;">
-          <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--gold);margin-bottom:3px;">CAREER ASSESSMENT</div>
-          <div style="font-size:11px;color:var(--muted);">What your experience may already unlock</div>
-        </div>
-        <div style="background:var(--dark);border-radius:6px;padding:10px 12px;">
-          <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--gold);margin-bottom:3px;">LEARNING ROADMAP</div>
-          <div style="font-size:11px;color:var(--muted);">How to build toward something new</div>
-        </div>
-        <div style="background:var(--dark);border-radius:6px;padding:10px 12px;">
-          <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--gold);margin-bottom:3px;">TARGET RESUME</div>
-          <div style="font-size:11px;color:var(--muted);">How to apply wisely for a specific role</div>
-        </div>
+    <div class="tool-map">
+      <div class="tool-map-label">Within Landor's Curve</div>
+      <div class="tool-map-grid">
+        <div class="tool-map-item"><div class="tool-map-item-label">Analyzer</div><div class="tool-map-item-desc">What is happening to your profession</div></div>
+        <div class="tool-map-item"><div class="tool-map-item-label">Career Assessment</div><div class="tool-map-item-desc">What your experience may already unlock</div></div>
+        <div class="tool-map-item"><div class="tool-map-item-label">Learning Roadmap</div><div class="tool-map-item-desc">How to build toward something new</div></div>
+        <div class="tool-map-item"><div class="tool-map-item-label">Target Resume</div><div class="tool-map-item-desc">How to apply wisely for a specific role</div></div>
       </div>
     </div>
   </div>
 
-  <div class="divider-line"></div>
+  <div class="divider"></div>
 
   <!-- SECTION 5: THE FRAMEWORK -->
   <div class="section">
     <div class="eyebrow">Section 4</div>
     <div class="section-title">The Framework Behind Landor's Curve</div>
-    <p class="muted-text">The essays, papers, and visual decks connected to Landor's Curve explain the thinking behind the tools. They are founder-developed frameworks created for reflection, teaching, planning, and discussion. They are not peer-reviewed academic studies.</p>
+    <p class="muted">The papers, essays, and visual decks connected to Landor's Curve show the thinking behind the tools. They are working frameworks created to explain the ideas, observations, and models that shaped the project. They are not peer-reviewed academic studies.</p>
     <div class="papers-grid">
       <div class="paper-card" style="border-top:3px solid var(--gold);">
         <div class="paper-tag">Founder Essay — Complete</div>
         <div class="paper-title">The Complete Framework</div>
         <div class="paper-desc">The full statement of the Landor's Curve concept, including the displacement curve, the rebound effect, and the compression ratio.</div>
-        <div class="paper-note">Founder-developed framework. Not a peer-reviewed study.</div>
-        <a href="https://drive.google.com/open?id=1F4yT24ouQ8gGP2iuWDzgiNUkWGZ8quLo&usp=drive_fs" target="_blank" class="paper-btn paper-btn-gold">Read Essay</a>
+        <div class="paper-note">Working framework. Not a peer-reviewed study.</div>
+        <a href="https://drive.google.com/open?id=1F4yT24ouQ8gGP2iuWDzgiNUkWGZ8quLo&usp=drive_fs" target="_blank" class="paper-btn">Read Essay</a>
       </div>
       <div class="paper-card" style="border-top:3px solid var(--orange);">
         <div class="paper-tag">Visual Deck</div>
         <div class="paper-title">Curve Deck</div>
         <div class="paper-desc">A visual companion explaining the acceleration curve, the rising skill floor, and the two paths forward. Built for teaching and speaking.</div>
         <div class="paper-note">Founder-developed visual framework.</div>
-        <a href="https://drive.google.com/open?id=1JOth0zu1o2pVm4u-DX0loRGM70ZgLNxw&usp=drive_fs" target="_blank" class="paper-btn paper-btn-gold">View Deck</a>
+        <a href="https://drive.google.com/open?id=1JOth0zu1o2pVm4u-DX0loRGM70ZgLNxw&usp=drive_fs" target="_blank" class="paper-btn">View Deck</a>
       </div>
       <div class="paper-card" style="border-top:3px solid var(--green);">
-        <div class="paper-tag">Founder Essay — The Rebound</div>
+        <div class="paper-tag">Founder Essay</div>
         <div class="paper-title">The Rebound</div>
         <div class="paper-desc">The new professions that rise from technological change, and the six categories of emerging careers created by the same shifts that changed the old ones.</div>
-        <div class="paper-note">Founder-developed framework. Not a peer-reviewed study.</div>
-        <a href="https://drive.google.com/open?id=174smsXOTZ9m3FIYbpkldhL1taEXPiALz&usp=drive_fs" target="_blank" class="paper-btn paper-btn-gold">Read Essay</a>
+        <div class="paper-note">Working framework. Not a peer-reviewed study.</div>
+        <a href="https://drive.google.com/open?id=174smsXOTZ9m3FIYbpkldhL1taEXPiALz&usp=drive_fs" target="_blank" class="paper-btn">Read Essay</a>
       </div>
     </div>
   </div>
 
-  <div class="divider-line"></div>
+  <div class="divider"></div>
 
   <!-- SECTION 6: IMPORTANT NOTE -->
   <div class="section">
@@ -281,22 +271,22 @@ body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;m
     <div class="section-title">Important Note</div>
     <div class="disclaimer-block">
       <div class="disclaimer-label">Directional Tool — Not a Forecast</div>
-      <p class="disclaimer-text">Landor's Curve and PathDecider provide directional career analysis, planning tools, and founder-developed frameworks based on public workforce data, published research, and AI-assisted comparison. They are not guarantees of employment, official labor forecasts, or substitutes for professional, financial, legal, educational, or career counseling. The goal is to help users make more informed decisions, not to tell them what they must do.</p>
-      <p style="font-size:12px;color:var(--muted);margin-top:12px;">For data sources, update notes, and limitations, visit <a href="/sources" style="color:var(--gold);text-decoration:none;">Sources</a>.</p>
+      <p class="disclaimer-text">Landor's Curve and PathDecider are directional planning tools. They are designed to help people compare options, ask better questions, and make more informed decisions. They are not guarantees of employment, official labor forecasts, or substitutes for professional, financial, legal, educational, or career counseling.</p>
+      <p style="font-size:12px;color:var(--muted);line-height:1.7;">For detailed data sources, update notes, and limitations, visit <a href="/sources" style="color:var(--gold);text-decoration:none;">Sources</a>.</p>
     </div>
   </div>
 
-  <div class="divider-line"></div>
+  <div class="divider"></div>
 
   <!-- SECTION 7: THE FOUNDER -->
   <div class="section">
     <div class="eyebrow">Section 6</div>
     <div class="section-title">The Founder</div>
     <div class="founder-block">
-      <div class="founder-label">Background</div>
-      <p class="body-text" style="margin-bottom:14px;">Landor's Curve was created by Orlando Rashid, a filmmaker, producer, educator, and audio professional with a background spanning media production, curriculum development, technology, AI tools, and career education.</p>
-      <p class="body-text" style="margin-bottom:14px;">His work across creative industries and education shaped the central question behind Landor's Curve: how can people make better decisions when the world of work is changing faster than traditional guidance can keep up?</p>
-      <p class="body-text" style="margin-bottom:0;">His career spans Grammy-winning projects, a Guinness World Record acknowledgment, Emmy-nominated productions, teaching awards, a talk at the American Embassy in Beijing on AI and the music industry, and video production for a NASA museum exhibition. He has taught at Musicians Institute, LACM, and Columbia College Hollywood, and has consulted on post-production curriculum for institutions including the American Film Institute.</p>
+      <p class="body" style="margin-bottom:16px;">Landor's Curve was created by Orlando Rashid, a director, producer, documentary filmmaker, show creator, educator, and audio professional whose work spans media production, branded content, curriculum development, technology, AI tools, and career education.</p>
+      <p class="body" style="margin-bottom:16px;">Orlando has directed and produced video content for marketing agencies serving major consumer brands, with work connected to advertising-recognized campaigns and large-scale media projects. At the same time, he has taught and consulted across multiple entertainment and media education institutions in the Los Angeles area, working with students, artists, and professionals navigating rapidly changing creative and technical fields.</p>
+      <p class="body" style="margin-bottom:16px;">That combination shaped the central question behind Landor's Curve: how can people make better decisions when the world of work is changing faster than traditional guidance can keep up?</p>
+      <p class="body" style="margin-bottom:0;">His background as both a working creative professional and educator gives Landor's Curve its practical point of view. The tools are designed not only to analyze careers, but to help people recognize the value of what they have already built, understand where their experience can travel, and make clearer decisions about what comes next.</p>
       <div class="founder-byline">Founded by Orlando Rashid</div>
     </div>
   </div>

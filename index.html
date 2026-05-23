@@ -321,6 +321,15 @@ body::before { display: none; }
 .mobile-menu-section{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);opacity:0.45;padding:12px 20px 4px;}
 .mobile-menu a.sub{padding-left:32px;font-size:10px;}
 @media(max-width:720px){.nav-links{display:none;}.nav-hamburger{display:flex;}}
+
+/* PAGE DISCLAIMER */
+.page-disclaimer { border-top: 1px solid rgba(240,165,0,0.1); margin-top: 48px; padding: 20px 28px 28px; }
+.page-disclaimer-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.page-disclaimer-text { font-family: 'DM Mono', monospace; font-size: 10px; color: #555566; line-height: 1.7; letter-spacing: 0.5px; flex: 1; min-width: 200px; }
+.page-disclaimer-link { font-family: 'DM Mono', monospace; font-size: 10px; color: #F0A500; text-decoration: none; white-space: nowrap; letter-spacing: 0.5px; flex-shrink: 0; }
+.page-disclaimer-link:hover { text-decoration: underline; }
+@media (max-width: 520px) { .page-disclaimer-inner { flex-direction: column; gap: 8px; } }
+@media print { .page-disclaimer { text-align: center; border-top: 1px solid #ccc; padding: 12px 0; } .page-disclaimer-inner { justify-content: center; flex-direction: column; gap: 4px; } }
 </style>
 </head>
 <body>
@@ -566,14 +575,14 @@ body::before { display: none; }
   <div class="wrap">
     <div class="section">
       <div class="eyebrow">Applied Tools</div>
-      <div class="section-heading">What Do You Want to Do About It?</div>
-      <p class="section-sub" style="margin-bottom:32px;">Understanding the shift is step one. These tools help you figure out your next move.</p>
+      <div class="section-heading">Tools for Adapting Wisely</div>
+      <p class="section-sub" style="margin-bottom:32px;">Understanding what is changing is step one. These tools help you figure out your next move — and make it with confidence.</p>
       <div class="tools-grid">
         <a href="/pivot" class="tool-card">
           <div class="tool-accent" style="background:var(--yellow);"></div>
           <div class="tool-title" style="color:var(--yellow);">Pivot</div>
-          <div class="tool-sub">Upload your résumé or enter your experience manually to see where your existing skills can take you next, including adjacent roles and emerging careers.</div>
-          <div class="tool-cta" style="color:var(--yellow);">Explore Your Pivot →</div>
+          <div class="tool-sub">Where your current experience can take you next. Upload your resume to see adjacent roles that already fit, or build a learning plan for a bigger transition.</div>
+          <div class="tool-cta" style="color:var(--yellow);">Open Pivot Tool →</div>
         </a>
         <a href="/study" class="tool-card">
           <div class="tool-accent" style="background:var(--green);"></div>
@@ -584,13 +593,13 @@ body::before { display: none; }
         <a href="/safe-list" class="tool-card">
           <div class="tool-accent" style="background:var(--green);"></div>
           <div class="tool-title" style="color:var(--green);">Safe Careers List</div>
-          <div class="tool-sub">Which careers are under lower AI pressure right now? Browse careers ranked by stability, human judgment, physical presence, licensing, and long-term skill durability.</div>
+          <div class="tool-sub">Browse careers ranked by durability signals — licensing, physical-world execution, human judgment, emotional complexity, and adaptability. Know what you are walking into.</div>
           <div class="tool-cta" style="color:var(--green);">Browse Safe Careers →</div>
         </a>
         <a href="/rebound" class="tool-card">
           <div class="tool-accent" style="background:var(--orange);"></div>
           <div class="tool-title" style="color:var(--orange);">Rebound Radar</div>
-          <div class="tool-sub">Spot emerging opportunities created by technological disruption. See what to learn, test, or build while the market is still catching up. Some may become lasting careers. Others are valuable now.</div>
+          <div class="tool-sub">What to learn or build while the market is still catching up. Emerging roles, in-demand skills, and opportunity zones created by the same disruption that is compressing old work.</div>
           <div class="tool-cta" style="color:var(--orange);">Run Rebound Radar →</div>
         </a>
       </div>
@@ -598,8 +607,8 @@ body::before { display: none; }
       <!-- PATHDECIDER CROSSOVER -->
       <div class="pathdecider-box" style="margin-top:14px;">
         <div class="pathdecider-text">
-          <div class="pathdecider-label">Are you a student or just starting out?</div>
-          <div class="pathdecider-body">Landor's Curve is built for people already in a career who are wondering what comes next. If you are choosing a school, major, trade, or first career path, PathDecider may be a better place to start.</div>
+          <div class="pathdecider-label">Choosing a path, not changing one?</div>
+          <div class="pathdecider-body">Landor's Curve is built for professionals who need to adapt. If you are a student, parent, or someone choosing a first career path before committing time and money, PathDecider is built for that moment. Before committing to a program, check how the profession is changing. PathDecider helps you choose wisely. Landor's Curve helps you adapt wisely.</div>
         </div>
         <a href="https://pathdecider.com" target="_blank" class="pathdecider-btn">Visit PathDecider →</a>
       </div>
@@ -749,8 +758,13 @@ body::before { display: none; }
 </div>
 
 <div style="border-top:1px solid rgba(240,165,0,0.08);margin-top:48px;padding:20px 0 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-  <div style="font-family:'DM Mono',monospace;font-size:10px;color:#555566;letter-spacing:1px;line-height:1.6;">Results are directional estimates drawn from publicly available workforce research. Not a guarantee of individual outcomes.</div>
-  <a href="/about" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);text-decoration:none;opacity:0.7;white-space:nowrap;">About &amp; Sources →</a>
+<a href="/about" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);text-decoration:none;opacity:0.7;white-space:nowrap;">About &amp; Sources →</a>
+</div>
+<div class="page-disclaimer">
+  <div class="page-disclaimer-inner">
+    <span class="page-disclaimer-text">Results are directional estimates drawn from publicly available workforce research. Not a guarantee of individual outcomes.</span>
+    <a href="/about" class="page-disclaimer-link">About &amp; Sources →</a>
+  </div>
 </div>
 <footer class="footer">
   <div class="footer-logo">Landor's Curve</div>

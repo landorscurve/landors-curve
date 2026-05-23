@@ -250,6 +250,15 @@ input[type="file"]#resumeFile { display: none; }
 .mobile-menu-section{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);opacity:0.45;padding:12px 20px 4px;}
 .mobile-menu a.sub{padding-left:32px;font-size:10px;}
 @media(max-width:720px){.nav-links{display:none;}.nav-hamburger{display:flex;}}
+
+/* PAGE DISCLAIMER */
+.page-disclaimer { border-top: 1px solid rgba(240,165,0,0.1); margin-top: 48px; padding: 20px 28px 28px; }
+.page-disclaimer-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.page-disclaimer-text { font-family: 'DM Mono', monospace; font-size: 10px; color: #555566; line-height: 1.7; letter-spacing: 0.5px; flex: 1; min-width: 200px; }
+.page-disclaimer-link { font-family: 'DM Mono', monospace; font-size: 10px; color: #F0A500; text-decoration: none; white-space: nowrap; letter-spacing: 0.5px; flex-shrink: 0; }
+.page-disclaimer-link:hover { text-decoration: underline; }
+@media (max-width: 520px) { .page-disclaimer-inner { flex-direction: column; gap: 8px; } }
+@media print { .page-disclaimer { text-align: center; border-top: 1px solid #ccc; padding: 12px 0; } .page-disclaimer-inner { justify-content: center; flex-direction: column; gap: 4px; } }
 </style>
 </head>
 <body>

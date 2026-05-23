@@ -183,6 +183,15 @@ input[type=file].drop-file-input{display:none;}
 .footer-links a{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--muted);text-decoration:none;text-transform:uppercase;}
 .footer-links a:hover{color:var(--gold);}
 .footer-related-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);opacity:0.45;margin-bottom:6px;}
+
+/* PAGE DISCLAIMER */
+.page-disclaimer { border-top: 1px solid rgba(240,165,0,0.1); margin-top: 48px; padding: 20px 28px 28px; }
+.page-disclaimer-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.page-disclaimer-text { font-family: 'DM Mono', monospace; font-size: 10px; color: #555566; line-height: 1.7; letter-spacing: 0.5px; flex: 1; min-width: 200px; }
+.page-disclaimer-link { font-family: 'DM Mono', monospace; font-size: 10px; color: #F0A500; text-decoration: none; white-space: nowrap; letter-spacing: 0.5px; flex-shrink: 0; }
+.page-disclaimer-link:hover { text-decoration: underline; }
+@media (max-width: 520px) { .page-disclaimer-inner { flex-direction: column; gap: 8px; } }
+@media print { .page-disclaimer { text-align: center; border-top: 1px solid #ccc; padding: 12px 0; } .page-disclaimer-inner { justify-content: center; flex-direction: column; gap: 4px; } }
 </style>
 </head>
 <body>
@@ -238,10 +247,46 @@ input[type=file].drop-file-input{display:none;}
     <div class="eyebrow">Applied Tool</div>
     <h1 class="hero-title">TARGET<br><span>RESUME</span></h1>
     <p class="hero-tagline">Your experience, rewritten for the job you are applying for.</p>
-    <p class="hero-sub">Target Resume reads your current resume, updates the language and priorities, and produces an optimized version built specifically for the role in front of you. Same experience. Sharper presentation.</p>
-    <div class="hero-disclaimer">Target Resume helps you surface and reframe your existing experience. It does not fabricate credentials or experience you do not have. Results are a starting point — review everything before submitting.</div>
+    <p class="hero-sub">Target Resume is not just a design tool. It analyzes the job, compares it to your real experience, helps reframe your resume honestly, and creates a polished version ready to use. Canva can help you design a resume. Target Resume helps you know what the resume should actually say for the specific job you want.</p>
+    <div class="hero-disclaimer">Target Resume helps you surface and reframe your existing experience honestly. It does not fabricate credentials or experience you do not have. Free analysis gives you insight. The full report gives you finished, formatted deliverables ready to send.</div>
   </div>
 
+
+  <!-- FREE VS PAID OVERVIEW -->
+  <div style="background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:28px 30px;margin-bottom:16px;">
+    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">How It Works</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div style="background:var(--dark);border:1px solid var(--border);border-radius:10px;padding:18px 20px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--green);letter-spacing:1px;margin-bottom:10px;">Free Analysis</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:10px;">Gives you real insight into how well your background fits the target role.</div>
+        <div style="font-size:12px;color:var(--text);line-height:1.8;">
+          ✓ Resume and job fit analysis<br>
+          ✓ What you already have that fits<br>
+          ✓ What to reframe and how<br>
+          ✓ What to address honestly<br>
+          ✓ Truthfulness and risk review<br>
+          ✓ Keywords to include<br>
+          ✓ Professional summary
+        </div>
+      </div>
+      <div style="background:var(--dark);border:1px solid var(--border);border-radius:10px;padding:18px 20px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold);letter-spacing:1px;margin-bottom:10px;">Full Resume Package</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:10px;">Finished, formatted deliverables ready to send. Uses credits.</div>
+        <div style="font-size:12px;color:var(--text);line-height:1.8;">
+          ✓ Everything in free analysis<br>
+          ✓ ATS-optimized resume<br>
+          ✓ Polished Word and PDF version<br>
+          ✓ Presentation resume for printing<br>
+          ✓ Plain text version for portals<br>
+          ✓ Template selection<br>
+          ✓ Canva prompt bonus<br>
+          + Optional cover letter (add-on)<br>
+          + Optional LinkedIn summary (add-on)
+        </div>
+      </div>
+    </div>
+    <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:14px;line-height:1.65;opacity:0.7;">Credits are only used when you generate a full report or finished document. Exploring tools, uploading a resume, and previewing results are always free.</div>
+  </div>
   <!-- STEP 1: RESUME -->
   <div class="form-section">
     <div class="step-card">
@@ -324,7 +369,51 @@ input[type=file].drop-file-input{display:none;}
       <textarea class="form-textarea" id="emphasis" style="min-height:90px;" placeholder="e.g. I recently added SaaS deployment to my background. I want this role to see me as someone who builds and ships products, not just teaches or produces..."></textarea>
 
       <div style="height:20px;"></div>
-      <button class="build-btn" id="buildBtn" onclick="runTargetResume()">BUILD MY TARGET RESUME</button>
+
+      <!-- TEMPLATE SELECTOR -->
+      <div style="margin-top:8px;">
+        <label class="form-label">Resume Format <span class="optional-tag">for the full resume package</span></label>
+        <div style="background:rgba(240,165,0,0.04);border:1px solid rgba(240,165,0,0.15);border-radius:8px;padding:12px 16px;margin-bottom:14px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+            <input type="radio" name="template" value="recommended" id="tpl-recommended" checked style="accent-color:var(--gold);">
+            <label for="tpl-recommended" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);cursor:pointer;">Recommended Format — Let Target Resume choose for this role</label>
+          </div>
+          <div style="font-size:11px;color:var(--muted);">Or choose manually:</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
+          <label style="background:var(--dark);border:1px solid var(--border);border-radius:8px;padding:12px 14px;cursor:pointer;transition:border-color 0.2s;" onmouseover="this.style.borderColor='rgba(240,165,0,0.3)'" onmouseout="this.style.borderColor='rgba(240,165,0,0.12)'">
+            <input type="radio" name="template" value="classic" style="accent-color:var(--gold);margin-bottom:6px;display:block;">
+            <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text);margin-bottom:4px;">Professional Classic</div>
+            <div style="font-size:10px;color:var(--muted);line-height:1.4;">Corporate, education, healthcare, admin, government. ATS-friendly.</div>
+          </label>
+          <label style="background:var(--dark);border:1px solid var(--border);border-radius:8px;padding:12px 14px;cursor:pointer;transition:border-color 0.2s;" onmouseover="this.style.borderColor='rgba(240,165,0,0.3)'" onmouseout="this.style.borderColor='rgba(240,165,0,0.12)'">
+            <input type="radio" name="template" value="executive" style="accent-color:var(--gold);margin-bottom:6px;display:block;">
+            <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text);margin-bottom:4px;">Executive Strategy</div>
+            <div style="font-size:10px;color:var(--muted);line-height:1.4;">Directors, consultants, nonprofit execs, strategy, finance, board-facing.</div>
+          </label>
+          <label style="background:var(--dark);border:1px solid var(--border);border-radius:8px;padding:12px 14px;cursor:pointer;transition:border-color 0.2s;" onmouseover="this.style.borderColor='rgba(240,165,0,0.3)'" onmouseout="this.style.borderColor='rgba(240,165,0,0.12)'">
+            <input type="radio" name="template" value="technical" style="accent-color:var(--gold);margin-bottom:6px;display:block;">
+            <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text);margin-bottom:4px;">Technical / Skills-Forward</div>
+            <div style="font-size:10px;color:var(--muted);line-height:1.4;">Software, IT, engineering, data, audio tech, media systems.</div>
+          </label>
+          <label style="background:var(--dark);border:1px solid var(--border);border-radius:8px;padding:12px 14px;cursor:pointer;transition:border-color 0.2s;" onmouseover="this.style.borderColor='rgba(240,165,0,0.3)'" onmouseout="this.style.borderColor='rgba(240,165,0,0.12)'">
+            <input type="radio" name="template" value="creative" style="accent-color:var(--gold);margin-bottom:6px;display:block;">
+            <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text);margin-bottom:4px;">Creative Professional</div>
+            <div style="font-size:10px;color:var(--muted);line-height:1.4;">Media, video, audio, design, marketing, content, production.</div>
+          </label>
+          <label style="background:var(--dark);border:1px solid var(--border);border-radius:8px;padding:12px 14px;cursor:pointer;transition:border-color 0.2s;" onmouseover="this.style.borderColor='rgba(240,165,0,0.3)'" onmouseout="this.style.borderColor='rgba(240,165,0,0.12)'">
+            <input type="radio" name="template" value="pivot" style="accent-color:var(--gold);margin-bottom:6px;display:block;">
+            <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text);margin-bottom:4px;">Career Pivot / Hybrid</div>
+            <div style="font-size:10px;color:var(--muted);line-height:1.4;">Changing fields, adjacent moves, transferable experience first.</div>
+          </label>
+          <label style="background:var(--dark);border:1px solid var(--border);border-radius:8px;padding:12px 14px;cursor:pointer;transition:border-color 0.2s;" onmouseover="this.style.borderColor='rgba(240,165,0,0.3)'" onmouseout="this.style.borderColor='rgba(240,165,0,0.12)'">
+            <input type="radio" name="template" value="entry" style="accent-color:var(--gold);margin-bottom:6px;display:block;">
+            <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text);margin-bottom:4px;">Entry-Level / Early Career</div>
+            <div style="font-size:10px;color:var(--muted);line-height:1.4;">Students, recent grads, career returners, limited direct experience.</div>
+          </label>
+        </div>
+      </div>
+      <button class="build-btn" id="buildBtn" onclick="runTargetResume()">RUN FREE ANALYSIS</button>
       <p class="helper-text">Analysis takes about 30 seconds. Review everything before submitting to an employer.</p>
     </div>
   </div>
@@ -405,6 +494,68 @@ input[type=file].drop-file-input{display:none;}
       <div class="resume-output" id="riskReviewEl"></div>
     </div>
 
+
+    <div class="divider-line"></div>
+
+    <!-- RESUME PACKAGE DELIVERABLES -->
+    <div class="sec-eyebrow">Full Resume Package</div>
+    <div class="sec-title">What the Paid Package Includes</div>
+    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:20px;">The full resume package includes five versions of your resume, each designed for a different situation. Credits are used when you generate the full package.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;">
+      <div style="background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px 20px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--green);letter-spacing:1px;margin-bottom:6px;">ATS Resume</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.65;">Use when uploading to online job portals and applicant tracking systems. Clean formatting so the system can read your experience accurately.</div>
+      </div>
+      <div style="background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px 20px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold);letter-spacing:1px;margin-bottom:6px;">Polished Resume</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.65;">Use when emailing a recruiter, hiring manager, or professional contact directly. Clean, editable, professional layout.</div>
+      </div>
+      <div style="background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px 20px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--blue);letter-spacing:1px;margin-bottom:6px;">Presentation Resume</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.65;">Use for interviews, networking, portfolio packets, and career fairs where you are physically handing someone your resume. Designed to feel more polished in print.</div>
+      </div>
+      <div style="background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px 20px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--muted);letter-spacing:1px;margin-bottom:6px;">Plain Text Version</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.65;">Use when a job application asks you to paste your resume into a form. Removes formatting so the content stays clean and readable.</div>
+      </div>
+    </div>
+    <div style="background:rgba(240,165,0,0.04);border:1px solid rgba(240,165,0,0.15);border-radius:10px;padding:16px 20px;margin-bottom:24px;">
+      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Canva Prompt — Free Bonus</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.7;">Every package includes a custom Canva prompt generated for your role and template style. Use it if you want to experiment with your own visual layout in Canva while keeping the resume content and strategy intact. Canva can help you design. Target Resume helps you know what to say.</div>
+    </div>
+
+    <!-- PRINT GUIDANCE -->
+    <div class="sec-eyebrow">Print Guidance</div>
+    <div class="sec-title">For the Presentation Resume</div>
+    <div style="background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:24px;font-size:13px;color:var(--muted);line-height:1.8;">
+      Use matte white or natural white paper. A 24 lb or 32 lb paper stock gives the resume a more substantial feel than standard copy paper. Avoid glossy paper — it creates glare and can feel too promotional. Print in high quality mode and bring 3 to 5 copies to interviews, networking events, career fairs, or portfolio meetings.
+      <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+        <div style="background:var(--dark);border-radius:6px;padding:10px 12px;"><div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--gold);margin-bottom:4px;">ONLINE PORTALS</div><div style="font-size:11px;">Use ATS version</div></div>
+        <div style="background:var(--dark);border-radius:6px;padding:10px 12px;"><div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--gold);margin-bottom:4px;">EMAILING DIRECT</div><div style="font-size:11px;">Use polished version</div></div>
+        <div style="background:var(--dark);border-radius:6px;padding:10px 12px;"><div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--gold);margin-bottom:4px;">IN PERSON</div><div style="font-size:11px;">Use presentation version</div></div>
+      </div>
+    </div>
+
+    <!-- EDITING TIPS -->
+    <div class="sec-eyebrow">Resume Package Notes</div>
+    <div class="sec-title">Editing Tips</div>
+    <div style="background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:22px 24px;margin-bottom:24px;">
+      <div style="font-size:13px;color:var(--muted);line-height:1.75;margin-bottom:16px;">These templates balance readability, spacing, and professional layout. If text spills onto another page or wraps strangely, the solution is usually to shorten the text, not shrink the font.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+        <div><div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;">Recommended Limits</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.8;">Professional Summary: 3-5 lines<br>Core Competencies: 9-15 skills max<br>Bullets per role: 3-5 (5-7 for most recent)<br>Bullet length: 1-2 lines<br>Font size: no smaller than 10pt body<br>Page count: 1 page early career, 2 pages experienced</div>
+        </div>
+        <div><div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;">Common Fixes</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.8;">
+            Spilling onto another page: shorten summary or reduce bullets<br>
+            Awkward wrapping: keep bullets to 1-2 lines<br>
+            Looks crowded: remove lower-priority details, not the font size<br>
+            Looks strange in a portal: switch to the ATS version<br>
+            Layout shifts after editing: paste without formatting
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- CROSS NAV -->
     <div class="cross-nav">
       <div class="cross-nav-label">Explore More Tools</div>
@@ -419,13 +570,12 @@ input[type=file].drop-file-input{display:none;}
   </div>
 </div>
 
-<div style="max-width:960px;margin:0 auto;padding:0 28px 32px;">
-  <p style="font-family:'DM Mono',monospace;font-size:10px;color:#555566;line-height:1.7;letter-spacing:0.5px;">
-    Results are AI-generated suggestions based on your input. Always review before submitting to an employer.
-    <a href="/about" style="color:#F0A500;text-decoration:none;margin-left:6px;">About this site and our sources →</a>
-  </p>
+<div class="page-disclaimer">
+  <div class="page-disclaimer-inner">
+    <span class="page-disclaimer-text">Results are directional estimates drawn from publicly available workforce research. Not a guarantee of individual outcomes.</span>
+    <a href="/about" class="page-disclaimer-link">About &amp; Sources →</a>
+  </div>
 </div>
-
 <footer class="footer">
   <div>
     <div class="footer-logo">Landor's Curve</div>

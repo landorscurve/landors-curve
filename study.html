@@ -233,6 +233,15 @@ input[type=file]#pivotFile{display:none;}
 .footer-links a{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--muted);text-decoration:none;text-transform:uppercase;}
 .footer-links a:hover{color:var(--gold);}
 .footer-related-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);opacity:0.45;margin-bottom:6px;}
+
+/* PAGE DISCLAIMER */
+.page-disclaimer { border-top: 1px solid rgba(240,165,0,0.1); margin-top: 48px; padding: 20px 28px 28px; }
+.page-disclaimer-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.page-disclaimer-text { font-family: 'DM Mono', monospace; font-size: 10px; color: #555566; line-height: 1.7; letter-spacing: 0.5px; flex: 1; min-width: 200px; }
+.page-disclaimer-link { font-family: 'DM Mono', monospace; font-size: 10px; color: #F0A500; text-decoration: none; white-space: nowrap; letter-spacing: 0.5px; flex-shrink: 0; }
+.page-disclaimer-link:hover { text-decoration: underline; }
+@media (max-width: 520px) { .page-disclaimer-inner { flex-direction: column; gap: 8px; } }
+@media print { .page-disclaimer { text-align: center; border-top: 1px solid #ccc; padding: 12px 0; } .page-disclaimer-inner { justify-content: center; flex-direction: column; gap: 4px; } }
 </style>
 </head>
 <body>
@@ -288,9 +297,48 @@ input[type=file]#pivotFile{display:none;}
     <h1 class="hero-title">CAREER MOVEMENT<br><span>&amp; LEARNING PIVOT</span></h1>
     <div class="hero-subtitle">Find realistic next moves based on the experience you already have.</div>
     <p class="hero-body">Upload your resume or describe your background. Pivot Tool analyzes your current experience and helps you decide where to move next. You can use it to find job types that may already fit your background, or to build a realistic learning plan for a bigger transition while keeping your current work schedule.</p>
-    <div class="hero-note">Pivot Tool does not replace job boards. It helps you understand what kinds of roles to look for before you start searching. It can identify adjacent job titles, growing areas of demand, and common skills employers are looking for. Instead of listing hundreds of positions, it helps you narrow your direction, understand your gaps, and decide whether to apply now, reframe your resume, or build a learning plan first.</div>
+    <div class="hero-note">Pivot Tool does not replace job boards. It helps you understand what kinds of roles to look for before you start searching. Your free profile includes your top 3 most relevant directions. The full Pivot Report runs a deeper analysis and expands this into a broader career map, including additional role options, market signals, skill gaps, search keywords, and a practical next-step plan. Credits are only used when you generate the full report.</div>
   </div>
 
+
+  <!-- FREE VS PAID OVERVIEW -->
+  <div style="background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:26px 28px;margin-bottom:16px;">
+    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">Free Profile vs Full Report</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div style="background:var(--dark);border:1px solid var(--border);border-radius:10px;padding:16px 18px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--green);letter-spacing:1px;margin-bottom:8px;">Free Pivot Profile</div>
+        <div style="font-size:12px;color:var(--text);line-height:1.8;">
+          ✓ Resume upload and extraction<br>
+          ✓ Experience profile and expertise levels<br>
+          ✓ Crossover Rarity Index<br>
+          ✓ Strength gauges<br>
+          ✓ Top 3 career directions<br>
+          ✓ Short personal insight<br>
+          ✗ Expanded role options<br>
+          ✗ Market signal summary<br>
+          ✗ Full 30-day / 6-month plan<br>
+          ✗ PDF or Word export
+        </div>
+      </div>
+      <div style="background:var(--dark);border:1px solid var(--border);border-radius:10px;padding:16px 18px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold);letter-spacing:1px;margin-bottom:8px;">Full Pivot Report</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:6px;">Deeper analysis. Uses 2 credits.</div>
+        <div style="font-size:12px;color:var(--text);line-height:1.8;">
+          ✓ Everything in free profile<br>
+          ✓ Up to 10-15 role options<br>
+          ✓ Fit level, emphasis, gaps per role<br>
+          ✓ Market signal summary<br>
+          ✓ Skill gap analysis<br>
+          ✓ Resume positioning advice<br>
+          ✓ First 30 days action plan<br>
+          ✓ 3-to-6-month plan<br>
+          ✓ 1-to-2-year growth direction<br>
+          ✓ PDF and email delivery
+        </div>
+      </div>
+    </div>
+    <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:12px;line-height:1.65;opacity:0.7;">Full reports use deeper AI analysis, larger context windows, and additional job-market checks, so they require credits. Exploring, uploading a resume, and previewing results are always free.</div>
+  </div>
   <!-- STEP 1: RESUME -->
   <div class="step-card">
     <div class="step-header">
@@ -412,8 +460,8 @@ input[type=file]#pivotFile{display:none;}
 
     <div id="noModeMsg" style="font-size:13px;color:var(--muted);padding:8px 0;">Select a mode above to see relevant options.</div>
 
-    <button class="build-btn" id="buildBtn" onclick="run()">FIND MY OPTIONS</button>
-    <p class="helper-text">Results are directional. Use them to start exploring, not as a guarantee.</p>
+    <button class="build-btn" id="buildBtn" onclick="run()">BUILD MY FREE PIVOT PROFILE</button>
+    <p class="helper-text">Free analysis includes your top 3 directions. The full Pivot Report expands to a complete career map. Results are directional — use them to start exploring, not as a guarantee.</p>
   </div>
 
   <div class="error-box" id="errBox"></div>
@@ -496,6 +544,16 @@ input[type=file]#pivotFile{display:none;}
     <div class="sec-eyebrow" style="margin-top:36px;">Personal Insight</div>
     <div class="insight-card"><div class="insight-text" id="insightEl">—</div></div>
 
+
+    <!-- UPGRADE PROMPT -->
+    <div style="background:rgba(240,165,0,0.05);border:1px solid rgba(240,165,0,0.2);border-radius:14px;padding:24px 26px;margin-top:32px;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+      <div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--gold);letter-spacing:1px;margin-bottom:8px;">Get the Full Pivot Report</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.7;max-width:500px;">Your free profile shows your top 3 directions. The full Pivot Report runs a deeper analysis and expands this into a broader career map with additional role options, market signals, skill gaps, search keywords, a 30-day action plan, and a 1-to-2-year growth direction.</div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);opacity:0.6;margin-top:10px;">Uses 2 credits. Credits are only used when you generate the full report.</div>
+      </div>
+      <button style="background:var(--gold);color:#000;border:none;border-radius:8px;padding:13px 24px;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;cursor:pointer;white-space:nowrap;flex-shrink:0;" onclick="alert('Full Pivot Report coming soon. Sign up to be notified when credits launch.')">Generate Full Report</button>
+    </div>
     <div class="cross-nav">
       <div class="cross-nav-label">Explore More Tools</div>
       <div class="cross-nav-links">
@@ -508,13 +566,12 @@ input[type=file]#pivotFile{display:none;}
   </div>
 </div>
 
-<div style="max-width:960px;margin:0 auto;padding:0 28px 32px;">
-  <p style="font-family:'DM Mono',monospace;font-size:10px;color:#555566;line-height:1.7;letter-spacing:0.5px;">
-    Results are directional estimates. This tool does not guarantee employment outcomes.
-    <a href="/about" style="color:#F0A500;text-decoration:none;margin-left:6px;">About this site and our sources →</a>
-  </p>
+<div class="page-disclaimer">
+  <div class="page-disclaimer-inner">
+    <span class="page-disclaimer-text">Results are directional estimates drawn from publicly available workforce research. Not a guarantee of individual outcomes.</span>
+    <a href="/about" class="page-disclaimer-link">About &amp; Sources →</a>
+  </div>
 </div>
-
 <footer class="footer">
   <div>
     <div class="footer-logo">Landor's Curve</div>

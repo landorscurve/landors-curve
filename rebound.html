@@ -181,6 +181,15 @@ input[type=file].resume-mini-input{display:none;}
 .resume-mini-status.loading{background:rgba(240,165,0,0.06);border:1px solid rgba(240,165,0,0.15);color:var(--gold);}
 .resume-mini-spin{width:14px;height:14px;border:1.5px solid rgba(240,165,0,0.2);border-top-color:var(--gold);border-radius:50%;animation:spin 0.75s linear infinite;flex-shrink:0;}
 
+
+/* PAGE DISCLAIMER */
+.page-disclaimer { border-top: 1px solid rgba(240,165,0,0.1); margin-top: 48px; padding: 20px 28px 28px; }
+.page-disclaimer-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.page-disclaimer-text { font-family: 'DM Mono', monospace; font-size: 10px; color: #555566; line-height: 1.7; letter-spacing: 0.5px; flex: 1; min-width: 200px; }
+.page-disclaimer-link { font-family: 'DM Mono', monospace; font-size: 10px; color: #F0A500; text-decoration: none; white-space: nowrap; letter-spacing: 0.5px; flex-shrink: 0; }
+.page-disclaimer-link:hover { text-decoration: underline; }
+@media (max-width: 520px) { .page-disclaimer-inner { flex-direction: column; gap: 8px; } }
+@media print { .page-disclaimer { text-align: center; border-top: 1px solid #ccc; padding: 12px 0; } .page-disclaimer-inner { justify-content: center; flex-direction: column; gap: 4px; } }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
@@ -372,14 +381,13 @@ input[type=file].resume-mini-input{display:none;}
 
 
 <div style="border-top:1px solid rgba(240,165,0,0.08);margin-top:48px;padding:20px 0 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-  <div style="font-family:'DM Mono',monospace;font-size:10px;color:#555566;letter-spacing:1px;line-height:1.6;">Results are directional estimates drawn from publicly available workforce research. Not a guarantee of individual outcomes.</div>
-  <a href="/about" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);text-decoration:none;opacity:0.7;white-space:nowrap;">About &amp; Sources →</a>
+<a href="/about" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);text-decoration:none;opacity:0.7;white-space:nowrap;">About &amp; Sources →</a>
 </div>
-<div style="max-width:960px;margin:0 auto;padding:0 28px 32px;">
-  <p style="font-family:'DM Mono',monospace;font-size:10px;color:#555566;line-height:1.7;letter-spacing:0.5px;">
-    Results are directional estimates drawn from publicly available workforce research. Not a prediction of individual outcomes.
-    <a href="/about" style="color:#F0A500;text-decoration:none;margin-left:6px;">About this site and our sources →</a>
-  </p>
+<div class="page-disclaimer">
+  <div class="page-disclaimer-inner">
+    <span class="page-disclaimer-text">Results are directional estimates drawn from publicly available workforce research. Not a guarantee of individual outcomes.</span>
+    <a href="/about" class="page-disclaimer-link">About &amp; Sources →</a>
+  </div>
 </div>
 <footer class="footer">
   <div>

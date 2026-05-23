@@ -21,6 +21,10 @@
       "destination": "/about.html"
     },
     {
+      "source": "/target-resume",
+      "destination": "/target-resume.html"
+    },
+    {
       "source": "/api/analyze",
       "destination": "/api/analyze.js"
     },
@@ -39,6 +43,10 @@
     {
       "source": "/api/rebound",
       "destination": "/api/rebound.js"
+    },
+    {
+      "source": "/api/target-resume",
+      "destination": "/api/target-resume.js"
     }
   ]
 }

@@ -391,82 +391,13 @@ body::before { display: none; }
   </div>
 </div>
 
-<!-- CURVE -->
-<div class="wrap">
-  <div class="curve-section">
-    <div class="eyebrow">The Observation</div>
-    <div class="section-heading" style="margin-bottom:8px;">The Gap Is Growing</div>
-    <p class="section-sub" style="margin-bottom:28px;">Technology's capability is rising. The market's expectations of workers are rising with it. Human adaptation is trying to keep pace, but the gap between what tools can do and what people can absorb keeps widening.</p>
 
-    <div class="curve-label-row">
-      <span class="curve-label">← Earlier</span>
-      <span class="curve-label" style="text-align:center;">TIME</span>
-      <span class="curve-label">Now →</span>
-    </div>
-    <div class="curve-wrap">
-      <svg viewBox="0 0 900 180" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="techg" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color:#FF4757;stop-opacity:0.6"/>
-            <stop offset="100%" style="stop-color:#FF4757;stop-opacity:1"/>
-          </linearGradient>
-          <linearGradient id="expg" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color:#F0A500;stop-opacity:0.6"/>
-            <stop offset="100%" style="stop-color:#F0A500;stop-opacity:1"/>
-          </linearGradient>
-          <linearGradient id="humg" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color:#2ED573;stop-opacity:0.6"/>
-            <stop offset="100%" style="stop-color:#2ED573;stop-opacity:1"/>
-          </linearGradient>
-          <linearGradient id="gapfill" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style="stop-color:#FF4757;stop-opacity:0.06"/>
-            <stop offset="100%" style="stop-color:#FF4757;stop-opacity:0.01"/>
-          </linearGradient>
-        </defs>
-
-        <!-- Y axis label -->
-        <text x="8" y="14" font-family="DM Mono,monospace" font-size="8" fill="#555566" letter-spacing="2">EXPECTED COMPETENCY ↑</text>
-
-        <!-- Gap fill between tech and human -->
-        <path d="M 50 155 C 200 148, 380 130, 540 95 S 740 38, 870 8 L 870 62 C 740 90, 540 128, 380 148 C 200 162, 50 165, 50 165 Z"
-              fill="url(#gapfill)" opacity="0.8"/>
-
-        <!-- Technology capability — steepest rise -->
-        <path d="M 50 158 C 200 152, 380 134, 540 98 S 740 40, 870 8"
-              fill="none" stroke="url(#techg)" stroke-width="2.5" stroke-linecap="round"/>
-
-        <!-- Market expectations — close behind tech -->
-        <path d="M 50 162 C 200 157, 380 142, 540 110 S 740 58, 870 30"
-              fill="none" stroke="url(#expg)" stroke-width="2" stroke-linecap="round" stroke-dasharray="8,4"/>
-
-        <!-- Human adaptation — lagging -->
-        <path d="M 50 165 C 200 163, 380 156, 540 138 S 740 105, 870 82"
-              fill="none" stroke="url(#humg)" stroke-width="2" stroke-linecap="round" stroke-dasharray="4,6"/>
-
-        <!-- End labels -->
-        <text x="874" y="10" font-family="DM Mono,monospace" font-size="8" fill="#FF4757" text-anchor="start">TECHNOLOGY</text>
-        <text x="874" y="32" font-family="DM Mono,monospace" font-size="8" fill="#F0A500" text-anchor="start">EXPECTATIONS</text>
-        <text x="874" y="84" font-family="DM Mono,monospace" font-size="8" fill="#2ED573" text-anchor="start">ADAPTATION</text>
-
-        <!-- Gap label -->
-        <text x="680" y="72" font-family="DM Mono,monospace" font-size="8" fill="#FF475766" text-anchor="middle" letter-spacing="1">THE GAP</text>
-      </svg>
-    </div>
-    <div class="curve-legend">
-      <div class="curve-legend-item"><div class="legend-line" style="background:var(--red)"></div>Technology capability</div>
-      <div class="curve-legend-item"><div class="legend-line" style="background:var(--gold);border-top:2px dashed var(--gold);background:transparent"></div>Market expectations</div>
-      <div class="curve-legend-item"><div class="legend-line" style="background:var(--green)"></div>Human adaptation</div>
-    </div>
-  </div>
-</div>
-
-<hr class="divider-line">
-
+<hr style="border:none;border-top:1px solid rgba(240,165,0,0.12);margin:0;">
 <!-- ANALYZER -->
 <div id="analyzer" class="wrap" style="padding:72px 0;">
   <div class="eyebrow">The Tool</div>
   <div class="section-heading" style="margin-bottom:8px;">Where Does Your Profession Stand?</div>
-  <p class="section-sub" style="margin-bottom:28px;">Enter any job or career and see how rapidly it is changing, and what is likely to shift next.</p>
+  <p class="section-sub" style="margin-bottom:28px;">Enter any job or profession to see how work in that field may be changing, what tasks are under pressure, what remains human, and where adaptation may be needed next.</p>
 
   <div class="analyzer-card">
     <div class="analyzer-label">Check Any Profession</div>
@@ -551,6 +482,79 @@ body::before { display: none; }
       <div class="info-card"><div class="info-title">Tasks That Remain Human</div><div class="tag-wrap" id="tagsSafe"></div></div>
       <div class="info-card grid-full"><div class="info-title">What Roles Will Remain</div><div class="info-text" id="jobsEl">—</div></div>
       <div class="info-card grid-full"><div class="info-title">Sources and Research</div><ul class="src-list" id="sourcesEl"></ul></div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider-line">
+
+
+<hr style="border:none;border-top:1px solid rgba(240,165,0,0.12);">
+<!-- CURVE -->
+<div class="wrap">
+  <div class="curve-section">
+    <div class="eyebrow">The Observation</div>
+    <div class="section-heading" style="margin-bottom:8px;">The Gap Is Growing</div>
+    <p class="section-sub" style="margin-bottom:28px;">Technology's capability is rising. The market's expectations of workers are rising with it. Human adaptation is trying to keep pace, but the gap between what tools can do and what people can absorb keeps widening.</p>
+
+    <div class="curve-label-row">
+      <span class="curve-label">← Earlier</span>
+      <span class="curve-label" style="text-align:center;">TIME</span>
+      <span class="curve-label">Now →</span>
+    </div>
+    <div class="curve-wrap">
+      <svg viewBox="0 0 900 180" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="techg" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#FF4757;stop-opacity:0.6"/>
+            <stop offset="100%" style="stop-color:#FF4757;stop-opacity:1"/>
+          </linearGradient>
+          <linearGradient id="expg" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#F0A500;stop-opacity:0.6"/>
+            <stop offset="100%" style="stop-color:#F0A500;stop-opacity:1"/>
+          </linearGradient>
+          <linearGradient id="humg" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#2ED573;stop-opacity:0.6"/>
+            <stop offset="100%" style="stop-color:#2ED573;stop-opacity:1"/>
+          </linearGradient>
+          <linearGradient id="gapfill" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#FF4757;stop-opacity:0.06"/>
+            <stop offset="100%" style="stop-color:#FF4757;stop-opacity:0.01"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Y axis label -->
+        <text x="8" y="14" font-family="DM Mono,monospace" font-size="8" fill="#555566" letter-spacing="2">EXPECTED COMPETENCY ↑</text>
+
+        <!-- Gap fill between tech and human -->
+        <path d="M 50 155 C 200 148, 380 130, 540 95 S 740 38, 870 8 L 870 62 C 740 90, 540 128, 380 148 C 200 162, 50 165, 50 165 Z"
+              fill="url(#gapfill)" opacity="0.8"/>
+
+        <!-- Technology capability — steepest rise -->
+        <path d="M 50 158 C 200 152, 380 134, 540 98 S 740 40, 870 8"
+              fill="none" stroke="url(#techg)" stroke-width="2.5" stroke-linecap="round"/>
+
+        <!-- Market expectations — close behind tech -->
+        <path d="M 50 162 C 200 157, 380 142, 540 110 S 740 58, 870 30"
+              fill="none" stroke="url(#expg)" stroke-width="2" stroke-linecap="round" stroke-dasharray="8,4"/>
+
+        <!-- Human adaptation — lagging -->
+        <path d="M 50 165 C 200 163, 380 156, 540 138 S 740 105, 870 82"
+              fill="none" stroke="url(#humg)" stroke-width="2" stroke-linecap="round" stroke-dasharray="4,6"/>
+
+        <!-- End labels -->
+        <text x="874" y="10" font-family="DM Mono,monospace" font-size="8" fill="#FF4757" text-anchor="start">TECHNOLOGY</text>
+        <text x="874" y="32" font-family="DM Mono,monospace" font-size="8" fill="#F0A500" text-anchor="start">EXPECTATIONS</text>
+        <text x="874" y="84" font-family="DM Mono,monospace" font-size="8" fill="#2ED573" text-anchor="start">ADAPTATION</text>
+
+        <!-- Gap label -->
+        <text x="680" y="72" font-family="DM Mono,monospace" font-size="8" fill="#FF475766" text-anchor="middle" letter-spacing="1">THE GAP</text>
+      </svg>
+    </div>
+    <div class="curve-legend">
+      <div class="curve-legend-item"><div class="legend-line" style="background:var(--red)"></div>Technology capability</div>
+      <div class="curve-legend-item"><div class="legend-line" style="background:var(--gold);border-top:2px dashed var(--gold);background:transparent"></div>Market expectations</div>
+      <div class="curve-legend-item"><div class="legend-line" style="background:var(--green)"></div>Human adaptation</div>
     </div>
   </div>
 </div>

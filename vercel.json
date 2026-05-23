@@ -47,6 +47,10 @@
     {
       "source": "/api/target-resume",
       "destination": "/api/target-resume.js"
+    },
+    {
+      "source": "/api/pivot-tool",
+      "destination": "/api/pivot-tool.js"
     }
   ]
 }

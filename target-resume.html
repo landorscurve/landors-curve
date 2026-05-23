@@ -342,6 +342,7 @@ input[type=file].drop-file-input{display:none;}
     <div class="results-header">
       <div class="results-eyebrow" id="resEyebrow">Target Resume — Results</div>
       <div class="results-title" id="resTitle">Your Optimized Resume</div>
+      <div id="fitSummaryEl" style="font-size:14px;color:var(--muted);line-height:1.75;max-width:640px;padding:14px 18px;border-left:3px solid var(--gold);background:rgba(240,165,0,0.04);border-radius:0 8px 8px 0;margin-top:12px;"></div>
     </div>
 
     <div class="divider-line"></div>
@@ -393,6 +394,15 @@ input[type=file].drop-file-input{display:none;}
     <div class="resume-output">
       <div id="resumeOutputEl"></div>
       <button class="copy-btn" onclick="copyResume()">Copy Full Resume Text</button>
+    </div>
+
+    <!-- RISK REVIEW -->
+    <div style="display:none;" id="riskReviewWrap">
+      <div class="divider-line"></div>
+      <div class="sec-eyebrow">Resume Risk Review</div>
+      <div class="sec-title">Before You Submit</div>
+      <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px;">A final check on what is strong, what to review carefully, and what may need attention before this resume goes out.</p>
+      <div class="resume-output" id="riskReviewEl"></div>
     </div>
 
     <!-- CROSS NAV -->
@@ -541,24 +551,35 @@ function renderResults(r, jobTitle) {
   document.getElementById('resEyebrow').textContent = 'Target Resume — ' + (jobTitle || 'Your Target Role');
   document.getElementById('resTitle').textContent = r.headline || 'Your Optimized Resume';
 
+  // Fit summary
+  const fitEl = document.getElementById('fitSummaryEl');
+  if (fitEl) fitEl.textContent = r.fitSummary || '';
+
   // Matches
   document.getElementById('matchesEl').innerHTML = (r.matches||[]).map(m=>`<span class="match-tag">${m}</span>`).join('');
 
-  // Reframes
+  // Reframes — now with truthfulness notes
   document.getElementById('reframeEl').innerHTML = (r.reframes||[]).map(rf=>`
     <div class="reframe-item">
-      <div class="reframe-before">Currently says: <span>${rf.before}</span></div>
+      <div class="reframe-before">Currently says: <span>${rf.before||''}</span></div>
       <div class="reframe-arrow">↓ Reframe as:</div>
-      <div class="reframe-after"><span>${rf.after}</span></div>
-      ${rf.why ? `<div style="font-size:11px;color:var(--muted);margin-top:8px;">${rf.why}</div>` : ''}
+      <div class="reframe-after"><span>${rf.after||''}</span></div>
+      ${rf.why ? `<div style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.5;">${rf.why}</div>` : ''}
+      ${rf.truthfulness ? `<div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--green);opacity:0.7;margin-top:6px;">✓ ${rf.truthfulness}</div>` : ''}
     </div>`).join('');
 
-  // Gaps
-  document.getElementById('gapsEl').innerHTML = (r.gaps||[]).map(g=>`
-    <div class="gap-item">
+  // Gaps — now structured with type and suggestion
+  document.getElementById('gapsEl').innerHTML = (r.gaps||[]).map(g=>{
+    if (typeof g === 'string') return `<div class="gap-item"><div class="gap-icon">⚠</div><div class="gap-text">${g}</div></div>`;
+    return `<div class="gap-item">
       <div class="gap-icon">⚠</div>
-      <div class="gap-text">${g}</div>
-    </div>`).join('');
+      <div>
+        ${g.type ? `<div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--orange);margin-bottom:5px;">${g.type}</div>` : ''}
+        <div class="gap-text">${g.description||''}</div>
+        ${g.suggestion ? `<div style="font-size:11px;color:var(--gold);margin-top:6px;line-height:1.5;">→ ${g.suggestion}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
 
   // Summary
   document.getElementById('summaryEl').textContent = r.summary || '—';
@@ -568,10 +589,34 @@ function renderResults(r, jobTitle) {
 
   // Full resume
   const sections = r.resumeSections || [];
-  fullResumeText = sections.map(s => s.title + '\n' + s.content).join('\n\n');
+  fullResumeText = sections.map(s => (s.title||'') + '\n' + (s.content||'')).join('\n\n');
   document.getElementById('resumeOutputEl').innerHTML = sections.map(s=>`
-    <div class="resume-section-title">${s.title}</div>
-    <div class="resume-content">${s.content}</div>`).join('');
+    <div class="resume-section-title">${s.title||''}</div>
+    <div class="resume-content">${s.content||''}</div>`).join('');
+
+  // Risk review
+  const rr = r.riskReview;
+  const rrEl = document.getElementById('riskReviewEl');
+  if (rrEl && rr) {
+    rrEl.innerHTML = `
+      <div style="margin-bottom:16px;">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:8px;">Strong Fit Areas</div>
+        ${(rr.strongFit||[]).map(s=>`<div style="font-size:12px;color:var(--text);padding:6px 0;border-bottom:1px solid var(--border);line-height:1.5;">✓ ${s}</div>`).join('')}
+      </div>
+      <div style="margin-bottom:16px;">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--yellow);margin-bottom:8px;">Review These Carefully</div>
+        ${(rr.carefulWording||[]).map(c=>`<div style="background:rgba(255,211,42,0.05);border:1px solid rgba(255,211,42,0.15);border-radius:8px;padding:12px 14px;margin-bottom:8px;">
+          <div style="font-size:12px;color:var(--yellow);margin-bottom:4px;">${c.phrase||''}</div>
+          <div style="font-size:11px;color:var(--muted);">Safer option: ${c.safer||''}</div>
+        </div>`).join('')}
+      </div>
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:8px;">Missing or Thin</div>
+        ${(rr.missingOrThin||[]).map(m=>`<div style="font-size:12px;color:var(--muted);padding:6px 0;border-bottom:1px solid var(--border);line-height:1.5;">⚠ ${m}</div>`).join('')}
+      </div>`;
+    const rrWrap = document.getElementById('riskReviewWrap');
+    if (rrWrap) rrWrap.style.display = 'block';
+  }
 
   document.getElementById('resBox').classList.add('show');
   document.getElementById('resBox').scrollIntoView({behavior:'smooth',block:'start'});

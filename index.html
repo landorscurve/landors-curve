@@ -6,7 +6,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=2">
 <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=2">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Landor's Curve — How Technology Is Changing What Work Requires</title>
+<title>Landor's Curve - How Technology Is Changing What Work Requires</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -330,6 +330,30 @@ body::before { display: none; }
 .page-disclaimer-link:hover { text-decoration: underline; }
 @media (max-width: 520px) { .page-disclaimer-inner { flex-direction: column; gap: 8px; } }
 @media print { .page-disclaimer { text-align: center; border-top: 1px solid #ccc; padding: 12px 0; } .page-disclaimer-inner { justify-content: center; flex-direction: column; gap: 4px; } }
+
+/* HOW TO USE SECTION */
+.how-section { padding: 64px 0 48px; }
+.how-tagline { font-family: 'Bebas Neue', sans-serif; font-size: clamp(16px, 2.2vw, 22px); color: var(--muted); letter-spacing: 2px; margin-bottom: 36px; }
+.how-tagline span { color: var(--orange); }
+.workflow-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+@media(max-width: 620px) { .workflow-grid { grid-template-columns: 1fr; } }
+.workflow-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 22px 24px; display: flex; flex-direction: column; transition: border-color 0.2s; }
+.workflow-card:hover { border-color: rgba(255, 107, 53, 0.4); }
+.workflow-step { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); opacity: 0.5; margin-bottom: 8px; }
+.workflow-name { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--orange); letter-spacing: 1px; margin-bottom: 4px; }
+.workflow-short { font-size: 13px; color: var(--text); font-weight: 500; margin-bottom: 10px; }
+.workflow-desc { font-size: 13px; color: var(--muted); line-height: 1.7; flex: 1; margin-bottom: 16px; }
+.workflow-btn { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 8px 16px; border-radius: 6px; border: 1px solid rgba(255, 107, 53, 0.35); color: var(--orange); text-decoration: none; display: inline-block; transition: all 0.2s; align-self: flex-start; }
+.workflow-btn:hover { background: rgba(255, 107, 53, 0.1); border-color: var(--orange); }
+.other-tools-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); opacity: 0.5; margin: 28px 0 14px; }
+.secondary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media(max-width: 620px) { .secondary-grid { grid-template-columns: 1fr; } }
+.secondary-card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; }
+.secondary-name { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--muted); letter-spacing: 1px; margin-bottom: 4px; }
+.secondary-short { font-size: 12px; color: var(--text); font-weight: 500; margin-bottom: 8px; }
+.secondary-desc { font-size: 12px; color: var(--muted); line-height: 1.65; flex: 1; margin-bottom: 14px; }
+.secondary-btn { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 7px 14px; border-radius: 6px; border: 1px solid var(--border); color: var(--muted); text-decoration: none; display: inline-block; transition: all 0.2s; align-self: flex-start; }
+.secondary-btn:hover { border-color: rgba(240, 165, 0, 0.4); color: var(--gold); }
 </style>
 </head>
 <body>
@@ -337,17 +361,18 @@ body::before { display: none; }
   <a href="/" class="nav-logo"><img src="/favicon.ico?v=2" alt="LC">Landor's Curve</a>
   <div class="nav-links">
     <a href="/">Home</a>
-    <a href="/#analyzer">Analyzer</a>
+    <a href="#how-to-use">How to Use</a>
     <div class="nav-dropdown" id="toolsDropdown">
       <button class="nav-dropdown-btn" onclick="toggleDropdown()">Tools
         <svg viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       </button>
       <div class="nav-dropdown-menu">
+        <a href="/#analyzer">Analyzer</a>
         <a href="/pivot">Career Assessment</a>
         <a href="/study">Learning Roadmap</a>
-        <a href="/safe-list">Safe Careers List</a>
-        <a href="/rebound">Rebound Radar</a>
         <a href="/target-resume">Target Resume</a>
+        <a href="/rebound">Rebound Radar</a>
+        <a href="/safe-list">Safe Careers List</a>
         <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" style="border-top:1px solid rgba(240,165,0,0.25);margin-top:2px;color:var(--muted);font-size:9px;display:flex;justify-content:space-between;align-items:center;">PathDecider <span style="opacity:0.5;">↗</span></a>
       </div>
     </div>
@@ -366,8 +391,9 @@ body::before { display: none; }
       <button class="mobile-menu-close" onclick="closeMobile()">&#215;</button>
     </div>
     <a href="/" onclick="closeMobile()">Home</a>
-    <a href="/#analyzer" onclick="closeMobile()">Analyzer</a>
+    <a href="#how-to-use" onclick="closeMobile()">How to Use</a>
     <div class="mobile-menu-section">Tools</div>
+    <a href="/#analyzer" class="sub" onclick="closeMobile()">Analyzer</a>
     <a href="/pivot" class="sub" onclick="closeMobile()">Career Assessment</a>
     <a href="/study" class="sub" onclick="closeMobile()">Learning Roadmap</a>
     <a href="/safe-list" class="sub" onclick="closeMobile()">Safe Careers List</a>
@@ -471,14 +497,14 @@ body::before { display: none; }
 
   <div class="results-box" id="resBox">
     <div class="res-header">
-      <div class="res-name" id="resName">—</div>
-      <div class="risk-pill" id="resPill">—</div>
+      <div class="res-name" id="resName">-</div>
+      <div class="risk-pill" id="resPill">-</div>
     </div>
     <div class="score-card">
       <div class="score-label">Measured Adaptation</div>
       <div class="score-row">
-        <div class="score-num" id="scoreNum">—</div>
-        <div class="score-desc" id="scoreDesc">—</div>
+        <div class="score-num" id="scoreNum">-</div>
+        <div class="score-desc" id="scoreDesc">-</div>
       </div>
       <div class="track"><div class="track-fill" id="trackFill"></div></div>
       <div class="track-ends"><span>MORE STABLE</span><span>FASTER CHANGE</span></div>
@@ -486,10 +512,10 @@ body::before { display: none; }
     <div class="grid-2">
       <div class="info-card"><div class="info-title">Key Data</div><div id="statsEl"></div></div>
       <div class="info-card"><div class="info-title">Adaptation Snapshot</div><div id="lbarsEl"></div></div>
-      <div class="info-card grid-full"><div class="info-title">Analysis</div><div class="info-text" id="analysisEl">—</div></div>
+      <div class="info-card grid-full"><div class="info-title">Analysis</div><div class="info-text" id="analysisEl">-</div></div>
       <div class="info-card"><div class="info-title">Tasks Being Automated</div><div class="tag-wrap" id="tagsRisk"></div></div>
       <div class="info-card"><div class="info-title">Tasks That Remain Human</div><div class="tag-wrap" id="tagsSafe"></div></div>
-      <div class="info-card grid-full"><div class="info-title">What Roles Will Remain</div><div class="info-text" id="jobsEl">—</div></div>
+      <div class="info-card grid-full"><div class="info-title">What Roles Will Remain</div><div class="info-text" id="jobsEl">-</div></div>
       <div class="info-card grid-full"><div class="info-title">Sources and Research</div><ul class="src-list" id="sourcesEl"></ul></div>
     </div>
   </div>
@@ -498,7 +524,63 @@ body::before { display: none; }
 <hr class="divider-line">
 
 
-<hr style="border:none;border-top:1px solid rgba(240,165,0,0.12);">
+<div id="how-to-use" class="wrap">
+  <div class="how-section">
+    <div class="eyebrow">Recommended Workflow</div>
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,5vw,52px);color:var(--text);letter-spacing:2px;line-height:1;margin-bottom:14px;">HOW TO USE<br>LANDOR'S CURVE</h2>
+    <p style="font-size:15px;color:var(--muted);line-height:1.8;max-width:640px;margin-bottom:16px;font-weight:300;">Going through the tools is the best way to understand what the system can do. You do not have to use every tool, and you do not have to use them in this exact order. This is a recommended workflow to help you familiarize yourself with each module and see how the system works. The Tools menu is organized in this same order from top to bottom, so you can start at the beginning or jump directly to what you need.</p>
+    <div class="how-tagline"><span>Analyze the role.</span> &nbsp;<span>Assess your experience.</span> &nbsp;<span>Build the roadmap.</span> &nbsp;<span>Target the resume.</span></div>
+
+    <div class="workflow-grid">
+      <a href="/#analyzer" class="workflow-card" style="text-decoration:none;">
+        <div class="workflow-step">Step 1</div>
+        <div class="workflow-name">Analyzer</div>
+        <div class="workflow-short">See how a profession may be changing.</div>
+        <div class="workflow-desc">Start here if you want to understand the pressure around a job or career. Analyzer looks at how technology, AI, automation, human judgment, trust, licensing, physical presence, and market shifts may affect the work.</div>
+        <span class="workflow-btn">Open Analyzer</span>
+      </a>
+      <a href="/pivot" class="workflow-card" style="text-decoration:none;">
+        <div class="workflow-step">Step 2</div>
+        <div class="workflow-name">Career Assessment</div>
+        <div class="workflow-short">See what your experience may already unlock.</div>
+        <div class="workflow-desc">Upload your resume or enter your background to identify your strongest skills, expertise levels, crossover strengths, and career options you may already fit without assuming you need more school or a major reinvention.</div>
+        <span class="workflow-btn">Open Career Assessment</span>
+      </a>
+      <a href="/study" class="workflow-card" style="text-decoration:none;">
+        <div class="workflow-step">Step 3</div>
+        <div class="workflow-name">Learning Roadmap</div>
+        <div class="workflow-short">Build toward something new while keeping your current job.</div>
+        <div class="workflow-desc">Use this when you want to move toward a new direction but need a realistic plan around your work schedule, available study hours, budget, location, and goals. It can compare free learning, certifications, portfolio projects, community college, and degree-based paths.</div>
+        <span class="workflow-btn">Open Learning Roadmap</span>
+      </a>
+      <a href="/target-resume" class="workflow-card" style="text-decoration:none;">
+        <div class="workflow-step">Step 4</div>
+        <div class="workflow-name">Target Resume</div>
+        <div class="workflow-short">Rewrite your resume for a specific job.</div>
+        <div class="workflow-desc">Use this when you have a real job description and want your resume reframed for that opportunity. It helps identify what already fits, what to emphasize, what to address, and how to rewrite your resume without exaggerating your experience.</div>
+        <span class="workflow-btn">Open Target Resume</span>
+      </a>
+    </div>
+
+    <div class="other-tools-label">Other Helpful Tools</div>
+    <div class="secondary-grid">
+      <a href="/rebound" class="secondary-card" style="text-decoration:none;">
+        <div class="secondary-name">Rebound Radar</div>
+        <div class="secondary-short">Plan your next move when there is a sense of disruption or uncertainty.</div>
+        <div class="secondary-desc">Use this if you are dealing with a layoff, career disruption, sudden market change, or a growing sense that your current path may be shifting. It helps organize immediate next steps and possible directions.</div>
+        <span class="secondary-btn">Open Rebound Radar</span>
+      </a>
+      <a href="/safe-list" class="secondary-card" style="text-decoration:none;">
+        <div class="secondary-name">Safe Careers List</div>
+        <div class="secondary-short">Browse careers with stronger durability signals.</div>
+        <div class="secondary-desc">Use this as a reference list to explore careers that may have stronger protection from automation or AI pressure because they rely on physical presence, trust, licensing, human judgment, emotional complexity, or unpredictable real-world conditions.</div>
+        <span class="secondary-btn">Open Safe Careers List</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<hr style="border:none;border-top:1px solid rgba(240,165,0,0.1);">
 <!-- CURVE -->
 <div class="wrap">
   <div class="curve-section">
@@ -539,15 +621,15 @@ body::before { display: none; }
         <path d="M 50 155 C 200 148, 380 130, 540 95 S 740 38, 870 8 L 870 62 C 740 90, 540 128, 380 148 C 200 162, 50 165, 50 165 Z"
               fill="url(#gapfill)" opacity="0.8"/>
 
-        <!-- Technology capability — steepest rise -->
+        <!-- Technology capability - steepest rise -->
         <path d="M 50 158 C 200 152, 380 134, 540 98 S 740 40, 870 8"
               fill="none" stroke="url(#techg)" stroke-width="2.5" stroke-linecap="round"/>
 
-        <!-- Market expectations — close behind tech -->
+        <!-- Market expectations - close behind tech -->
         <path d="M 50 162 C 200 157, 380 142, 540 110 S 740 58, 870 30"
               fill="none" stroke="url(#expg)" stroke-width="2" stroke-linecap="round" stroke-dasharray="8,4"/>
 
-        <!-- Human adaptation — lagging -->
+        <!-- Human adaptation - lagging -->
         <path d="M 50 165 C 200 163, 380 156, 540 138 S 740 105, 870 82"
               fill="none" stroke="url(#humg)" stroke-width="2" stroke-linecap="round" stroke-dasharray="4,6"/>
 
@@ -576,7 +658,7 @@ body::before { display: none; }
     <div class="section">
       <div class="eyebrow">Applied Tools</div>
       <div class="section-heading">Tools for Adapting Wisely</div>
-      <p class="section-sub" style="margin-bottom:32px;">Understanding what is changing is step one. These tools help you figure out your next move — and make it with confidence.</p>
+      <p class="section-sub" style="margin-bottom:32px;">Understanding what is changing is step one. These tools help you figure out your next move - and make it with confidence.</p>
       <div class="tools-grid">
         <a href="/pivot" class="tool-card">
           <div class="tool-accent" style="background:var(--yellow);"></div>
@@ -593,7 +675,7 @@ body::before { display: none; }
         <a href="/safe-list" class="tool-card">
           <div class="tool-accent" style="background:var(--green);"></div>
           <div class="tool-title" style="color:var(--green);">Safe Careers List</div>
-          <div class="tool-sub">Browse careers ranked by durability signals — licensing, physical-world execution, human judgment, emotional complexity, and adaptability. Know what you are walking into.</div>
+          <div class="tool-sub">Browse careers ranked by durability signals - licensing, physical-world execution, human judgment, emotional complexity, and adaptability. Know what you are walking into.</div>
           <div class="tool-cta" style="color:var(--green);">Browse Safe Careers →</div>
         </a>
         <a href="/rebound" class="tool-card">
@@ -618,7 +700,7 @@ body::before { display: none; }
 
 <hr class="divider-line">
 
-<!-- WHY THIS — CONVERSATIONAL QUESTIONS -->
+<!-- WHY THIS - CONVERSATIONAL QUESTIONS -->
 <div id="questions" class="wrap">
   <div class="section">
     <div class="eyebrow">The Conversation</div>
@@ -656,17 +738,17 @@ body::before { display: none; }
       <p class="section-sub" style="margin-bottom:32px;">Not predictions. Patterns that have already repeated across every major technological shift in history.</p>
       <div class="rules-grid">
         <div class="rule-card" style="border-top:3px solid var(--orange);">
-          <div class="rule-num" style="color:var(--orange);">Observation 1 — Acceleration</div>
+          <div class="rule-num" style="color:var(--orange);">Observation 1 - Acceleration</div>
           <div class="rule-title">Each wave changes work faster than the last.</div>
           <div class="rule-body">Swordsmiths had generations to adapt. Typists had decades. Today, the shift can happen within a few years of a new tool entering the market.</div>
         </div>
         <div class="rule-card" style="border-top:3px solid var(--yellow);">
-          <div class="rule-num" style="color:var(--yellow);">Observation 2 — Rising Floor</div>
+          <div class="rule-num" style="color:var(--yellow);">Observation 2 - Rising Floor</div>
           <div class="rule-title">Routine tasks are absorbed. Expectations move higher.</div>
           <div class="rule-body">Technology handles the repetitive work. In return, the job absorbs new responsibilities. The floor of what a role requires keeps rising whether the worker is ready or not.</div>
         </div>
         <div class="rule-card" style="border-top:3px solid var(--green);">
-          <div class="rule-num" style="color:var(--green);">Observation 3 — Two Paths Forward</div>
+          <div class="rule-num" style="color:var(--green);">Observation 3 - Two Paths Forward</div>
           <div class="rule-title">Deeper mastery or learning to operate the tools.</div>
           <div class="rule-body">Workers who go deeper into what makes their work irreplaceable, or who learn to operate the tools reshaping their field, tend to hold the most durable positions.</div>
         </div>
@@ -855,9 +937,9 @@ async function analyze() {
   }
 }
 function render(r) {
-  document.getElementById('resName').textContent = r.profession || '—';
+  document.getElementById('resName').textContent = r.profession || '-';
   const pill = document.getElementById('resPill');
-  pill.textContent = r.riskLevel || '—';
+  pill.textContent = r.riskLevel || '-';
   pill.className = 'risk-pill rp-' + (r.riskColor || 'medium');
   document.getElementById('scoreNum').textContent = (r.riskScore || 0) + '/100';
   document.getElementById('scoreDesc').textContent = r.meterDesc || '';
@@ -876,15 +958,15 @@ function render(r) {
     document.getElementById('lb2').style.width = (li.currentAISpeed||0) + '%';
     document.getElementById('lb3').style.width = (li.adaptationDifficulty||0) + '%';
   }, 250);
-  document.getElementById('analysisEl').textContent = r.analysis || '—';
-  document.getElementById('jobsEl').textContent = r.jobsRemain || '—';
+  document.getElementById('analysisEl').textContent = r.analysis || '-';
+  document.getElementById('jobsEl').textContent = r.jobsRemain || '-';
   document.getElementById('tagsRisk').innerHTML = (r.tasksAtRisk||[]).map(t=>`<span class="tag tag-r">${t}</span>`).join('');
   document.getElementById('tagsSafe').innerHTML = (r.tasksSurvive||[]).map(t=>`<span class="tag tag-s">${t}</span>`).join('');
   document.getElementById('sourcesEl').innerHTML = (r.sources||[]).map(s=>
-    `<li class="src-item"><div class="src-dot"></div><div><span class="src-name">${s.name}</span> — <span style="color:var(--muted)">${s.detail}</span></div></li>`).join('');
+    `<li class="src-item"><div class="src-dot"></div><div><span class="src-name">${s.name}</span> - <span style="color:var(--muted)">${s.detail}</span></div></li>`).join('');
   if (r.presetNote) {
     document.getElementById('sourcesEl').innerHTML +=
-      `<li class="src-item" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)"><div class="src-dot" style="background:var(--gold)"></div><div><span class="src-name" style="color:var(--gold)">Preset Note</span> — <span style="color:var(--muted)">${r.presetNote}</span></div></li>`;
+      `<li class="src-item" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)"><div class="src-dot" style="background:var(--gold)"></div><div><span class="src-name" style="color:var(--gold)">Preset Note</span> - <span style="color:var(--muted)">${r.presetNote}</span></div></li>`;
   }
   document.getElementById('resBox').classList.add('show');
   document.getElementById('resBox').scrollIntoView({ behavior:'smooth', block:'start' });

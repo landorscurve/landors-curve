@@ -561,23 +561,26 @@ let fullResumeText = '';
       // Only use if fresh (5 minutes)
       if (handoff.exportedAt && Date.now() - handoff.exportedAt < 300000) {
         localStorage.removeItem('resumeStudioHandoff');
-        // Pre-fill resume text
+        // Pre-fill resume text area
         if (handoff.resumeText) {
           const ta = document.getElementById('resumeText');
           if (ta && !ta.value) ta.value = handoff.resumeText;
         }
-        // Pre-fill role if not already set from URL
-        if (handoff.topRole && !role) {
-          const jTitle = document.getElementById('jobTitle');
-          if (jTitle && !jTitle.value) jTitle.value = handoff.topRole;
-        }
-        // Show import confirmation
-        const modeEl = document.querySelector('.mode-section');
-        if (modeEl) {
-          const banner = document.createElement('div');
-          banner.style.cssText = 'background:rgba(240,165,0,0.06);border:1px solid rgba(240,165,0,0.2);border-radius:10px;padding:12px 18px;margin-bottom:16px;font-size:13px;color:var(--muted);';
-          banner.innerHTML = '<span style="color:var(--gold);font-family:\'DM Mono\',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:4px;">Imported from Roadmap</span>Your background was brought over from Roadmap. Paste a job description below and run the analysis.';
-          modeEl.parentNode.insertBefore(banner, modeEl);
+        // DO NOT pre-fill jobTitle — that field is for the job they are applying TO
+        // Hide the drop zone since background is already imported
+        const dropZone = document.getElementById('resumeDropZone');
+        const fileInput = document.getElementById('resumeFileInput');
+        const orDivider = dropZone ? dropZone.parentElement.querySelector('.or-divider') : null;
+        if (dropZone) dropZone.style.display = 'none';
+        if (fileInput) fileInput.style.display = 'none';
+        if (orDivider) orDivider.style.display = 'none';
+        // Show import note above the textarea
+        const ta = document.getElementById('resumeText');
+        if (ta) {
+          const note = document.createElement('div');
+          note.style.cssText = 'background:rgba(46,213,115,0.06);border:1px solid rgba(46,213,115,0.2);border-radius:8px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;';
+          note.innerHTML = '<div><span style="font-family:\'DM Mono\',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);display:block;margin-bottom:2px;">Imported from Roadmap</span><span style="font-size:12px;color:var(--muted);">Your background was brought over. Review it below, then paste a job description in Step 2.</span></div><button onclick="document.getElementById(\'resumeDropZone\').style.display=\'\';this.parentElement.style.display=\'none\';" style="font-family:\'DM Mono\',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:5px 10px;border-radius:5px;border:1px solid var(--border);color:var(--muted);background:transparent;cursor:pointer;white-space:nowrap;flex-shrink:0;">Use Different Resume</button>';
+          ta.parentElement.insertBefore(note, ta);
         }
       }
     }

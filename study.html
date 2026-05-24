@@ -544,7 +544,7 @@ input[type=file]#pivotFile{display:none;}
         <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--text);letter-spacing:1px;margin-bottom:6px;">Found a Real Job Posting?</div>
         <div style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px;">Use Resume Studio to rewrite your resume for that specific opportunity. It will compare the job description against your background, identify what already fits, and produce an updated resume draft.</div>
         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-          <button onclick="openResumeStudio('target')" style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;padding:11px 28px;border-radius:8px;background:var(--gold);color:#000;border:none;cursor:pointer;">Open Resume Studio</button>
+          <button onclick="openResumeStudio('target')" style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;padding:11px 28px;border-radius:8px;background:var(--gold);color:#000;border:none;cursor:pointer;">Handoff to Resume Studio</button>
           <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);opacity:0.6;">Opens in a new tab so your Roadmap results stay open.</span>
         </div>
       </div>
@@ -587,7 +587,7 @@ input[type=file]#pivotFile{display:none;}
         <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--text);letter-spacing:1px;margin-bottom:6px;">Start Building Your Future Resume</div>
         <div style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px;">Use Resume Studio to shape your resume toward the direction you are building. It will identify what from your current background transfers, what you still need, and how to position yourself before you are ready to apply.</div>
         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-          <button onclick="openResumeStudio('future')" style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;padding:11px 28px;border-radius:8px;background:var(--blue);color:#fff;border:none;cursor:pointer;">Open Resume Studio</button>
+          <button onclick="openResumeStudio('future')" style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;padding:11px 28px;border-radius:8px;background:var(--blue);color:#fff;border:none;cursor:pointer;">Handoff to Resume Studio</button>
           <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);opacity:0.6;">Opens in a new tab so your Roadmap results stay open.</span>
         </div>
       </div>
@@ -844,17 +844,36 @@ function closeReportModal() {
 }
 function openResumeStudio(mode) {
   mode = mode || 'target';
-  // Collect the best available background text
-  const bg = extractedText || document.getElementById('background')?.value.trim() || '';
-  const caSum = caImportPayload ? caImportPayload.summary : '';
-  const resumeText = bg || caSum || '';
 
-  // Get top role/direction from results
+  // Collect best available background text
+  const bgField = document.getElementById('background')?.value.trim() || '';
+  const bgClean = bgField.startsWith('(Resume uploaded') ? '' : bgField;
+
+  // Build text from CA handoff if available
+  let caText = '';
+  if (caImportPayload) {
+    const parts = [];
+    if (caImportPayload.profileSummary) parts.push('Career Profile:\n' + caImportPayload.profileSummary);
+    if (caImportPayload.roles && caImportPayload.roles.length) {
+      parts.push('Experience:\n' + caImportPayload.roles.map(r =>
+        r.title + (r.years ? ' | ' + r.years + ' years' : '') + (r.estimatedHours ? ' | ~' + r.estimatedHours + ' hrs' : '') + (r.expertise ? ' | ' + r.expertise : '')
+      ).join('\n'));
+    }
+    if (caImportPayload.crossoverStrengths && caImportPayload.crossoverStrengths.length) {
+      parts.push('Crossover Strengths:\n' + caImportPayload.crossoverStrengths.map(s => '- ' + s).join('\n'));
+    }
+    if (caImportPayload.insight) parts.push('Personal Insight:\n' + caImportPayload.insight);
+    caText = parts.join('\n\n');
+  }
+
+  const resumeText = extractedText || caText || bgClean || '';
+
+  // Get top role from results
   const firstRole = document.querySelector('#rolesEl .role-title');
   const topRole = firstRole ? firstRole.textContent.trim() : '';
-  const targetDir = document.getElementById('cm-direction')?.value.trim() || document.getElementById('lp-target')?.value.trim() || topRole;
+  const targetDir = document.getElementById('lp-target')?.value.trim() || topRole;
 
-  // Store handoff in localStorage for Resume Studio to read
+  // Store handoff in localStorage
   try {
     localStorage.setItem('resumeStudioHandoff', JSON.stringify({
       mode: mode,
@@ -865,12 +884,8 @@ function openResumeStudio(mode) {
     }));
   } catch(e) {}
 
-  // Build URL
   const modeParam = mode === 'future' ? 'future-direction' : 'target-job';
-  let url = '/target-resume?mode=' + modeParam;
-  const roleVal = mode === 'target' ? topRole : targetDir;
-  if (roleVal) url += '&role=' + encodeURIComponent(roleVal);
-  window.open(url, '_blank', 'noopener,noreferrer');
+  window.open('/target-resume?mode=' + modeParam, '_blank', 'noopener,noreferrer');
 }
 
 function switchToLP() {

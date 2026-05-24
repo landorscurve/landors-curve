@@ -6,12 +6,20 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { background, years, intent, mode, direction, industry, risk, timeHorizon,
-          target, hoursPerWeek, budget, goal } = req.body;
+          target, hoursPerWeek, budget, goal, caImport } = req.body;
 
   if (!background) return res.status(400).json({ error: 'Background is required' });
   if (!mode) return res.status(400).json({ error: 'Mode is required' });
 
   const isCM = mode === 'cm';
+
+  // Build Career Assessment import context if available
+  let caContext = '';
+  if (caImport && caImport.selectedDirection) {
+    const roles = (caImport.roles||[]).slice(0,6).map(r => `${r.title} (${r.expertise}, ~${r.estimatedHours||0} hrs)`).join(', ');
+    const strengths = (caImport.crossoverStrengths||[]).slice(0,4).join(', ');
+    caContext = `\n\nCARRIED OVER FROM CAREER ASSESSMENT:\nSelected direction: ${caImport.selectedDirection}\n${roles ? 'Roles and experience: ' + roles : ''}\n${strengths ? 'Crossover strengths: ' + strengths : ''}\n${caImport.insight && caImport.insight !== '-' ? 'Assessment insight: ' + caImport.insight : ''}\nRarity index: ${caImport.rarityIndex||''}\n\nUse this Career Assessment data to enrich the analysis. It is more detailed than a simple background description.`;
+  }
 
   const system = isCM
     ? `You are the Pivot Tool in Career Movement mode for Landors Curve. Your job is to help someone understand which roles they may already be close to based on their existing experience — without requiring major new study, certifications, or a full career reset.

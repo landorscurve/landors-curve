@@ -70,7 +70,7 @@ body::before { display: none; }
 .resume-zone-sub { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
 .resume-zone-btn { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 8px 20px; border-radius: 6px; border: 1px solid rgba(240,165,0,0.4); color: var(--gold); background: transparent; display: inline-block; }
 .resume-privacy { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1px; color: var(--muted); opacity: 0.5; margin-top: 12px; }
-input[type="file"]#resumeFile { display: none; }
+input[type="file"]#resumeFile { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
 
 .resume-processing { display: none; align-items: center; gap: 12px; background: rgba(240,165,0,0.06); border: 1px solid rgba(240,165,0,0.2); border-radius: 10px; padding: 14px 18px; margin-bottom: 16px; }
 .resume-processing.show { display: flex; }
@@ -346,7 +346,7 @@ input[type="file"]#resumeFile { display: none; }
   </div>
 
   <!-- RESUME DROP ZONE -->
-  <input type="file" id="resumeFile" accept=".pdf,.doc,.docx" style="position:fixed;left:-9999px;top:-9999px;opacity:0;pointer-events:none;">
+  <input type="file" id="resumeFile" accept=".pdf,.doc,.docx">
   <div class="resume-zone" id="resumeZone">
     <div class="resume-zone-icon">📄</div>
     <div class="resume-zone-title">Drop Your Resume Here</div>

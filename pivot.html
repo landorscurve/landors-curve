@@ -419,7 +419,7 @@ input[type="file"]#resumeFile { display: none; }
         <div class="next-text"><strong>Ready to build toward something better?</strong> Some career options may already fit your current experience. Others may require a small upgrade, a certification, a portfolio project, or a longer-term learning plan. Use Learning Roadmap to build a practical plan while maintaining your current employment.</div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;">
-        <a href="/study" target="_blank" rel="noopener noreferrer" class="next-btn" id="roadmapBtn" onclick="event.preventDefault();exportToStudy();">Build Roadmap for This Direction</a>
+        <a href="/study" target="_blank" rel="noopener noreferrer" class="next-btn" id="roadmapBtn" onclick="event.preventDefault();exportToStudy();">Handoff to Roadmap</a>
         <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--muted);opacity:0.55;">Opens in a new tab so your Career Assessment stays open.</span>
       </div>
     </div>
@@ -728,77 +728,96 @@ function showErr(msg) {
 
 // Export top skill to Landor's Study
 function exportToStudy() {
-  // Build full handoff payload
+  // ── Collect all skill entry rows ──────────────────────────────────────
   const rows = document.querySelectorAll('.skill-entry');
   const roles = [];
-  const skillMap = {};
+  let totalHrs = 0;
   rows.forEach(row => {
     const skill = row.querySelector('.skill-input')?.value?.trim();
     const id = row.id?.replace('row-', '');
     if (skill && id) {
       const hrs = calcHours(id);
-      const yearsEl = row.querySelector('.years-input');
-      const years = yearsEl ? parseFloat(yearsEl.value)||0 : 0;
-      const exp = typeof expertiseLevel === 'function' ? expertiseLevel(hrs) : {label:'Unknown'};
+      const years = parseFloat(row.querySelector('.years-input')?.value)||0;
+      const exp = typeof expertiseLevel === 'function' ? expertiseLevel(hrs) : {label:'Exposure'};
       roles.push({ title: skill, years, estimatedHours: Math.round(hrs), expertise: exp.label });
-      const key = skill.toLowerCase();
-      if (!skillMap[key]) skillMap[key] = { skill, hours: 0 };
-      skillMap[key].hours += hrs;
+      totalHrs += hrs;
     }
   });
 
-  // Find top skill for URL param fallback
-  let topSkill = '';
-  let topHours = 0;
-  Object.values(skillMap).forEach(s => { if (s.hours > topHours) { topHours = s.hours; topSkill = s.skill; } });
-  if (!topSkill && roles.length) topSkill = roles[0].title || '';
+  // ── Collect DOM result data ───────────────────────────────────────────
+  const profileText = (document.getElementById('profileText')?.textContent||'').trim().replace(/-$/, '').trim();
+  const rarityScore = (document.getElementById('rarityScore')?.textContent||'').trim().replace(/-$/, '').trim();
+  const rarityDesc  = (document.getElementById('rarityDesc')?.textContent||'').trim().replace(/-$/, '').trim();
+  const insightText = (document.getElementById('insightText')?.textContent||'').trim().replace(/-$/, '').trim();
 
-  // Find selected direction from results (timeline short/medium jobs)
-  const tlCards = document.querySelectorAll('.tl-job-title');
-  const selectedDirection = tlCards.length ? tlCards[0].textContent.trim() : topSkill;
-
-  // Collect API result data from DOM
-  const profileText = document.getElementById('profileText')?.textContent || '';
-  const rarityScore = document.getElementById('rarityScore')?.textContent || '';
-  const insightText = document.getElementById('insightText')?.textContent || '';
-
-  // Strength bars
   const strengths = [];
   document.querySelectorAll('.sbar').forEach(bar => {
-    const lbl = bar.querySelector('.sbar-lbl')?.textContent;
-    const val = bar.querySelector('.sbar-val')?.textContent;
-    if (lbl && val) strengths.push(lbl + ' ' + val);
+    const lbl = bar.querySelector('.sbar-lbl')?.textContent?.trim();
+    const val = bar.querySelector('.sbar-val')?.textContent?.trim();
+    if (lbl && val && val !== '0%') strengths.push(lbl + ': ' + val);
   });
 
-  // Skill pills with expertise
-  const skillPills = [];
-  document.querySelectorAll('.skill-pill').forEach(pill => {
-    skillPills.push(pill.textContent.trim());
+  const careerOptions = [];
+  document.querySelectorAll('.tl-job').forEach(job => {
+    const title = job.querySelector('.tl-job-title')?.textContent?.trim();
+    if (title) careerOptions.push(title);
   });
 
-  const payload = {
+  // ── Selected direction = first career option identified ──────────────
+  const selectedDirection = careerOptions[0] || (roles[0]?.title || '');
+
+  // ── Build plain-text handoff summary ─────────────────────────────────
+  const roleLines = roles.map((r,i) =>
+    (i+1)+'. '+r.title+(r.years?' | '+r.years+' yrs':'')+' | ~'+r.estimatedHours.toLocaleString()+' hrs | '+r.expertise
+  ).join('
+');
+
+  const summary = [
+    'ROADMAP HANDOFF SUMMARY',
+    '',
+    'Selected Direction:',
+    selectedDirection || 'Not specified',
+    '',
+    'Career Profile Summary:',
+    profileText || 'Not available',
+    '',
+    'Total Estimated Career Hours:',
+    Math.round(totalHrs).toLocaleString() + ' hrs',
+    '',
+    'Experience Profile:',
+    roleLines || 'No roles entered',
+    '',
+    'Crossover Rarity Index:',
+    rarityScore + (rarityDesc ? ' - ' + rarityDesc : ''),
+    '',
+    'Crossover Strengths:',
+    strengths.length ? strengths.map(s=>'- '+s).join('
+') : 'Not available',
+    '',
+    'Career Options Already Identified:',
+    careerOptions.length ? careerOptions.map(o=>'- '+o).join('
+') : 'Not available',
+    '',
+    'Personal Insight:',
+    insightText || 'Not available',
+  ].join('
+');
+
+  // ── Store in localStorage (persists across new tabs) ──────────────────
+  const storagePayload = {
+    summary,
     selectedDirection,
-    roles,
-    totalRoles: roles.length,
-    topSkill,
-    profileSummary: profileText,
-    rarityIndex: rarityScore,
-    crossoverStrengths: strengths,
-    skillLevels: skillPills,
-    insight: insightText,
     exportedAt: Date.now(),
     source: 'career-assessment'
   };
-
-  // Store in sessionStorage
   try {
-    sessionStorage.setItem('ca_handoff', JSON.stringify(payload));
+    localStorage.setItem('landorsCurveRoadmapHandoff', JSON.stringify(storagePayload));
+    localStorage.setItem('landorsCurveRoadmapSelectedDirection', selectedDirection);
   } catch(e) {
-    console.warn('sessionStorage unavailable, falling back to URL param');
+    console.warn('localStorage unavailable');
   }
 
-  const url = topSkill ? '/study?career=' + encodeURIComponent(topSkill) + '&ca_import=1' : '/study?ca_import=1';
-  window.open(url, '_blank', 'noopener,noreferrer');
+  window.open('/study?ca_import=1', '_blank', 'noopener,noreferrer');
 }
 
 addRow('', '', ['Mon','Tue','Wed','Thu','Fri'], 8);

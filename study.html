@@ -668,8 +668,14 @@ async function readDOCX(file) {
 
 async function run() {
   const roles = cpGetRoles();
+  // Priority: imported CA summary > editable import textarea > extracted text > background field > CP roles
+  let importedSummary = '';
+  if (caImportPayload && caImportPayload.summary) {
+    const editedTA = document.getElementById('importedProfileText');
+    importedSummary = editedTA ? editedTA.value.trim() : caImportPayload.summary;
+  }
   const bgField = document.getElementById('background')?.value.trim() || '';
-  let bg = extractedText || bgField;
+  let bg = importedSummary || extractedText || bgField;
   if (!bg && roles.length) {
     bg = roles.map(r=>r.title+(r.org?' at '+r.org:'')+(r.years?' ('+r.years+' yrs, '+r.expertise+')':'')).join('; ');
   }
@@ -1020,81 +1026,88 @@ function initImport() {
   const hasImportFlag = params.get('ca_import') === '1';
   const careerParam = params.get('career');
 
-  // Try sessionStorage first, then localStorage
+  if (!hasImportFlag && !careerParam) return;
+
+  // Read from localStorage (persists across new tabs)
   let payload = null;
   try {
-    const stored = sessionStorage.getItem('ca_handoff') || localStorage.getItem('ca_handoff');
+    const stored = localStorage.getItem('landorsCurveRoadmapHandoff');
     if (stored) {
       payload = JSON.parse(stored);
-      if (!payload.exportedAt || Date.now() - payload.exportedAt > 600000) payload = null;
-      else { try { localStorage.removeItem('ca_handoff'); } catch(e) {} }
+      // Valid for 10 minutes
+      if (!payload.exportedAt || Date.now() - payload.exportedAt > 600000) {
+        payload = null;
+      } else {
+        // Clear immediately after reading so it does not persist indefinitely
+        localStorage.removeItem('landorsCurveRoadmapHandoff');
+        localStorage.removeItem('landorsCurveRoadmapSelectedDirection');
+      }
     }
   } catch(e) {}
 
-  if (payload && payload.source === 'career-assessment') {
+  if (payload && payload.source === 'career-assessment' && payload.summary) {
     caImportPayload = payload;
     showFullImport(payload);
-  } else if (careerParam) {
-    showPartialImport(decodeURIComponent(careerParam));
+  } else if (hasImportFlag || careerParam) {
+    const direction = careerParam ? decodeURIComponent(careerParam) : '';
+    showPartialImport(direction);
   }
 }
 
 function showFullImport(p) {
   document.getElementById('step1Title').textContent = 'Your Imported Career Profile';
-  document.getElementById('step1Sub').textContent = 'Review your roles and experience below before generating your roadmap.';
+  document.getElementById('step1Sub').textContent = 'Review your imported Career Assessment profile before generating your roadmap.';
+
+  // Hide resume upload
   const uploadArea = document.getElementById('resumeUploadArea');
   if (uploadArea) uploadArea.style.display = 'none';
 
-  // Populate CP module with imported roles
-  if (p.roles && p.roles.length) {
-    document.getElementById('cpRows').innerHTML = '';
-    cpRowCount = 0;
-    p.roles.forEach(r => {
-      const yrs = parseFloat(r.years) || 0;
-      const hpd = r.hoursPerDay || 8;
-      const days = r.activeDays || ['Mon','Tue','Wed','Thu','Fri'];
-      cpAddRow(r.title || '', r.organization || '', yrs, Array.isArray(days)?days:['Mon','Tue','Wed','Thu','Fri'], hpd);
-    });
-  }
-
-  // Pre-fill background with summary
+  // Set the full summary as the background context
   const bg = document.getElementById('background');
-  if (bg && p.profileSummary) bg.value = p.profileSummary;
+  if (bg && p.summary) bg.value = p.summary;
 
-  // Build import confirmation card
+  // Build import card with editable textarea
   const card = document.createElement('div');
   card.className = 'import-card';
   card.id = 'caImportCard';
-  const strengths = (p.crossoverStrengths||[]).slice(0,4).join(' · ');
   card.innerHTML = `
     <div class="import-card-label">Imported from Career Assessment</div>
     <div class="import-card-title">Your Career Assessment Profile</div>
-    <div class="import-card-body">Your Career Assessment profile has been brought into Roadmap. Your roles and experience are loaded below. Review them before generating your roadmap.</div>
-    ${p.selectedDirection ? `<div class="import-detail"><div class="import-detail-label">Selected Direction</div><div class="import-detail-value">${p.selectedDirection}</div></div>` : ''}
-    ${strengths ? `<div class="import-detail"><div class="import-detail-label">Crossover Strengths</div><div class="import-detail-value">${strengths}</div></div>` : ''}
-    ${p.rarityIndex ? `<div class="import-detail"><div class="import-detail-label">Crossover Rarity Index</div><div class="import-detail-value">${p.rarityIndex}</div></div>` : ''}
+    <div class="import-card-body">We brought over your Career Assessment profile, including your selected direction, experience summary, estimated hours, crossover strengths, and personal insight. Review the imported profile below, then add or edit anything before generating your roadmap.</div>
+    ${p.selectedDirection ? '<div class="import-detail"><div class="import-detail-label">Selected Direction</div><div class="import-detail-value">'+p.selectedDirection+'</div></div>' : ''}
+    <div class="import-detail" style="margin-top:10px;">
+      <div class="import-detail-label">Imported Career Profile</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">You can edit this before generating your roadmap.</div>
+      <textarea id="importedProfileText" style="width:100%;background:#050505;border:1px solid var(--border);border-radius:7px;padding:12px;font-family:'DM Mono',monospace;font-size:10px;color:var(--text);line-height:1.6;resize:vertical;min-height:180px;outline:none;" oninput="caImportPayload.summary=this.value;">${(p.summary||'').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</textarea>
+    </div>
     <div class="import-actions" style="margin-top:12px;">
       <button class="import-action-btn import-clear-btn" onclick="clearImport()">Clear Import and Upload Resume</button>
     </div>`;
   document.getElementById('step1Card').prepend(card);
-  cpUpdateSummary();
+  // Hide the fallback background field since summary is in the card
+  const bgWrap = document.getElementById('background')?.parentElement;
+  if (bgWrap) bgWrap.style.display = 'none';
 }
 
-function showPartialImport(career) {
+function showPartialImport(direction) {
   const card = document.createElement('div');
   card.className = 'partial-import-card';
   card.id = 'partialImportCard';
-  card.innerHTML = `<div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;">Partial Import Received</div>
-    <div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:8px;">We brought over your selected direction, but the full Career Assessment profile was not available. Add your resume or career history below for a stronger roadmap.</div>
-    <div style="font-size:12px;color:var(--text);"><strong>Direction:</strong> ${career}</div>`;
+  card.innerHTML = '<div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;">Partial Import Received</div>'
+    + '<div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:8px;">We brought over your selected direction, but the full Career Assessment profile was not available. Add your resume or career history below for a stronger roadmap.</div>'
+    + (direction ? '<div style="font-size:12px;color:var(--text);"><strong>Direction:</strong> ' + direction + '</div>' : '');
   document.getElementById('step1Card').prepend(card);
-  cpAddRow(career, '', '', ['Mon','Tue','Wed','Thu','Fri'], 8);
 }
 
 function clearImport() {
   if (!confirm('This will remove the imported Career Assessment profile from this Roadmap session. Continue?')) return;
   caImportPayload = null;
-  try { sessionStorage.removeItem('ca_handoff'); localStorage.removeItem('ca_handoff'); } catch(e) {}
+  try {
+    localStorage.removeItem('landorsCurveRoadmapHandoff');
+    localStorage.removeItem('landorsCurveRoadmapSelectedDirection');
+    sessionStorage.removeItem('ca_handoff');
+    localStorage.removeItem('ca_handoff');
+  } catch(e) {}
   const card = document.getElementById('caImportCard') || document.getElementById('partialImportCard');
   if (card) card.remove();
   const uploadArea = document.getElementById('resumeUploadArea');
@@ -1104,7 +1117,7 @@ function clearImport() {
   document.getElementById('cpRows').innerHTML = '';
   cpRowCount = 0;
   const bg = document.getElementById('background');
-  if (bg) bg.value = '';
+  if (bg) { bg.value = ''; if (bg.parentElement) bg.parentElement.style.display = ''; }
   cpUpdateSummary();
 }
 
@@ -1121,27 +1134,27 @@ window.fetch = function(url, opts) {
   if (url && url.includes('/api/pivot-tool') && opts && opts.body) {
     try {
       const body = JSON.parse(opts.body);
-      const roles = cpGetRoles();
-      const bg = document.getElementById('background')?.value.trim() || '';
-      // Build enriched background from CP roles
-      if (roles.length && !body.background) {
-        body.background = roles.map(r=>`${r.title}${r.org?' at '+r.org:''} (${r.years||0} yrs, ${r.expertise})`).join('; ');
-      }
-      // Always attach CP profile
-      body.careerProfile = {
-        roles,
-        totalRoles: roles.length,
-        totalCareerHours: roles.reduce((s,r)=>s+r.estimatedHours,0),
-        backgroundNote: bg
-      };
-      // Attach CA import if available
-      if (caImportPayload) {
+      // Inject CA import summary as primary background context
+      if (caImportPayload && caImportPayload.summary) {
+        const editedTA = document.getElementById('importedProfileText');
+        const activeSummary = editedTA ? editedTA.value.trim() : caImportPayload.summary;
         body.caImport = {
-          selectedDirection: caImportPayload.selectedDirection,
-          crossoverStrengths: caImportPayload.crossoverStrengths,
-          rarityIndex: caImportPayload.rarityIndex,
-          insight: caImportPayload.insight,
-          careerOptions: caImportPayload.careerOptions
+          summary: activeSummary,
+          selectedDirection: caImportPayload.selectedDirection
+        };
+        // Use summary as background if not already set richly
+        if (!body.background || body.background.length < 50) {
+          body.background = activeSummary.slice(0, 6000);
+        }
+      }
+      // Attach CP roles if any were entered
+      const roles = cpGetRoles();
+      if (roles.length) {
+        body.careerProfileRoles = roles;
+        body.careerProfile = {
+          roles,
+          totalRoles: roles.length,
+          totalCareerHours: roles.reduce(function(s,r){return s+r.estimatedHours;}, 0)
         };
       }
       opts.body = JSON.stringify(body);

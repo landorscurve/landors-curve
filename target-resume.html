@@ -289,8 +289,6 @@ input[type=file]#resumeFileInput{display:none;}
 
     <!-- TARGET A JOB FIELDS -->
     <div class="mode-fields" id="fieldsTarget">
-      <label class="form-label">Job Description <span class="opt-tag">paste the full posting if you have it</span></label>
-      <textarea class="form-textarea" id="jobDesc" placeholder="Paste the job description here. The more detail you provide, the more targeted the output will be..."></textarea>
       <div class="form-grid">
         <div>
           <label class="form-label">Job Title and Company <span class="opt-tag">optional</span></label>
@@ -301,6 +299,8 @@ input[type=file]#resumeFileInput{display:none;}
           <input class="form-inp" id="industry" type="text" placeholder="e.g. Healthcare, Tech, Education, Film...">
         </div>
       </div>
+      <label class="form-label">Job Description <span class="opt-tag">paste the full posting if you have it</span></label>
+      <textarea class="form-textarea" id="jobDesc" placeholder="Paste the job description here. The more detail you provide, the more targeted the output will be..."></textarea>
       <div class="form-grid">
         <div>
           <label class="form-label">Who will read this? <span class="opt-tag">optional</span></label>
@@ -548,9 +548,8 @@ let fullResumeText = '';
 
   if(role) {
     const fRole = document.getElementById('futureRole');
-    const jTitle = document.getElementById('jobTitle');
+    // Only pre-fill for future-direction mode — for target-job the user must enter the job themselves
     if(mode==='future-direction' && fRole) fRole.value = decodeURIComponent(role);
-    else if(jTitle) jTitle.value = decodeURIComponent(role);
   }
 
   // Read handoff from Roadmap if present

@@ -62,7 +62,9 @@ body::before { display: none; }
   cursor: pointer;
   display: block;
 }
+.resume-zone { cursor: pointer; }
 .resume-zone:hover, .resume-zone.drag-over { border-color: var(--gold); background: rgba(240,165,0,0.06); }
+.resume-zone-btn { cursor: pointer; }
 .resume-zone-icon { font-size: 28px; margin-bottom: 10px; }
 .resume-zone-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--gold); letter-spacing: 1px; margin-bottom: 8px; }
 .resume-zone-sub { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
@@ -343,18 +345,15 @@ input[type="file"]#resumeFile { display: none; }
     </svg>
   </div>
 
-  <!-- RESUME DROP ZONE: file input first, then label wrapping the zone -->
-  <input type="file" id="resumeFile" accept=".pdf,.doc,.docx" onchange="handleFile(this.files[0])">
-  <label for="resumeFile" class="resume-zone" id="resumeZone"
-         ondragover="event.preventDefault();this.classList.add('drag-over')"
-         ondragleave="this.classList.remove('drag-over')"
-         ondrop="event.preventDefault();this.classList.remove('drag-over');handleFile(event.dataTransfer.files[0])">
+  <!-- RESUME DROP ZONE: input hidden, zone div triggers it via JS -->
+  <input type="file" id="resumeFile" accept=".pdf,.doc,.docx" style="display:none;">
+  <div class="resume-zone" id="resumeZone">
     <div class="resume-zone-icon">📄</div>
     <div class="resume-zone-title">Drop Your Resume Here</div>
     <div class="resume-zone-sub">We will read your resume and auto-fill your skills and experience below.<br>PDF and Word documents supported.</div>
-    <span class="resume-zone-btn">Choose File</span>
+    <button type="button" class="resume-zone-btn" id="resumeChooseBtn">Choose File</button>
     <div class="resume-privacy">Your file is never uploaded or stored. It is read locally in your browser only.</div>
-  </label>
+  </div>
 
   <div class="resume-processing" id="resumeProcessing">
     <div class="resume-spin"></div>
@@ -445,9 +444,9 @@ input[type="file"]#resumeFile { display: none; }
   </div>
 
   <div class="footer">
-    PIVOT - Career Pivot Calculator<br>
-    Analysis powered by Claude AI, drawing from O*NET, Bureau of Labor Statistics, Brookings Institution, McKinsey Global Institute, and Goldman Sachs labor market research.<br>
-    Results are analytical estimates. Career decisions should incorporate additional professional guidance. © 2026 LandorsCurve.com
+    Career Assessment<br>
+    Sources include O*NET, Bureau of Labor Statistics, published workforce research, and Landor's Curve source layers.<br>
+    Results are analytical estimates based on the information provided, public workforce data, published research, and Landor's Curve source layers. Career decisions should incorporate additional research and professional guidance when appropriate. <a href="/sources" style="color:var(--gold);text-decoration:none;">Sources →</a>
   </div>
 </div>
 
@@ -822,6 +821,52 @@ function exportToStudy() {
 
 addRow('', '', ['Mon','Tue','Wed','Thu','Fri'], 8);
 addRow('', '', ['Mon','Tue','Wed','Thu','Fri'], 8);
+
+// ── UPLOAD WIRING (done here so DOM is ready) ─────────────────────────────
+(function() {
+  const input  = document.getElementById('resumeFile');
+  const zone   = document.getElementById('resumeZone');
+  const btn    = document.getElementById('resumeChooseBtn');
+
+  if (!input || !zone || !btn) return;
+
+  // "Choose File" button opens picker
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    input.value = '';          // reset so same file can be re-selected
+    input.click();
+  });
+
+  // Clicking anywhere else on the zone also opens picker
+  zone.addEventListener('click', function(e) {
+    if (e.target === btn) return; // already handled above
+    input.value = '';
+    input.click();
+  });
+
+  // File selected via picker
+  input.addEventListener('change', function() {
+    if (this.files && this.files[0]) handleFile(this.files[0]);
+  });
+
+  // Drag-and-drop
+  zone.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    zone.classList.add('drag-over');
+  });
+  zone.addEventListener('dragleave', function(e) {
+    e.stopPropagation();
+    zone.classList.remove('drag-over');
+  });
+  zone.addEventListener('drop', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    zone.classList.remove('drag-over');
+    const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+    if (file) handleFile(file);
+  });
+})();
 </script>
 <script>
 function toggleDropdown(){document.getElementById('toolsDropdown').classList.toggle('open');}

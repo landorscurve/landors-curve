@@ -241,18 +241,18 @@ input[type=file]#resumeFileInput{display:none;}
       <div class="mode-card mode-target" id="modeTarget" onclick="setMode('target')">
         <div class="mode-icon">🎯</div>
         <div class="mode-name">Target a Job</div>
-        <div class="mode-desc">Optimize your resume for a specific job posting. Best when you have a real job description in hand.</div>
-      </div>
-      <div class="mode-card mode-cleanup" id="modeCleanup" onclick="setMode('cleanup')">
-        <div class="mode-icon">✨</div>
-        <div class="mode-name">Clean Up My Resume</div>
-        <div class="mode-desc">Improve your current resume without targeting a specific job. Better structure, clarity, and wording.</div>
+        <div class="mode-desc">Optimize your resume for a specific job posting. Use this when you have a real job description in hand.</div>
       </div>
       <div class="mode-card mode-future" id="modeFuture" onclick="setMode('future')">
         <div class="mode-icon">🗺️</div>
         <div class="mode-name">Future Direction</div>
         <div class="mode-desc">Shape your resume toward the direction you are building, even before you are ready to apply.</div>
         <div class="mode-beta">Beta Planning Mode</div>
+      </div>
+      <div class="mode-card mode-cleanup" id="modeCleanup" onclick="setMode('cleanup')">
+        <div class="mode-icon">✨</div>
+        <div class="mode-name">Clean Up My Resume</div>
+        <div class="mode-desc">Improve your current resume without targeting a specific job. Better structure, clarity, and wording.</div>
       </div>
     </div>
   </div>
@@ -589,8 +589,8 @@ function setMode(mode) {
   } else if(mode==='cleanup') {
     document.getElementById('modeCleanup').classList.add('sel-cleanup');
     document.getElementById('fieldsCleanup').classList.add('show');
-    document.getElementById('step2Title').textContent = 'Additional Details';
-    document.getElementById('step2Sub').textContent = 'Help us improve the right things';
+    document.getElementById('step2Title').textContent = 'Cleanup Details';
+    document.getElementById('step2Sub').textContent = 'Optional details to guide the cleanup';
     document.getElementById('buildBtn').textContent = 'CLEAN UP MY RESUME';
     document.getElementById('resEyebrow').textContent = 'Resume Studio - Clean Up My Resume';
   } else if(mode==='future') {
@@ -745,11 +745,17 @@ function renderResults(r) {
     }
   } else if(currentMode==='cleanup') {
     document.getElementById('cleanupResults').style.display = 'block';
-    document.getElementById('clarityEl').innerHTML = (r.clarity||r.recommendations||[]).map(g=>`<div class="gap-item"><div class="gap-icon">💡</div><div class="gap-text">${typeof g==='string'?g:(g.description||'')}</div></div>`).join('');
-    document.getElementById('emphasizeEl').innerHTML = (r.matches||r.emphasize||[]).map(m=>`<span class="match-tag">${m}</span>`).join('');
+    const clarityItems = r.clarity || r.recommendations || r.gaps || [];
+    document.getElementById('clarityEl').innerHTML = clarityItems.map(g=>`<div class="gap-item"><div class="gap-icon">💡</div><div class="gap-text">${typeof g==='string'?g:(g.description||g.text||'')}</div></div>`).join('');
+    const emphItems = r.emphasize || r.matches || r.keywords || [];
+    document.getElementById('emphasizeEl').innerHTML = emphItems.map(m=>`<span class="match-tag">${m}</span>`).join('');
     const sections = r.resumeSections||[];
-    document.getElementById('cleanupOutputEl').innerHTML = sections.map(s=>`<div class="resume-section-title">${s.title||''}</div><div class="resume-content">${s.content||''}</div>`).join('');
+    document.getElementById('cleanupOutputEl').innerHTML = sections.length
+      ? sections.map(s=>`<div class="resume-section-title">${s.title||''}</div><div class="resume-content">${s.content||''}</div>`).join('')
+      : `<div style="font-size:13px;color:var(--muted);line-height:1.75;">The cleanup analysis is above. Review the clarity and recommendation sections to guide your revisions.</div>`;
     fullResumeText = sections.map(s=>(s.title||'')+'\n'+(s.content||'')).join('\n\n');
+    const fs = document.getElementById('fitSummaryEl');
+    if(fs && (r.fitSummary||r.summary)) fs.textContent = r.fitSummary || r.summary;
   } else if(currentMode==='future') {
     document.getElementById('futureResults').style.display = 'block';
     document.getElementById('leverageEl').innerHTML = (r.matches||r.leverage||[]).map(m=>`<span class="match-tag">${m}</span>`).join('');

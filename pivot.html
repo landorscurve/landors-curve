@@ -375,7 +375,7 @@ input[type="file"]#resumeFile { display: none; }
     <div class="tip-box">
       <div class="tip-title">How this works</div>
       <div class="tip-text">
-        <strong>You can add the same skill multiple times with different time periods.</strong> For example, if you taught part-time from 2005 to 2010 and then full-time from 2015 to 2023, add Teaching twice with different hours and years. We add all your hours together across every entry and calculate your true expertise level. It is not about one straight line — it is about the total hours you have invested over your lifetime. At 10,000 hours you reach Master level. Most people are surprised how much they actually know.
+        <strong>You can add the same skill multiple times with different time periods.</strong> For example, if you taught part-time from 2005 to 2010 and then full-time from 2015 to 2023, add Teaching twice with different hours and years. We add all your hours together across every entry and calculate your true expertise level. It is not about one straight line - it is about the total hours you have invested over your lifetime. At 10,000 hours you reach Master level. Most people are surprised how much they actually know.
       </div>
     </div>
   </div>
@@ -393,14 +393,14 @@ input[type="file"]#resumeFile { display: none; }
     <div class="divider"></div>
     <div class="section-label">Your Skill Profile</div>
     <div class="profile-card">
-      <div class="profile-text" id="profileText">—</div>
+      <div class="profile-text" id="profileText">-</div>
       <div class="section-label" style="margin-bottom:12px;">Your Expertise Levels</div>
       <div class="skill-levels" id="skillLevels"></div>
       <div class="rarity-row">
-        <div class="rarity-score" id="rarityScore">—</div>
+        <div class="rarity-score" id="rarityScore">-</div>
         <div class="rarity-info">
           <div class="rarity-label">Crossover Rarity Index</div>
-          <div class="rarity-desc" id="rarityDesc">—</div>
+          <div class="rarity-desc" id="rarityDesc">-</div>
           <div class="rarity-track"><div class="rarity-fill" id="rarityFill"></div></div>
         </div>
       </div>
@@ -412,7 +412,7 @@ input[type="file"]#resumeFile { display: none; }
     <div class="timeline-grid" id="timelineGrid"></div>
     <div class="divider"></div>
     <div class="section-label">Personal Insight</div>
-    <div class="insight-card"><div class="insight-text" id="insightText">—</div></div>
+    <div class="insight-card"><div class="insight-text" id="insightText">-</div></div>
     <div class="divider"></div>
     <div class="next-card">
       <div style="flex:1;min-width:220px;">
@@ -445,7 +445,7 @@ input[type="file"]#resumeFile { display: none; }
   </div>
 
   <div class="footer">
-    PIVOT — Career Pivot Calculator<br>
+    PIVOT - Career Pivot Calculator<br>
     Analysis powered by Claude AI, drawing from O*NET, Bureau of Labor Statistics, Brookings Institution, McKinsey Global Institute, and Goldman Sachs labor market research.<br>
     Results are analytical estimates. Career decisions should incorporate additional professional guidance. © 2026 LandorsCurve.com
   </div>
@@ -587,9 +587,9 @@ async function analyze() {
 }
 
 function render(r, skills) {
-  document.getElementById('profileText').textContent = r.profile || '—';
+  document.getElementById('profileText').textContent = r.profile || '-';
   document.getElementById('rarityScore').textContent = (r.crossoverRarity||0) + '/100';
-  document.getElementById('rarityDesc').textContent = r.rarityDesc || '—';
+  document.getElementById('rarityDesc').textContent = r.rarityDesc || '-';
   setTimeout(() => { document.getElementById('rarityFill').style.width = (r.crossoverRarity||0) + '%'; }, 120);
 
   const skillMap = {};
@@ -625,7 +625,7 @@ function render(r, skills) {
     }</div>`;
   }).join('');
 
-  document.getElementById('insightText').textContent = r.insight || '—';
+  document.getElementById('insightText').textContent = r.insight || '-';
   document.getElementById('resBox').classList.add('show');
   document.getElementById('resBox').scrollIntoView({ behavior:'smooth', block:'start' });
 }

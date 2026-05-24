@@ -262,6 +262,43 @@ input[type=file]#pivotFile{display:none;}
 .import-clear-btn{color:var(--muted);border-color:var(--border);}
 .import-clear-btn:hover{color:var(--red);border-color:rgba(255,71,87,0.4);}
 .partial-import-card{background:rgba(240,165,0,0.05);border:1px solid rgba(240,165,0,0.2);border-radius:10px;padding:14px 18px;margin-bottom:14px;}
+
+/* CAREER PROFILE MODULE */
+.cp-module{margin-top:16px;}
+.cp-module-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;opacity:0.8;}
+.cp-entry{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;}
+.cp-entry-top{display:grid;grid-template-columns:1fr 80px 36px;gap:8px;align-items:center;margin-bottom:12px;}
+.cp-title-input{background:#050505;border:1px solid var(--border);border-radius:7px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);width:100%;outline:none;transition:border-color 0.2s;}
+.cp-title-input:focus{border-color:var(--gold);}
+.cp-title-input::placeholder{color:var(--muted);}
+.cp-years-input{background:#050505;border:1px solid var(--border);border-radius:7px;padding:10px 8px;font-family:'DM Mono',monospace;font-size:13px;color:var(--gold);width:100%;outline:none;text-align:center;}
+.cp-years-input:focus{border-color:var(--gold);}
+.cp-remove-btn{background:rgba(255,71,87,0.06);border:1px solid rgba(255,71,87,0.2);border-radius:6px;color:var(--red);width:34px;height:36px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;flex-shrink:0;}
+.cp-remove-btn:hover{background:rgba(255,71,87,0.18);}
+.cp-entry-body{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px;}
+@media(max-width:560px){.cp-entry-body{grid-template-columns:1fr;}}
+.cp-field-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.cp-days-row{display:flex;gap:4px;flex-wrap:wrap;}
+.cp-day-btn{padding:5px 7px;border-radius:5px;font-family:'DM Mono',monospace;font-size:10px;font-weight:600;cursor:pointer;border:1px solid var(--border);color:var(--muted);background:#050505;transition:all 0.12s;}
+.cp-day-btn.active{background:rgba(240,165,0,0.12);border-color:var(--gold);color:var(--gold);}
+.cp-hours-row{display:flex;align-items:center;gap:8px;}
+.cp-hrs-slider{flex:1;accent-color:var(--gold);cursor:pointer;}
+.cp-hrs-display{font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);white-space:nowrap;min-width:60px;}
+.cp-badge{display:flex;align-items:center;gap:8px;background:rgba(240,165,0,0.06);border-radius:6px;padding:6px 10px;font-size:11px;}
+.cp-badge-hrs{font-family:'DM Mono',monospace;color:var(--gold);font-weight:600;}
+.cp-badge-level{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:4px;}
+.cp-add-btn{background:none;border:1px dashed rgba(240,165,0,0.3);border-radius:7px;color:var(--gold);padding:10px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;width:100%;margin-top:4px;transition:all 0.2s;}
+.cp-add-btn:hover{background:rgba(240,165,0,0.06);border-color:var(--gold);}
+.cp-summary{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:8px;padding:6px 10px;background:var(--dark);border-radius:6px;opacity:0.7;}
+.limited-warning{background:rgba(240,165,0,0.06);border:1px solid rgba(240,165,0,0.25);border-radius:10px;padding:16px 18px;margin-bottom:14px;display:none;}
+.limited-warning-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--yellow);margin-bottom:6px;}
+.limited-warning-text{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:12px;}
+.lw-btn-row{display:flex;gap:8px;flex-wrap:wrap;}
+.lw-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:8px 14px;border-radius:6px;border:1px solid;cursor:pointer;background:transparent;transition:all 0.2s;}
+.lw-continue{color:var(--gold);border-color:rgba(240,165,0,0.35);}
+.lw-continue:hover{background:rgba(240,165,0,0.08);}
+.lw-add{color:var(--green);border-color:rgba(46,213,115,0.35);}
+.lw-add:hover{background:rgba(46,213,115,0.08);}
 </style>
 </head>
 <body>
@@ -325,30 +362,51 @@ input[type=file]#pivotFile{display:none;}
 
 
   <!-- STEP 1: RESUME -->
+  <!-- LIMITED CONTEXT WARNING -->
+  <div class="limited-warning" id="limitedWarning">
+    <div class="limited-warning-label">Limited Context</div>
+    <div class="limited-warning-text">We only have your selected direction. Add a resume, career history, or a few roles for a stronger roadmap.</div>
+    <div class="lw-btn-row">
+      <button class="lw-btn lw-continue" onclick="runWithLimitedContext()">Continue Anyway</button>
+      <button class="lw-btn lw-add" onclick="dismissLimitedWarning()">Add More Background</button>
+    </div>
+  </div>
+
   <div class="step-card" id="step1Card">
     <div class="step-header">
       <div class="step-num">1</div>
       <div><div class="step-title" id="step1Title">Your Background</div><div class="step-sub" id="step1Sub">Upload your resume or describe your current experience and goals</div></div>
     </div>
+
+    <!-- RESUME UPLOAD AREA -->
     <div id="resumeUploadArea">
-    <input type="file" id="pivotFile" accept=".pdf,.doc,.docx" onchange="handleFile(this.files[0])">
-    <label for="pivotFile" class="drop-zone" id="dropZone"
-           ondragover="event.preventDefault();this.classList.add('over')"
-           ondragleave="this.classList.remove('over')"
-           ondrop="event.preventDefault();this.classList.remove('over');handleFile(event.dataTransfer.files[0])">
-      <div class="drop-zone-icon">📄</div>
-      <div class="drop-zone-title">Drop Your Resume Here</div>
-      <div class="drop-zone-sub">PDF or Word - never stored or uploaded anywhere</div>
-      <span class="drop-zone-btn">Choose File</span>
-      <div class="drop-privacy">Your file stays in your browser only.</div>
-    </label>
-    <div class="drop-status" id="dropStatus"></div>
-    <div class="or-divider"><div class="or-line"></div><div class="or-text">Or describe your background manually</div><div class="or-line"></div></div>
-    <label class="form-label">Current profession or background</label>
-    <input class="form-inp" id="background" type="text" placeholder="e.g. Marketing Manager, Audio Engineer, High School Teacher, Project Manager...">
-    <label class="form-label">Years of experience <span class="opt-tag">optional</span></label>
-    <input class="form-inp" id="years" type="text" placeholder="e.g. 8 years, 15+ years, early career...">
-    </div><!-- end resumeUploadArea -->
+      <input type="file" id="pivotFile" accept=".pdf,.doc,.docx" onchange="handleFile(this.files[0])">
+      <label for="pivotFile" class="drop-zone" id="dropZone"
+             ondragover="event.preventDefault();this.classList.add('over')"
+             ondragleave="this.classList.remove('over')"
+             ondrop="event.preventDefault();this.classList.remove('over');handleFile(event.dataTransfer.files[0])">
+        <div class="drop-zone-icon">📄</div>
+        <div class="drop-zone-title">Drop Your Resume Here</div>
+        <div class="drop-zone-sub">PDF or Word. Never stored or uploaded anywhere.</div>
+        <span class="drop-zone-btn">Choose File</span>
+        <div class="drop-privacy">Your file stays in your browser only.</div>
+      </label>
+      <div class="drop-status" id="dropStatus"></div>
+      <div class="or-divider"><div class="or-line"></div><div class="or-text">Or add roles manually below</div><div class="or-line"></div></div>
+    </div>
+
+    <!-- CAREER PROFILE MODULE -->
+    <div class="cp-module">
+      <div class="cp-module-label">Your Career Profile</div>
+      <div id="cpRows"></div>
+      <button class="cp-add-btn" onclick="cpAddRow()">+ Add a role or experience period</button>
+      <div class="cp-summary" id="cpSummary" style="display:none;"></div>
+    </div>
+
+    <!-- FALLBACK BACKGROUND TEXT -->
+    <div class="or-divider" style="margin-top:12px;"><div class="or-line"></div><div class="or-text">Or briefly describe your background</div><div class="or-line"></div></div>
+    <label class="form-label">Background summary <span class="opt-tag">optional</span></label>
+    <input class="form-inp" id="background" type="text" placeholder="e.g. 15 years in marketing, recently pivoting to UX...">
   </div>
 
 
@@ -593,20 +651,7 @@ function selChip(btn, group) {
 
 function updateSlider(val) { document.getElementById('sliderVal').textContent = val + ' hrs/week'; }
 
-async function handleFile(file) {
-  if (!file) return;
-  const name = file.name.toLowerCase();
-  if (!name.endsWith('.pdf')&&!name.endsWith('.doc')&&!name.endsWith('.docx')) { setDS('warn','Please upload a PDF or Word document.'); return; }
-  setDS('loading','Reading your resume...');
-  try {
-    let text = name.endsWith('.pdf') ? await readPDF(file) : await readDOCX(file);
-    const words = text.trim().split(/\s+/).filter(w=>w.length>0).length;
-    if (words<15) { setDS('warn','Could not read enough text. Try a Word document or paste manually below.'); return; }
-    extractedText = text;
-    document.getElementById('background').value = '(Resume uploaded - ' + words + ' words extracted)';
-    setDS('ok','Resume loaded. ' + words + ' words extracted. You can also add details in the fields below.');
-  } catch(e) { setDS('warn','Could not read this file. Please paste your background manually.'); }
-}
+// handleFile defined below in career profile module
 async function readPDF(file) {
   const buf = await file.arrayBuffer();
   const pdf = await pdfjsLib.getDocument({data:buf}).promise;
@@ -619,15 +664,16 @@ async function readDOCX(file) {
   if(typeof mammoth!=='undefined'){try{const r=await mammoth.extractRawText({arrayBuffer:buf});if(r.value&&r.value.trim().length>20)return r.value;}catch(e){}}
   return new Promise(resolve=>{const reader=new FileReader();reader.onload=e=>resolve(e.target.result||'');reader.onerror=()=>resolve('');reader.readAsText(file);});
 }
-function setDS(type, msg) {
-  const el=document.getElementById('dropStatus');
-  el.className='drop-status show '+type;
-  el.innerHTML=(type==='loading'?'<div class="drop-spin"></div>':'<span>'+(type==='ok'?'✓':'⚠')+'</span>')+'<span style="margin-left:8px;">'+msg+'</span>';
-}
+// setDS defined below
 
 async function run() {
-  const bg = extractedText || document.getElementById('background').value.trim();
-  if (!bg) { showErr('Please add your background in Step 1.'); return; }
+  const roles = cpGetRoles();
+  const bgField = document.getElementById('background')?.value.trim() || '';
+  let bg = extractedText || bgField;
+  if (!bg && roles.length) {
+    bg = roles.map(r=>r.title+(r.org?' at '+r.org:'')+(r.years?' ('+r.years+' yrs, '+r.expertise+')':'')).join('; ');
+  }
+  if (!bg && !roles.length) { showErr('Please add your background in Step 1.'); return; }
   if (!currentMode) { showErr('Please choose a mode: Find Job Paths or Build a Skill Plan.'); return; }
 
   document.getElementById('errBox').classList.remove('show');
@@ -642,8 +688,9 @@ async function run() {
   }, 2500);
 
   const payload = {
-    background: bg.slice(0,6000),
-    years: document.getElementById('years').value.trim(),
+    background: bg ? bg.slice(0,6000) : '',
+    careerProfileRoles: cpGetRoles(),
+    years: '', // years tracked per-role in Career Profile module
     intent: chipState.intent || '',
     mode: currentMode,
     // CM fields
@@ -783,96 +830,254 @@ function switchToLP() {
 
 function showErr(msg){document.getElementById('errBox').textContent=msg;document.getElementById('errBox').classList.add('show');}
 
-// ── CAREER ASSESSMENT IMPORT SYSTEM ─────────────────────────────────────
+// ── CAREER PROFILE MODULE ─────────────────────────────────────────────────
+const CP_DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const CP_LEVEL_COLORS = {Master:'#F0A500',Advanced:'#FF6B35',Proficient:'#FFD32A',Competent:'#2ED573',Foundation:'#888899',Exposure:'#555566'};
+let cpRowCount = 0;
 let caImportPayload = null;
+let limitedContextOverride = false;
 
+function cpExpertise(hours) {
+  if (hours >= 10000) return {label:'Master',color:'#F0A500'};
+  if (hours >= 5000)  return {label:'Advanced',color:'#FF6B35'};
+  if (hours >= 2500)  return {label:'Proficient',color:'#FFD32A'};
+  if (hours >= 1000)  return {label:'Competent',color:'#2ED573'};
+  if (hours >= 100)   return {label:'Foundation',color:'#888899'};
+  return {label:'Exposure',color:'#555566'};
+}
+
+function cpCalcHours(id) {
+  const row = document.getElementById('cprow-'+id);
+  if (!row) return 0;
+  const years = parseFloat(row.querySelector('.cp-years-input').value) || 0;
+  const hrsPerDay = parseFloat(row.querySelector('.cp-hrs-slider').value) || 0;
+  const activeDays = row.querySelectorAll('.cp-day-btn.active').length;
+  return years * 48 * activeDays * hrsPerDay;
+}
+
+function cpUpdateBadge(id) {
+  const hours = cpCalcHours(id);
+  const row = document.getElementById('cprow-'+id);
+  if (!row) return;
+  const exp = cpExpertise(hours);
+  const badge = row.querySelector('.cp-badge-hrs');
+  const level = row.querySelector('.cp-badge-level');
+  if (badge) badge.textContent = Math.round(hours).toLocaleString() + ' hrs';
+  if (level) {
+    level.textContent = exp.label;
+    level.style.background = exp.color + '22';
+    level.style.color = exp.color;
+  }
+  cpUpdateSummary();
+}
+
+function cpUpdateSummary() {
+  const roles = cpGetRoles();
+  const totalHrs = roles.reduce((s,r)=>s+r.estimatedHours,0);
+  const el = document.getElementById('cpSummary');
+  if (!el) return;
+  if (roles.length > 0) {
+    el.style.display = 'block';
+    el.textContent = roles.length + ' role' + (roles.length!==1?'s':'') + ' · ' + Math.round(totalHrs).toLocaleString() + ' estimated career hours';
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+function cpAddRow(title='', org='', years='', activeDays=['Mon','Tue','Wed','Thu','Fri'], hrsPerDay=8) {
+  cpRowCount++;
+  const id = cpRowCount;
+  const div = document.createElement('div');
+  div.className = 'cp-entry';
+  div.id = 'cprow-'+id;
+  const daysHTML = CP_DAYS.map(d =>
+    `<span class="cp-day-btn${activeDays.includes(d)?' active':''}" onclick="this.classList.toggle('active');cpUpdateBadge(${id})">${d.slice(0,2)}</span>`
+  ).join('');
+  div.innerHTML = `
+    <div class="cp-entry-top">
+      <input class="cp-title-input" placeholder="Role or skill (e.g. Audio Engineer, Teacher...)" value="${title}" oninput="cpUpdateSummary()">
+      <input class="cp-years-input" type="number" placeholder="Yrs" min="0" max="60" step="0.5" value="${years}" oninput="cpUpdateBadge(${id})" title="Years">
+      <button class="cp-remove-btn" onclick="document.getElementById('cprow-${id}').remove();cpUpdateSummary()">&#215;</button>
+    </div>
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;opacity:0.6;">Organization (optional)</div>
+    <input class="cp-title-input" placeholder="Company, school, or client..." value="${org}" style="margin-bottom:10px;" oninput="cpUpdateSummary()">
+    <div class="cp-entry-body">
+      <div>
+        <div class="cp-field-label">Days per week</div>
+        <div class="cp-days-row">${daysHTML}</div>
+      </div>
+      <div>
+        <div class="cp-field-label">Hours per day</div>
+        <div class="cp-hours-row">
+          <input type="range" class="cp-hrs-slider" min="0.5" max="16" step="0.5" value="${hrsPerDay}" oninput="this.nextElementSibling.textContent=this.value+' hrs/day';cpUpdateBadge(${id})">
+          <span class="cp-hrs-display">${hrsPerDay} hrs/day</span>
+        </div>
+      </div>
+    </div>
+    <div class="cp-badge">
+      <span class="cp-badge-hrs">0 hrs</span>
+      <span class="cp-badge-level">Exposure</span>
+    </div>`;
+  document.getElementById('cpRows').appendChild(div);
+  cpUpdateBadge(id);
+}
+
+function cpGetRoles() {
+  const roles = [];
+  document.querySelectorAll('.cp-entry').forEach(row => {
+    const inputs = row.querySelectorAll('.cp-title-input');
+    const title = inputs[0]?.value.trim() || '';
+    const org = inputs[1]?.value.trim() || '';
+    const years = parseFloat(row.querySelector('.cp-years-input')?.value) || 0;
+    const hrsPerDay = parseFloat(row.querySelector('.cp-hrs-slider')?.value) || 0;
+    const activeDays = row.querySelectorAll('.cp-day-btn.active').length;
+    const estimatedHours = Math.round(years * 48 * activeDays * hrsPerDay);
+    const exp = cpExpertise(estimatedHours);
+    if (title) roles.push({ title, org, years, hrsPerDay, activeDays, estimatedHours, expertise: exp.label });
+  });
+  return roles;
+}
+
+// ── HANDLE FILE UPLOAD - EXTRACT ROLES ───────────────────────────────────
+const _origHandleFile = typeof handleFile === 'function' ? handleFile : null;
+async function handleFile(file) {
+  if (!file) return;
+  const name = file.name.toLowerCase();
+  if (!name.endsWith('.pdf')&&!name.endsWith('.doc')&&!name.endsWith('.docx')) {
+    setDS('warn','Please upload a PDF or Word document.'); return;
+  }
+  setDS('loading','Reading your resume...');
+  try {
+    let text = name.endsWith('.pdf') ? await readPDF(file) : await readDOCX(file);
+    const words = text.trim().split(/\s+/).filter(w=>w.length>0).length;
+    if (words < 15) { setDS('warn','Could not read enough text. Try a Word document or add roles manually.'); return; }
+    extractedText = text;
+    setDS('loading','Extracting roles from your resume...');
+    // Try to extract roles via API
+    try {
+      const res = await fetch('/api/analyze-resume', {
+        method: 'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ resumeText: text.slice(0,7000) })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const skills = data.skills || [];
+        if (skills.length) {
+          // Clear existing rows first
+          document.getElementById('cpRows').innerHTML = '';
+          cpRowCount = 0;
+          skills.forEach(s => {
+            const yrs = s.years || 0;
+            const hpd = yrs > 0 ? 8 : 0;
+            cpAddRow(s.skill || s.title || '', s.org || '', yrs, ['Mon','Tue','Wed','Thu','Fri'], hpd);
+          });
+          setDS('ok', words.toLocaleString() + ' words extracted. Found ' + skills.length + ' role' + (skills.length!==1?'s':'') + ' in your resume. Review and adjust before generating your roadmap.');
+          cpUpdateSummary();
+          return;
+        }
+      }
+    } catch(e) {}
+    // Fallback: just show word count
+    setDS('ok', words.toLocaleString() + ' words extracted. Review the roles below or add them manually.');
+    const bg = document.getElementById('background');
+    if (bg && !bg.value.trim()) bg.value = '(Resume uploaded - ' + words.toLocaleString() + ' words)';
+  } catch(e) { setDS('warn','Could not process this file. Try a Word document or add roles manually.'); }
+}
+
+function setDS(type,msg){
+  const el=document.getElementById('dropStatus');
+  if(!el) return;
+  el.className='drop-status show '+type;
+  el.innerHTML=(type==='loading'?'<div class="drop-spin"></div>':'<span>'+(type==='ok'?'✓':'⚠')+'</span>')+'<span style="margin-left:8px;">'+msg+'</span>';
+}
+
+// ── LIMITED CONTEXT WARNING ───────────────────────────────────────────────
+function checkLimitedContext() {
+  const roles = cpGetRoles();
+  const bg = document.getElementById('background')?.value.trim() || '';
+  const hasBackground = extractedText || bg.length > 10 || roles.length > 0;
+  if (!hasBackground) {
+    document.getElementById('limitedWarning').style.display = 'block';
+    return false;
+  }
+  return true;
+}
+
+function runWithLimitedContext() {
+  document.getElementById('limitedWarning').style.display = 'none';
+  limitedContextOverride = true;
+  run();
+}
+
+function dismissLimitedWarning() {
+  document.getElementById('limitedWarning').style.display = 'none';
+  document.getElementById('step1Card').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ── CAREER ASSESSMENT IMPORT SYSTEM ──────────────────────────────────────
 function initImport() {
   const params = new URLSearchParams(window.location.search);
   const hasImportFlag = params.get('ca_import') === '1';
   const careerParam = params.get('career');
 
-  // Try full sessionStorage import first
+  // Try sessionStorage first, then localStorage
   let payload = null;
   try {
-    const stored = sessionStorage.getItem('ca_handoff');
+    const stored = sessionStorage.getItem('ca_handoff') || localStorage.getItem('ca_handoff');
     if (stored) {
       payload = JSON.parse(stored);
-      // Only use if fresh (within 5 minutes)
-      if (!payload.exportedAt || Date.now() - payload.exportedAt > 300000) payload = null;
+      if (!payload.exportedAt || Date.now() - payload.exportedAt > 600000) payload = null;
+      else { try { localStorage.removeItem('ca_handoff'); } catch(e) {} }
     }
   } catch(e) {}
 
   if (payload && payload.source === 'career-assessment') {
-    // Full import
     caImportPayload = payload;
     showFullImport(payload);
   } else if (careerParam) {
-    // Partial import - URL param only
     showPartialImport(decodeURIComponent(careerParam));
   }
 }
 
 function showFullImport(p) {
-  // Update step header
   document.getElementById('step1Title').textContent = 'Your Imported Career Profile';
-  document.getElementById('step1Sub').textContent = 'Review what was brought over from Career Assessment. Edit or clear before generating.';
-
-  // Hide resume upload
+  document.getElementById('step1Sub').textContent = 'Review your roles and experience below before generating your roadmap.';
   const uploadArea = document.getElementById('resumeUploadArea');
   if (uploadArea) uploadArea.style.display = 'none';
+
+  // Populate CP module with imported roles
+  if (p.roles && p.roles.length) {
+    document.getElementById('cpRows').innerHTML = '';
+    cpRowCount = 0;
+    p.roles.forEach(r => {
+      const yrs = parseFloat(r.years) || 0;
+      const hpd = r.hoursPerDay || 8;
+      const days = r.activeDays || ['Mon','Tue','Wed','Thu','Fri'];
+      cpAddRow(r.title || '', r.organization || '', yrs, Array.isArray(days)?days:['Mon','Tue','Wed','Thu','Fri'], hpd);
+    });
+  }
 
   // Pre-fill background with summary
   const bg = document.getElementById('background');
   if (bg && p.profileSummary) bg.value = p.profileSummary;
 
-  // Build import card
+  // Build import confirmation card
   const card = document.createElement('div');
   card.className = 'import-card';
   card.id = 'caImportCard';
-
-  const rolesHtml = (p.roles||[]).slice(0,6).map(r =>
-    `<div class="import-role-item"><span>${r.title||''}</span><span class="import-role-hrs">${r.expertise||''} · ~${(r.estimatedHours||0).toLocaleString()} hrs</span></div>`
-  ).join('');
-
-  const strengthsHtml = (p.crossoverStrengths||[]).slice(0,4).join(' · ');
-
+  const strengths = (p.crossoverStrengths||[]).slice(0,4).join(' · ');
   card.innerHTML = `
     <div class="import-card-label">Imported from Career Assessment</div>
     <div class="import-card-title">Your Career Assessment Profile</div>
-    <div class="import-card-body">Your Career Assessment profile has been brought into Roadmap. This includes your selected direction, roles, estimated experience, crossover strengths, and assessment summary.</div>
-
-    <div class="import-detail">
-      <div class="import-detail-label">Selected Direction</div>
-      <div class="import-detail-value">${p.selectedDirection||'Not specified'}</div>
-    </div>
-
-    ${rolesHtml ? `<div class="import-detail">
-      <div class="import-detail-label">Imported Experience</div>
-      <div class="import-role-list">${rolesHtml}</div>
-    </div>` : ''}
-
-    ${strengthsHtml ? `<div class="import-detail">
-      <div class="import-detail-label">Crossover Strengths</div>
-      <div class="import-detail-value">${strengthsHtml}</div>
-    </div>` : ''}
-
-    ${p.insight && p.insight !== '-' ? `<div class="import-detail">
-      <div class="import-detail-label">Assessment Summary</div>
-      <div class="import-detail-value" style="font-style:italic;">${p.insight}</div>
-    </div>` : ''}
-
-    <div class="import-actions" style="margin-top:14px;">
-      <button class="import-action-btn import-edit-btn" onclick="editImport()">Edit Imported Background</button>
+    <div class="import-card-body">Your Career Assessment profile has been brought into Roadmap. Your roles and experience are loaded below. Review them before generating your roadmap.</div>
+    ${p.selectedDirection ? `<div class="import-detail"><div class="import-detail-label">Selected Direction</div><div class="import-detail-value">${p.selectedDirection}</div></div>` : ''}
+    ${strengths ? `<div class="import-detail"><div class="import-detail-label">Crossover Strengths</div><div class="import-detail-value">${strengths}</div></div>` : ''}
+    ${p.rarityIndex ? `<div class="import-detail"><div class="import-detail-label">Crossover Rarity Index</div><div class="import-detail-value">${p.rarityIndex}</div></div>` : ''}
+    <div class="import-actions" style="margin-top:12px;">
       <button class="import-action-btn import-clear-btn" onclick="clearImport()">Clear Import and Upload Resume</button>
     </div>`;
-
   document.getElementById('step1Card').prepend(card);
-
-  // Update background field label
-  const bgLabel = document.querySelector('label[for="background"]') || document.querySelector('.form-label');
-  if (bgLabel && bgLabel.textContent.includes('Current profession')) {
-    bgLabel.textContent = 'Additional details or context (optional)';
-  }
+  cpUpdateSummary();
 }
 
 function showPartialImport(career) {
@@ -880,88 +1085,72 @@ function showPartialImport(career) {
   card.className = 'partial-import-card';
   card.id = 'partialImportCard';
   card.innerHTML = `<div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;">Partial Import Received</div>
-    <div style="font-size:13px;color:var(--muted);line-height:1.6;">We brought over your selected direction, but the full Career Assessment profile was not available. Add more background below or upload a resume to improve your roadmap.</div>
-    <div style="margin-top:8px;font-size:12px;color:var(--text);"><strong>Direction:</strong> ${career}</div>`;
+    <div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:8px;">We brought over your selected direction, but the full Career Assessment profile was not available. Add your resume or career history below for a stronger roadmap.</div>
+    <div style="font-size:12px;color:var(--text);"><strong>Direction:</strong> ${career}</div>`;
   document.getElementById('step1Card').prepend(card);
-  // Pre-fill background
-  const bg = document.getElementById('background');
-  if (bg) bg.value = career;
-}
-
-function editImport() {
-  // Show a simple edit area for the background field
-  const bg = document.getElementById('background');
-  if (bg) {
-    bg.focus();
-    bg.style.borderColor = 'var(--green)';
-    setTimeout(() => { bg.style.borderColor = ''; }, 2000);
-  }
-  // Show upload area for adding resume too
-  const uploadArea = document.getElementById('resumeUploadArea');
-  if (uploadArea) {
-    uploadArea.style.display = 'block';
-    uploadArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
+  cpAddRow(career, '', '', ['Mon','Tue','Wed','Thu','Fri'], 8);
 }
 
 function clearImport() {
-  if (!confirm('This will remove the imported Career Assessment context from this Roadmap session. Continue?')) return;
+  if (!confirm('This will remove the imported Career Assessment profile from this Roadmap session. Continue?')) return;
   caImportPayload = null;
-  try { sessionStorage.removeItem('ca_handoff'); } catch(e) {}
-  // Remove import card
+  try { sessionStorage.removeItem('ca_handoff'); localStorage.removeItem('ca_handoff'); } catch(e) {}
   const card = document.getElementById('caImportCard') || document.getElementById('partialImportCard');
   if (card) card.remove();
-  // Show upload area
   const uploadArea = document.getElementById('resumeUploadArea');
   if (uploadArea) uploadArea.style.display = 'block';
-  // Reset step header
   document.getElementById('step1Title').textContent = 'Your Background';
   document.getElementById('step1Sub').textContent = 'Upload your resume or describe your current experience and goals';
-  // Clear background field
+  document.getElementById('cpRows').innerHTML = '';
+  cpRowCount = 0;
   const bg = document.getElementById('background');
   if (bg) bg.value = '';
+  cpUpdateSummary();
 }
 
-// ── OVERRIDE run() to inject CA import data into payload ─────────────────
-const _origRun = typeof run === 'function' ? run : null;
-function runWithImport() {
-  if (_origRun) {
-    // Inject CA payload into chipState/background before running
-    if (caImportPayload) {
-      const bg = document.getElementById('background');
-      if (bg && !bg.value.trim() && caImportPayload.profileSummary) {
-        bg.value = caImportPayload.profileSummary;
-      }
-    }
-    _origRun();
-  }
+// ── OVERRIDE build() to check context and inject CP data ─────────────────
+function build() {
+  if (!limitedContextOverride && !checkLimitedContext()) return;
+  limitedContextOverride = false;
+  run();
 }
 
-// Enrich the payload sent to API with full CA context
+// ── ENRICH API PAYLOAD with full career profile ───────────────────────────
 const _origFetch = window.fetch;
 window.fetch = function(url, opts) {
-  if (url && url.includes('/api/pivot-tool') && caImportPayload && opts && opts.body) {
+  if (url && url.includes('/api/pivot-tool') && opts && opts.body) {
     try {
       const body = JSON.parse(opts.body);
-      if (!body.caImport) {
+      const roles = cpGetRoles();
+      const bg = document.getElementById('background')?.value.trim() || '';
+      // Build enriched background from CP roles
+      if (roles.length && !body.background) {
+        body.background = roles.map(r=>`${r.title}${r.org?' at '+r.org:''} (${r.years||0} yrs, ${r.expertise})`).join('; ');
+      }
+      // Always attach CP profile
+      body.careerProfile = {
+        roles,
+        totalRoles: roles.length,
+        totalCareerHours: roles.reduce((s,r)=>s+r.estimatedHours,0),
+        backgroundNote: bg
+      };
+      // Attach CA import if available
+      if (caImportPayload) {
         body.caImport = {
           selectedDirection: caImportPayload.selectedDirection,
-          roles: caImportPayload.roles,
           crossoverStrengths: caImportPayload.crossoverStrengths,
           rarityIndex: caImportPayload.rarityIndex,
           insight: caImportPayload.insight,
-          profileSummary: caImportPayload.profileSummary
+          careerOptions: caImportPayload.careerOptions
         };
-        opts.body = JSON.stringify(body);
       }
+      opts.body = JSON.stringify(body);
     } catch(e) {}
   }
   return _origFetch.apply(this, arguments);
 };
 
 initImport();
-
-function build(){if(typeof run==="function")run();else if(typeof analyze==="function")analyze();}
 function toggleDropdown(){document.getElementById('toolsDropdown').classList.toggle('open');}
 function openMobile(){document.getElementById('mobileMenu').classList.add('open');document.body.style.overflow='hidden';}
 function closeMobile(){document.getElementById('mobileMenu').classList.remove('open');document.body.style.overflow='';}

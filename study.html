@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="/favicon.ico?v=2" sizes="any">
 <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=2">
-<title>Learning Roadmap — Landor's Curve</title>
+<title>Roadmap - Landor's Curve</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
@@ -257,7 +257,7 @@ input[type=file]#pivotFile{display:none;}
       <div class="nav-dropdown-menu">
         <a href="/#analyzer">Analyzer</a>
         <a href="/pivot">Career Assessment</a>
-        <a href="/study">Learning Roadmap</a>
+        <a href="/study">Roadmap</a>
         <a href="/target-resume">Target Resume</a>
         <a href="/rebound" style="border-top:1px solid rgba(240,165,0,0.2);margin-top:2px;">Rebound Radar</a>
         <a href="/safe-list">Safe Careers List</a>
@@ -297,10 +297,10 @@ input[type=file]#pivotFile{display:none;}
 <div class="wrap">
   <div class="hero">
     <div class="eyebrow">Applied Tool</div>
-    <h1 class="hero-title">LEARNING<br><span>ROADMAP</span></h1>
-    <div class="hero-subtitle">Build toward something new while keeping your current job.</div>
-    <p class="hero-body">Changing direction does not always mean quitting everything or going back to school full-time. Learning Roadmap helps you create a practical plan around your current work schedule, available study hours, budget, location, and goals.</p>
-    <div class="hero-note">This tool assumes you are still employed and need to build toward something while paying bills. It helps you compare free learning, certifications, portfolio projects, community college options, and degree-based paths — at whatever pace fits your life. It helps you understand what kinds of roles to look for before you start searching. Your free profile includes your top 3 most relevant directions. The full Pivot Report runs a deeper analysis and expands this into a broader career map, including additional role options, market signals, skill gaps, search keywords, and a practical next-step plan. Credits are only used when you generate the full report.</div>
+    <h1 class="hero-title">ROAD<br><span>MAP</span></h1>
+    <div class="hero-subtitle">Find a new direction, or build toward one while keeping your current job.</div>
+    <p class="hero-body">Changing direction does not always mean quitting everything or going back to school full-time. Roadmap helps you choose between two practical paths: finding job options that may already fit your current experience, or building a step-by-step plan around your work schedule so you can move toward something new over time.</p>
+    <div class="hero-note">This tool is built for people who are still working and need to move at a realistic pace. Choose Find Job Paths to discover roles you may already be close to, or choose Build a Skill Plan to create a step-by-step learning plan that fits around your current job, schedule, and budget.</div>
   </div>
 
 
@@ -364,7 +364,7 @@ input[type=file]#pivotFile{display:none;}
            ondrop="event.preventDefault();this.classList.remove('over');handleFile(event.dataTransfer.files[0])">
       <div class="drop-zone-icon">📄</div>
       <div class="drop-zone-title">Drop Your Resume Here</div>
-      <div class="drop-zone-sub">PDF or Word — never stored or uploaded anywhere</div>
+      <div class="drop-zone-sub">PDF or Word - never stored or uploaded anywhere</div>
       <span class="drop-zone-btn">Choose File</span>
       <div class="drop-privacy">Your file stays in your browser only.</div>
     </label>
@@ -380,14 +380,14 @@ input[type=file]#pivotFile{display:none;}
   <div class="step-card">
     <div class="step-header">
       <div class="step-num">2</div>
-      <div><div class="step-title">What Are You Trying to Do?</div></div>
+      <div><div class="step-title">What Do You Want to Do?</div></div>
     </div>
     <div class="chip-group" id="intentChips">
       <button class="chip" onclick="selChip(this,'intent')">Find a better job using my current experience</button>
       <button class="chip" onclick="selChip(this,'intent')">Move into a related career</button>
       <button class="chip" onclick="selChip(this,'intent')">Change careers more seriously</button>
       <button class="chip" onclick="selChip(this,'intent')">Build a side skill or study plan</button>
-      <button class="chip" onclick="selChip(this,'intent')">I am not sure — show me options</button>
+      <button class="chip" onclick="selChip(this,'intent')">I am not sure - show me options</button>
     </div>
   </div>
 
@@ -397,16 +397,16 @@ input[type=file]#pivotFile{display:none;}
     <div class="mode-grid">
       <div class="mode-card mode-cm" id="modeCM" onclick="setMode('cm')">
         <div class="mode-card-icon">🎯</div>
-        <div class="mode-card-title">Career Movement</div>
-        <div class="mode-card-desc">Find jobs, roles, or adjacent paths that may already fit your current experience — without major new study, certifications, or a full career reset.</div>
+        <div class="mode-card-title">Find Job Paths</div>
+        <div class="mode-card-desc">Find jobs, roles, or adjacent careers that may already fit your current experience without major new training, school, or certification.</div>
       </div>
       <div class="mode-card mode-lp" id="modeLP" onclick="setMode('lp')">
         <div class="mode-card-icon">📚</div>
-        <div class="mode-card-title">Learning Pivot</div>
-        <div class="mode-card-desc">Build a practical study, certification, or portfolio plan for a bigger transition while maintaining your current work schedule.</div>
+        <div class="mode-card-title">Build a Skill Plan</div>
+        <div class="mode-card-desc">Build toward something new while keeping your current job. Compare free learning, certifications, portfolio projects, community college, and degree-based paths at your own pace.</div>
       </div>
     </div>
-    <div class="mode-helper">Not sure which to choose? Start with Career Movement. If the options do not feel right, switch to Learning Pivot and build a longer-term plan.</div>
+    <div class="mode-helper">Not sure which to choose? Start with Find Job Paths. If those options do not feel right, switch to Build a Skill Plan for a longer-term approach.</div>
   </div>
 
   <!-- STEP 4: MODE-SPECIFIC FIELDS -->
@@ -472,8 +472,8 @@ input[type=file]#pivotFile{display:none;}
 
     <div id="noModeMsg" style="font-size:13px;color:var(--muted);padding:8px 0;">Select a mode above to see relevant options.</div>
 
-    <button class="build-btn" id="buildBtn" onclick="build()">BUILD MY LEARNING ROADMAP</button>
-    <p class="helper-text">Your roadmap is built around your current schedule and goals. Results are directional — use them to explore, not as a guarantee.</p>
+    <button class="build-btn" id="buildBtn" onclick="build()">FIND MY PATHS</button>
+    <p class="helper-text">Your roadmap is built around your current schedule and goals. Results are directional - use them to explore, not as a guarantee.</p>
   </div>
 
   <div class="error-box" id="errBox"></div>
@@ -520,8 +520,8 @@ input[type=file]#pivotFile{display:none;}
       <div id="thirtyEl"></div>
 
       <div class="switch-mode-card">
-        <div class="switch-mode-text"><strong>These options do not feel right?</strong> Switch to Learning Pivot and build a longer-term plan for a bigger transition.</div>
-        <button class="switch-mode-btn" onclick="switchToLP()">Switch to Learning Pivot</button>
+        <div class="switch-mode-text"><strong>These options do not feel right?</strong> Switch to Build a Skill Plan and create a longer-term learning path for a bigger transition.</div>
+        <button class="switch-mode-btn" onclick="switchToLP()">Switch to Build a Skill Plan</button>
       </div>
     </div>
 
@@ -554,7 +554,7 @@ input[type=file]#pivotFile{display:none;}
 
     <!-- INSIGHT (both modes) -->
     <div class="sec-eyebrow" style="margin-top:36px;">Personal Insight</div>
-    <div class="insight-card"><div class="insight-text" id="insightEl">—</div></div>
+    <div class="insight-card"><div class="insight-text" id="insightEl">-</div></div>
 
 
     <!-- UPGRADE PROMPT -->
@@ -575,6 +575,14 @@ input[type=file]#pivotFile{display:none;}
         <a href="/target-resume">Target Resume</a>
       </div>
     </div>
+  </div>
+</div>
+
+
+<div class="wrap" style="padding:0 0 24px;">
+  <div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px 18px;max-width:680px;">
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);opacity:0.5;margin-bottom:6px;">Beta Note</div>
+    <p style="font-size:12px;color:var(--muted);line-height:1.7;">During beta, you can explore Roadmap for free. In the future, full reports may use credits because expanded search, deeper analysis, source-layer review, formatted reports, and email delivery require more resources.</p>
   </div>
 </div>
 
@@ -630,7 +638,7 @@ function setMode(mode) {
   document.getElementById('cmFields').classList.toggle('show', mode==='cm');
   document.getElementById('lpFields').classList.toggle('show', mode==='lp');
   document.getElementById('noModeMsg').style.display = mode ? 'none' : 'block';
-  document.getElementById('buildBtn').textContent = mode==='cm' ? 'FIND ROLES I MAY ALREADY FIT' : 'BUILD MY LEARNING ROADMAP';
+  document.getElementById('buildBtn').textContent = mode==='cm' ? 'FIND JOB PATHS' : 'BUILD MY SKILL PLAN';
 }
 
 function selChip(btn, group) {
@@ -651,7 +659,7 @@ async function handleFile(file) {
     const words = text.trim().split(/\s+/).filter(w=>w.length>0).length;
     if (words<15) { setDS('warn','Could not read enough text. Try a Word document or paste manually below.'); return; }
     extractedText = text;
-    document.getElementById('background').value = '(Resume uploaded — ' + words + ' words extracted)';
+    document.getElementById('background').value = '(Resume uploaded - ' + words + ' words extracted)';
     setDS('ok','Resume loaded. ' + words + ' words extracted. You can also add details in the fields below.');
   } catch(e) { setDS('warn','Could not read this file. Please paste your background manually.'); }
 }
@@ -676,7 +684,7 @@ function setDS(type, msg) {
 async function run() {
   const bg = extractedText || document.getElementById('background').value.trim();
   if (!bg) { showErr('Please add your background in Step 1.'); return; }
-  if (!currentMode) { showErr('Please choose a mode — Career Movement or Learning Pivot.'); return; }
+  if (!currentMode) { showErr('Please choose a mode: Find Job Paths or Build a Skill Plan.'); return; }
 
   document.getElementById('errBox').classList.remove('show');
   document.getElementById('resBox').classList.remove('show');
@@ -727,15 +735,17 @@ async function run() {
 }
 
 function renderResults(r) {
-  document.getElementById('resLabel').textContent = 'Pivot Tool — ' + (currentMode==='cm'?'Career Movement':'Learning Pivot');
+  document.getElementById('resLabel').textContent = 'Roadmap - ' + (currentMode==='cm'?'Find Job Paths':'Build a Skill Plan');
   document.getElementById('resHeading').textContent = r.headline || 'Your Options';
   document.getElementById('resSummary').textContent = r.summary || '';
   document.getElementById('snapEl').textContent = r.snapshot || '';
   document.getElementById('strengthsEl').innerHTML = (r.strengths||[]).map(s=>`<span class="tag-green">${s}</span>`).join('');
-  document.getElementById('insightEl').textContent = r.insight || '—';
+  document.getElementById('insightEl').textContent = r.insight || '-';
 
   document.getElementById('cmResults').style.display = currentMode==='cm' ? 'block' : 'none';
   document.getElementById('lpResults').style.display = currentMode==='lp' ? 'block' : 'none';
+  var rh = document.getElementById('resumeHandoff');
+  if (rh) rh.style.display = currentMode==='cm' ? 'block' : 'none';
 
   if (currentMode === 'cm') {
     document.getElementById('rolesEl').innerHTML = (r.roles||[]).map(role=>{
@@ -814,6 +824,14 @@ function renderResults(r) {
   document.getElementById('resBox').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
+function showReportModal() {
+  var m = document.getElementById('reportModal');
+  if (m) { m.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+}
+function closeReportModal() {
+  var m = document.getElementById('reportModal');
+  if (m) { m.style.display = 'none'; document.body.style.overflow = ''; }
+}
 function switchToLP() {
   setMode('lp');
   window.scrollTo({top:0,behavior:'smooth'});

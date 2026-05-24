@@ -29,6 +29,10 @@
       "destination": "/target-resume.html"
     },
     {
+      "source": "/pricing",
+      "destination": "/pricing.html"
+    },
+    {
       "source": "/api/analyze",
       "destination": "/api/analyze.js"
     },

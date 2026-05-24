@@ -6,7 +6,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=2">
 <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=2">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Career Assessment — Landor's Curve</title>
+<title>Career Assessment - Landor's Curve</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
@@ -171,7 +171,7 @@ input[type="file"]#resumeFile { display: none; }
 .next-card { background: rgba(46,213,115,0.06); border: 1px solid rgba(46,213,115,0.2); border-radius: 12px; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
 .next-text { font-size: 13px; color: var(--text); line-height: 1.6; }
 .next-text strong { color: var(--green); }
-.next-btn { background: var(--green); color: #000; border: none; border-radius: 8px; padding: 11px 22px; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; letter-spacing: 1px; text-transform: uppercase; flex-shrink: 0; }
+.next-btn { background: var(--green); color: #000; border: none; border-radius: 8px; padding: 11px 22px; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; letter-spacing: 1px; text-transform: uppercase; flex-shrink: 0; text-decoration: none; display: inline-block; }
 .footer { margin-top: 48px; padding-top: 22px; border-top: 1px solid var(--border); font-size: 11px; color: var(--muted); line-height: 1.7; font-family: 'DM Mono', monospace; }
 
 /* NAV */
@@ -343,7 +343,7 @@ input[type="file"]#resumeFile { display: none; }
     </svg>
   </div>
 
-  <!-- RESUME DROP ZONE — file input FIRST, then label wrapping the zone -->
+  <!-- RESUME DROP ZONE: file input first, then label wrapping the zone -->
   <input type="file" id="resumeFile" accept=".pdf,.doc,.docx" onchange="handleFile(this.files[0])">
   <label for="resumeFile" class="resume-zone" id="resumeZone"
          ondragover="event.preventDefault();this.classList.add('drag-over')"
@@ -380,7 +380,7 @@ input[type="file"]#resumeFile { display: none; }
     </div>
   </div>
 
-  <button class="analyze-btn" id="analyzeBtn" onclick="analyze()">CALCULATE MY PIVOT</button>
+  <button class="analyze-btn" id="analyzeBtn" onclick="analyze()">ASSESS MY CAREER</button>
   <div class="error-box" id="errBox"></div>
 
   <div class="loading-box" id="loadBox">
@@ -415,8 +415,32 @@ input[type="file"]#resumeFile { display: none; }
     <div class="insight-card"><div class="insight-text" id="insightText">—</div></div>
     <div class="divider"></div>
     <div class="next-card">
-      <div class="next-text"><strong>Ready to find safer adjacent careers?</strong> Export your top career to Learning Roadmap and get a full learning roadmap with free, certification, and degree paths.</div>
-      <button class="next-btn" onclick="exportToStudy()">Build a Learning Roadmap</button>
+      <div style="flex:1;min-width:220px;">
+        <div class="next-text"><strong>Ready to build toward something better?</strong> Some career options may already fit your current experience. Others may require a small upgrade, a certification, a portfolio project, or a longer-term learning plan. Use Learning Roadmap to build a practical plan while maintaining your current employment.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;">
+        <a href="/study" target="_blank" rel="noopener noreferrer" class="next-btn" id="roadmapBtn">Build Roadmap for This Direction</a>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--muted);opacity:0.55;">Opens in a new tab so your Career Assessment stays open.</span>
+      </div>
+    </div>
+
+    <!-- EMAIL ASSESSMENT -->
+    <div style="background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:10px;">
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Email Report</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6;">Get a clean, printer-friendly version of your Career Assessment sent to your email.</div>
+      </div>
+      <button onclick="showEmailModal()" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:10px 18px;border-radius:7px;border:1px solid var(--border);color:var(--muted);background:transparent;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all 0.2s;" onmouseover="this.style.borderColor='rgba(240,165,0,0.4)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='rgba(240,165,0,0.12)';this.style.color='var(--muted)'">Email My Assessment</button>
+    </div>
+
+    <!-- EMAIL MODAL -->
+    <div id="emailModal" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.75);align-items:center;justify-content:center;">
+      <div style="background:var(--panel);border:1px solid rgba(240,165,0,0.2);border-radius:14px;padding:32px;max-width:420px;width:90%;margin:0 auto;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--gold);letter-spacing:1px;margin-bottom:8px;">Email My Assessment</div>
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);opacity:0.6;margin-bottom:14px;">Coming Soon</div>
+        <p style="font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:22px;">Email delivery is coming soon. In the beta version, you can review your assessment here. Future versions will let you send a clean, printer-friendly report to your email.</p>
+        <button onclick="closeEmailModal()" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:11px 22px;border-radius:7px;border:1px solid rgba(240,165,0,0.35);color:var(--gold);background:transparent;cursor:pointer;width:100%;">Close</button>
+      </div>
     </div>
   </div>
 

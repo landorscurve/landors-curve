@@ -419,7 +419,7 @@ input[type="file"]#resumeFile { display: none; }
         <div class="next-text"><strong>Ready to build toward something better?</strong> Some career options may already fit your current experience. Others may require a small upgrade, a certification, a portfolio project, or a longer-term learning plan. Use Learning Roadmap to build a practical plan while maintaining your current employment.</div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;">
-        <a href="/study" target="_blank" rel="noopener noreferrer" class="next-btn" id="roadmapBtn">Build Roadmap for This Direction</a>
+        <a href="/study" target="_blank" rel="noopener noreferrer" class="next-btn" id="roadmapBtn" onclick="event.preventDefault();exportToStudy();">Build Roadmap for This Direction</a>
         <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--muted);opacity:0.55;">Opens in a new tab so your Career Assessment stays open.</span>
       </div>
     </div>
@@ -743,7 +743,8 @@ function exportToStudy() {
   let topHours = 0;
   Object.values(skillMap).forEach(s => { if (s.hours > topHours) { topHours = s.hours; topSkill = s.skill; } });
   if (!topSkill && rows.length) topSkill = rows[0].querySelector('.skill-input')?.value?.trim() || '';
-  window.location.href = topSkill ? '/study?career=' + encodeURIComponent(topSkill) : '/study';
+  const url = topSkill ? '/study?career=' + encodeURIComponent(topSkill) : '/study';
+  window.open(url, '_blank', 'noopener,noreferrer');
 }
 
 addRow('', '', ['Mon','Tue','Wed','Thu','Fri'], 8);

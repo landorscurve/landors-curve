@@ -62,15 +62,13 @@ body::before { display: none; }
   cursor: pointer;
   display: block;
 }
-.resume-zone { cursor: pointer; }
 .resume-zone:hover, .resume-zone.drag-over { border-color: var(--gold); background: rgba(240,165,0,0.06); }
-.resume-zone-btn { cursor: pointer; }
 .resume-zone-icon { font-size: 28px; margin-bottom: 10px; }
 .resume-zone-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--gold); letter-spacing: 1px; margin-bottom: 8px; }
 .resume-zone-sub { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
 .resume-zone-btn { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 8px 20px; border-radius: 6px; border: 1px solid rgba(240,165,0,0.4); color: var(--gold); background: transparent; display: inline-block; }
 .resume-privacy { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1px; color: var(--muted); opacity: 0.5; margin-top: 12px; }
-input[type="file"]#resumeFile { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+input[type="file"]#resumeFile { display: none; }
 
 .resume-processing { display: none; align-items: center; gap: 12px; background: rgba(240,165,0,0.06); border: 1px solid rgba(240,165,0,0.2); border-radius: 10px; padding: 14px 18px; margin-bottom: 16px; }
 .resume-processing.show { display: flex; }
@@ -345,15 +343,18 @@ input[type="file"]#resumeFile { position: absolute; width: 1px; height: 1px; opa
     </svg>
   </div>
 
-  <!-- RESUME DROP ZONE -->
-  <input type="file" id="resumeFile" accept=".pdf,.doc,.docx">
-  <div class="resume-zone" id="resumeZone">
+  <!-- RESUME DROP ZONE: file input first, then label wrapping the zone -->
+  <input type="file" id="resumeFile" accept=".pdf,.doc,.docx" onchange="handleFile(this.files[0])">
+  <label for="resumeFile" class="resume-zone" id="resumeZone"
+         ondragover="event.preventDefault();this.classList.add('drag-over')"
+         ondragleave="this.classList.remove('drag-over')"
+         ondrop="event.preventDefault();this.classList.remove('drag-over');handleFile(event.dataTransfer.files[0])">
     <div class="resume-zone-icon">📄</div>
     <div class="resume-zone-title">Drop Your Resume Here</div>
-    <div class="resume-zone-sub">We will read your resume and auto-fill your skills and experience below. PDF and Word documents supported.</div>
-    <span class="resume-zone-btn" id="resumeZoneBtn">Choose File</span>
+    <div class="resume-zone-sub">We will read your resume and auto-fill your skills and experience below.<br>PDF and Word documents supported.</div>
+    <span class="resume-zone-btn">Choose File</span>
     <div class="resume-privacy">Your file is never uploaded or stored. It is read locally in your browser only.</div>
-  </div>
+  </label>
 
   <div class="resume-processing" id="resumeProcessing">
     <div class="resume-spin"></div>
@@ -418,7 +419,7 @@ input[type="file"]#resumeFile { position: absolute; width: 1px; height: 1px; opa
         <div class="next-text"><strong>Ready to build toward something better?</strong> Some career options may already fit your current experience. Others may require a small upgrade, a certification, a portfolio project, or a longer-term learning plan. Use Learning Roadmap to build a practical plan while maintaining your current employment.</div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;">
-        <a href="/study" target="_blank" rel="noopener noreferrer" class="next-btn" id="roadmapBtn" onclick="event.preventDefault();exportToStudy();">Handoff to Roadmap</a>
+        <a href="/study" target="_blank" rel="noopener noreferrer" class="next-btn" id="roadmapBtn" onclick="event.preventDefault();exportToStudy();">Build Roadmap for This Direction</a>
         <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--muted);opacity:0.55;">Opens in a new tab so your Career Assessment stays open.</span>
       </div>
     </div>
@@ -444,9 +445,9 @@ input[type="file"]#resumeFile { position: absolute; width: 1px; height: 1px; opa
   </div>
 
   <div class="footer">
-    Career Assessment<br>
-    Sources include O*NET, Bureau of Labor Statistics, published workforce research, and Landor's Curve source layers.<br>
-    Results are analytical estimates based on the information provided, public workforce data, published research, and Landor's Curve source layers. Career decisions should incorporate additional research and professional guidance when appropriate. <a href="/sources" style="color:var(--gold);text-decoration:none;">Sources →</a>
+    PIVOT - Career Pivot Calculator<br>
+    Analysis powered by Claude AI, drawing from O*NET, Bureau of Labor Statistics, Brookings Institution, McKinsey Global Institute, and Goldman Sachs labor market research.<br>
+    Results are analytical estimates. Career decisions should incorporate additional professional guidance. © 2026 LandorsCurve.com
   </div>
 </div>
 
@@ -727,128 +728,78 @@ function showErr(msg) {
 
 // Export top skill to Landor's Study
 function exportToStudy() {
-  // ── Collect all skill entry rows ──────────────────────────────────────
+  // Build full handoff payload
   const rows = document.querySelectorAll('.skill-entry');
   const roles = [];
-  let totalHrs = 0;
+  const skillMap = {};
   rows.forEach(row => {
     const skill = row.querySelector('.skill-input')?.value?.trim();
     const id = row.id?.replace('row-', '');
     if (skill && id) {
       const hrs = calcHours(id);
-      const years = parseFloat(row.querySelector('.years-input')?.value)||0;
-      const exp = typeof expertiseLevel === 'function' ? expertiseLevel(hrs) : {label:'Exposure'};
+      const yearsEl = row.querySelector('.years-input');
+      const years = yearsEl ? parseFloat(yearsEl.value)||0 : 0;
+      const exp = typeof expertiseLevel === 'function' ? expertiseLevel(hrs) : {label:'Unknown'};
       roles.push({ title: skill, years, estimatedHours: Math.round(hrs), expertise: exp.label });
-      totalHrs += hrs;
+      const key = skill.toLowerCase();
+      if (!skillMap[key]) skillMap[key] = { skill, hours: 0 };
+      skillMap[key].hours += hrs;
     }
   });
 
-  // ── Collect DOM result data ───────────────────────────────────────────
-  const profileText = (document.getElementById('profileText')?.textContent||'').trim().replace(/-$/, '').trim();
-  const rarityScore = (document.getElementById('rarityScore')?.textContent||'').trim().replace(/-$/, '').trim();
-  const rarityDesc  = (document.getElementById('rarityDesc')?.textContent||'').trim().replace(/-$/, '').trim();
-  const insightText = (document.getElementById('insightText')?.textContent||'').trim().replace(/-$/, '').trim();
+  // Find top skill for URL param fallback
+  let topSkill = '';
+  let topHours = 0;
+  Object.values(skillMap).forEach(s => { if (s.hours > topHours) { topHours = s.hours; topSkill = s.skill; } });
+  if (!topSkill && roles.length) topSkill = roles[0].title || '';
 
+  // Find selected direction from results (timeline short/medium jobs)
+  const tlCards = document.querySelectorAll('.tl-job-title');
+  const selectedDirection = tlCards.length ? tlCards[0].textContent.trim() : topSkill;
+
+  // Collect API result data from DOM
+  const profileText = document.getElementById('profileText')?.textContent || '';
+  const rarityScore = document.getElementById('rarityScore')?.textContent || '';
+  const insightText = document.getElementById('insightText')?.textContent || '';
+
+  // Strength bars
   const strengths = [];
   document.querySelectorAll('.sbar').forEach(bar => {
-    const lbl = bar.querySelector('.sbar-lbl')?.textContent?.trim();
-    const val = bar.querySelector('.sbar-val')?.textContent?.trim();
-    if (lbl && val && val !== '0%') strengths.push(lbl + ': ' + val);
+    const lbl = bar.querySelector('.sbar-lbl')?.textContent;
+    const val = bar.querySelector('.sbar-val')?.textContent;
+    if (lbl && val) strengths.push(lbl + ' ' + val);
   });
 
-  const careerOptions = [];
-  document.querySelectorAll('.tl-job').forEach(job => {
-    const title = job.querySelector('.tl-job-title')?.textContent?.trim();
-    if (title) careerOptions.push(title);
+  // Skill pills with expertise
+  const skillPills = [];
+  document.querySelectorAll('.skill-pill').forEach(pill => {
+    skillPills.push(pill.textContent.trim());
   });
 
-  // ── Selected direction = first career option identified ──────────────
-  const selectedDirection = careerOptions[0] || (roles[0]?.title || '');
-
-  // ── Build plain-text handoff summary ─────────────────────────────────
-  const roleLines = roles.map((r,i) =>
-    (i+1)+'. '+r.title+(r.years?' | '+r.years+' yrs':'')+' | ~'+r.estimatedHours.toLocaleString()+' hrs | '+r.expertise
-  ).join('
-');
-
-  const summary = [
-    'ROADMAP HANDOFF SUMMARY',
-    '',
-    'Selected Direction:',
-    selectedDirection || 'Not specified',
-    '',
-    'Career Profile Summary:',
-    profileText || 'Not available',
-    '',
-    'Total Estimated Career Hours:',
-    Math.round(totalHrs).toLocaleString() + ' hrs',
-    '',
-    'Experience Profile:',
-    roleLines || 'No roles entered',
-    '',
-    'Crossover Rarity Index:',
-    rarityScore + (rarityDesc ? ' - ' + rarityDesc : ''),
-    '',
-    'Crossover Strengths:',
-    strengths.length ? strengths.map(s=>'- '+s).join('
-') : 'Not available',
-    '',
-    'Career Options Already Identified:',
-    careerOptions.length ? careerOptions.map(o=>'- '+o).join('
-') : 'Not available',
-    '',
-    'Personal Insight:',
-    insightText || 'Not available',
-  ].join('
-');
-
-  // ── Store in localStorage (persists across new tabs) ──────────────────
-  const storagePayload = {
-    summary,
+  const payload = {
     selectedDirection,
+    roles,
+    totalRoles: roles.length,
+    topSkill,
+    profileSummary: profileText,
+    rarityIndex: rarityScore,
+    crossoverStrengths: strengths,
+    skillLevels: skillPills,
+    insight: insightText,
     exportedAt: Date.now(),
     source: 'career-assessment'
   };
+
+  // Store in sessionStorage
   try {
-    localStorage.setItem('landorsCurveRoadmapHandoff', JSON.stringify(storagePayload));
-    localStorage.setItem('landorsCurveRoadmapSelectedDirection', selectedDirection);
+    sessionStorage.setItem('ca_handoff', JSON.stringify(payload));
   } catch(e) {
-    console.warn('localStorage unavailable');
+    console.warn('sessionStorage unavailable, falling back to URL param');
   }
 
-  window.open('/study?ca_import=1', '_blank', 'noopener,noreferrer');
+  const url = topSkill ? '/study?career=' + encodeURIComponent(topSkill) + '&ca_import=1' : '/study?ca_import=1';
+  window.open(url, '_blank', 'noopener,noreferrer');
 }
-
-// ── FILE UPLOAD WIRING ────────────────────────────────────────────────────
-(function(){
-  var inp = document.getElementById('resumeFile');
-  var zone = document.getElementById('resumeZone');
-  if (!inp || !zone) return;
-
-  inp.addEventListener('change', function(){
-    if (this.files && this.files[0]) handleFile(this.files[0]);
-  });
-
-  zone.addEventListener('click', function(){
-    inp.value = '';
-    inp.click();
-  });
-
-  zone.addEventListener('dragover', function(e){
-    e.preventDefault(); e.stopPropagation();
-    zone.classList.add('drag-over');
-  });
-  zone.addEventListener('dragleave', function(e){
-    e.stopPropagation();
-    zone.classList.remove('drag-over');
-  });
-  zone.addEventListener('drop', function(e){
-    e.preventDefault(); e.stopPropagation();
-    zone.classList.remove('drag-over');
-    var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
-    if (f) handleFile(f);
-  });
-})();
 
 addRow('', '', ['Mon','Tue','Wed','Thu','Fri'], 8);
 addRow('', '', ['Mon','Tue','Wed','Thu','Fri'], 8);

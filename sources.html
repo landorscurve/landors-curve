@@ -167,8 +167,8 @@ body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;m
   <!-- SECTION 4 -->
   <div class="section">
     <div class="eyebrow">Section 3</div>
-    <div class="section-title">Source Layers</div>
-    <p class="muted" style="margin-bottom:22px;">Each tool draws from different combinations of these layers depending on the type of analysis being performed.</p>
+    <div class="section-title" id="source-layers">Source Layers</div>
+    <p class="muted" style="margin-bottom:22px;">Each tool draws from different combinations of these layers depending on the type of analysis being performed. No single source explains the whole labor market. The value comes from comparing layers.</p>
 
     <div class="layers-grid">
 
@@ -181,7 +181,17 @@ body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;m
           <span class="layer-tag">BLS</span>
           <span class="layer-tag">Public occupational databases</span>
         </div>
-        <div class="layer-note">Official data provides the baseline. When new official data becomes available, Landor's Curve is designed to update its underlying references so users are not relying on outdated assumptions.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:4px;">Strength</div>
+            <div style="font-size:11px;color:var(--muted);line-height:1.55;">Provides stable, structured, public workforce data that can be compared across occupations.</div>
+          </div>
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--orange);margin-bottom:4px;">Limitation</div>
+            <div style="font-size:11px;color:var(--muted);line-height:1.55;">Official datasets can lag behind fast-moving changes in technology, employer expectations, and emerging job titles.</div>
+          </div>
+        </div>
+        <div class="layer-note">When new official data becomes available, Landor's Curve is designed to update its underlying references so users are not relying on outdated assumptions.</div>
       </div>
 
       <div class="layer-card" style="border-top:3px solid var(--blue);">
@@ -195,34 +205,68 @@ body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;m
           <span class="layer-tag">WEF</span>
           <span class="layer-tag">OECD</span>
         </div>
-        <div class="layer-note">Published reports help capture larger patterns that may not appear in occupational databases right away. These reports are reviewed and incorporated when they add useful context.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:4px;">Strength</div>
+            <div style="font-size:11px;color:var(--muted);line-height:1.55;">Published reports can capture large patterns, expert interpretation, and emerging themes that may not appear in occupational databases right away.</div>
+          </div>
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--orange);margin-bottom:4px;">Limitation</div>
+            <div style="font-size:11px;color:var(--muted);line-height:1.55;">Reports may be updated irregularly, use different assumptions, or focus on broad sectors rather than individual career situations.</div>
+          </div>
+        </div>
+        <div class="layer-note">Reports are reviewed and incorporated when they add useful context to the analysis.</div>
       </div>
 
       <div class="layer-card" style="border-top:3px solid var(--yellow);">
         <div class="layer-num">Layer 3</div>
         <div class="layer-title">Current Signals</div>
-        <div class="layer-body">Used for recent job-market patterns, employer language, emerging skill demand, role descriptions, and recently published material. Some tools may use current signals when available, especially for deeper reports or more specific career comparisons. These signals are not meant to replace official data. They help show what may be changing now.</div>
-        <div class="layer-note">Landor's Curve is being built to support curated current-signal layers. The goal is not to scrape everything blindly. The goal is to add useful, human-reviewed signals that improve the quality of the analysis.</div>
+        <div class="layer-body">Used for understanding what may be changing now. Includes recent job-market patterns, employer language, emerging skill demand, role descriptions, recently published material, and public professional discussions when reviewed and relevant.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:4px;">Strength</div>
+            <div style="font-size:11px;color:var(--muted);line-height:1.55;">Current signals can reveal new terminology, emerging skills, employer expectations, and role shifts before they appear in official datasets.</div>
+          </div>
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--orange);margin-bottom:4px;">Limitation</div>
+            <div style="font-size:11px;color:var(--muted);line-height:1.55;">Current signals can be noisy, incomplete, or anecdotal if not reviewed carefully.</div>
+          </div>
+        </div>
+        <div class="layer-note">Landor's Curve is being built to support curated current-signal layers. The goal is to add useful, human-reviewed signals that improve the quality of the analysis.</div>
       </div>
 
       <div class="layer-card" style="border-top:3px solid var(--gold);">
         <div class="layer-num">Layer 4</div>
         <div class="layer-title">User Inputs</div>
-        <div class="layer-body">User inputs help the tools personalize results. A resume, job description, or career goal can change the analysis because the system is comparing general workforce information against the user's actual background.</div>
-        <div class="layer-tags">
-          <span class="layer-tag">Resume uploads</span>
-          <span class="layer-tag">Career background</span>
-          <span class="layer-tag">Job descriptions</span>
-          <span class="layer-tag">Target roles</span>
-          <span class="layer-tag">Study hours</span>
-          <span class="layer-tag">Education goals</span>
+        <div class="layer-body">Used for personalization. Inputs may include resume uploads, career background, job descriptions, target roles, location, budget, available study hours, education goals, work history, and skills and experience.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:4px;">Strength</div>
+            <div style="font-size:11px;color:var(--muted);line-height:1.55;">User inputs allow the system to compare general workforce information against the person's actual background, goals, and constraints.</div>
+          </div>
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--orange);margin-bottom:4px;">Limitation</div>
+            <div style="font-size:11px;color:var(--muted);line-height:1.55;">Results depend on the quality and completeness of what the user provides. An outdated resume or vague goal may produce a less specific analysis.</div>
+          </div>
         </div>
+        <div class="layer-note">Users can improve results by adding missing experience, current goals, location, target roles, or a real job description.</div>
       </div>
 
       <div class="layer-card" style="border-top:3px solid var(--orange);grid-column:1 / -1;">
         <div class="layer-num">Layer 5</div>
         <div class="layer-title">Founder-Developed Frameworks</div>
-        <div class="layer-body">Landor's Curve also uses founder-developed frameworks to organize the analysis. These frameworks are designed to help users understand how careers bend, shift, or transfer as technology and market expectations change. They are used for interpreting career pressure, skill transfer, adjacent opportunities, learning paths, and adaptation. They are working frameworks, not peer-reviewed academic studies.</div>
+        <div class="layer-body">Used for interpreting career pressure, skill transfer, adjacent opportunities, learning paths, and adaptation. These frameworks help organize complex information into practical questions and decisions.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:4px;">Strength</div>
+            <div style="font-size:11px;color:var(--muted);line-height:1.55;">The frameworks help organize complex information into practical questions and decisions that are useful for individual career planning.</div>
+          </div>
+          <div>
+            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--orange);margin-bottom:4px;">Limitation</div>
+            <div style="font-size:11px;color:var(--muted);line-height:1.55;">These are founder-developed working frameworks, not peer-reviewed academic studies or official labor forecasts.</div>
+          </div>
+        </div>
+        <div class="layer-note">They are refined as the tools are tested, user feedback is reviewed, and new source layers are added.</div>
       </div>
 
     </div>

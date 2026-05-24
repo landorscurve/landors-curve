@@ -117,11 +117,19 @@ body::before { display: none; }
 .sources-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
 .src-badge { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px; font-size: 10px; color: var(--muted); font-family: 'DM Mono', monospace; transition: all 0.3s; }
 .src-badge.active { border-color: var(--gold); color: var(--gold); background: rgba(240,165,0,0.08); }
-.preset-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; align-items: center; }
-.preset-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); opacity: 0.5; margin-right: 4px; }
-.preset-btn { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; padding: 5px 12px; border-radius: 5px; border: 1px solid var(--border); color: var(--muted); background: transparent; cursor: pointer; transition: all 0.18s; }
+.preset-wrap { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; margin-bottom: 24px; }
+.preset-wrap-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; opacity: 0.8; }
+.preset-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; align-items: center; }
+.preset-label { display: none; }
+.preset-btn { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 8px 14px; border-radius: 6px; border: 1px solid var(--border); color: var(--muted); background: transparent; cursor: pointer; transition: all 0.18s; }
 .preset-btn:hover { border-color: rgba(240,165,0,0.4); color: var(--gold); }
-.preset-btn.active { background: rgba(240,165,0,0.08); border-color: var(--gold); color: var(--gold); }
+.preset-btn.active { background: rgba(240,165,0,0.1); border-color: var(--gold); color: var(--gold); }
+.preset-descs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+@media(max-width:560px){ .preset-descs { grid-template-columns: 1fr; } }
+.preset-desc-item { display: none; }
+.preset-desc-item.visible { display: block; }
+.preset-desc-name { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+.preset-desc-text { font-size: 12px; color: var(--muted); line-height: 1.6; }
 .error-box { display: none; background: rgba(255,71,87,0.08); border: 1px solid rgba(255,71,87,0.25); border-radius: 10px; padding: 16px 20px; color: #FF7785; font-size: 13px; margin-bottom: 20px; }
 .error-box.show { display: block; }
 .loading-box { display: none; text-align: center; padding: 64px 20px; }
@@ -431,7 +439,7 @@ body::before { display: none; }
 <hr style="border:none;border-top:1px solid rgba(240,165,0,0.12);margin:0;">
 <!-- ANALYZER -->
 <div id="analyzer" class="wrap" style="padding:72px 0;">
-  <div class="eyebrow">The Tool</div>
+  <div class="eyebrow">Analyzer</div>
   <div class="section-heading" style="margin-bottom:8px;">Where Does Your Profession Stand?</div>
   <p class="section-sub" style="margin-bottom:28px;">Enter any job or profession to see how work in that field may be changing, what tasks are under pressure, what remains human, and where adaptation may be needed next.</p>
 
@@ -480,13 +488,33 @@ body::before { display: none; }
     <span class="src-badge" id="sb-linkedin">LinkedIn</span>
     <span class="src-badge" id="sb-oecd">OECD</span>
   </div>
-  <div class="preset-row">
-    <span class="preset-label">Source preset:</span>
-    <button class="preset-btn active" id="preset-balanced" onclick="setPreset('balanced')">Balanced</button>
-    <button class="preset-btn" id="preset-conservative" onclick="setPreset('conservative')">Conservative</button>
-    <button class="preset-btn" id="preset-disruption" onclick="setPreset('disruption')">Disruption Weighted</button>
-    <button class="preset-btn" id="preset-emerging" onclick="setPreset('emerging')">Emerging Focus</button>
-    <a href="/about" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--muted);text-decoration:none;opacity:0.5;margin-left:6px;">About these sources →</a>
+  <div class="preset-wrap">
+    <div class="preset-wrap-label">Choose a Source Preset</div>
+    <div class="preset-row">
+      <button class="preset-btn active" id="preset-balanced" onclick="setPreset('balanced')">Balanced</button>
+      <button class="preset-btn" id="preset-conservative" onclick="setPreset('conservative')">Conservative</button>
+      <button class="preset-btn" id="preset-disruption" onclick="setPreset('disruption')">Disruption Weighted</button>
+      <button class="preset-btn" id="preset-emerging" onclick="setPreset('emerging')">Emerging Focus</button>
+    </div>
+    <div class="preset-descs">
+      <div class="preset-desc-item visible" id="desc-balanced">
+        <div class="preset-desc-name">Balanced</div>
+        <div class="preset-desc-text">Uses a mix of official workforce data, published research, and current signals for a broad view.</div>
+      </div>
+      <div class="preset-desc-item" id="desc-conservative">
+        <div class="preset-desc-name">Conservative</div>
+        <div class="preset-desc-text">Leans more heavily on official workforce data and stable occupational sources.</div>
+      </div>
+      <div class="preset-desc-item" id="desc-disruption">
+        <div class="preset-desc-name">Disruption Weighted</div>
+        <div class="preset-desc-text">Emphasizes AI exposure, automation pressure, and market disruption signals.</div>
+      </div>
+      <div class="preset-desc-item" id="desc-emerging">
+        <div class="preset-desc-name">Emerging Focus</div>
+        <div class="preset-desc-text">Highlights newer role patterns, emerging skills, and current market signals when available.</div>
+      </div>
+    </div>
+    <a href="/sources#source-layers" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--muted);text-decoration:none;opacity:0.55;display:inline-block;margin-top:10px;">About these sources →</a>
   </div>
 
   <div class="error-box" id="errBox"></div>
@@ -780,6 +808,9 @@ function setPreset(key) {
   document.getElementById('preset-' + key).classList.add('active');
   SRCS.forEach(id => document.getElementById(id).classList.remove('active'));
   PRESETS[key].badges.forEach(id => document.getElementById(id).classList.add('active'));
+  document.querySelectorAll('.preset-desc-item').forEach(d => d.classList.remove('visible'));
+  var desc = document.getElementById('desc-' + key);
+  if (desc) desc.classList.add('visible');
 }
 
 // Init balanced preset badges

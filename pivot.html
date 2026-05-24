@@ -345,13 +345,22 @@ input[type="file"]#resumeFile { display: none; }
     </svg>
   </div>
 
-  <!-- RESUME DROP ZONE: input hidden, zone div triggers it via JS -->
-  <input type="file" id="resumeFile" accept=".pdf,.doc,.docx" style="display:none;">
-  <div class="resume-zone" id="resumeZone">
+  <!-- RESUME DROP ZONE: original working pattern restored -->
+  <input type="file" id="resumeFile" accept=".pdf,.doc,.docx" onchange="handleFile(this.files[0])">
+  <label for="resumeFile" class="resume-zone" id="resumeZone"
+         ondragover="event.preventDefault();this.classList.add('drag-over')"
+         ondragleave="this.classList.remove('drag-over')"
+         ondrop="event.preventDefault();this.classList.remove('drag-over');handleFile(event.dataTransfer.files[0])">
+    <div class="resume-zone-icon">📄</div>
+    <div class="resume-zone-title">Drop Your Resume Here</div>
+    <div class="resume-zone-sub">We will read your resume and auto-fill your skills and experience below. PDF and Word documents supported.</div>
+    <span class="resume-zone-btn">Choose File</span>
+    <div class="resume-privacy">Your file is never uploaded or stored. It is read locally in your browser only.</div>
+  </label>
     <div class="resume-zone-icon">📄</div>
     <div class="resume-zone-title">Drop Your Resume Here</div>
     <div class="resume-zone-sub">We will read your resume and auto-fill your skills and experience below.<br>PDF and Word documents supported.</div>
-    <button type="button" class="resume-zone-btn" id="resumeChooseBtn">Choose File</button>
+    <span class="resume-zone-btn">Choose File</span>
     <div class="resume-privacy">Your file is never uploaded or stored. It is read locally in your browser only.</div>
   </div>
 
@@ -821,52 +830,6 @@ function exportToStudy() {
 
 addRow('', '', ['Mon','Tue','Wed','Thu','Fri'], 8);
 addRow('', '', ['Mon','Tue','Wed','Thu','Fri'], 8);
-
-// ── UPLOAD WIRING (done here so DOM is ready) ─────────────────────────────
-(function() {
-  const input  = document.getElementById('resumeFile');
-  const zone   = document.getElementById('resumeZone');
-  const btn    = document.getElementById('resumeChooseBtn');
-
-  if (!input || !zone || !btn) return;
-
-  // "Choose File" button opens picker
-  btn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    input.value = '';          // reset so same file can be re-selected
-    input.click();
-  });
-
-  // Clicking anywhere else on the zone also opens picker
-  zone.addEventListener('click', function(e) {
-    if (e.target === btn) return; // already handled above
-    input.value = '';
-    input.click();
-  });
-
-  // File selected via picker
-  input.addEventListener('change', function() {
-    if (this.files && this.files[0]) handleFile(this.files[0]);
-  });
-
-  // Drag-and-drop
-  zone.addEventListener('dragover', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    zone.classList.add('drag-over');
-  });
-  zone.addEventListener('dragleave', function(e) {
-    e.stopPropagation();
-    zone.classList.remove('drag-over');
-  });
-  zone.addEventListener('drop', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    zone.classList.remove('drag-over');
-    const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
-    if (file) handleFile(file);
-  });
-})();
 </script>
 <script>
 function toggleDropdown(){document.getElementById('toolsDropdown').classList.toggle('open');}

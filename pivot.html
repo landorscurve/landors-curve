@@ -345,18 +345,15 @@ input[type="file"]#resumeFile { display: none; }
     </svg>
   </div>
 
-  <!-- RESUME DROP ZONE: original working pattern restored -->
-  <input type="file" id="resumeFile" accept=".pdf,.doc,.docx" onchange="handleFile(this.files[0])">
-  <label for="resumeFile" class="resume-zone" id="resumeZone"
-         ondragover="event.preventDefault();this.classList.add('drag-over')"
-         ondragleave="this.classList.remove('drag-over')"
-         ondrop="event.preventDefault();this.classList.remove('drag-over');handleFile(event.dataTransfer.files[0])">
+  <!-- RESUME DROP ZONE -->
+  <input type="file" id="resumeFile" accept=".pdf,.doc,.docx" style="position:fixed;left:-9999px;top:-9999px;opacity:0;pointer-events:none;">
+  <div class="resume-zone" id="resumeZone">
     <div class="resume-zone-icon">📄</div>
     <div class="resume-zone-title">Drop Your Resume Here</div>
     <div class="resume-zone-sub">We will read your resume and auto-fill your skills and experience below. PDF and Word documents supported.</div>
-    <span class="resume-zone-btn">Choose File</span>
+    <span class="resume-zone-btn" id="resumeZoneBtn">Choose File</span>
     <div class="resume-privacy">Your file is never uploaded or stored. It is read locally in your browser only.</div>
-  </label>
+  </div>
 
   <div class="resume-processing" id="resumeProcessing">
     <div class="resume-spin"></div>
@@ -821,6 +818,37 @@ function exportToStudy() {
 
   window.open('/study?ca_import=1', '_blank', 'noopener,noreferrer');
 }
+
+// ── FILE UPLOAD WIRING ────────────────────────────────────────────────────
+(function(){
+  var inp = document.getElementById('resumeFile');
+  var zone = document.getElementById('resumeZone');
+  if (!inp || !zone) return;
+
+  inp.addEventListener('change', function(){
+    if (this.files && this.files[0]) handleFile(this.files[0]);
+  });
+
+  zone.addEventListener('click', function(){
+    inp.value = '';
+    inp.click();
+  });
+
+  zone.addEventListener('dragover', function(e){
+    e.preventDefault(); e.stopPropagation();
+    zone.classList.add('drag-over');
+  });
+  zone.addEventListener('dragleave', function(e){
+    e.stopPropagation();
+    zone.classList.remove('drag-over');
+  });
+  zone.addEventListener('drop', function(e){
+    e.preventDefault(); e.stopPropagation();
+    zone.classList.remove('drag-over');
+    var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+    if (f) handleFile(f);
+  });
+})();
 
 addRow('', '', ['Mon','Tue','Wed','Thu','Fri'], 8);
 addRow('', '', ['Mon','Tue','Wed','Thu','Fri'], 8);

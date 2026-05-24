@@ -349,8 +349,25 @@ input[type=file]#resumeFileInput{display:none;}
 
     <!-- FUTURE DIRECTION FIELDS -->
     <div class="mode-fields" id="fieldsFuture">
-      <label class="form-label">Future Role or Direction</label>
-      <input class="form-inp" id="futureRole" type="text" placeholder="e.g. UX Designer, AI Workflow Consultant, Documentary Producer, Educator...">
+      <div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:14px;">If you are not sure yet, use "Recommend for Me" and choose the direction that feels closest. You can always run another version later.</div>
+      <label class="form-label">Primary Future Role or Direction</label>
+      <input class="form-inp" id="futureRole" type="text" placeholder="e.g. AI workflow strategist, healthcare innovation lead, UX researcher, operations consultant...">
+      <div style="display:flex;align-items:center;gap:10px;margin-top:-8px;margin-bottom:14px;flex-wrap:wrap;">
+        <button type="button" onclick="recommendDirections()" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:7px 14px;border-radius:6px;border:1px solid rgba(30,144,255,0.4);color:var(--blue);background:transparent;cursor:pointer;transition:all 0.2s;">Recommend for Me</button>
+        <span style="font-size:11px;color:var(--muted);opacity:0.6;">Based on your imported background</span>
+      </div>
+      <div id="recommendedDirections" style="display:none;margin-bottom:14px;">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:8px;">Recommended Directions</div>
+        <div id="recommendedChips" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+      </div>
+      <div id="multiDirectionWarning" style="display:none;background:rgba(240,165,0,0.06);border:1px solid rgba(240,165,0,0.25);border-radius:8px;padding:12px 16px;margin-bottom:14px;">
+        <div style="font-size:13px;color:var(--text);margin-bottom:10px;">This looks like more than one direction. Future Resume drafts work best when they focus on one primary direction at a time.</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button type="button" onclick="continueHybrid()" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:7px 14px;border-radius:6px;border:1px solid rgba(240,165,0,0.35);color:var(--gold);background:transparent;cursor:pointer;">Continue with Hybrid Direction</button>
+          <button type="button" onclick="splitDirections()" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:7px 14px;border-radius:6px;border:1px solid var(--border);color:var(--muted);background:transparent;cursor:pointer;">Choose One Direction</button>
+        </div>
+        <div id="splitChips" style="display:none;flex-wrap:wrap;gap:8px;margin-top:10px;"></div>
+      </div>
       <div class="form-grid">
         <div>
           <label class="form-label">Skills or Studies in Progress <span class="opt-tag">optional</span></label>
@@ -455,20 +472,32 @@ input[type=file]#resumeFileInput{display:none;}
     <!-- FUTURE DIRECTION RESULTS -->
     <div id="futureResults" style="display:none;">
       <div class="sec-eyebrow">Section 1</div>
+      <div class="sec-title">Future Direction Summary</div>
+      <div class="summary-card"><div class="summary-text" id="futureDirectionSummaryEl">-</div></div>
+      <div class="divider-line"></div>
+      <div class="sec-eyebrow">Section 2</div>
       <div class="sec-title">Current Experience to Leverage</div>
       <div class="tag-grid" id="leverageEl"></div>
       <div class="divider-line"></div>
-      <div class="sec-eyebrow">Section 2</div>
+      <div class="sec-eyebrow">Section 3</div>
       <div class="sec-title">Skills or Proof Still Needed</div>
       <div class="gap-list" id="stillNeededEl"></div>
       <div class="divider-line"></div>
-      <div class="sec-eyebrow">Section 3</div>
+      <div class="sec-eyebrow">Section 4</div>
       <div class="sec-title">Future-Facing Resume Strategy</div>
       <div class="summary-card"><div class="summary-text" id="futureStrategyEl">-</div></div>
       <div class="divider-line"></div>
-      <div class="sec-eyebrow">Section 4</div>
-      <div class="sec-title">Draft Positioning Statement</div>
-      <div class="summary-card"><div class="summary-text" id="positioningEl">-</div></div>
+      <div class="sec-eyebrow">Section 5</div>
+      <div class="sec-title">Future Resume Draft (Planning Version)</div>
+      <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px;">This is a planning draft. It is based on your current experience and where you are headed. Review it before using anywhere.</p>
+      <div class="resume-output">
+        <div id="futureResumeOutputEl"></div>
+        <button class="copy-btn" onclick="copyFutureResume()">Copy Resume Draft Text</button>
+      </div>
+      <div class="divider-line"></div>
+      <div class="sec-eyebrow">Section 6</div>
+      <div class="sec-title">Next Proof to Build</div>
+      <div class="gap-list" id="nextProofEl"></div>
     </div>
 
     <!-- EMAIL REPORT BUTTON -->
@@ -546,7 +575,7 @@ let fullResumeText = '';
   if(mode==='target-job') { setMode('target'); }
   else if(mode==='future-direction') { setMode('future'); }
 
-  // Only set mode from URL — do not pre-fill any fields
+  // Only set mode from URL - do not pre-fill any fields
   // The user should enter the job or direction themselves
 
   // Read handoff from Roadmap if present
@@ -562,7 +591,7 @@ let fullResumeText = '';
           const ta = document.getElementById('resumeText');
           if (ta && !ta.value) ta.value = handoff.resumeText;
         }
-        // DO NOT pre-fill jobTitle — that field is for the job they are applying TO
+        // DO NOT pre-fill jobTitle - that field is for the job they are applying TO
         // Hide the drop zone since background is already imported
         const dropZone = document.getElementById('resumeDropZone');
         const fileInput = document.getElementById('resumeFileInput');
@@ -575,7 +604,8 @@ let fullResumeText = '';
         if (ta) {
           const note = document.createElement('div');
           note.style.cssText = 'background:rgba(46,213,115,0.06);border:1px solid rgba(46,213,115,0.2);border-radius:8px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;';
-          note.innerHTML = '<div><span style="font-family:\'DM Mono\',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);display:block;margin-bottom:2px;">Imported from Roadmap</span><span style="font-size:12px;color:var(--muted);">Your background was brought over. Review it below, then paste a job description in Step 2.</span></div><button onclick="document.getElementById(\'resumeDropZone\').style.display=\'\';this.parentElement.style.display=\'none\';" style="font-family:\'DM Mono\',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:5px 10px;border-radius:5px;border:1px solid var(--border);color:var(--muted);background:transparent;cursor:pointer;white-space:nowrap;flex-shrink:0;">Use Different Resume</button>';
+          note.id = 'importedFromRoadmapNote';
+          note.innerHTML = '<div><span style="font-family:\'DM Mono\',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);display:block;margin-bottom:2px;">Imported from Roadmap</span><span id="importNoteText" style="font-size:12px;color:var(--muted);">Your background was brought over. Review it below, then paste a job description in Step 2.</span></div><button onclick="document.getElementById(\'resumeDropZone\').style.display=\'\';this.parentElement.style.display=\'none\';" style="font-family:\'DM Mono\',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:5px 10px;border-radius:5px;border:1px solid var(--border);color:var(--muted);background:transparent;cursor:pointer;white-space:nowrap;flex-shrink:0;">Use Different Resume</button>';
           ta.parentElement.insertBefore(note, ta);
         }
       }
@@ -614,6 +644,8 @@ function setMode(mode) {
     document.getElementById('fieldsTarget').classList.add('show');
     document.getElementById('step2Title').textContent = 'The Job';
     document.getElementById('step2Sub').textContent = 'Paste the job description you are targeting';
+    var noteEl = document.getElementById('importNoteText');
+    if (noteEl) noteEl.textContent = 'Your background was brought over. Review it below, then paste a job description in Step 2.';
     document.getElementById('buildBtn').textContent = 'TARGET MY RESUME';
     document.getElementById('resEyebrow').textContent = 'Resume Studio - Target a Job';
   } else if(mode==='cleanup') {
@@ -621,14 +653,18 @@ function setMode(mode) {
     document.getElementById('fieldsCleanup').classList.add('show');
     document.getElementById('step2Title').textContent = 'Cleanup Details';
     document.getElementById('step2Sub').textContent = 'Optional details to guide the cleanup';
+    var noteEl = document.getElementById('importNoteText');
+    if (noteEl) noteEl.textContent = 'Your background was brought over. Review it below, then choose any cleanup preferences before generating your resume.';
     document.getElementById('buildBtn').textContent = 'CLEAN UP MY RESUME';
     document.getElementById('resEyebrow').textContent = 'Resume Studio - Clean Up My Resume';
   } else if(mode==='future') {
     document.getElementById('modeFuture').classList.add('sel-future');
     document.getElementById('fieldsFuture').classList.add('show');
-    document.getElementById('step2Title').textContent = 'Your Future Direction';
-    document.getElementById('step2Sub').textContent = 'Tell us where you are headed';
-    document.getElementById('buildBtn').textContent = 'BUILD FUTURE RESUME';
+    document.getElementById('step2Title').textContent = 'Choose a Future Direction';
+    document.getElementById('step2Sub').textContent = 'Pick one direction to shape this planning resume around.';
+    var noteEl = document.getElementById('importNoteText');
+    if (noteEl) noteEl.textContent = 'Your background was brought over. Review it below, then choose a future role or direction in Step 2.';
+    document.getElementById('buildBtn').textContent = 'BUILD FUTURE RESUME DRAFT';
     document.getElementById('resEyebrow').textContent = 'Resume Studio - Future Direction';
   }
 }
@@ -675,6 +711,12 @@ async function runAnalysis() {
   if(currentMode==='future' && !document.getElementById('futureRole').value.trim()) {
     showErr('Please add your future role or direction in Step 2.'); return;
   }
+  if(currentMode==='future' && !hybridMode && checkMultipleDirections()) {
+    document.getElementById('multiDirectionWarning').style.display = 'block';
+    document.getElementById('multiDirectionWarning').scrollIntoView({behavior:'smooth',block:'nearest'});
+    return;
+  }
+  hybridMode = false;
 
   document.getElementById('errBox').classList.remove('show');
   document.getElementById('resBox').classList.remove('show');
@@ -788,14 +830,129 @@ function renderResults(r) {
     if(fs && (r.fitSummary||r.summary)) fs.textContent = r.fitSummary || r.summary;
   } else if(currentMode==='future') {
     document.getElementById('futureResults').style.display = 'block';
+    // Section 1: summary
+    var fds = document.getElementById('futureDirectionSummaryEl');
+    if(fds) fds.textContent = r.fitSummary || r.summary || '-';
+    // Section 2: leverage tags
     document.getElementById('leverageEl').innerHTML = (r.matches||r.leverage||[]).map(m=>`<span class="match-tag">${m}</span>`).join('');
-    document.getElementById('stillNeededEl').innerHTML = (r.gaps||r.stillNeeded||[]).map(g=>`<div class="gap-item"><div class="gap-icon">📌</div><div class="gap-text">${typeof g==='string'?g:(g.description||'')}</div></div>`).join('');
-    document.getElementById('futureStrategyEl').textContent = r.summary || r.futureStrategy || '-';
-    document.getElementById('positioningEl').textContent = r.positioning || r.positioningStatement || '-';
+    // Section 3: still needed
+    document.getElementById('stillNeededEl').innerHTML = (r.gaps||r.stillNeeded||[]).map(g=>`<div class="gap-item"><div class="gap-icon">📌</div><div class="gap-text">${typeof g==='string'?g:(g.description||g.text||'')}</div></div>`).join('');
+    // Section 4: strategy
+    document.getElementById('futureStrategyEl').textContent = r.futureStrategy || r.strategy || '-';
+    // Section 5: future resume draft sections
+    var fSections = r.resumeSections || [];
+    fullResumeText = fSections.map(s=>(s.title||'')+'
+'+(s.content||'')).join('
+
+');
+    document.getElementById('futureResumeOutputEl').innerHTML = fSections.length
+      ? fSections.map(s=>`<div class="resume-section-title">${s.title||''}</div><div class="resume-content">${s.content||''}</div>`).join('')
+      : '<div style="font-size:13px;color:var(--muted);">The strategy sections above contain your planning draft. A formatted resume section was not returned.</div>';
+    // Section 6: next proof
+    document.getElementById('nextProofEl').innerHTML = (r.nextProof||r.nextSteps||[]).map(p=>`<div class="gap-item"><div class="gap-icon">✓</div><div class="gap-text">${typeof p==='string'?p:(p.description||p.text||'')}</div></div>`).join('');
   }
 
   document.getElementById('resBox').classList.add('show');
   document.getElementById('resBox').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+
+// ── FUTURE DIRECTION HELPERS ──────────────────────────────────────────────
+var hybridMode = false;
+
+async function recommendDirections() {
+  var bg = document.getElementById('resumeText')?.value.trim() || extractedResumeText || '';
+  if (!bg) {
+    var chips = document.getElementById('recommendedChips');
+    var wrap = document.getElementById('recommendedDirections');
+    if(chips) chips.innerHTML = '<span style="font-size:12px;color:var(--muted);">Add a resume or background first so we can recommend future directions.</span>';
+    if(wrap) wrap.style.display = 'block';
+    return;
+  }
+  var btn = event.target;
+  btn.textContent = 'Generating...';
+  btn.disabled = true;
+  try {
+    var res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5',
+        max_tokens: 500,
+        messages: [{role:'user', content: 'Based on this professional background, suggest 5 specific future career directions as short role titles (3-7 words each). Return only a JSON array of strings. No explanation.
+
+BACKGROUND:
+' + bg.slice(0,3000)}]
+      })
+    });
+    var data = await res.json();
+    var txt = (data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+    var match = txt.match(/\[[\s\S]*\]/);
+    var directions = match ? JSON.parse(match[0]) : [];
+    var chips = document.getElementById('recommendedChips');
+    var wrap = document.getElementById('recommendedDirections');
+    if(chips && directions.length) {
+      chips.innerHTML = directions.map(d =>
+        '<button type="button" onclick="selectDirection(this)" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:7px 14px;border-radius:6px;border:1px solid rgba(30,144,255,0.3);color:var(--blue);background:transparent;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(30,144,255,0.08)'" onmouseout="this.style.background='transparent'">' + d + '</button>'
+      ).join('');
+    } else if(chips) {
+      chips.innerHTML = '<span style="font-size:12px;color:var(--muted);">Could not generate suggestions. Try adding more background detail.</span>';
+    }
+    if(wrap) wrap.style.display = 'block';
+  } catch(e) {
+    var chips = document.getElementById('recommendedChips');
+    if(chips) chips.innerHTML = '<span style="font-size:12px;color:var(--muted);">Could not generate suggestions right now. Please try again.</span>';
+    document.getElementById('recommendedDirections').style.display = 'block';
+  }
+  btn.textContent = 'Recommend for Me';
+  btn.disabled = false;
+}
+
+function selectDirection(btn) {
+  var field = document.getElementById('futureRole');
+  if(field) field.value = btn.textContent.trim();
+  document.querySelectorAll('#recommendedChips button').forEach(b => b.style.borderColor = 'rgba(30,144,255,0.3)');
+  btn.style.borderColor = 'var(--blue)';
+  btn.style.background = 'rgba(30,144,255,0.1)';
+}
+
+function checkMultipleDirections() {
+  var val = document.getElementById('futureRole')?.value.trim() || '';
+  var separators = (val.match(/[,;\/]|and/gi) || []).length;
+  return separators >= 2 || (separators >= 1 && val.length > 40);
+}
+
+function continueHybrid() {
+  hybridMode = true;
+  document.getElementById('multiDirectionWarning').style.display = 'none';
+  runAnalysis();
+}
+
+function splitDirections() {
+  var val = document.getElementById('futureRole')?.value.trim() || '';
+  var parts = val.split(/[,;\/]|and/i).map(s=>s.trim()).filter(Boolean);
+  var splitChips = document.getElementById('splitChips');
+  if(splitChips && parts.length > 1) {
+    splitChips.innerHTML = parts.map(d =>
+      '<button type="button" onclick="pickSplit(this)" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:7px 14px;border-radius:6px;border:1px solid rgba(240,165,0,0.35);color:var(--gold);background:transparent;cursor:pointer;">' + d + '</button>'
+    ).join('');
+    splitChips.style.display = 'flex';
+  }
+}
+
+function pickSplit(btn) {
+  var field = document.getElementById('futureRole');
+  if(field) field.value = btn.textContent.trim();
+  document.getElementById('multiDirectionWarning').style.display = 'none';
+  hybridMode = false;
+}
+
+function copyFutureResume() {
+  if(!fullResumeText) return;
+  navigator.clipboard.writeText(fullResumeText).then(()=>{
+    var b = document.querySelector('#futureResults .copy-btn');
+    if(b){b.textContent='Copied!';setTimeout(()=>b.textContent='Copy Resume Draft Text',2000);}
+  });
 }
 
 function copyResume(){if(!fullResumeText)return;navigator.clipboard.writeText(fullResumeText).then(()=>{const b=document.querySelector('.copy-btn');b.textContent='Copied!';setTimeout(()=>b.textContent='Copy Full Resume Text',2000);});}

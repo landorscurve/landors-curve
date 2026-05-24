@@ -537,20 +537,51 @@ let currentMode = '';
 let extractedResumeText = '';
 let fullResumeText = '';
 
-// ── URL PARAM HANDLING ────────────────────────────────────────────────────
+// ── URL PARAM HANDLING + ROADMAP HANDOFF ──────────────────────────────────
 (function(){
   const p = new URLSearchParams(window.location.search);
   const mode = p.get('mode');
   const role = p.get('role') || p.get('direction') || p.get('career');
-  const direction = p.get('direction');
+
   if(mode==='target-job') { setMode('target'); }
   else if(mode==='future-direction') { setMode('future'); }
+
   if(role) {
     const fRole = document.getElementById('futureRole');
     const jTitle = document.getElementById('jobTitle');
     if(mode==='future-direction' && fRole) fRole.value = decodeURIComponent(role);
     else if(jTitle) jTitle.value = decodeURIComponent(role);
   }
+
+  // Read handoff from Roadmap if present
+  try {
+    const stored = localStorage.getItem('resumeStudioHandoff');
+    if (stored) {
+      const handoff = JSON.parse(stored);
+      // Only use if fresh (5 minutes)
+      if (handoff.exportedAt && Date.now() - handoff.exportedAt < 300000) {
+        localStorage.removeItem('resumeStudioHandoff');
+        // Pre-fill resume text
+        if (handoff.resumeText) {
+          const ta = document.getElementById('resumeText');
+          if (ta && !ta.value) ta.value = handoff.resumeText;
+        }
+        // Pre-fill role if not already set from URL
+        if (handoff.topRole && !role) {
+          const jTitle = document.getElementById('jobTitle');
+          if (jTitle && !jTitle.value) jTitle.value = handoff.topRole;
+        }
+        // Show import confirmation
+        const modeEl = document.querySelector('.mode-section');
+        if (modeEl) {
+          const banner = document.createElement('div');
+          banner.style.cssText = 'background:rgba(240,165,0,0.06);border:1px solid rgba(240,165,0,0.2);border-radius:10px;padding:12px 18px;margin-bottom:16px;font-size:13px;color:var(--muted);';
+          banner.innerHTML = '<span style="color:var(--gold);font-family:\'DM Mono\',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:4px;">Imported from Roadmap</span>Your background was brought over from Roadmap. Paste a job description below and run the analysis.';
+          modeEl.parentNode.insertBefore(banner, modeEl);
+        }
+      }
+    }
+  } catch(e) {}
 })();
 
 const MSGS = {

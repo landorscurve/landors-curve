@@ -790,11 +790,13 @@ function exportToStudy() {
     source: 'career-assessment'
   };
 
-  // Store in sessionStorage
+  // Store in sessionStorage AND localStorage (localStorage persists across new tabs)
   try {
-    sessionStorage.setItem('ca_handoff', JSON.stringify(payload));
+    const payloadStr = JSON.stringify(payload);
+    sessionStorage.setItem('ca_handoff', payloadStr);
+    localStorage.setItem('ca_handoff', payloadStr);
   } catch(e) {
-    console.warn('sessionStorage unavailable, falling back to URL param');
+    console.warn('Storage unavailable');
   }
 
   const url = topSkill ? '/study?career=' + encodeURIComponent(topSkill) + '&ca_import=1' : '/study?ca_import=1';

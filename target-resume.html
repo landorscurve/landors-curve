@@ -546,11 +546,8 @@ let fullResumeText = '';
   if(mode==='target-job') { setMode('target'); }
   else if(mode==='future-direction') { setMode('future'); }
 
-  if(role) {
-    const fRole = document.getElementById('futureRole');
-    // Only pre-fill for future-direction mode — for target-job the user must enter the job themselves
-    if(mode==='future-direction' && fRole) fRole.value = decodeURIComponent(role);
-  }
+  // Only set mode from URL — do not pre-fill any fields
+  // The user should enter the job or direction themselves
 
   // Read handoff from Roadmap if present
   try {

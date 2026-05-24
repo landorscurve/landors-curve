@@ -304,53 +304,6 @@ input[type=file]#pivotFile{display:none;}
   </div>
 
 
-  <!-- FREE VS PAID OVERVIEW -->
-  <div style="background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:26px 28px;margin-bottom:16px;">
-    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">Free Profile vs Full Report</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-      <div style="background:var(--dark);border:1px solid var(--border);border-radius:10px;padding:16px 18px;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--green);letter-spacing:1px;margin-bottom:8px;">Free Pivot Profile</div>
-        <div style="font-size:12px;color:var(--text);line-height:1.8;">
-          ✓ Resume upload and extraction<br>
-          ✓ Experience profile and expertise levels<br>
-          ✓ Crossover Rarity Index<br>
-          ✓ Strength gauges<br>
-          ✓ Top 3 career directions<br>
-          ✓ Short personal insight<br>
-          ✗ Expanded role options<br>
-          ✗ Market signal summary<br>
-          ✗ Full 30-day / 6-month plan<br>
-          ✗ PDF or Word export
-        </div>
-      </div>
-      <div style="background:var(--dark);border:1px solid var(--border);border-radius:10px;padding:16px 18px;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold);letter-spacing:1px;margin-bottom:8px;">Full Pivot Report</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:6px;">Deeper analysis. Uses 2 credits.</div>
-        <div style="font-size:12px;color:var(--text);line-height:1.8;">
-          ✓ Everything in free profile<br>
-          ✓ Up to 10-15 role options<br>
-          ✓ Fit level, emphasis, gaps per role<br>
-          ✓ Market signal summary<br>
-          ✓ Skill gap analysis<br>
-          ✓ Resume positioning advice<br>
-          ✓ First 30 days action plan<br>
-          ✓ 3-to-6-month plan<br>
-          ✓ 1-to-2-year growth direction<br>
-          ✓ PDF and email delivery
-        </div>
-      </div>
-    </div>
-    <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:12px;line-height:1.65;opacity:0.7;">Full reports use deeper AI analysis, larger context windows, and additional job-market checks, so they require credits. Exploring, uploading a resume, and previewing results are always free.</div>
-  </div>
-
-  <!-- CAREER ASSESSMENT CALLOUT -->
-  <div style="background:rgba(46,213,115,0.05);border:1px solid rgba(46,213,115,0.2);border-radius:12px;padding:18px 22px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-    <div>
-      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:6px;">Not sure what you already qualify for?</div>
-      <div style="font-size:13px;color:var(--muted);line-height:1.6;">Start with Career Assessment to see the skills, strengths, and career options already hidden inside what you have done.</div>
-    </div>
-    <a href="/pivot" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:9px 18px;border-radius:6px;border:1px solid rgba(46,213,115,0.35);color:var(--green);text-decoration:none;white-space:nowrap;flex-shrink:0;background:transparent;">Start Career Assessment</a>
-  </div>
   <!-- STEP 1: RESUME -->
   <div class="step-card">
     <div class="step-header">
@@ -376,24 +329,10 @@ input[type=file]#pivotFile{display:none;}
     <input class="form-inp" id="years" type="text" placeholder="e.g. 8 years, 15+ years, early career...">
   </div>
 
-  <!-- STEP 2: INTENT -->
-  <div class="step-card">
-    <div class="step-header">
-      <div class="step-num">2</div>
-      <div><div class="step-title">What Do You Want to Do?</div></div>
-    </div>
-    <div class="chip-group" id="intentChips">
-      <button class="chip" onclick="selChip(this,'intent')">Find a better job using my current experience</button>
-      <button class="chip" onclick="selChip(this,'intent')">Move into a related career</button>
-      <button class="chip" onclick="selChip(this,'intent')">Change careers more seriously</button>
-      <button class="chip" onclick="selChip(this,'intent')">Build a side skill or study plan</button>
-      <button class="chip" onclick="selChip(this,'intent')">I am not sure - show me options</button>
-    </div>
-  </div>
 
-  <!-- STEP 3: MODE -->
+  <!-- STEP 2: CHOOSE YOUR ROADMAP TYPE -->
   <div class="mode-wrap">
-    <div class="mode-label">Choose Your Mode</div>
+    <div class="mode-label">Step 2: Choose Your Roadmap Type</div>
     <div class="mode-grid">
       <div class="mode-card mode-cm" id="modeCM" onclick="setMode('cm')">
         <div class="mode-card-icon">🎯</div>
@@ -412,8 +351,8 @@ input[type=file]#pivotFile{display:none;}
   <!-- STEP 4: MODE-SPECIFIC FIELDS -->
   <div class="step-card">
     <div class="step-header">
-      <div class="step-num">4</div>
-      <div><div class="step-title">Additional Details</div><div class="step-sub">Helps us personalize your results</div></div>
+      <div class="step-num">3</div>
+      <div><div class="step-title">Additional Details</div><div class="step-sub">Shown based on the roadmap type you chose above</div></div>
     </div>
 
     <!-- CAREER MOVEMENT FIELDS -->
@@ -431,8 +370,8 @@ input[type=file]#pivotFile{display:none;}
       <label class="form-label">Risk level</label>
       <div class="chip-group" id="riskChips">
         <button class="chip" onclick="selChip(this,'risk')">Safe move</button>
-        <button class="chip" onclick="selChip(this,'risk')">Moderate pivot</button>
-        <button class="chip" onclick="selChip(this,'risk')">Bold pivot</button>
+        <button class="chip" onclick="selChip(this,'risk')">Moderate shift</button>
+        <button class="chip" onclick="selChip(this,'risk')">Bold shift</button>
       </div>
       <label class="form-label">Time horizon</label>
       <div class="chip-group" id="timeChips">
@@ -470,10 +409,10 @@ input[type=file]#pivotFile{display:none;}
       </div>
     </div>
 
-    <div id="noModeMsg" style="font-size:13px;color:var(--muted);padding:8px 0;">Select a mode above to see relevant options.</div>
+    <div id="noModeMsg" style="font-size:13px;color:var(--muted);padding:8px 0;">Choose a roadmap type in Step 2 to see relevant options here.</div>
 
-    <button class="build-btn" id="buildBtn" onclick="build()">FIND MY PATHS</button>
-    <p class="helper-text">Your roadmap is built around your current schedule and goals. Results are directional - use them to explore, not as a guarantee.</p>
+    <button class="build-btn" id="buildBtn" onclick="build()">BUILD MY ROADMAP</button>
+    <p class="helper-text">Results are directional. Use them as a starting point for exploration, not as a guarantee.</p>
   </div>
 
   <div class="error-box" id="errBox"></div>
@@ -557,19 +496,22 @@ input[type=file]#pivotFile{display:none;}
     <div class="insight-card"><div class="insight-text" id="insightEl">-</div></div>
 
 
-    <!-- UPGRADE PROMPT -->
-    <div style="background:rgba(240,165,0,0.05);border:1px solid rgba(240,165,0,0.2);border-radius:14px;padding:24px 26px;margin-top:32px;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;">
-      <div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--gold);letter-spacing:1px;margin-bottom:8px;">Get the Full Pivot Report</div>
-        <div style="font-size:13px;color:var(--muted);line-height:1.7;max-width:500px;">Your free profile shows your top 3 directions. The full Pivot Report runs a deeper analysis and expands this into a broader career map with additional role options, market signals, skill gaps, search keywords, a 30-day action plan, and a 1-to-2-year growth direction.</div>
-        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);opacity:0.6;margin-top:10px;">Uses 2 credits. Credits are only used when you generate the full report.</div>
+    <!-- CAREER ASSESSMENT BOTTOM CALLOUT -->
+    <div style="background:rgba(46,213,115,0.05);border:1px solid rgba(46,213,115,0.2);border-radius:12px;padding:22px 24px;margin-bottom:14px;">
+      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:8px;">Not Sure What You Already Qualify For?</div>
+      <p style="font-size:14px;color:var(--text);font-weight:500;margin-bottom:6px;">Career Assessment can help you identify the skills, strengths, and career options already hidden inside your experience.</p>
+      <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:14px;">If you already ran Career Assessment in another tab, keep that tab open. Starting a new Career Assessment will create a fresh session.</p>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <a href="/pivot" target="_blank" rel="noopener noreferrer" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:9px 18px;border-radius:6px;border:1px solid rgba(46,213,115,0.35);color:var(--green);text-decoration:none;background:transparent;">Start Career Assessment</a>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);opacity:0.55;">Opens in a new tab so your current Roadmap page stays open.</span>
       </div>
-      <button style="background:var(--gold);color:#000;border:none;border-radius:8px;padding:13px 24px;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;cursor:pointer;white-space:nowrap;flex-shrink:0;" onclick="alert('Full Pivot Report coming soon. Sign up to be notified when credits launch.')">Generate Full Report</button>
     </div>
+
+
     <div class="cross-nav">
       <div class="cross-nav-label">Explore More Tools</div>
       <div class="cross-nav-links">
-        <a href="/pivot">Career Assessment (Calculator)</a>
+        <a href="/pivot">Career Assessment</a>
         <a href="/safe-list">Safe Careers List</a>
         <a href="/rebound">Rebound Radar</a>
         <a href="/target-resume">Target Resume</a>
@@ -599,7 +541,7 @@ input[type=file]#pivotFile{display:none;}
   </div>
   <div class="footer-links">
     <a href="/pivot">Career Assessment</a>
-    <a href="/study">Career Assessment</a>
+    <a href="/study">Roadmap</a>
     <a href="/safe-list">Safe Careers List</a>
     <a href="/rebound">Rebound Radar</a>
     <a href="/pricing">Pricing</a>
@@ -638,7 +580,7 @@ function setMode(mode) {
   document.getElementById('cmFields').classList.toggle('show', mode==='cm');
   document.getElementById('lpFields').classList.toggle('show', mode==='lp');
   document.getElementById('noModeMsg').style.display = mode ? 'none' : 'block';
-  document.getElementById('buildBtn').textContent = mode==='cm' ? 'FIND JOB PATHS' : 'BUILD MY SKILL PLAN';
+  document.getElementById('buildBtn').textContent = mode==='cm' ? 'FIND MY PATHS' : 'BUILD MY SKILL PLAN';
 }
 
 function selChip(btn, group) {
@@ -735,7 +677,7 @@ async function run() {
 }
 
 function renderResults(r) {
-  document.getElementById('resLabel').textContent = 'Roadmap - ' + (currentMode==='cm'?'Find Job Paths':'Build a Skill Plan');
+  document.getElementById('resLabel').textContent = 'Roadmap Results - ' + (currentMode==='cm'?'Find Job Paths':'Build a Skill Plan');
   document.getElementById('resHeading').textContent = r.headline || 'Your Options';
   document.getElementById('resSummary').textContent = r.summary || '';
   document.getElementById('snapEl').textContent = r.snapshot || '';
@@ -846,8 +788,8 @@ function showErr(msg){document.getElementById('errBox').textContent=msg;document
   if(career){
     document.getElementById('background').value=decodeURIComponent(career);
     const banner=document.createElement('div');
-    banner.style.cssText='background:rgba(46,213,115,0.08);border:1px solid rgba(46,213,115,0.25);border-radius:10px;padding:12px 18px;margin-bottom:14px;display:flex;align-items:center;gap:10px;font-size:12px;color:#2ED573;font-family:DM Mono,monospace;letter-spacing:1px;';
-    banner.innerHTML='<span>✅</span><div><strong style="display:block;margin-bottom:2px;">IMPORTED FROM PIVOT</strong><span style="color:#888899;font-size:11px;">Your top career has been pre-filled. Choose a mode and run.</span></div>';
+    banner.style.cssText='background:rgba(46,213,115,0.06);border:1px solid rgba(46,213,115,0.2);border-radius:10px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:flex-start;gap:12px;';
+    banner.innerHTML='<span style="font-size:16px;">📋</span><div><div style="font-family:\'DM Mono\',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:4px;">Imported from Career Assessment</div><div style="font-size:12px;color:#888899;line-height:1.6;">Some assessment details were brought over. Review them below and add anything missing before generating your roadmap.</div></div>';
     document.querySelector('.step-card').prepend(banner);
   }
 })();

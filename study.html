@@ -242,6 +242,26 @@ input[type=file]#pivotFile{display:none;}
 .page-disclaimer-link:hover { text-decoration: underline; }
 @media (max-width: 520px) { .page-disclaimer-inner { flex-direction: column; gap: 8px; } }
 @media print { .page-disclaimer { text-align: center; border-top: 1px solid #ccc; padding: 12px 0; } .page-disclaimer-inner { justify-content: center; flex-direction: column; gap: 4px; } }
+
+/* CA IMPORT CARD */
+.import-card{background:rgba(46,213,115,0.06);border:1px solid rgba(46,213,115,0.25);border-radius:12px;padding:20px 22px;margin-bottom:16px;}
+.import-card-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--green);margin-bottom:10px;}
+.import-card-title{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--text);letter-spacing:1px;margin-bottom:8px;}
+.import-card-body{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:14px;}
+.import-detail{background:var(--dark);border-radius:8px;padding:12px 14px;margin-bottom:10px;}
+.import-detail-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);opacity:0.7;margin-bottom:5px;}
+.import-detail-value{font-size:12px;color:var(--text);line-height:1.6;}
+.import-role-list{display:flex;flex-direction:column;gap:4px;}
+.import-role-item{font-size:12px;color:var(--text);display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.import-role-item:last-child{border-bottom:none;}
+.import-role-hrs{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);}
+.import-actions{display:flex;gap:10px;flex-wrap:wrap;}
+.import-action-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:8px 14px;border-radius:6px;border:1px solid;cursor:pointer;background:transparent;transition:all 0.2s;}
+.import-edit-btn{color:var(--green);border-color:rgba(46,213,115,0.35);}
+.import-edit-btn:hover{background:rgba(46,213,115,0.08);}
+.import-clear-btn{color:var(--muted);border-color:var(--border);}
+.import-clear-btn:hover{color:var(--red);border-color:rgba(255,71,87,0.4);}
+.partial-import-card{background:rgba(240,165,0,0.05);border:1px solid rgba(240,165,0,0.2);border-radius:10px;padding:14px 18px;margin-bottom:14px;}
 </style>
 </head>
 <body>
@@ -305,11 +325,12 @@ input[type=file]#pivotFile{display:none;}
 
 
   <!-- STEP 1: RESUME -->
-  <div class="step-card">
+  <div class="step-card" id="step1Card">
     <div class="step-header">
       <div class="step-num">1</div>
-      <div><div class="step-title">Your Background</div><div class="step-sub">Upload your resume or describe your current experience and goals</div></div>
+      <div><div class="step-title" id="step1Title">Your Background</div><div class="step-sub" id="step1Sub">Upload your resume or describe your current experience and goals</div></div>
     </div>
+    <div id="resumeUploadArea">
     <input type="file" id="pivotFile" accept=".pdf,.doc,.docx" onchange="handleFile(this.files[0])">
     <label for="pivotFile" class="drop-zone" id="dropZone"
            ondragover="event.preventDefault();this.classList.add('over')"
@@ -327,6 +348,7 @@ input[type=file]#pivotFile{display:none;}
     <input class="form-inp" id="background" type="text" placeholder="e.g. Marketing Manager, Audio Engineer, High School Teacher, Project Manager...">
     <label class="form-label">Years of experience <span class="opt-tag">optional</span></label>
     <input class="form-inp" id="years" type="text" placeholder="e.g. 8 years, 15+ years, early career...">
+    </div><!-- end resumeUploadArea -->
   </div>
 
 
@@ -761,18 +783,183 @@ function switchToLP() {
 
 function showErr(msg){document.getElementById('errBox').textContent=msg;document.getElementById('errBox').classList.add('show');}
 
-// Auto-fill from Pivot export
-(function(){
-  const params=new URLSearchParams(window.location.search);
-  const career=params.get('career');
-  if(career){
-    document.getElementById('background').value=decodeURIComponent(career);
-    const banner=document.createElement('div');
-    banner.style.cssText='background:rgba(46,213,115,0.06);border:1px solid rgba(46,213,115,0.2);border-radius:10px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:flex-start;gap:12px;';
-    banner.innerHTML='<span style="font-size:16px;">📋</span><div><div style="font-family:\'DM Mono\',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:4px;">Imported from Career Assessment</div><div style="font-size:12px;color:#888899;line-height:1.6;">Some assessment details were brought over. Review them below and add anything missing before generating your roadmap.</div></div>';
-    document.querySelector('.step-card').prepend(banner);
+// ── CAREER ASSESSMENT IMPORT SYSTEM ─────────────────────────────────────
+let caImportPayload = null;
+
+function initImport() {
+  const params = new URLSearchParams(window.location.search);
+  const hasImportFlag = params.get('ca_import') === '1';
+  const careerParam = params.get('career');
+
+  // Try full sessionStorage import first
+  let payload = null;
+  try {
+    const stored = sessionStorage.getItem('ca_handoff');
+    if (stored) {
+      payload = JSON.parse(stored);
+      // Only use if fresh (within 5 minutes)
+      if (!payload.exportedAt || Date.now() - payload.exportedAt > 300000) payload = null;
+    }
+  } catch(e) {}
+
+  if (payload && payload.source === 'career-assessment') {
+    // Full import
+    caImportPayload = payload;
+    showFullImport(payload);
+  } else if (careerParam) {
+    // Partial import - URL param only
+    showPartialImport(decodeURIComponent(careerParam));
   }
-})();
+}
+
+function showFullImport(p) {
+  // Update step header
+  document.getElementById('step1Title').textContent = 'Your Imported Career Profile';
+  document.getElementById('step1Sub').textContent = 'Review what was brought over from Career Assessment. Edit or clear before generating.';
+
+  // Hide resume upload
+  const uploadArea = document.getElementById('resumeUploadArea');
+  if (uploadArea) uploadArea.style.display = 'none';
+
+  // Pre-fill background with summary
+  const bg = document.getElementById('background');
+  if (bg && p.profileSummary) bg.value = p.profileSummary;
+
+  // Build import card
+  const card = document.createElement('div');
+  card.className = 'import-card';
+  card.id = 'caImportCard';
+
+  const rolesHtml = (p.roles||[]).slice(0,6).map(r =>
+    `<div class="import-role-item"><span>${r.title||''}</span><span class="import-role-hrs">${r.expertise||''} · ~${(r.estimatedHours||0).toLocaleString()} hrs</span></div>`
+  ).join('');
+
+  const strengthsHtml = (p.crossoverStrengths||[]).slice(0,4).join(' · ');
+
+  card.innerHTML = `
+    <div class="import-card-label">Imported from Career Assessment</div>
+    <div class="import-card-title">Your Career Assessment Profile</div>
+    <div class="import-card-body">Your Career Assessment profile has been brought into Roadmap. This includes your selected direction, roles, estimated experience, crossover strengths, and assessment summary.</div>
+
+    <div class="import-detail">
+      <div class="import-detail-label">Selected Direction</div>
+      <div class="import-detail-value">${p.selectedDirection||'Not specified'}</div>
+    </div>
+
+    ${rolesHtml ? `<div class="import-detail">
+      <div class="import-detail-label">Imported Experience</div>
+      <div class="import-role-list">${rolesHtml}</div>
+    </div>` : ''}
+
+    ${strengthsHtml ? `<div class="import-detail">
+      <div class="import-detail-label">Crossover Strengths</div>
+      <div class="import-detail-value">${strengthsHtml}</div>
+    </div>` : ''}
+
+    ${p.insight && p.insight !== '-' ? `<div class="import-detail">
+      <div class="import-detail-label">Assessment Summary</div>
+      <div class="import-detail-value" style="font-style:italic;">${p.insight}</div>
+    </div>` : ''}
+
+    <div class="import-actions" style="margin-top:14px;">
+      <button class="import-action-btn import-edit-btn" onclick="editImport()">Edit Imported Background</button>
+      <button class="import-action-btn import-clear-btn" onclick="clearImport()">Clear Import and Upload Resume</button>
+    </div>`;
+
+  document.getElementById('step1Card').prepend(card);
+
+  // Update background field label
+  const bgLabel = document.querySelector('label[for="background"]') || document.querySelector('.form-label');
+  if (bgLabel && bgLabel.textContent.includes('Current profession')) {
+    bgLabel.textContent = 'Additional details or context (optional)';
+  }
+}
+
+function showPartialImport(career) {
+  const card = document.createElement('div');
+  card.className = 'partial-import-card';
+  card.id = 'partialImportCard';
+  card.innerHTML = `<div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;">Partial Import Received</div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.6;">We brought over your selected direction, but the full Career Assessment profile was not available. Add more background below or upload a resume to improve your roadmap.</div>
+    <div style="margin-top:8px;font-size:12px;color:var(--text);"><strong>Direction:</strong> ${career}</div>`;
+  document.getElementById('step1Card').prepend(card);
+  // Pre-fill background
+  const bg = document.getElementById('background');
+  if (bg) bg.value = career;
+}
+
+function editImport() {
+  // Show a simple edit area for the background field
+  const bg = document.getElementById('background');
+  if (bg) {
+    bg.focus();
+    bg.style.borderColor = 'var(--green)';
+    setTimeout(() => { bg.style.borderColor = ''; }, 2000);
+  }
+  // Show upload area for adding resume too
+  const uploadArea = document.getElementById('resumeUploadArea');
+  if (uploadArea) {
+    uploadArea.style.display = 'block';
+    uploadArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+function clearImport() {
+  if (!confirm('This will remove the imported Career Assessment context from this Roadmap session. Continue?')) return;
+  caImportPayload = null;
+  try { sessionStorage.removeItem('ca_handoff'); } catch(e) {}
+  // Remove import card
+  const card = document.getElementById('caImportCard') || document.getElementById('partialImportCard');
+  if (card) card.remove();
+  // Show upload area
+  const uploadArea = document.getElementById('resumeUploadArea');
+  if (uploadArea) uploadArea.style.display = 'block';
+  // Reset step header
+  document.getElementById('step1Title').textContent = 'Your Background';
+  document.getElementById('step1Sub').textContent = 'Upload your resume or describe your current experience and goals';
+  // Clear background field
+  const bg = document.getElementById('background');
+  if (bg) bg.value = '';
+}
+
+// ── OVERRIDE run() to inject CA import data into payload ─────────────────
+const _origRun = typeof run === 'function' ? run : null;
+function runWithImport() {
+  if (_origRun) {
+    // Inject CA payload into chipState/background before running
+    if (caImportPayload) {
+      const bg = document.getElementById('background');
+      if (bg && !bg.value.trim() && caImportPayload.profileSummary) {
+        bg.value = caImportPayload.profileSummary;
+      }
+    }
+    _origRun();
+  }
+}
+
+// Enrich the payload sent to API with full CA context
+const _origFetch = window.fetch;
+window.fetch = function(url, opts) {
+  if (url && url.includes('/api/pivot-tool') && caImportPayload && opts && opts.body) {
+    try {
+      const body = JSON.parse(opts.body);
+      if (!body.caImport) {
+        body.caImport = {
+          selectedDirection: caImportPayload.selectedDirection,
+          roles: caImportPayload.roles,
+          crossoverStrengths: caImportPayload.crossoverStrengths,
+          rarityIndex: caImportPayload.rarityIndex,
+          insight: caImportPayload.insight,
+          profileSummary: caImportPayload.profileSummary
+        };
+        opts.body = JSON.stringify(body);
+      }
+    } catch(e) {}
+  }
+  return _origFetch.apply(this, arguments);
+};
+
+initImport();
 
 function build(){if(typeof run==="function")run();else if(typeof analyze==="function")analyze();}
 function toggleDropdown(){document.getElementById('toolsDropdown').classList.toggle('open');}

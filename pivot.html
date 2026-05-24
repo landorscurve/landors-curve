@@ -728,22 +728,76 @@ function showErr(msg) {
 
 // Export top skill to Landor's Study
 function exportToStudy() {
+  // Build full handoff payload
   const rows = document.querySelectorAll('.skill-entry');
+  const roles = [];
   const skillMap = {};
   rows.forEach(row => {
     const skill = row.querySelector('.skill-input')?.value?.trim();
     const id = row.id?.replace('row-', '');
     if (skill && id) {
+      const hrs = calcHours(id);
+      const yearsEl = row.querySelector('.years-input');
+      const years = yearsEl ? parseFloat(yearsEl.value)||0 : 0;
+      const exp = typeof expertiseLevel === 'function' ? expertiseLevel(hrs) : {label:'Unknown'};
+      roles.push({ title: skill, years, estimatedHours: Math.round(hrs), expertise: exp.label });
       const key = skill.toLowerCase();
       if (!skillMap[key]) skillMap[key] = { skill, hours: 0 };
-      skillMap[key].hours += calcHours(id);
+      skillMap[key].hours += hrs;
     }
   });
+
+  // Find top skill for URL param fallback
   let topSkill = '';
   let topHours = 0;
   Object.values(skillMap).forEach(s => { if (s.hours > topHours) { topHours = s.hours; topSkill = s.skill; } });
-  if (!topSkill && rows.length) topSkill = rows[0].querySelector('.skill-input')?.value?.trim() || '';
-  const url = topSkill ? '/study?career=' + encodeURIComponent(topSkill) : '/study';
+  if (!topSkill && roles.length) topSkill = roles[0].title || '';
+
+  // Find selected direction from results (timeline short/medium jobs)
+  const tlCards = document.querySelectorAll('.tl-job-title');
+  const selectedDirection = tlCards.length ? tlCards[0].textContent.trim() : topSkill;
+
+  // Collect API result data from DOM
+  const profileText = document.getElementById('profileText')?.textContent || '';
+  const rarityScore = document.getElementById('rarityScore')?.textContent || '';
+  const insightText = document.getElementById('insightText')?.textContent || '';
+
+  // Strength bars
+  const strengths = [];
+  document.querySelectorAll('.sbar').forEach(bar => {
+    const lbl = bar.querySelector('.sbar-lbl')?.textContent;
+    const val = bar.querySelector('.sbar-val')?.textContent;
+    if (lbl && val) strengths.push(lbl + ' ' + val);
+  });
+
+  // Skill pills with expertise
+  const skillPills = [];
+  document.querySelectorAll('.skill-pill').forEach(pill => {
+    skillPills.push(pill.textContent.trim());
+  });
+
+  const payload = {
+    selectedDirection,
+    roles,
+    totalRoles: roles.length,
+    topSkill,
+    profileSummary: profileText,
+    rarityIndex: rarityScore,
+    crossoverStrengths: strengths,
+    skillLevels: skillPills,
+    insight: insightText,
+    exportedAt: Date.now(),
+    source: 'career-assessment'
+  };
+
+  // Store in sessionStorage
+  try {
+    sessionStorage.setItem('ca_handoff', JSON.stringify(payload));
+  } catch(e) {
+    console.warn('sessionStorage unavailable, falling back to URL param');
+  }
+
+  const url = topSkill ? '/study?career=' + encodeURIComponent(topSkill) + '&ca_import=1' : '/study?ca_import=1';
   window.open(url, '_blank', 'noopener,noreferrer');
 }
 

@@ -538,6 +538,17 @@ input[type=file]#pivotFile{display:none;}
       <div class="sec-title">Where to Start</div>
       <div id="thirtyEl"></div>
 
+      <!-- RESUME STUDIO HANDOFF -->
+      <div id="resumeHandoff" style="background:rgba(240,165,0,0.05);border:1px solid rgba(240,165,0,0.25);border-radius:14px;padding:22px 26px;margin-top:24px;">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Next Step</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--text);letter-spacing:1px;margin-bottom:6px;">Found a Real Job Posting?</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px;">Use Resume Studio to rewrite your resume for that specific opportunity. It will compare the job description against your background, identify what already fits, and produce an updated resume draft.</div>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <button onclick="openResumeStudio('target')" style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;padding:11px 28px;border-radius:8px;background:var(--gold);color:#000;border:none;cursor:pointer;">Open Resume Studio</button>
+          <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);opacity:0.6;">Opens in a new tab so your Roadmap results stay open.</span>
+        </div>
+      </div>
+
       <div class="switch-mode-card">
         <div class="switch-mode-text"><strong>These options do not feel right?</strong> Switch to Build a Skill Plan and create a longer-term learning path for a bigger transition.</div>
         <button class="switch-mode-btn" onclick="switchToLP()">Switch to Build a Skill Plan</button>
@@ -569,7 +580,17 @@ input[type=file]#pivotFile{display:none;}
       <div class="sec-eyebrow">First 30 Days</div>
       <div class="sec-title">Where to Start</div>
       <div id="lpThirtyEl"></div>
-    </div>
+
+      <!-- RESUME STUDIO HANDOFF - LP MODE -->
+      <div style="background:rgba(30,144,255,0.05);border:1px solid rgba(30,144,255,0.25);border-radius:14px;padding:22px 26px;margin-top:24px;">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--blue);margin-bottom:8px;">Next Step</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--text);letter-spacing:1px;margin-bottom:6px;">Start Building Your Future Resume</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px;">Use Resume Studio to shape your resume toward the direction you are building. It will identify what from your current background transfers, what you still need, and how to position yourself before you are ready to apply.</div>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <button onclick="openResumeStudio('future')" style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;padding:11px 28px;border-radius:8px;background:var(--blue);color:#fff;border:none;cursor:pointer;">Open Resume Studio</button>
+          <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);opacity:0.6;">Opens in a new tab so your Roadmap results stay open.</span>
+        </div>
+      </div>
 
     <!-- INSIGHT (both modes) -->
     <div class="sec-eyebrow" style="margin-top:36px;">Personal Insight</div>
@@ -735,8 +756,6 @@ function renderResults(r) {
 
   document.getElementById('cmResults').style.display = currentMode==='cm' ? 'block' : 'none';
   document.getElementById('lpResults').style.display = currentMode==='lp' ? 'block' : 'none';
-  var rh = document.getElementById('resumeHandoff');
-  if (rh) rh.style.display = currentMode==='cm' ? 'block' : 'none';
 
   if (currentMode === 'cm') {
     document.getElementById('rolesEl').innerHTML = (r.roles||[]).map(role=>{
@@ -823,6 +842,37 @@ function closeReportModal() {
   var m = document.getElementById('reportModal');
   if (m) { m.style.display = 'none'; document.body.style.overflow = ''; }
 }
+function openResumeStudio(mode) {
+  mode = mode || 'target';
+  // Collect the best available background text
+  const bg = extractedText || document.getElementById('background')?.value.trim() || '';
+  const caSum = caImportPayload ? caImportPayload.summary : '';
+  const resumeText = bg || caSum || '';
+
+  // Get top role/direction from results
+  const firstRole = document.querySelector('#rolesEl .role-title');
+  const topRole = firstRole ? firstRole.textContent.trim() : '';
+  const targetDir = document.getElementById('cm-direction')?.value.trim() || document.getElementById('lp-target')?.value.trim() || topRole;
+
+  // Store handoff in localStorage for Resume Studio to read
+  try {
+    localStorage.setItem('resumeStudioHandoff', JSON.stringify({
+      mode: mode,
+      resumeText: resumeText.slice(0, 6000),
+      topRole: mode === 'target' ? topRole : targetDir,
+      source: 'roadmap',
+      exportedAt: Date.now()
+    }));
+  } catch(e) {}
+
+  // Build URL
+  const modeParam = mode === 'future' ? 'future-direction' : 'target-job';
+  let url = '/target-resume?mode=' + modeParam;
+  const roleVal = mode === 'target' ? topRole : targetDir;
+  if (roleVal) url += '&role=' + encodeURIComponent(roleVal);
+  window.open(url, '_blank', 'noopener,noreferrer');
+}
+
 function switchToLP() {
   setMode('lp');
   window.scrollTo({top:0,behavior:'smooth'});

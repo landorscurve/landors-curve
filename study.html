@@ -868,7 +868,7 @@ function openResumeStudio(mode) {
   try {
     localStorage.setItem('resumeStudioHandoff', JSON.stringify({
       mode: mode,
-      resumeText: resumeText.slice(0, 6000),
+      resumeText: resumeText.slice(0, 12000),
       topRole: topRole,
       source: 'roadmap',
       exportedAt: Date.now()

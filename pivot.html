@@ -419,7 +419,7 @@ input[type="file"]#resumeFile { display: none; }
         <div class="next-text"><strong>Ready to build toward something better?</strong> Some career options may already fit your current experience. Others may require a small upgrade, a certification, a portfolio project, or a longer-term learning plan. Use Learning Roadmap to build a practical plan while maintaining your current employment.</div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;">
-        <a href="/study" target="_blank" rel="noopener noreferrer" class="next-btn" id="roadmapBtn" onclick="event.preventDefault();exportToStudy();">Handoff to Roadmap Tool</a>
+        <a href="/study" target="_blank" rel="noopener noreferrer" class="next-btn" id="roadmapBtn" onclick="event.preventDefault();exportToStudy();">Build Roadmap for This Direction</a>
         <span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--muted);opacity:0.55;">Opens in a new tab so your Career Assessment stays open.</span>
       </div>
     </div>
@@ -445,9 +445,9 @@ input[type="file"]#resumeFile { display: none; }
   </div>
 
   <div class="footer">
-    Career Assessment<br>
-    Sources include O*NET, Bureau of Labor Statistics, Brookings Institution, McKinsey Global Institute, and Goldman Sachs labor market research.<br>
-    Results are analytical estimates. Career decisions should incorporate additional research and professional guidance when appropriate. <a href="/sources" style="color:var(--gold);text-decoration:none;">Sources →</a>
+    PIVOT - Career Pivot Calculator<br>
+    Analysis powered by Claude AI, drawing from O*NET, Bureau of Labor Statistics, Brookings Institution, McKinsey Global Institute, and Goldman Sachs labor market research.<br>
+    Results are analytical estimates. Career decisions should incorporate additional professional guidance. © 2026 LandorsCurve.com
   </div>
 </div>
 
@@ -631,8 +631,6 @@ function render(r, skills) {
 }
 
 // ── RESUME FUNCTIONS ──────────────────────────────────────────────────────
-let rawResumeText = '';
-
 async function handleFile(file) {
   if (!file) return;
   const name = file.name.toLowerCase();
@@ -642,7 +640,6 @@ async function handleFile(file) {
   showProc('Reading your resume...');
   try {
     let text = name.endsWith('.pdf') ? await readPDF(file) : await readDOCX(file);
-    rawResumeText = text;
     const words = text.trim().split(/\s+/).filter(w=>w.length>0).length;
     if (words < 15) {
       hideProc();
@@ -714,9 +711,6 @@ async function autofill(resumeText) {
     document.getElementById('resumeStatusIcon').textContent = '✅';
     document.getElementById('resumeStatusTitle').textContent = 'Found ' + count + ' role' + (count !== 1 ? 's' : '') + ' in your resume.';
     document.getElementById('resumeStatusSub').textContent = 'Review and adjust before calculating.';
-    // Hide the drop zone — resume already loaded, no need to upload again
-    var zone = document.getElementById('resumeZone');
-    if (zone) zone.style.display = 'none';
   }
 }
 
@@ -792,7 +786,6 @@ function exportToStudy() {
     crossoverStrengths: strengths,
     skillLevels: skillPills,
     insight: insightText,
-    resumeText: rawResumeText.slice(0, 6000),
     exportedAt: Date.now(),
     source: 'career-assessment'
   };

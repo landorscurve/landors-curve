@@ -631,6 +631,8 @@ function render(r, skills) {
 }
 
 // ── RESUME FUNCTIONS ──────────────────────────────────────────────────────
+let rawResumeText = '';
+
 async function handleFile(file) {
   if (!file) return;
   const name = file.name.toLowerCase();
@@ -640,6 +642,7 @@ async function handleFile(file) {
   showProc('Reading your resume...');
   try {
     let text = name.endsWith('.pdf') ? await readPDF(file) : await readDOCX(file);
+    rawResumeText = text;
     const words = text.trim().split(/\s+/).filter(w=>w.length>0).length;
     if (words < 15) {
       hideProc();
@@ -789,6 +792,7 @@ function exportToStudy() {
     crossoverStrengths: strengths,
     skillLevels: skillPills,
     insight: insightText,
+    resumeText: rawResumeText.slice(0, 6000),
     exportedAt: Date.now(),
     source: 'career-assessment'
   };

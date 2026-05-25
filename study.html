@@ -867,7 +867,7 @@ function openResumeStudio(mode) {
     caText = parts.join('\n\n');
   }
 
-  const resumeText = extractedText || caText || bgClean || '';
+  const resumeText = extractedText || (caImportPayload && caImportPayload.resumeText) || bgClean || '';
 
   // Get top role from results
   const firstRole = document.querySelector('#rolesEl .role-title');

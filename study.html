@@ -372,6 +372,23 @@ input[type=file]#pivotFile{display:none;}
     </div>
   </div>
 
+  <div class="step-card">
+    <div class="mode-label">Step 1: Choose Your Roadmap Type</div>
+    <div class="mode-grid">
+      <div class="mode-card mode-cm" id="modeCM" onclick="setMode('cm')">
+        <div class="mode-card-icon">🎯</div>
+        <div class="mode-card-title">Find Job Paths</div>
+        <div class="mode-card-desc">Find jobs, roles, or adjacent careers that may already fit your current experience without major new training, school, or certification.</div>
+      </div>
+      <div class="mode-card mode-lp" id="modeLP" onclick="setMode('lp')">
+        <div class="mode-card-icon">📚</div>
+        <div class="mode-card-title">Build a Skill Plan</div>
+        <div class="mode-card-desc">Build toward something new while keeping your current job. Compare free learning, certifications, portfolio projects, community college, and degree-based paths at your own pace.</div>
+      </div>
+    </div>
+    <div class="mode-helper">Not sure which to choose? Start with Find Job Paths. If those options do not feel right, switch to Build a Skill Plan for a longer-term approach.</div>
+  </div>
+
   <div class="step-card" id="step1Card">
     <div class="step-header">
       <div class="step-num">1</div>
@@ -412,21 +429,7 @@ input[type=file]#pivotFile{display:none;}
 
   <!-- STEP 2: CHOOSE YOUR ROADMAP TYPE -->
   <div class="mode-wrap">
-    <div class="mode-label">Step 2: Choose Your Roadmap Type</div>
-    <div class="mode-grid">
-      <div class="mode-card mode-cm" id="modeCM" onclick="setMode('cm')">
-        <div class="mode-card-icon">🎯</div>
-        <div class="mode-card-title">Find Job Paths</div>
-        <div class="mode-card-desc">Find jobs, roles, or adjacent careers that may already fit your current experience without major new training, school, or certification.</div>
-      </div>
-      <div class="mode-card mode-lp" id="modeLP" onclick="setMode('lp')">
-        <div class="mode-card-icon">📚</div>
-        <div class="mode-card-title">Build a Skill Plan</div>
-        <div class="mode-card-desc">Build toward something new while keeping your current job. Compare free learning, certifications, portfolio projects, community college, and degree-based paths at your own pace.</div>
-      </div>
-    </div>
-    <div class="mode-helper">Not sure which to choose? Start with Find Job Paths. If those options do not feel right, switch to Build a Skill Plan for a longer-term approach.</div>
-  </div>
+
 
   <!-- STEP 4: MODE-SPECIFIC FIELDS -->
   <div class="step-card">
@@ -638,6 +641,7 @@ const LP_MSGS = [
 ];
 
 function setMode(mode) {
+  if (mode === currentMode) return;
   currentMode = mode;
   document.getElementById('modeCM').classList.toggle('selected-cm', mode==='cm');
   document.getElementById('modeLP').classList.toggle('selected-lp', mode==='lp');
@@ -645,6 +649,13 @@ function setMode(mode) {
   document.getElementById('lpFields').classList.toggle('show', mode==='lp');
   document.getElementById('noModeMsg').style.display = mode ? 'none' : 'block';
   document.getElementById('buildBtn').textContent = mode==='cm' ? 'FIND MY PATHS' : 'BUILD MY SKILL PLAN';
+  // Hide old results and dim button so user knows to re-run
+  document.getElementById('cmResults').style.display = 'none';
+  document.getElementById('lpResults').style.display = 'none';
+  var btn = document.getElementById('buildBtn');
+  btn.style.opacity = '0.45';
+  btn.style.filter = 'grayscale(0.4)';
+  btn.title = 'Click to generate your ' + (mode==='cm' ? 'job paths' : 'skill plan');
 }
 
 function selChip(btn, group) {
@@ -868,7 +879,7 @@ function openResumeStudio(mode) {
   try {
     localStorage.setItem('resumeStudioHandoff', JSON.stringify({
       mode: mode,
-      resumeText: resumeText.slice(0, 12000),
+      resumeText: resumeText.slice(0, 6000),
       topRole: topRole,
       source: 'roadmap',
       exportedAt: Date.now()
@@ -1082,7 +1093,7 @@ function initImport() {
 }
 
 function showFullImport(p) {
-  document.getElementById('step1Title').textContent = 'Your Imported Career Profile';
+  document.getElementById('step1Title').textContent = 'Step 2: Your Imported Career Profile';
   document.getElementById('step1Sub').textContent = 'Review your roles and experience below before generating your roadmap.';
   const uploadArea = document.getElementById('resumeUploadArea');
   if (uploadArea) uploadArea.style.display = 'none';
@@ -1152,6 +1163,8 @@ function clearImport() {
 
 // ── OVERRIDE build() to check context and inject CP data ─────────────────
 function build() {
+  var btn = document.getElementById('buildBtn');
+  if (btn) { btn.style.opacity = '1'; btn.style.filter = ''; btn.title = ''; }
   if (!limitedContextOverride && !checkLimitedContext()) return;
   limitedContextOverride = false;
   run();

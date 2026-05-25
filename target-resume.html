@@ -574,9 +574,10 @@ let fullResumeText = '';
 
   try {
     var stored = localStorage.getItem('resumeStudioHandoff');
-    if (!stored) return;
+    if (!stored) { alert('DEBUG: no resumeStudioHandoff in localStorage'); return; }
     var handoff = JSON.parse(stored);
-    if (!handoff || !handoff.exportedAt || Date.now() - handoff.exportedAt > 600000) return;
+    alert('DEBUG: handoff found. resumeText length=' + (handoff.resumeText||'').length + ' mode=' + handoff.mode + ' age=' + Math.round((Date.now()-handoff.exportedAt)/1000) + 's');
+    if (!handoff || !handoff.exportedAt || Date.now() - handoff.exportedAt > 600000) { alert('DEBUG: expired or invalid'); return; }
     localStorage.removeItem('resumeStudioHandoff');
 
     var ta = document.getElementById('resumeText');

@@ -560,7 +560,6 @@ input[type=file]#resumeFileInput{display:none;}
 </footer>
 
 <script>
-alert("DEBUG: script started");
 if(typeof pdfjsLib!=='undefined'){pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';}
 
 let currentMode = '';
@@ -570,9 +569,8 @@ let fullResumeText = '';
 // ── URL PARAM + HANDOFF ──────────────────────────────────────────────────
 (function(){
   var mode = new URLSearchParams(window.location.search).get('mode');
-  alert('DEBUG: mode=' + mode);
-  try { if (mode === 'target-job') setMode('target');
-  else if (mode === 'future-direction') setMode('future'); } catch(err) { alert('setMode crashed: ' + err.message); }
+  if (mode === 'target-job') setMode('target');
+  else if (mode === 'future-direction') setMode('future');
 
   try {
     var stored = localStorage.getItem('resumeStudioHandoff');
@@ -595,7 +593,14 @@ let fullResumeText = '';
         : 'Your background was brought over. Paste a job description in Step 2.';
       var banner = document.createElement('div');
       banner.style.cssText = 'background:rgba(46,213,115,0.06);border:1px solid rgba(46,213,115,0.2);border-radius:8px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;';
-      banner.innerHTML = '<div><span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#2ed573;display:block;margin-bottom:2px;">Imported from Roadmap</span><span style="font-size:12px;color:#888;">' + noteMsg + '</span></div><button onclick="var d=document.getElementById('resumeDropZone');if(d)d.style.display='';this.parentElement.remove();" style="font-size:10px;padding:5px 10px;border-radius:5px;border:1px solid #333;color:#888;background:transparent;cursor:pointer;white-space:nowrap;">Use Different Resume</button>';
+      var msg = document.createElement('div');
+      msg.innerHTML = '<span style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#2ed573;display:block;margin-bottom:2px;">Imported from Roadmap</span><span style="font-size:12px;color:#888;">' + noteMsg + '</span>';
+      var btn = document.createElement('button');
+      btn.textContent = 'Use Different Resume';
+      btn.style.cssText = 'font-size:10px;padding:5px 10px;border-radius:5px;border:1px solid #333;color:#888;background:transparent;cursor:pointer;white-space:nowrap;';
+      btn.onclick = function(){ var d=document.getElementById('resumeDropZone');if(d)d.style.display='';this.parentElement.remove(); };
+      banner.appendChild(msg);
+      banner.appendChild(btn);
       ta.parentElement.insertBefore(banner, ta);
     }
   } catch(e) { console.error('Handoff error', e); }
@@ -829,10 +834,7 @@ function renderResults(r) {
     document.getElementById('futureStrategyEl').textContent = r.futureStrategy || r.strategy || '-';
     // Section 5: future resume draft sections
     var fSections = r.resumeSections || [];
-    fullResumeText = fSections.map(s=>(s.title||'')+'
-'+(s.content||'')).join('
-
-');
+    fullResumeText = fSections.map(function(s){ return (s.title||'') + '\n' + (s.content||''); }).join('\n\n');
     document.getElementById('futureResumeOutputEl').innerHTML = fSections.length
       ? fSections.map(s=>`<div class="resume-section-title">${s.title||''}</div><div class="resume-content">${s.content||''}</div>`).join('')
       : '<div style="font-size:13px;color:var(--muted);">The strategy sections above contain your planning draft. A formatted resume section was not returned.</div>';
@@ -867,10 +869,7 @@ async function recommendDirections() {
       body: JSON.stringify({
         model: 'claude-haiku-4-5',
         max_tokens: 500,
-        messages: [{role:'user', content: 'Based on this professional background, suggest 5 specific future career directions as short role titles (3-7 words each). Return only a JSON array of strings. No explanation.
-
-BACKGROUND:
-' + bg.slice(0,3000)}]
+        messages: [{role:'user', content: 'Based on this professional background, suggest 5 specific future career directions as short role titles (3-7 words each). Return only a JSON array of strings. No explanation.\n\nBACKGROUND:\n' + bg.slice(0,3000)}]
       })
     });
     var data = await res.json();
@@ -880,9 +879,15 @@ BACKGROUND:
     var chips = document.getElementById('recommendedChips');
     var wrap = document.getElementById('recommendedDirections');
     if(chips && directions.length) {
-      chips.innerHTML = directions.map(d =>
-        '<button type="button" onclick="selectDirection(this)" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:7px 14px;border-radius:6px;border:1px solid rgba(30,144,255,0.3);color:var(--blue);background:transparent;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='rgba(30,144,255,0.08)'" onmouseout="this.style.background='transparent'">' + d + '</button>'
-      ).join('');
+      chips.innerHTML = '';
+        directions.forEach(function(d) {
+          var chip = document.createElement('button');
+          chip.type = 'button';
+          chip.textContent = d;
+          chip.style.cssText = 'font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:7px 14px;border-radius:6px;border:1px solid rgba(30,144,255,0.3);color:var(--blue,#1e90ff);background:transparent;cursor:pointer;';
+          chip.onclick = function(){ selectDirection(this); };
+          chips.appendChild(chip);
+        });
     } else if(chips) {
       chips.innerHTML = '<span style="font-size:12px;color:var(--muted);">Could not generate suggestions. Try adding more background detail.</span>';
     }
@@ -921,9 +926,15 @@ function splitDirections() {
   var parts = val.split(/[,;\/]|and/i).map(s=>s.trim()).filter(Boolean);
   var splitChips = document.getElementById('splitChips');
   if(splitChips && parts.length > 1) {
-    splitChips.innerHTML = parts.map(d =>
-      '<button type="button" onclick="pickSplit(this)" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:7px 14px;border-radius:6px;border:1px solid rgba(240,165,0,0.35);color:var(--gold);background:transparent;cursor:pointer;">' + d + '</button>'
-    ).join('');
+    splitChips.innerHTML = '';
+    parts.forEach(function(d) {
+      var chip = document.createElement('button');
+      chip.type = 'button';
+      chip.textContent = d;
+      chip.style.cssText = 'font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:7px 14px;border-radius:6px;border:1px solid rgba(240,165,0,0.35);color:var(--gold,#F0A500);background:transparent;cursor:pointer;';
+      chip.onclick = function(){ pickSplit(this); };
+      splitChips.appendChild(chip);
+    });
     splitChips.style.display = 'flex';
   }
 }

@@ -538,13 +538,6 @@ input[type=file]#pivotFile{display:none;}
       <div class="sec-title">Where to Start</div>
       <div id="thirtyEl"></div>
 
-      <div style="background:rgba(240,165,0,0.05);border:1px solid rgba(240,165,0,0.25);border-radius:14px;padding:22px 26px;margin-top:24px;margin-bottom:24px;">
-        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#F0A500;margin-bottom:8px;">Next Step</div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff;letter-spacing:1px;margin-bottom:6px;">Found a Real Job Posting?</div>
-        <div style="font-size:13px;color:#888;line-height:1.7;margin-bottom:16px;">Use Resume Studio to rewrite your resume for that specific opportunity. Paste a job description and it will compare it against your background and produce an updated resume draft.</div>
-        <button onclick="openResumeStudio('target')" style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;padding:11px 28px;border-radius:8px;background:#F0A500;color:#000;border:none;cursor:pointer;">Handoff to Resume Studio</button>
-      </div>
-
       <div class="switch-mode-card">
         <div class="switch-mode-text"><strong>These options do not feel right?</strong> Switch to Build a Skill Plan and create a longer-term learning path for a bigger transition.</div>
         <button class="switch-mode-btn" onclick="switchToLP()">Switch to Build a Skill Plan</button>
@@ -576,13 +569,6 @@ input[type=file]#pivotFile{display:none;}
       <div class="sec-eyebrow">First 30 Days</div>
       <div class="sec-title">Where to Start</div>
       <div id="lpThirtyEl"></div>
-
-      <div style="background:rgba(30,144,255,0.05);border:1px solid rgba(30,144,255,0.25);border-radius:14px;padding:22px 26px;margin-top:24px;">
-        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#1e90ff;margin-bottom:8px;">Next Step</div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff;letter-spacing:1px;margin-bottom:6px;">Start Building Your Future Resume</div>
-        <div style="font-size:13px;color:#888;line-height:1.7;margin-bottom:16px;">Use Resume Studio to shape your resume toward the direction you are building. It will identify what transfers from your current background and how to position yourself now.</div>
-        <button onclick="openResumeStudio('future')" style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;padding:11px 28px;border-radius:8px;background:#1e90ff;color:#fff;border:none;cursor:pointer;">Handoff to Resume Studio</button>
-      </div>
     </div>
 
     <!-- INSIGHT (both modes) -->
@@ -837,46 +823,6 @@ function closeReportModal() {
   var m = document.getElementById('reportModal');
   if (m) { m.style.display = 'none'; document.body.style.overflow = ''; }
 }
-function openResumeStudio(mode) {
-  mode = mode || 'target';
-  var resumeText = extractedText || '';
-  if (!resumeText && caImportPayload) {
-    var parts = [];
-    if (caImportPayload.resumeText) {
-      resumeText = caImportPayload.resumeText;
-    } else {
-      if (caImportPayload.profileSummary) parts.push(caImportPayload.profileSummary);
-      if (caImportPayload.roles && caImportPayload.roles.length) {
-        parts.push(caImportPayload.roles.map(function(r){ return r.title + (r.years ? ' - ' + r.years + ' years' : ''); }).join('
-'));
-      }
-      if (caImportPayload.crossoverStrengths && caImportPayload.crossoverStrengths.length) {
-        parts.push(caImportPayload.crossoverStrengths.join(', '));
-      }
-      resumeText = parts.join('
-
-');
-    }
-  }
-  if (!resumeText) {
-    var bgEl = document.getElementById('background');
-    if (bgEl) resumeText = bgEl.value.trim();
-  }
-  var firstRole = document.querySelector('#rolesEl .role-title');
-  var topRole = firstRole ? firstRole.textContent.trim() : '';
-  try {
-    localStorage.setItem('resumeStudioHandoff', JSON.stringify({
-      mode: mode,
-      resumeText: resumeText.slice(0, 6000),
-      topRole: topRole,
-      source: 'roadmap',
-      exportedAt: Date.now()
-    }));
-  } catch(e) {}
-  var modeParam = mode === 'future' ? 'future-direction' : 'target-job';
-  window.open('/target-resume?mode=' + modeParam, '_blank', 'noopener,noreferrer');
-}
-
 function switchToLP() {
   setMode('lp');
   window.scrollTo({top:0,behavior:'smooth'});

@@ -566,48 +566,41 @@ let currentMode = '';
 let extractedResumeText = '';
 let fullResumeText = '';
 
-// ── URL PARAM HANDLING + ROADMAP HANDOFF ──────────────────────────────────
+// ── URL PARAM + HANDOFF ──────────────────────────────────────────────────
 (function(){
-  const p = new URLSearchParams(window.location.search);
-  const mode = p.get('mode');
+  // Set mode from URL
+  var mode = new URLSearchParams(window.location.search).get('mode');
+  if (mode === 'target-job') setMode('target');
+  else if (mode === 'future-direction') setMode('future');
 
-  if(mode==='target-job') { setMode('target'); }
-  else if(mode==='future-direction') { setMode('future'); }
+  // Read handoff from Roadmap/CA
+  try {
+    var stored = localStorage.getItem('resumeStudioHandoff');
+    if (!stored) return;
+    var handoff = JSON.parse(stored);
+    if (!handoff || !handoff.exportedAt || Date.now() - handoff.exportedAt > 600000) return;
+    localStorage.removeItem('resumeStudioHandoff');
+    if (!handoff.resumeText) return;
 
-  function applyHandoff() {
-    try {
-      const stored = localStorage.getItem('resumeStudioHandoff');
-      if (!stored) return;
-      const handoff = JSON.parse(stored);
-      if (!handoff.exportedAt || Date.now() - handoff.exportedAt > 300000) return;
-      localStorage.removeItem('resumeStudioHandoff');
+    // Fill textarea
+    var ta = document.getElementById('resumeText');
+    if (ta) ta.value = handoff.resumeText;
 
-      const ta = document.getElementById('resumeText');
-      if (ta && handoff.resumeText) ta.value = handoff.resumeText;
+    // Hide drop zone
+    var dz = document.getElementById('resumeDropZone');
+    var fi = document.getElementById('resumeFileInput');
+    if (dz) dz.style.display = 'none';
+    if (fi) fi.style.display = 'none';
 
-      const dropZone = document.getElementById('resumeDropZone');
-      const fileInput = document.getElementById('resumeFileInput');
-      if (dropZone) dropZone.style.display = 'none';
-      if (fileInput) fileInput.style.display = 'none';
-
-      if (ta) {
-        var noteMsg = mode === 'future-direction'
-          ? 'Your background was brought over. Review it below, then choose a future role or direction in Step 2.'
-          : 'Your background was brought over. Review it below, then paste a job description in Step 2.';
-        var note = document.createElement('div');
-        note.id = 'importedFromRoadmapNote';
-        note.style.cssText = 'background:rgba(46,213,115,0.06);border:1px solid rgba(46,213,115,0.2);border-radius:8px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;';
-        note.innerHTML = '<div><span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);display:block;margin-bottom:2px;">Imported from Roadmap</span><span id="importNoteText" style="font-size:12px;color:var(--muted);">' + noteMsg + '</span></div><button onclick="var z=document.getElementById('resumeDropZone');if(z)z.style.display='';this.parentElement.style.display='none';" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:5px 10px;border-radius:5px;border:1px solid var(--border);color:var(--muted);background:transparent;cursor:pointer;white-space:nowrap;flex-shrink:0;">Use Different Resume</button>';
-        ta.parentElement.insertBefore(note, ta);
-      }
-    } catch(e) { console.error('Handoff read error:', e); }
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', applyHandoff);
-  } else {
-    applyHandoff();
-  }
+    // Show green banner
+    if (ta) {
+      var banner = document.createElement('div');
+      banner.id = 'importedFromRoadmapNote';
+      banner.style.cssText = 'background:rgba(46,213,115,0.06);border:1px solid rgba(46,213,115,0.2);border-radius:8px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;';
+      banner.innerHTML = '<div><span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#2ed573;display:block;margin-bottom:2px;">Imported from Roadmap</span><span id="importNoteText" style="font-size:12px;color:#888;">Your background was brought over. Review it, then complete Step 2.</span></div><button onclick="var d=document.getElementById('resumeDropZone');if(d)d.style.display='';this.parentElement.remove();" style="font-size:10px;padding:5px 10px;border-radius:5px;border:1px solid #333;color:#888;background:transparent;cursor:pointer;white-space:nowrap;">Use Different Resume</button>';
+      ta.parentElement.insertBefore(banner, ta);
+    }
+  } catch(e) { console.error('Handoff error', e); }
 })();
 
 const MSGS = {

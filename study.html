@@ -846,50 +846,49 @@ function closeReportModal() {
 function openResumeStudio(mode) {
   mode = mode || 'target';
 
-  // Collect best available background text
-  const bgField = document.getElementById('background')?.value.trim() || '';
-  const bgClean = bgField.startsWith('(Resume uploaded') ? '' : bgField;
-
-  // Build text from CA handoff if available
-  let caText = '';
-  if (caImportPayload) {
-    const parts = [];
-    if (caImportPayload.profileSummary) parts.push('Career Profile:\n' + caImportPayload.profileSummary);
-    if (caImportPayload.roles && caImportPayload.roles.length) {
-      parts.push('Experience:\n' + caImportPayload.roles.map(r =>
-        r.title + (r.years ? ' | ' + r.years + ' years' : '') + (r.estimatedHours ? ' | ~' + r.estimatedHours + ' hrs' : '') + (r.expertise ? ' | ' + r.expertise : '')
-      ).join('\n'));
+  // Get resume text - prioritize file upload, then CA imported text, then background field
+  var resumeText = extractedText || '';
+  if (!resumeText && caImportPayload) {
+    // Build from CA payload fields
+    var parts = [];
+    if (caImportPayload.resumeText) {
+      resumeText = caImportPayload.resumeText;
+    } else {
+      if (caImportPayload.profileSummary) parts.push(caImportPayload.profileSummary);
+      if (caImportPayload.roles && caImportPayload.roles.length) {
+        parts.push(caImportPayload.roles.map(function(r){ return r.title + (r.years ? ' - ' + r.years + ' years' : ''); }).join('\n'));
+      }
+      if (caImportPayload.crossoverStrengths && caImportPayload.crossoverStrengths.length) {
+        parts.push(caImportPayload.crossoverStrengths.join(', '));
+      }
+      resumeText = parts.join('\n\n');
     }
-    if (caImportPayload.crossoverStrengths && caImportPayload.crossoverStrengths.length) {
-      parts.push('Crossover Strengths:\n' + caImportPayload.crossoverStrengths.map(s => '- ' + s).join('\n'));
-    }
-    if (caImportPayload.insight) parts.push('Personal Insight:\n' + caImportPayload.insight);
-    caText = parts.join('\n\n');
+  }
+  if (!resumeText) {
+    var bgField = document.getElementById('background');
+    if (bgField) resumeText = bgField.value.trim();
   }
 
-  const resumeText = extractedText || (caImportPayload && caImportPayload.resumeText) || bgClean || '';
+  // Get top role
+  var firstRole = document.querySelector('#rolesEl .role-title');
+  var topRole = firstRole ? firstRole.textContent.trim() : '';
 
-  // Get top role from results
-  const firstRole = document.querySelector('#rolesEl .role-title');
-  const topRole = firstRole ? firstRole.textContent.trim() : '';
-  const targetDir = document.getElementById('lp-target')?.value.trim() || topRole;
+  // Write to localStorage
+  var payload = {
+    mode: mode,
+    resumeText: resumeText.slice(0, 6000),
+    topRole: topRole,
+    source: 'roadmap',
+    exportedAt: Date.now()
+  };
+  try { localStorage.setItem('resumeStudioHandoff', JSON.stringify(payload)); } catch(e) {}
 
-  // Store handoff in localStorage
-  try {
-    localStorage.setItem('resumeStudioHandoff', JSON.stringify({
-      mode: mode,
-      resumeText: resumeText.slice(0, 6000),
-      topRole: mode === 'target' ? topRole : targetDir,
-      source: 'roadmap',
-      exportedAt: Date.now()
-    }));
-  } catch(e) {}
-
-  const modeParam = mode === 'future' ? 'future-direction' : 'target-job';
+  // Open Resume Studio
+  var modeParam = mode === 'future' ? 'future-direction' : 'target-job';
   window.open('/target-resume?mode=' + modeParam, '_blank', 'noopener,noreferrer');
 }
 
-function switchToLP() {
+function switchToLPfunction switchToLP() {
   setMode('lp');
   window.scrollTo({top:0,behavior:'smooth'});
 }

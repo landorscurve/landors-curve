@@ -9,6 +9,25 @@ export default async function handler(req, res) {
           currentRole, careerLevel, cleanupFocus, futureRole, futureSkills,
           futureTimeline, futureProjects } = req.body;
 
+  // ── RECOMMEND DIRECTIONS MODE ─────────────────────────────────────────
+  if (mode === 'recommend') {
+    if (!resumeText) return res.status(400).json({ error: 'Resume text required' });
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 500,
+        messages: [{ role: 'user', content: 'Based on this professional background, suggest 5 specific future career directions as short role titles (3-7 words each). Return only a JSON array of strings. No explanation.\n\nBACKGROUND:\n' + resumeText.slice(0, 4000) }]
+      })
+    });
+    const data = await response.json();
+    const txt = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+    const match = txt.match(/\[[\s\S]*\]/);
+    const directions = match ? JSON.parse(match[0]) : [];
+    return res.status(200).json({ directions });
+  }
+
   if (!resumeText) return res.status(400).json({ error: 'Resume text is required' });
 
   const currentMode = mode || 'target';

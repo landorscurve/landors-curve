@@ -639,6 +639,7 @@ if(typeof pdfjsLib!=='undefined'){pdfjsLib.GlobalWorkerOptions.workerSrc='https:
 
 let currentMode = '';
 let extractedText = '';
+let caImportPayload = null;
 const chipState = {};
 
 const CM_MSGS = [
@@ -899,7 +900,6 @@ function showErr(msg){document.getElementById('errBox').textContent=msg;document
 const CP_DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 const CP_LEVEL_COLORS = {Master:'#F0A500',Advanced:'#FF6B35',Proficient:'#FFD32A',Competent:'#2ED573',Foundation:'#888899',Exposure:'#555566'};
 let cpRowCount = 0;
-let caImportPayload = null;
 let limitedContextOverride = false;
 
 function cpExpertise(hours) {

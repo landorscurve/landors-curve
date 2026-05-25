@@ -586,10 +586,10 @@ let fullResumeText = '';
       // Only use if fresh (5 minutes)
       if (handoff.exportedAt && Date.now() - handoff.exportedAt < 300000) {
         localStorage.removeItem('resumeStudioHandoff');
-        // Pre-fill resume text area
+        // Pre-fill resume text area — always overwrite when handoff is present
         if (handoff.resumeText) {
           const ta = document.getElementById('resumeText');
-          if (ta && !ta.value) ta.value = handoff.resumeText;
+          if (ta) ta.value = handoff.resumeText;
         }
         // DO NOT pre-fill jobTitle - that field is for the job they are applying TO
         // Hide the drop zone since background is already imported

@@ -560,6 +560,7 @@ input[type=file]#resumeFileInput{display:none;}
 </footer>
 
 <script>
+alert("DEBUG: script started");
 if(typeof pdfjsLib!=='undefined'){pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';}
 
 let currentMode = '';
@@ -569,15 +570,15 @@ let fullResumeText = '';
 // ── URL PARAM + HANDOFF ──────────────────────────────────────────────────
 (function(){
   var mode = new URLSearchParams(window.location.search).get('mode');
-  if (mode === 'target-job') setMode('target');
-  else if (mode === 'future-direction') setMode('future');
+  alert('DEBUG: mode=' + mode);
+  try { if (mode === 'target-job') setMode('target');
+  else if (mode === 'future-direction') setMode('future'); } catch(err) { alert('setMode crashed: ' + err.message); }
 
   try {
     var stored = localStorage.getItem('resumeStudioHandoff');
-    if (!stored) { alert('DEBUG: no resumeStudioHandoff in localStorage'); return; }
+    if (!stored) return;
     var handoff = JSON.parse(stored);
-    alert('DEBUG: handoff found. resumeText length=' + (handoff.resumeText||'').length + ' mode=' + handoff.mode + ' age=' + Math.round((Date.now()-handoff.exportedAt)/1000) + 's');
-    if (!handoff || !handoff.exportedAt || Date.now() - handoff.exportedAt > 600000) { alert('DEBUG: expired or invalid'); return; }
+    if (!handoff || !handoff.exportedAt || Date.now() - handoff.exportedAt > 600000) return;
     localStorage.removeItem('resumeStudioHandoff');
 
     var ta = document.getElementById('resumeText');
@@ -594,14 +595,7 @@ let fullResumeText = '';
         : 'Your background was brought over. Paste a job description in Step 2.';
       var banner = document.createElement('div');
       banner.style.cssText = 'background:rgba(46,213,115,0.06);border:1px solid rgba(46,213,115,0.2);border-radius:8px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;';
-      var btn = document.createElement('button');
-      btn.textContent = 'Use Different Resume';
-      btn.style.cssText = 'font-size:10px;padding:5px 10px;border-radius:5px;border:1px solid #333;color:#888;background:transparent;cursor:pointer;white-space:nowrap;';
-      btn.onclick = function(){ var d=document.getElementById('resumeDropZone');if(d)d.style.display='';this.parentElement.remove(); };
-      var msg = document.createElement('div');
-      msg.innerHTML = '<span style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#2ed573;display:block;margin-bottom:2px;">Imported from Roadmap</span><span style="font-size:12px;color:#888;">' + noteMsg + '</span>';
-      banner.appendChild(msg);
-      banner.appendChild(btn);
+      banner.innerHTML = '<div><span style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#2ed573;display:block;margin-bottom:2px;">Imported from Roadmap</span><span style="font-size:12px;color:#888;">' + noteMsg + '</span></div><button onclick="var d=document.getElementById('resumeDropZone');if(d)d.style.display='';this.parentElement.remove();" style="font-size:10px;padding:5px 10px;border-radius:5px;border:1px solid #333;color:#888;background:transparent;cursor:pointer;white-space:nowrap;">Use Different Resume</button>';
       ta.parentElement.insertBefore(banner, ta);
     }
   } catch(e) { console.error('Handoff error', e); }

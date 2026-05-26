@@ -125,6 +125,8 @@ body { background: #050505; color: var(--text); font-family: 'DM Sans', sans-ser
 .page-disclaimer-text { font-family: 'DM Mono', monospace; font-size: 10px; color: #555566; line-height: 1.7; letter-spacing: 0.5px; flex: 1; min-width: 200px; }
 .page-disclaimer-link { font-family: 'DM Mono', monospace; font-size: 10px; color: #F0A500; text-decoration: none; white-space: nowrap; }
 .page-disclaimer-link:hover { text-decoration: underline; }
+@media (max-width: 720px) { .handoff-grid { grid-template-columns: 1fr !important; } }
+@media (max-width: 900px) and (min-width: 641px) { .handoff-grid { grid-template-columns: 1fr 1fr !important; } }
 </style>
 </head>
 <body>
@@ -355,6 +357,39 @@ body { background: #050505; color: var(--text); font-family: 'DM Sans', sans-ser
 </div>
 
 <hr class="section-divider" style="margin-top:64px;">
+
+<!-- TOOL HANDOFFS -->
+<hr class="section-divider">
+
+<div class="wrap" style="padding-top:64px;padding-bottom:64px;">
+  <div class="eyebrow">Handoffs</div>
+  <div class="section-heading">Tool Handoffs</div>
+  <p style="font-size:14px;color:var(--muted);line-height:1.7;max-width:540px;margin-bottom:28px;">Some Landor's Curve tools can send useful context to the next step so you do not have to start over.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:0;">
+
+    <div style="background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:20px 22px;">
+      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Career Assessment to Roadmap</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--text);letter-spacing:1px;margin-bottom:8px;">Career Assessment → Roadmap</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.65;">Use this when you understand your experience and want to build a plan around your next move.</div>
+    </div>
+
+    <div style="background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:20px 22px;">
+      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Roadmap to Resume Studio</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--text);letter-spacing:1px;margin-bottom:8px;">Roadmap → Resume Studio</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.65;">Use this when you have a direction and want help presenting yourself for a job or future path.</div>
+    </div>
+
+    <div style="background:var(--panel);border:1px solid rgba(30,144,255,0.25);border-radius:12px;padding:20px 22px;">
+      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#1e90ff;margin-bottom:8px;">Rebound Radar to Roadmap</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--text);letter-spacing:1px;margin-bottom:8px;">Rebound Radar → Roadmap</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.65;">Use this when you find an emerging opportunity and want to build a practical plan around it.</div>
+    </div>
+
+  </div>
+
+  <p style="font-size:12px;color:var(--muted);margin-top:16px;opacity:0.7;">Handoff buttons appear after results are generated. Each one opens the next tool in a new tab so your current results stay visible.</p>
+</div>
 
 <!-- FAQ -->
 <div class="wrap faq-section">

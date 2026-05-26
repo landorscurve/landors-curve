@@ -842,6 +842,7 @@ const CP_DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 const CP_LEVEL_COLORS = {Master:'#F0A500',Advanced:'#FF6B35',Proficient:'#FFD32A',Competent:'#2ED573',Foundation:'#888899',Exposure:'#555566'};
 let cpRowCount = 0;
 let caImportPayload = null;
+let reboundImportPayload = null;
 let limitedContextOverride = false;
 
 function openResumeStudio(mode) {
@@ -1063,7 +1064,28 @@ function dismissLimitedWarning() {
 function initImport() {
   const params = new URLSearchParams(window.location.search);
   const hasImportFlag = params.get('ca_import') === '1';
+  const hasReboundFlag = params.get('rebound_import') === '1';
   const careerParam = params.get('career');
+
+  // ── REBOUND RADAR IMPORT ──────────────────────────────────────────────
+  if (hasReboundFlag) {
+    try {
+      const stored = localStorage.getItem('landorsCurveReboundRoadmapHandoff');
+      if (stored) {
+        const payload = JSON.parse(stored);
+        if (payload && payload.exportedAt && Date.now() - payload.exportedAt < 600000) {
+          localStorage.removeItem('landorsCurveReboundRoadmapHandoff');
+          reboundImportPayload = payload;
+          showReboundImport(payload);
+        } else {
+          showReboundPartial();
+        }
+      } else {
+        showReboundPartial();
+      }
+    } catch(e) { showReboundPartial(); }
+    return; // skip CA import logic
+  }
 
   // Try sessionStorage first, then localStorage
   let payload = null;
@@ -1136,6 +1158,55 @@ function showPartialImport(career) {
   cpAddRow(career, '', '', ['Mon','Tue','Wed','Thu','Fri'], 8);
 }
 
+function showReboundImport(p) {
+  // Default to Build a Skill Plan mode
+  if (typeof setMode === 'function') setMode('lp');
+
+  document.getElementById('step1Title').textContent = 'Imported from Rebound Radar';
+  document.getElementById('step1Sub').textContent = 'Review the opportunity area and background below before building your plan.';
+  const uploadArea = document.getElementById('resumeUploadArea');
+  if (uploadArea) uploadArea.style.display = 'none';
+
+  // Pre-fill background with rebound summary
+  const bg = document.getElementById('background');
+  if (bg && p.summary) bg.value = p.summary;
+
+  // Build import card
+  const card = document.createElement('div');
+  card.className = 'rebound-import-card';
+  card.id = 'reboundImportCard';
+  var learnList = (p.learn || []).slice(0, 4).map(function(l){ return l.skill || l; }).join(', ');
+  card.innerHTML = '<div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#1e90ff;margin-bottom:6px;">Imported from Rebound Radar</div>'
+    + '<div style="font-size:15px;font-family:'Bebas Neue',sans-serif;letter-spacing:1px;color:#E8E8F0;margin-bottom:8px;">' + (p.headline || p.field || 'Rebound Opportunity') + '</div>'
+    + '<div style="font-size:13px;color:#888899;line-height:1.7;margin-bottom:10px;">We brought over the opportunity area, recommended learning targets, and available background from Rebound Radar. Review it below before building your plan.</div>'
+    + (learnList ? '<div style="font-size:12px;color:#E8E8F0;margin-bottom:8px;"><strong>Recommended Learning Areas:</strong> ' + learnList + '</div>' : '')
+    + '<button onclick="clearReboundImport()" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:5px;border:1px solid rgba(30,144,255,0.3);color:#888899;background:transparent;cursor:pointer;margin-top:4px;">Clear Import</button>';
+  document.getElementById('step1Card').prepend(card);
+}
+
+function showReboundPartial() {
+  if (typeof setMode === 'function') setMode('lp');
+  const card = document.createElement('div');
+  card.className = 'rebound-import-card';
+  card.id = 'reboundImportCard';
+  card.innerHTML = '<div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#1e90ff;margin-bottom:6px;">Partial Rebound Import Received</div>'
+    + '<div style="font-size:13px;color:#888899;line-height:1.6;">We opened Roadmap from Rebound Radar, but the full Rebound result was not available. Add the opportunity area or your background below to build a stronger plan.</div>';
+  document.getElementById('step1Card').prepend(card);
+}
+
+function clearReboundImport() {
+  reboundImportPayload = null;
+  try { localStorage.removeItem('landorsCurveReboundRoadmapHandoff'); } catch(e) {}
+  const card = document.getElementById('reboundImportCard');
+  if (card) card.remove();
+  const uploadArea = document.getElementById('resumeUploadArea');
+  if (uploadArea) uploadArea.style.display = 'block';
+  document.getElementById('step1Title').textContent = 'Your Background';
+  document.getElementById('step1Sub').textContent = 'Upload your resume or describe your current experience and goals';
+  const bg = document.getElementById('background');
+  if (bg) bg.value = '';
+}
+
 function clearImport() {
   if (!confirm('This will remove the imported Career Assessment profile from this Roadmap session. Continue?')) return;
   caImportPayload = null;
@@ -1171,6 +1242,14 @@ window.fetch = function(url, opts) {
       // Build enriched background from CP roles
       if (roles.length && !body.background) {
         body.background = roles.map(r=>`${r.title}${r.org?' at '+r.org:''} (${r.years||0} yrs, ${r.expertise})`).join('; ');
+      }
+      // Attach rebound import if present
+      if (reboundImportPayload) {
+        body.reboundContext = reboundImportPayload.summary || '';
+        body.reboundField = reboundImportPayload.field || '';
+        if (!body.background && reboundImportPayload.summary) {
+          body.background = reboundImportPayload.summary;
+        }
       }
       // Always attach CP profile
       body.careerProfile = {

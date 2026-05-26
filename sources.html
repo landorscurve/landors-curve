@@ -11,6 +11,8 @@
 :root{--gold:#F0A500;--dark:#050505;--panel:#0f0f0f;--panel2:#161616;--border:rgba(240,165,0,0.12);--text:#E8E8F0;--muted:#888899;--red:#FF4757;--orange:#FF6B35;--yellow:#FFD32A;--green:#2ED573;--blue:#1E90FF;}
 *{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
 body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;}
+
+/* NAV */
 .nav{position:sticky;top:0;z-index:100;background:rgba(5,5,5,0.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:56px;}
 .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold);letter-spacing:2px;text-decoration:none;display:flex;align-items:center;gap:8px;}
 .nav-logo img{width:22px;height:22px;border-radius:4px;}
@@ -27,6 +29,7 @@ body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;m
 .nav-dropdown-menu a{display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:12px 16px;transition:all 0.15s;border-bottom:1px solid var(--border);}
 .nav-dropdown-menu a:last-child{border-bottom:none;}
 .nav-dropdown-menu a:hover{color:var(--gold);background:rgba(240,165,0,0.06);}
+.nav-dropdown-divider{border-top:1px solid var(--border);margin:4px 0;}
 .nav-hamburger{display:none;background:none;border:none;cursor:pointer;padding:6px;color:var(--gold);align-items:center;}
 .nav-hamburger svg{width:22px;height:22px;}
 .mobile-menu{display:none;position:fixed;inset:0;z-index:999;}
@@ -39,40 +42,71 @@ body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;m
 .mobile-menu-close:hover{color:var(--gold);}
 .mobile-menu a{display:block;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:14px 20px;border-bottom:1px solid rgba(240,165,0,0.06);transition:all 0.15s;}
 .mobile-menu a:hover{color:var(--gold);}
-.mobile-menu-section{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);opacity:0.4;padding:12px 20px 4px;}
 .mobile-menu a.sub{padding-left:32px;font-size:10px;}
 @media(max-width:720px){.nav-links{display:none;}.nav-hamburger{display:flex;}}
+
+/* LAYOUT */
 .wrap{max-width:960px;margin:0 auto;padding:0 28px;}
 .section{padding:52px 0;}
 .divider{border:none;border-top:1px solid var(--border);margin:0;}
 .eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;opacity:0.8;}
 .section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(24px,3.5vw,36px);color:var(--text);letter-spacing:1px;margin-bottom:16px;line-height:1;}
 .body{font-size:15px;color:var(--text);line-height:1.85;font-weight:300;max-width:680px;margin-bottom:16px;}
-.body:last-child{margin-bottom:0;}
 .muted{font-size:14px;color:var(--muted);line-height:1.8;max-width:680px;margin-bottom:14px;}
-.layers-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px;}
-@media(max-width:620px){.layers-grid{grid-template-columns:1fr;}}
-.layer-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:22px 24px;}
-.layer-num{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);opacity:0.7;margin-bottom:8px;}
-.layer-title{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--text);letter-spacing:1px;margin-bottom:8px;}
-.layer-body{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:10px;}
-.layer-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
-.layer-tag{font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);background:rgba(240,165,0,0.07);border:1px solid rgba(240,165,0,0.18);border-radius:4px;padding:3px 9px;}
-.layer-note{font-size:12px;color:var(--muted);line-height:1.6;border-top:1px solid var(--border);padding-top:10px;margin-top:4px;font-style:italic;}
+
+/* PRESET TABS */
+.preset-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:0;}
+.preset-tab{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:9px 16px;border-radius:7px 7px 0 0;border:1px solid var(--border);border-bottom:none;color:var(--muted);background:transparent;cursor:pointer;transition:all 0.18s;}
+.preset-tab:hover{color:var(--gold);}
+.preset-tab.active{color:var(--gold);background:var(--panel);border-color:rgba(240,165,0,0.25);}
+.preset-panel{background:var(--panel);border:1px solid rgba(240,165,0,0.25);border-radius:0 10px 10px 10px;padding:28px 30px;display:none;}
+.preset-panel.active{display:block;}
+.preset-name{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold);letter-spacing:1px;margin-bottom:10px;}
+.preset-desc{font-size:14px;color:var(--text);line-height:1.75;margin-bottom:20px;max-width:640px;}
+.preset-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:16px;}
+@media(max-width:620px){.preset-grid{grid-template-columns:1fr;}}
+@media(max-width:820px) and (min-width:621px){.preset-grid{grid-template-columns:1fr 1fr;}}
+.preset-sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:7px;}
+.preset-sub-green{color:var(--green);opacity:0.85;}
+.preset-sub-orange{color:var(--orange);opacity:0.85;}
+.preset-sub-blue{color:var(--blue);opacity:0.85;}
+.preset-sub-text{font-size:12px;color:var(--muted);line-height:1.65;}
+.preset-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
+.preset-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;padding:3px 8px;border-radius:4px;background:rgba(240,165,0,0.06);border:1px solid rgba(240,165,0,0.15);color:var(--muted);}
+
+/* SOURCE DIRECTORY CARDS */
+.src-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px;}
+@media(max-width:620px){.src-grid{grid-template-columns:1fr;}}
+.src-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:22px 24px;}
+.src-card-wide{grid-column:1 / -1;}
+.src-name{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--text);letter-spacing:1px;margin-bottom:10px;}
+.src-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+@media(max-width:480px){.src-row{grid-template-columns:1fr;}}
+.src-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+.src-label-green{color:var(--green);}
+.src-label-orange{color:var(--orange);}
+.src-label-blue{color:var(--blue);}
+.src-label-gold{color:var(--gold);}
+.src-text{font-size:12px;color:var(--muted);line-height:1.6;}
+.src-contrib{font-size:13px;color:var(--text);line-height:1.7;margin-bottom:6px;}
+
+/* INFO CARDS */
 .info-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:22px 26px;max-width:720px;margin-bottom:14px;}
 .info-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
 .info-body{font-size:14px;color:var(--text);line-height:1.8;font-weight:300;margin-bottom:12px;}
 .info-body:last-child{margin-bottom:0;}
+.isnot-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:720px;margin-top:4px;}
+@media(max-width:560px){.isnot-grid{grid-template-columns:1fr;}}
 .apart-list{display:flex;flex-direction:column;gap:10px;max-width:700px;}
 .apart-item{display:flex;gap:14px;align-items:flex-start;background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px 18px;}
 .apart-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
 .apart-text{font-size:13px;color:var(--text);line-height:1.65;}
-.isnot-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:720px;margin-top:4px;}
-@media(max-width:560px){.isnot-grid{grid-template-columns:1fr;}}
+
+/* FOOTER */
 .page-disclaimer{border-top:1px solid rgba(240,165,0,0.1);margin-top:48px;padding:20px 28px 28px;}
 .page-disclaimer-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
 .page-disclaimer-text{font-family:'DM Mono',monospace;font-size:10px;color:#555566;line-height:1.7;letter-spacing:0.5px;flex:1;min-width:200px;}
-.page-disclaimer-link{font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);text-decoration:none;white-space:nowrap;letter-spacing:0.5px;flex-shrink:0;}
+.page-disclaimer-link{font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);text-decoration:none;white-space:nowrap;letter-spacing:0.5px;}
 .page-disclaimer-link:hover{text-decoration:underline;}
 @media(max-width:520px){.page-disclaimer-inner{flex-direction:column;gap:8px;}}
 .footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:20px;}
@@ -90,7 +124,7 @@ body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;m
   <a href="/" class="nav-logo"><img src="/favicon.ico?v=2" alt="LC">Landor's Curve</a>
   <div class="nav-links">
     <a href="/">Home</a>
-    <a href="/#how-to-use">How to Use</a>
+    <a href="/how-to-use">How to Use</a>
     <div class="nav-dropdown" id="toolsDropdown">
       <button class="nav-dropdown-btn" onclick="toggleDropdown()">Tools
         <svg width="10" height="6" viewBox="0 0 10 6" fill="none" style="margin-left:4px;"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -124,8 +158,8 @@ body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;m
       <button class="mobile-menu-close" onclick="closeMobile()">&#215;</button>
     </div>
     <a href="/" onclick="closeMobile()">Home</a>
-    <a href="/#how-to-use" onclick="closeMobile()">How to Use</a>
-    <div class="mobile-menu-section-label" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:12px 0 4px 0;opacity:0.6;">Tools</div>
+    <a href="/how-to-use" onclick="closeMobile()">How to Use</a>
+    <div class="mobile-menu-section" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);opacity:0.4;padding:12px 20px 4px;">Tools</div>
     <a href="/#analyzer" class="sub" onclick="closeMobile()">Analyzer</a>
     <a href="/pivot" class="sub" onclick="closeMobile()">Career Assessment</a>
     <a href="/study" class="sub" onclick="closeMobile()">Roadmap</a>
@@ -141,138 +175,319 @@ body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;m
 
 <div class="wrap">
 
-  <!-- SECTION 1 -->
+  <!-- HERO -->
   <div class="section" style="padding-bottom:36px;">
     <div class="eyebrow">Transparency</div>
-    <h1 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,7vw,70px);line-height:0.9;color:var(--text);letter-spacing:2px;margin-bottom:20px;">OUR SOURCES<br><span style="color:var(--gold);">&amp; TRANSPARENCY</span></h1>
-    <p class="body">Trust is everything. Landor's Curve is built to show where its information comes from, how that information is used, and what users should understand before making decisions.</p>
+    <h1 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,7vw,70px);line-height:0.9;color:var(--text);letter-spacing:2px;margin-bottom:20px;">OUR SOURCES</h1>
+    <p class="body" style="color:var(--muted);font-size:16px;">How Landor's Curve uses public data, published research, current signals, and user-provided context to support career analysis.</p>
+    <p class="body">Landor's Curve combines multiple information layers because no single source explains the whole labor market. Official data, published research, current signals, user inputs, and structured analysis each show a different part of the picture.</p>
   </div>
 
   <div class="divider"></div>
 
-  <!-- SECTION 2 -->
-  <div class="section">
-    <div class="eyebrow">Section 1</div>
-    <div class="section-title">Why This Page Exists</div>
-    <p class="body">Better career insight should not be reserved only for institutions with large budgets. Landor's Curve brings together public workforce data, published research, current signals, user-provided information, and structured analysis so individuals can ask better questions about work, education, risk, opportunity, and career change.</p>
-    <p class="muted">The goal is not to overwhelm users with raw data. The goal is to make complex information easier to understand, compare, and apply.</p>
+  <!-- HOW THE ANALYZER SOURCE PRESETS WORK -->
+  <!-- id="source-layers" preserved here so homepage "About these sources" link works -->
+  <div class="section" id="source-layers">
+    <div class="eyebrow">Analyzer</div>
+    <div class="section-title">How the Analyzer Source Presets Work</div>
+    <p class="muted" style="margin-bottom:24px;">The Analyzer lets users choose different source presets because different questions require different levels of caution, recency, and interpretation. No preset is better for every situation. Each one changes the emphasis of the analysis.</p>
+
+    <div class="preset-tabs">
+      <button class="preset-tab active" onclick="showPreset('balanced')">Balanced</button>
+      <button class="preset-tab" onclick="showPreset('conservative')">Conservative</button>
+      <button class="preset-tab" onclick="showPreset('disruption')">Disruption Weighted</button>
+      <button class="preset-tab" onclick="showPreset('emerging')">Emerging Focus</button>
+    </div>
+
+    <div class="preset-panel active" id="preset-balanced">
+      <div class="preset-name">Balanced</div>
+      <div class="preset-desc">A general first-pass view that combines official workforce data, published research, current signals, and structured comparison.</div>
+      <div class="preset-grid">
+        <div>
+          <div class="preset-sub preset-sub-blue">Best used when</div>
+          <div class="preset-sub-text">You want a broad read on a profession without leaning too conservative or too speculative.</div>
+        </div>
+        <div>
+          <div class="preset-sub preset-sub-gold">Sources emphasized</div>
+          <div class="preset-sub-text">O*NET, BLS, public occupational data, published workforce research, current signals when relevant.</div>
+          <div class="preset-tags" style="margin-top:8px;">
+            <span class="preset-tag">O*NET</span><span class="preset-tag">BLS</span><span class="preset-tag">Workforce Research</span><span class="preset-tag">Current Signals</span>
+          </div>
+        </div>
+        <div>
+          <div class="preset-sub preset-sub-green">Strengths</div>
+          <div class="preset-sub-text">Balanced view. Good starting point. Combines stability with broader context.</div>
+        </div>
+        <div>
+          <div class="preset-sub preset-sub-orange">Limitations</div>
+          <div class="preset-sub-text">May not go as deep into disruption risk or emerging trends as the more focused presets.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="preset-panel" id="preset-conservative">
+      <div class="preset-name">Conservative</div>
+      <div class="preset-desc">A more grounded view that emphasizes stable public workforce data and slower-changing occupational information.</div>
+      <div class="preset-grid">
+        <div>
+          <div class="preset-sub preset-sub-blue">Best used when</div>
+          <div class="preset-sub-text">You want the most cautious baseline, especially for wages, job outlook, occupational tasks, and traditional labor-market context.</div>
+        </div>
+        <div>
+          <div class="preset-sub preset-sub-gold">Sources emphasized</div>
+          <div class="preset-sub-text">BLS, O*NET, public occupational databases, official workforce data.</div>
+          <div class="preset-tags" style="margin-top:8px;">
+            <span class="preset-tag">BLS</span><span class="preset-tag">O*NET</span><span class="preset-tag">Official Workforce Data</span>
+          </div>
+        </div>
+        <div>
+          <div class="preset-sub preset-sub-green">Strengths</div>
+          <div class="preset-sub-text">Stable. Publicly available. Useful baseline. Less speculative.</div>
+        </div>
+        <div>
+          <div class="preset-sub preset-sub-orange">Limitations</div>
+          <div class="preset-sub-text">Official data can lag behind fast-moving changes in AI, automation, employer expectations, and emerging roles.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="preset-panel" id="preset-disruption">
+      <div class="preset-name">Disruption Weighted</div>
+      <div class="preset-desc">A research-heavy view that emphasizes AI exposure, automation pressure, market disruption, and industry change.</div>
+      <div class="preset-grid">
+        <div>
+          <div class="preset-sub preset-sub-blue">Best used when</div>
+          <div class="preset-sub-text">You want to understand how a profession may be affected by technology, automation, business model shifts, or changing labor demand.</div>
+        </div>
+        <div>
+          <div class="preset-sub preset-sub-gold">Sources emphasized</div>
+          <div class="preset-sub-text">Brookings, McKinsey, Goldman Sachs, World Economic Forum, OECD, and other relevant published workforce research.</div>
+          <div class="preset-tags" style="margin-top:8px;">
+            <span class="preset-tag">Brookings</span><span class="preset-tag">McKinsey</span><span class="preset-tag">Goldman Sachs</span><span class="preset-tag">WEF</span><span class="preset-tag">OECD</span>
+          </div>
+        </div>
+        <div>
+          <div class="preset-sub preset-sub-green">Strengths</div>
+          <div class="preset-sub-text">Better for understanding pressure and change. Useful for strategic planning. Highlights risks that official data may not show yet.</div>
+        </div>
+        <div>
+          <div class="preset-sub preset-sub-orange">Limitations</div>
+          <div class="preset-sub-text">Published research can be broad, industry-level, or scenario-based. It may not apply equally to every person, region, employer, or role.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="preset-panel" id="preset-emerging">
+      <div class="preset-name">Emerging Focus</div>
+      <div class="preset-desc">A forward-looking view that emphasizes newer signals, changing employer language, emerging skill demand, and recently published material.</div>
+      <div class="preset-grid">
+        <div>
+          <div class="preset-sub preset-sub-blue">Best used when</div>
+          <div class="preset-sub-text">You want to explore newer opportunities, changing job titles, or patterns that may not appear yet in official datasets.</div>
+        </div>
+        <div>
+          <div class="preset-sub preset-sub-gold">Sources emphasized</div>
+          <div class="preset-sub-text">Current signals, recently published reports, employer language, emerging role patterns, and human-reviewed market observations.</div>
+          <div class="preset-tags" style="margin-top:8px;">
+            <span class="preset-tag">Current Signals</span><span class="preset-tag">Emerging Roles</span><span class="preset-tag">Employer Language</span>
+          </div>
+        </div>
+        <div>
+          <div class="preset-sub preset-sub-green">Strengths</div>
+          <div class="preset-sub-text">More responsive to newer changes. Useful for emerging opportunities. Can reveal patterns before they are formalized in official datasets.</div>
+        </div>
+        <div>
+          <div class="preset-sub preset-sub-orange">Limitations</div>
+          <div class="preset-sub-text">Newer signals can be noisy. They need context, human review, and comparison against more stable sources.</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <div class="divider"></div>
 
-  <!-- SECTION 3 -->
+  <!-- SOURCE DIRECTORY -->
   <div class="section">
-    <div class="eyebrow">Section 2</div>
-    <div class="section-title">The Landor's Curve Analysis Engine</div>
-    <p class="body">Landor's Curve does not rely on one source or one type of analysis. The system combines several layers of information to generate directional career insights.</p>
-    <p class="muted">Those layers may include official workforce data, published labor-market research, occupational and education data, user-provided resumes or job descriptions, current job-market signals when available, founder-developed frameworks, and AI-assisted synthesis.</p>
-  </div>
+    <div class="eyebrow">Directory</div>
+    <div class="section-title">Source Directory</div>
+    <p class="muted" style="margin-bottom:24px;">The presets above combine sources in different ways. The directory below explains the major source types and organizations behind the analysis.</p>
 
-  <div class="divider"></div>
+    <div class="src-grid">
 
-  <!-- SECTION 4 -->
-  <div class="section">
-    <div class="eyebrow">Section 3</div>
-    <div class="section-title" id="source-layers">Source Layers</div>
-    <p class="muted" style="margin-bottom:22px;">Each tool draws from different combinations of these layers depending on the type of analysis being performed. No single source explains the whole labor market. The value comes from comparing layers.</p>
-
-    <div class="layers-grid">
-
-      <div class="layer-card" style="border-top:3px solid var(--green);">
-        <div class="layer-num">Layer 1</div>
-        <div class="layer-title">Official Workforce Data</div>
-        <div class="layer-body">Used for occupational tasks, skills, wages, employment outlook, training requirements, and labor-market baselines.</div>
-        <div class="layer-tags">
-          <span class="layer-tag">O*NET</span>
-          <span class="layer-tag">BLS</span>
-          <span class="layer-tag">Public occupational databases</span>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+      <div class="src-card" style="border-top:3px solid var(--green);">
+        <div class="src-name">Bureau of Labor Statistics (BLS)</div>
+        <div class="src-contrib">Wage data, employment levels, job growth projections, industry employment trends, and labor-market baselines.</div>
+        <div class="src-row">
           <div>
-            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:4px;">Strength</div>
-            <div style="font-size:11px;color:var(--muted);line-height:1.55;">Provides stable, structured, public workforce data that can be compared across occupations.</div>
+            <div class="src-label src-label-green">Strengths</div>
+            <div class="src-text">Public, stable, widely used, and useful for broad labor-market context.</div>
           </div>
           <div>
-            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--orange);margin-bottom:4px;">Limitation</div>
-            <div style="font-size:11px;color:var(--muted);line-height:1.55;">Official datasets can lag behind fast-moving changes in technology, employer expectations, and emerging job titles.</div>
+            <div class="src-label src-label-orange">Limitations</div>
+            <div class="src-text">Official data can lag behind fast-moving changes.</div>
           </div>
         </div>
-        <div class="layer-note">When new official data becomes available, Landor's Curve is designed to update its underlying references so users are not relying on outdated assumptions.</div>
+        <div class="src-row">
+          <div>
+            <div class="src-label src-label-blue">Update rhythm</div>
+            <div class="src-text">Updated regularly by BLS. Landor's Curve is designed to refresh references when new public data becomes available.</div>
+          </div>
+          <div>
+            <div class="src-label src-label-gold">How we use it</div>
+            <div class="src-text">Used as a baseline for wages, outlook, employment context, and traditional labor-market direction.</div>
+          </div>
+        </div>
       </div>
 
-      <div class="layer-card" style="border-top:3px solid var(--blue);">
-        <div class="layer-num">Layer 2</div>
-        <div class="layer-title">Published Research and Reports</div>
-        <div class="layer-body">Used for broader workforce trends, AI exposure, automation pressure, industry shifts, education trends, and long-term labor-market interpretation.</div>
-        <div class="layer-tags">
-          <span class="layer-tag">Brookings</span>
-          <span class="layer-tag">McKinsey</span>
-          <span class="layer-tag">Goldman Sachs</span>
-          <span class="layer-tag">WEF</span>
-          <span class="layer-tag">OECD</span>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+      <div class="src-card" style="border-top:3px solid var(--green);">
+        <div class="src-name">O*NET</div>
+        <div class="src-contrib">Occupational tasks, skills, work activities, job zones, training requirements, and SOC codes.</div>
+        <div class="src-row">
           <div>
-            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:4px;">Strength</div>
-            <div style="font-size:11px;color:var(--muted);line-height:1.55;">Published reports can capture large patterns, expert interpretation, and emerging themes that may not appear in occupational databases right away.</div>
+            <div class="src-label src-label-green">Strengths</div>
+            <div class="src-text">Detailed occupational taxonomy and useful skills comparison.</div>
           </div>
           <div>
-            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--orange);margin-bottom:4px;">Limitation</div>
-            <div style="font-size:11px;color:var(--muted);line-height:1.55;">Reports may be updated irregularly, use different assumptions, or focus on broad sectors rather than individual career situations.</div>
+            <div class="src-label src-label-orange">Limitations</div>
+            <div class="src-text">May not fully capture new roles, hybrid jobs, or fast-moving AI-related changes.</div>
           </div>
         </div>
-        <div class="layer-note">Reports are reviewed and incorporated when they add useful context to the analysis.</div>
+        <div class="src-row">
+          <div>
+            <div class="src-label src-label-blue">Update rhythm</div>
+            <div class="src-text">Updated on a rolling cycle. Landor's Curve is designed to refresh references when new public data becomes available.</div>
+          </div>
+          <div>
+            <div class="src-label src-label-gold">How we use it</div>
+            <div class="src-text">Used to compare skills, tasks, related occupations, transferable strengths, and adjacent career patterns.</div>
+          </div>
+        </div>
       </div>
 
-      <div class="layer-card" style="border-top:3px solid var(--yellow);">
-        <div class="layer-num">Layer 3</div>
-        <div class="layer-title">Current Signals</div>
-        <div class="layer-body">Used for understanding what may be changing now. Includes recent job-market patterns, employer language, emerging skill demand, role descriptions, recently published material, and public professional discussions when reviewed and relevant.</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+      <div class="src-card" style="border-top:3px solid var(--blue);">
+        <div class="src-name">Brookings and Policy Research</div>
+        <div class="src-contrib">Research on labor markets, automation exposure, regional change, education, and economic transitions.</div>
+        <div class="src-row">
           <div>
-            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:4px;">Strength</div>
-            <div style="font-size:11px;color:var(--muted);line-height:1.55;">Current signals can reveal new terminology, emerging skills, employer expectations, and role shifts before they appear in official datasets.</div>
+            <div class="src-label src-label-green">Strengths</div>
+            <div class="src-text">Useful for understanding structural change and policy-level trends.</div>
           </div>
           <div>
-            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--orange);margin-bottom:4px;">Limitation</div>
-            <div style="font-size:11px;color:var(--muted);line-height:1.55;">Current signals can be noisy, incomplete, or anecdotal if not reviewed carefully.</div>
+            <div class="src-label src-label-orange">Limitations</div>
+            <div class="src-text">Often broad and may not apply equally to every individual or local market.</div>
           </div>
         </div>
-        <div class="layer-note">Landor's Curve is being built to support curated current-signal layers. The goal is to add useful, human-reviewed signals that improve the quality of the analysis.</div>
+        <div class="src-row">
+          <div>
+            <div class="src-label src-label-blue">Update rhythm</div>
+            <div class="src-text">Reviewed when new relevant reports are published.</div>
+          </div>
+          <div>
+            <div class="src-label src-label-gold">How we use it</div>
+            <div class="src-text">Used to add context around disruption, workforce change, and broader economic patterns.</div>
+          </div>
+        </div>
       </div>
 
-      <div class="layer-card" style="border-top:3px solid var(--gold);">
-        <div class="layer-num">Layer 4</div>
-        <div class="layer-title">User Inputs</div>
-        <div class="layer-body">Used for personalization. Inputs may include resume uploads, career background, job descriptions, target roles, location, budget, available study hours, education goals, work history, and skills and experience.</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+      <div class="src-card" style="border-top:3px solid var(--blue);">
+        <div class="src-name">McKinsey, Goldman Sachs, WEF, OECD</div>
+        <div class="src-contrib">Workforce trend analysis, AI exposure research, automation scenarios, industry disruption, and global labor-market interpretation.</div>
+        <div class="src-row">
           <div>
-            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:4px;">Strength</div>
-            <div style="font-size:11px;color:var(--muted);line-height:1.55;">User inputs allow the system to compare general workforce information against the person's actual background, goals, and constraints.</div>
+            <div class="src-label src-label-green">Strengths</div>
+            <div class="src-text">Useful for seeing large-scale business, technology, and workforce patterns.</div>
           </div>
           <div>
-            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--orange);margin-bottom:4px;">Limitation</div>
-            <div style="font-size:11px;color:var(--muted);line-height:1.55;">Results depend on the quality and completeness of what the user provides. An outdated resume or vague goal may produce a less specific analysis.</div>
+            <div class="src-label src-label-orange">Limitations</div>
+            <div class="src-text">Reports can be scenario-based, broad, or written for institutional audiences. They need to be compared against public data and user context.</div>
           </div>
         </div>
-        <div class="layer-note">Users can improve results by adding missing experience, current goals, location, target roles, or a real job description.</div>
+        <div class="src-row">
+          <div>
+            <div class="src-label src-label-blue">Update rhythm</div>
+            <div class="src-text">Reviewed when new relevant reports are published.</div>
+          </div>
+          <div>
+            <div class="src-label src-label-gold">How we use it</div>
+            <div class="src-text">Used in disruption and emerging analysis to help interpret how work requirements may be changing.</div>
+          </div>
+        </div>
       </div>
 
-      <div class="layer-card" style="border-top:3px solid var(--orange);grid-column:1 / -1;">
-        <div class="layer-num">Layer 5</div>
-        <div class="layer-title">Founder-Developed Frameworks</div>
-        <div class="layer-body">Used for interpreting career pressure, skill transfer, adjacent opportunities, learning paths, and adaptation. These frameworks help organize complex information into practical questions and decisions.</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+      <div class="src-card" style="border-top:3px solid var(--yellow);">
+        <div class="src-name">Current Signals</div>
+        <div class="src-contrib">Recently published material, employer language, emerging skill demand, role descriptions, and changing job-market patterns.</div>
+        <div class="src-row">
           <div>
-            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:4px;">Strength</div>
-            <div style="font-size:11px;color:var(--muted);line-height:1.55;">The frameworks help organize complex information into practical questions and decisions that are useful for individual career planning.</div>
+            <div class="src-label src-label-green">Strengths</div>
+            <div class="src-text">More responsive to newer changes and emerging role language.</div>
           </div>
           <div>
-            <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--orange);margin-bottom:4px;">Limitation</div>
-            <div style="font-size:11px;color:var(--muted);line-height:1.55;">These are founder-developed working frameworks, not peer-reviewed academic studies or official labor forecasts.</div>
+            <div class="src-label src-label-orange">Limitations</div>
+            <div class="src-text">Can be noisy or inconsistent. Current signals need human review and comparison against more stable sources.</div>
           </div>
         </div>
-        <div class="layer-note">They are refined as the tools are tested, user feedback is reviewed, and new source layers are added.</div>
+        <div class="src-row">
+          <div>
+            <div class="src-label src-label-blue">Update rhythm</div>
+            <div class="src-text">Curated and reviewed as the system develops.</div>
+          </div>
+          <div>
+            <div class="src-label src-label-gold">How we use it</div>
+            <div class="src-text">Used to help detect newer patterns that may not appear yet in official datasets.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="src-card" style="border-top:3px solid var(--gold);">
+        <div class="src-name">User Inputs</div>
+        <div class="src-contrib">Resumes, career background, job descriptions, target roles, location, budget, available study hours, education goals, and work history.</div>
+        <div class="src-row">
+          <div>
+            <div class="src-label src-label-green">Strengths</div>
+            <div class="src-text">Makes the analysis personal and practical.</div>
+          </div>
+          <div>
+            <div class="src-label src-label-orange">Limitations</div>
+            <div class="src-text">Results depend on the quality and completeness of the information provided.</div>
+          </div>
+        </div>
+        <div class="src-row">
+          <div>
+            <div class="src-label src-label-blue">Update rhythm</div>
+            <div class="src-text">User-controlled.</div>
+          </div>
+          <div>
+            <div class="src-label src-label-gold">How we use it</div>
+            <div class="src-text">Used to compare general labor-market information against the user's actual background, goals, constraints, and current direction.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="src-card src-card-wide" style="border-top:3px solid var(--orange);">
+        <div class="src-name">Founder-Developed Frameworks</div>
+        <div class="src-contrib">Interpretation models for career pressure, skill transfer, adjacent opportunities, learning paths, adaptation, and disruption.</div>
+        <div class="src-row">
+          <div>
+            <div class="src-label src-label-green">Strengths</div>
+            <div class="src-text">Helps organize complex information into practical questions and decisions.</div>
+          </div>
+          <div>
+            <div class="src-label src-label-orange">Limitations</div>
+            <div class="src-text">These are founder-developed working frameworks, not peer-reviewed academic studies or official labor forecasts.</div>
+          </div>
+        </div>
+        <div class="src-row">
+          <div>
+            <div class="src-label src-label-blue">Update rhythm</div>
+            <div class="src-text">Refined as the tools are tested, user feedback is reviewed, and new source layers are added.</div>
+          </div>
+          <div>
+            <div class="src-label src-label-gold">How we use it</div>
+            <div class="src-text">Used to help structure the way the tools compare risk, opportunity, transferability, and next steps.</div>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -280,61 +495,53 @@ body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;m
 
   <div class="divider"></div>
 
-  <!-- SECTION 5 -->
+  <!-- HOW AI IS USED -->
   <div class="section">
-    <div class="eyebrow">Section 4</div>
+    <div class="eyebrow">AI</div>
     <div class="section-title">How AI Is Used</div>
     <div class="info-card">
-      <div class="info-label">What AI Does in This System</div>
-      <p class="info-body">Landor's Curve uses AI as part of a structured analysis process. The system compares source material, user-provided inputs, job descriptions, reports, and career data to identify patterns, surface contradictions, organize options, and generate plain-language explanations.</p>
-      <p class="info-body">The value is speed, structure, and comparison. The Landor's Curve analysis process can compare more information more quickly than manual research alone would allow, helping users see patterns, options, and questions they may not have noticed yet.</p>
-      <p class="info-body">The system uses available sources and user-provided input to generate reports, roadmaps, resume analysis, and career recommendations. It is tuned for source-grounded analysis, consistency, and practical comparison rather than creative guessing. We continue to review and improve the process so the tools stay focused on useful, traceable, and reliable outputs.</p>
-      <p style="font-size:13px;color:var(--muted);line-height:1.75;">To increase the value of these findings, we encourage users to bring them into conversations with counselors, advisors, mentors, educators, employers, or other qualified professionals. The output is meant to support better research, better questions, and better conversations. It is an assistant for planning, not a replacement for human judgment or professional guidance when that guidance is needed.</p>
+      <p class="info-body">Landor's Curve uses AI for structured comparison, organization, and explanation. It helps compare source layers, user inputs, job descriptions, resumes, and career patterns faster than manual research alone would allow.</p>
+      <p class="info-body">The system is designed to work from available source material and user-provided context. It is tuned toward low-creativity, source-grounded analysis rather than open-ended creative generation. The goal is to surface patterns, options, contradictions, and useful questions while reducing unsupported claims.</p>
+      <p class="info-body">We continue to review, test, and refine the tools so the analysis stays focused, traceable, and practical. No system is perfect, but the goal is to make the output more useful by keeping it tied to the sources and inputs that shaped it.</p>
     </div>
   </div>
 
   <div class="divider"></div>
 
-  <!-- SECTION 6 -->
+  <!-- UPDATES AND CURRENCY -->
   <div class="section">
-    <div class="eyebrow">Section 5</div>
+    <div class="eyebrow">Currency</div>
     <div class="section-title">Updates and Currency</div>
     <div class="info-card">
-      <div class="info-label">How Fresh Is the Data?</div>
-      <p class="info-body">Landor's Curve uses a combination of stable public data, manually reviewed research, current signals, and user-provided information.</p>
-      <p class="info-body">When new official data becomes available, the goal is to update the system as quickly as practical. When new reports or useful current signals appear, they may be reviewed and added when they improve the quality of the analysis.</p>
-      <p class="info-body">Some information is stable and changes slowly. Some information changes quickly. Landor's Curve is being built to make those differences clearer over time.</p>
-      <p style="font-size:13px;color:var(--muted);line-height:1.75;">As the platform grows, the goal is to give users more control over source layers. For example, users may eventually be able to compare results using official data only, recently published research, current market signals, education-path data, or curated human-reviewed signal layers.</p>
+      <p class="info-body">Landor's Curve is designed to update source references as new public data, research, and relevant signals become available. Some sources update on fixed schedules. Others publish irregularly. When a source is updated, reviewed, or added, the goal is to make that clear whenever possible.</p>
     </div>
   </div>
 
   <div class="divider"></div>
 
-  <!-- SECTION 7 -->
+  <!-- WHAT THIS WEBSITE IS / IS NOT -->
   <div class="section">
-    <div class="eyebrow">Section 6</div>
+    <div class="eyebrow">Scope</div>
     <div class="section-title">What This Website Is</div>
     <div class="isnot-grid">
       <div class="info-card" style="margin-bottom:0;">
         <div class="info-label">What It Is</div>
-        <p class="info-body">Landor's Curve is a career decision-support tool. It brings together public workforce data, published research, current signals, user-provided information, and structured analysis to help people understand their options more clearly.</p>
-        <p style="font-size:13px;color:var(--muted);line-height:1.7;">It is designed to assist, not dictate. The goal is to help users compare paths, identify risks, notice transferable skills, and ask better questions before making important career, education, or employment decisions.</p>
+        <p class="info-body">Landor's Curve is a directional career analysis and planning tool. It is designed to help users better understand work changes, career options, skill transfer, risk, and possible next steps.</p>
       </div>
       <div class="info-card" style="margin-bottom:0;">
         <div class="info-label">What It Is Not</div>
-        <p class="info-body">It is not a guarantee of employment, an official labor forecast, or a replacement for professional career, financial, legal, or educational advice.</p>
-        <p style="font-size:13px;color:var(--muted);line-height:1.7;">It is not affiliated with or sponsored by any school, training program, employer, or institution trying to steer users toward a specific outcome.</p>
+        <p class="info-body">Landor's Curve is not a guarantee of employment, an official labor forecast, a school endorsement platform, financial advice, legal advice, or a replacement for professional career counseling.</p>
       </div>
     </div>
   </div>
 
   <div class="divider"></div>
 
-  <!-- SECTION 8 -->
+  <!-- WHAT SETS IT APART -->
   <div class="section">
-    <div class="eyebrow">Section 7</div>
+    <div class="eyebrow">Independence</div>
     <div class="section-title">What Sets It Apart</div>
-    <p class="muted" style="margin-bottom:20px;">Landor's Curve is built to be independent and transparent. We are not sponsored by schools, employers, training programs, or placement services trying to steer users toward a specific outcome. Recommendations are based on the information available, the user's inputs, and the structure of the analysis, not on who paid to be recommended.</p>
+    <p class="muted" style="margin-bottom:20px;">Landor's Curve is not built around paid placements from schools, employers, recruiters, or training programs. The goal is to provide objective, transparent, source-aware career analysis using public data, published research, user inputs, and structured comparison.<br><br>Better career insight should not be reserved only for institutions with large budgets.</p>
     <div class="apart-list">
       <div class="apart-item">
         <div class="apart-icon">🔓</div>
@@ -342,7 +549,7 @@ body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;m
       </div>
       <div class="apart-item">
         <div class="apart-icon">📊</div>
-        <div class="apart-text"><strong style="color:var(--text);">Multiple source layers.</strong> Most career tools use one or two data sources. Landor's Curve combines official government data, published research, current signals, and AI-assisted synthesis to give a more complete picture.</div>
+        <div class="apart-text"><strong style="color:var(--text);">Multiple source layers.</strong> Most career tools use one or two data sources. Landor's Curve combines official government data, published research, current signals, and structured analysis to give a more complete picture.</div>
       </div>
       <div class="apart-item">
         <div class="apart-icon">⚖️</div>
@@ -354,21 +561,20 @@ body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;m
       </div>
       <div class="apart-item">
         <div class="apart-icon">🔒</div>
-        <div class="apart-text"><strong style="color:var(--text);">Your data stays yours.</strong> Resumes and job descriptions uploaded to the tools are used only for your analysis. They are not sold, shared, or used to train AI models without explicit consent.</div>
+        <div class="apart-text"><strong style="color:var(--text);">Your data stays yours.</strong> Resumes and job descriptions uploaded to the tools are used only for your analysis. They are not sold, shared, or used to train models without explicit consent.</div>
       </div>
     </div>
   </div>
 
   <div class="divider"></div>
 
-  <!-- SECTION 9 -->
+  <!-- USING THE RESULTS -->
   <div class="section">
-    <div class="eyebrow">Section 8</div>
+    <div class="eyebrow">Results</div>
     <div class="section-title">Using the Results</div>
     <div class="info-card">
-      <div class="info-label">How to Get the Most Out of This Tool</div>
-      <p class="info-body">Landor's Curve is designed to support career research, planning, and conversation. The results can help users organize their thinking, compare possible paths, and prepare better questions for counselors, advisors, mentors, educators, employers, or other professionals.</p>
-      <p style="font-size:13px;color:var(--muted);line-height:1.75;">For major decisions involving education, finances, employment transitions, or legal matters, users should consider the results alongside other trusted sources and qualified guidance.</p>
+      <p class="info-body">Use the results as a starting point. Bring them into conversations with counselors, advisors, mentors, educators, employers, or other qualified professionals.</p>
+      <p class="info-body">The output is meant to support better thinking, not replace human judgment.</p>
     </div>
     <p style="font-size:13px;color:var(--muted);margin-top:16px;">For the founder story, mission, and product background, visit <a href="/about" style="color:var(--gold);text-decoration:none;">About</a>.</p>
   </div>
@@ -394,7 +600,6 @@ body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;m
     <a href="/rebound">Rebound Radar</a>
     <a href="/safe-list">Safe Careers List</a>
     <a href="/pricing">Pricing</a>
-    <a href="/pricing">Pricing</a>
     <a href="/sources">Sources</a>
     <a href="/about">About</a>
   </div>
@@ -409,6 +614,13 @@ function toggleDropdown(){document.getElementById('toolsDropdown').classList.tog
 function openMobile(){document.getElementById('mobileMenu').classList.add('open');document.body.style.overflow='hidden';}
 function closeMobile(){document.getElementById('mobileMenu').classList.remove('open');document.body.style.overflow='';}
 document.addEventListener('click',function(e){var dd=document.getElementById('toolsDropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open');});
+
+function showPreset(id) {
+  document.querySelectorAll('.preset-panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.preset-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById('preset-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
 </script>
 </body>
 </html>

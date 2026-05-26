@@ -1176,11 +1176,11 @@ function showReboundImport(p) {
   card.className = 'rebound-import-card';
   card.id = 'reboundImportCard';
   var learnList = (p.learn || []).slice(0, 4).map(function(l){ return l.skill || l; }).join(', ');
-  card.innerHTML = '<div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#1e90ff;margin-bottom:6px;">Imported from Rebound Radar</div>'
-    + '<div style="font-size:15px;font-family:'Bebas Neue',sans-serif;letter-spacing:1px;color:#E8E8F0;margin-bottom:8px;">' + (p.headline || p.field || 'Rebound Opportunity') + '</div>'
-    + '<div style="font-size:13px;color:#888899;line-height:1.7;margin-bottom:10px;">We brought over the opportunity area, recommended learning targets, and available background from Rebound Radar. Review it below before building your plan.</div>'
-    + (learnList ? '<div style="font-size:12px;color:#E8E8F0;margin-bottom:8px;"><strong>Recommended Learning Areas:</strong> ' + learnList + '</div>' : '')
-    + '<button onclick="clearReboundImport()" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:5px;border:1px solid rgba(30,144,255,0.3);color:#888899;background:transparent;cursor:pointer;margin-top:4px;">Clear Import</button>';
+  card.innerHTML = `<div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#1e90ff;margin-bottom:6px;">Imported from Rebound Radar</div>`
+    + `<div style="font-size:15px;font-family:'Bebas Neue',sans-serif;letter-spacing:1px;color:#E8E8F0;margin-bottom:8px;">` + (p.headline || p.field || 'Rebound Opportunity') + `</div>`
+    + `<div style="font-size:13px;color:#888899;line-height:1.7;margin-bottom:10px;">We brought over the opportunity area, recommended learning targets, and available background from Rebound Radar. Review it below before building your plan.</div>`
+    + (learnList ? `<div style="font-size:12px;color:#E8E8F0;margin-bottom:8px;"><strong>Recommended Learning Areas:</strong> ` + learnList + `</div>` : '')
+    + `<button onclick="clearReboundImport()" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:5px;border:1px solid rgba(30,144,255,0.3);color:#888899;background:transparent;cursor:pointer;margin-top:4px;">Clear Import</button>`;
   document.getElementById('step1Card').prepend(card);
 }
 
@@ -1189,8 +1189,8 @@ function showReboundPartial() {
   const card = document.createElement('div');
   card.className = 'rebound-import-card';
   card.id = 'reboundImportCard';
-  card.innerHTML = '<div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#1e90ff;margin-bottom:6px;">Partial Rebound Import Received</div>'
-    + '<div style="font-size:13px;color:#888899;line-height:1.6;">We opened Roadmap from Rebound Radar, but the full Rebound result was not available. Add the opportunity area or your background below to build a stronger plan.</div>';
+  card.innerHTML = `<div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#1e90ff;margin-bottom:6px;">Partial Rebound Import Received</div>`
+    + `<div style="font-size:13px;color:#888899;line-height:1.6;">We opened Roadmap from Rebound Radar, but the full Rebound result was not available. Add the opportunity area or your background below to build a stronger plan.</div>`;
   document.getElementById('step1Card').prepend(card);
 }
 

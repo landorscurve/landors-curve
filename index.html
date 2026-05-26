@@ -117,19 +117,47 @@ body::before { display: none; }
 .sources-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
 .src-badge { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px; font-size: 10px; color: var(--muted); font-family: 'DM Mono', monospace; transition: all 0.3s; }
 .src-badge.active { border-color: var(--gold); color: var(--gold); background: rgba(240,165,0,0.08); }
-.preset-wrap { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; margin-bottom: 24px; }
+.preset-wrap { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; margin-bottom: 0; }
 .preset-wrap-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; opacity: 0.8; }
-.preset-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; align-items: center; }
+.preset-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; align-items: center; }
 .preset-label { display: none; }
 .preset-btn { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 8px 14px; border-radius: 6px; border: 1px solid var(--border); color: var(--muted); background: transparent; cursor: pointer; transition: all 0.18s; }
 .preset-btn:hover { border-color: rgba(240,165,0,0.4); color: var(--gold); }
 .preset-btn.active { background: rgba(240,165,0,0.1); border-color: var(--gold); color: var(--gold); }
-.preset-descs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
-@media(max-width:560px){ .preset-descs { grid-template-columns: 1fr; } }
+.preset-active-desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 10px; min-height: 18px; transition: opacity 0.2s; }
+.preset-descs { display: none; }
 .preset-desc-item { display: none; }
 .preset-desc-item.visible { display: block; }
 .preset-desc-name { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
 .preset-desc-text { font-size: 12px; color: var(--muted); line-height: 1.6; }
+/* Advanced lens panel */
+.advanced-toggle { display: inline-flex; align-items: center; gap: 6px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); background: none; border: none; cursor: pointer; padding: 4px 0; opacity: 0.55; transition: all 0.18s; margin-top: 8px; }
+.advanced-toggle:hover { opacity: 1; color: var(--gold); }
+.advanced-toggle svg { width: 10px; height: 10px; transition: transform 0.2s; }
+.advanced-toggle.open svg { transform: rotate(180deg); }
+.advanced-panel { display: none; border: 1px solid rgba(30,144,255,0.2); border-radius: 10px; padding: 18px 20px; margin-top: 10px; background: rgba(30,144,255,0.03); }
+.advanced-panel.show { display: block; }
+.advanced-panel-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--blue); margin-bottom: 6px; opacity: 0.85; }
+.advanced-panel-intro { font-size: 12px; color: var(--muted); line-height: 1.65; margin-bottom: 14px; }
+.lens-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
+.lens-chip { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 7px 13px; border-radius: 6px; border: 1px solid var(--border); color: var(--muted); background: transparent; cursor: pointer; transition: all 0.18s; }
+.lens-chip:hover { border-color: rgba(30,144,255,0.4); color: #6EB5FF; }
+.lens-chip.active { background: rgba(30,144,255,0.1); border-color: var(--blue); color: var(--blue); }
+.lens-desc { font-size: 12px; color: var(--muted); line-height: 1.65; margin-top: 4px; margin-bottom: 10px; min-height: 18px; display: none; }
+.lens-desc.show { display: block; }
+.return-preset-btn { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 6px 13px; border-radius: 5px; border: 1px solid var(--border); color: var(--muted); background: transparent; cursor: pointer; transition: all 0.18s; }
+.return-preset-btn:hover { border-color: rgba(240,165,0,0.4); color: var(--gold); }
+/* Single source view indicator */
+.single-source-indicator { display: none; background: rgba(30,144,255,0.07); border: 1px solid rgba(30,144,255,0.25); border-radius: 8px; padding: 10px 14px; margin-top: 10px; }
+.single-source-indicator.show { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.ssi-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--blue); font-weight: 600; flex-shrink: 0; }
+.ssi-name { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--blue); }
+.ssi-helper { font-size: 11px; color: var(--muted); flex: 1; min-width: 160px; }
+/* Result source label */
+.result-source-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; padding: 5px 12px; border-radius: 5px; border: 1px solid; margin-bottom: 16px; display: inline-block; }
+.result-source-label.preset { color: var(--gold); border-color: rgba(240,165,0,0.3); background: rgba(240,165,0,0.06); }
+.result-source-label.single { color: var(--blue); border-color: rgba(30,144,255,0.3); background: rgba(30,144,255,0.06); }
+.single-source-note { font-size: 12px; color: var(--muted); line-height: 1.65; margin-bottom: 20px; padding: 10px 14px; border-left: 3px solid rgba(30,144,255,0.4); background: rgba(30,144,255,0.04); border-radius: 0 6px 6px 0; }
 .error-box { display: none; background: rgba(255,71,87,0.08); border: 1px solid rgba(255,71,87,0.25); border-radius: 10px; padding: 16px 20px; color: #FF7785; font-size: 13px; margin-bottom: 20px; }
 .error-box.show { display: block; }
 .loading-box { display: none; text-align: center; padding: 64px 20px; }
@@ -447,7 +475,7 @@ body::before { display: none; }
   <div class="section-heading" style="margin-bottom:8px;">Where Does Your Profession Stand?</div>
   <p class="section-sub" style="margin-bottom:28px;">Enter any job or profession to see how work in that field may be changing, what tasks are under pressure, what remains human, and where adaptation may be needed next.</p>
 
-  <div class="preset-wrap">
+  <div class="preset-wrap" id="presetWrap">
     <div class="preset-wrap-label">Choose a Source Preset</div>
     <div class="preset-row">
       <button class="preset-btn active" id="preset-balanced" onclick="setPreset('balanced')">Balanced</button>
@@ -455,40 +483,48 @@ body::before { display: none; }
       <button class="preset-btn" id="preset-disruption" onclick="setPreset('disruption')">Disruption Weighted</button>
       <button class="preset-btn" id="preset-emerging" onclick="setPreset('emerging')">Emerging Focus</button>
     </div>
-    <div class="preset-descs">
-      <div class="preset-desc-item visible" id="desc-balanced">
-        <div class="preset-desc-name">Balanced</div>
-        <div class="preset-desc-text">Uses a mix of official workforce data, published research, and current signals for a broad view.</div>
+    <div class="preset-active-desc" id="presetActiveDesc">A general first-pass view that combines official workforce data, published research, current signals, and structured comparison.</div>
+    <div class="sources-row" id="sourcesRow" style="margin-bottom:10px;">
+      <span class="src-badge" id="sb-onet">O*NET</span>
+      <span class="src-badge" id="sb-bls">BLS</span>
+      <span class="src-badge" id="sb-brookings">Brookings</span>
+      <span class="src-badge" id="sb-gs">Goldman Sachs</span>
+      <span class="src-badge" id="sb-mckinsey">McKinsey</span>
+      <span class="src-badge" id="sb-wef">WEF</span>
+      <span class="src-badge" id="sb-linkedin">LinkedIn</span>
+      <span class="src-badge" id="sb-oecd">OECD</span>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:4px;">
+      <a href="/sources#source-layers" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--muted);text-decoration:none;opacity:0.55;">About these sources →</a>
+      <button class="advanced-toggle" id="advancedToggle" onclick="toggleAdvanced()">Advanced: Compare Source Lenses
+        <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="advanced-panel" id="advancedPanel">
+      <div class="advanced-panel-title">Compare Source Lenses</div>
+      <div class="advanced-panel-intro">Single Source View shows how one source lens interprets a profession. It is useful for comparison, but it may be less complete than the curated presets.</div>
+      <div class="lens-chips">
+        <button class="lens-chip" id="lens-onet" onclick="selectLens('onet','O*NET')">O*NET</button>
+        <button class="lens-chip" id="lens-bls" onclick="selectLens('bls','BLS')">BLS</button>
+        <button class="lens-chip" id="lens-brookings" onclick="selectLens('brookings','Brookings')">Brookings</button>
+        <button class="lens-chip" id="lens-mckinsey" onclick="selectLens('mckinsey','McKinsey')">McKinsey</button>
+        <button class="lens-chip" id="lens-goldman" onclick="selectLens('goldman','Goldman Sachs')">Goldman Sachs</button>
+        <button class="lens-chip" id="lens-wef" onclick="selectLens('wef','WEF / OECD')">WEF / OECD</button>
+        <button class="lens-chip" id="lens-currentsignals" onclick="selectLens('currentsignals','Current Signals')">Current Signals</button>
       </div>
-      <div class="preset-desc-item" id="desc-conservative">
-        <div class="preset-desc-name">Conservative</div>
-        <div class="preset-desc-text">Leans more heavily on official workforce data and stable occupational sources.</div>
-      </div>
-      <div class="preset-desc-item" id="desc-disruption">
-        <div class="preset-desc-name">Disruption Weighted</div>
-        <div class="preset-desc-text">Emphasizes AI exposure, automation pressure, and market disruption signals.</div>
-      </div>
-      <div class="preset-desc-item" id="desc-emerging">
-        <div class="preset-desc-name">Emerging Focus</div>
-        <div class="preset-desc-text">Highlights newer role patterns, emerging skills, and current market signals when available.</div>
+      <div class="lens-desc" id="lensDesc"></div>
+      <div class="single-source-indicator" id="ssiBar">
+        <span class="ssi-label">Single Source View Active</span>
+        <span class="ssi-name" id="ssiName"></span>
+        <span class="ssi-helper">This run will focus on one source lens instead of the curated preset blend.</span>
+        <button class="return-preset-btn" onclick="returnToPresets()">Return to Presets</button>
       </div>
     </div>
-    <a href="/sources#source-layers" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--muted);text-decoration:none;opacity:0.55;display:inline-block;margin-top:10px;">About these sources →</a>
   </div>
 
+  <div style="height:16px;"></div>
 
-  <div class="sources-row" id="sourcesRow">
-    <span class="src-badge" id="sb-onet">O*NET</span>
-    <span class="src-badge" id="sb-bls">BLS</span>
-    <span class="src-badge" id="sb-brookings">Brookings</span>
-    <span class="src-badge" id="sb-gs">Goldman Sachs</span>
-    <span class="src-badge" id="sb-mckinsey">McKinsey</span>
-    <span class="src-badge" id="sb-wef">WEF</span>
-    <span class="src-badge" id="sb-linkedin">LinkedIn</span>
-    <span class="src-badge" id="sb-oecd">OECD</span>
-  </div>
-
-    <div class="analyzer-card">
+  <div class="analyzer-card">
     <div class="analyzer-label">Check Any Profession</div>
     <div class="search-row">
       <input class="search-input" id="profInput" type="text" placeholder="Enter any profession or job title..." />
@@ -532,6 +568,7 @@ body::before { display: none; }
   </div>
 
   <div class="results-box" id="resBox">
+    <div id="resultSourceLabel"></div>
     <div class="res-header">
       <div class="res-name" id="resName">-</div>
       <div class="risk-pill" id="resPill">-</div>
@@ -756,12 +793,25 @@ body::before { display: none; }
 <script>
 const SRCS = ['sb-onet','sb-bls','sb-brookings','sb-gs','sb-mckinsey','sb-wef','sb-linkedin','sb-oecd'];
 let currentPreset = 'balanced';
+let sourceMode = 'preset';   // 'preset' or 'single'
+let activeSingleSource = null;
+let activeSingleSourceName = null;
 
 const PRESETS = {
-  balanced:     { label:'Balanced',          sources:['O*NET','BLS','Brookings','Goldman Sachs','McKinsey','WEF','LinkedIn Workforce Reports','OECD'], badges:['sb-onet','sb-bls','sb-brookings','sb-gs','sb-mckinsey','sb-wef','sb-linkedin','sb-oecd'] },
-  conservative: { label:'Conservative',      sources:['BLS','O*NET'],                                                                                  badges:['sb-bls','sb-onet'] },
-  disruption:   { label:'Disruption Weighted',sources:['McKinsey','Goldman Sachs','Brookings'],                                                         badges:['sb-mckinsey','sb-gs','sb-brookings'] },
-  emerging:     { label:'Emerging Focus',    sources:['Brookings','WEF','LinkedIn Workforce Reports','OECD'],                                           badges:['sb-brookings','sb-wef','sb-linkedin','sb-oecd'] },
+  balanced:     { label:'Balanced',           desc:'A general first-pass view that combines official workforce data, published research, current signals, and structured comparison.', sources:['O*NET','BLS','Brookings','Goldman Sachs','McKinsey','WEF','LinkedIn Workforce Reports','OECD'], badges:['sb-onet','sb-bls','sb-brookings','sb-gs','sb-mckinsey','sb-wef','sb-linkedin','sb-oecd'] },
+  conservative: { label:'Conservative',       desc:'A grounded view that emphasizes stable public workforce data and slower-changing occupational information.', sources:['BLS','O*NET'], badges:['sb-bls','sb-onet'] },
+  disruption:   { label:'Disruption Weighted',desc:'A research-heavy view that emphasizes AI exposure, automation pressure, market disruption, and industry change.', sources:['McKinsey','Goldman Sachs','Brookings'], badges:['sb-mckinsey','sb-gs','sb-brookings'] },
+  emerging:     { label:'Emerging Focus',     desc:'A forward-looking view that emphasizes newer signals, changing employer language, emerging skill demand, and recently published material.', sources:['Brookings','WEF','LinkedIn Workforce Reports','OECD'], badges:['sb-brookings','sb-wef','sb-linkedin','sb-oecd'] },
+};
+
+const LENS_DESCS = {
+  onet:         'Focuses on occupational tasks, skills, activities, training requirements, and related occupations.',
+  bls:          'Focuses on wages, employment levels, job outlook, industry employment, and broad labor-market baselines.',
+  brookings:    'Focuses on structural labor-market research, automation exposure, regional change, education, and economic transitions.',
+  mckinsey:     'Focuses on business transformation, workforce shifts, automation adoption, and large-scale industry change.',
+  goldman:      'Focuses on macroeconomic AI exposure, productivity, automation pressure, and broad labor-market implications.',
+  wef:          'Focuses on global workforce trends, skill shifts, policy context, and international labor-market signals.',
+  currentsignals:'Focuses on newer role language, emerging skill demand, employer language, recent publications, and human-reviewed market observations.',
 };
 
 function setPreset(key) {
@@ -770,9 +820,49 @@ function setPreset(key) {
   document.getElementById('preset-' + key).classList.add('active');
   SRCS.forEach(id => document.getElementById(id).classList.remove('active'));
   PRESETS[key].badges.forEach(id => document.getElementById(id).classList.add('active'));
-  document.querySelectorAll('.preset-desc-item').forEach(d => d.classList.remove('visible'));
-  var desc = document.getElementById('desc-' + key);
-  if (desc) desc.classList.add('visible');
+  const descEl = document.getElementById('presetActiveDesc');
+  if (descEl) descEl.textContent = PRESETS[key].desc;
+  // If switching preset, exit single source mode
+  if (sourceMode === 'single') returnToPresets();
+}
+
+function toggleAdvanced() {
+  const panel = document.getElementById('advancedPanel');
+  const toggle = document.getElementById('advancedToggle');
+  const isOpen = panel.classList.contains('show');
+  panel.classList.toggle('show', !isOpen);
+  toggle.classList.toggle('open', !isOpen);
+}
+
+function selectLens(key, name) {
+  // Deselect all lens chips
+  document.querySelectorAll('.lens-chip').forEach(c => c.classList.remove('active'));
+  document.getElementById('lens-' + key).classList.add('active');
+  // Show description
+  const descEl = document.getElementById('lensDesc');
+  descEl.textContent = LENS_DESCS[key] || '';
+  descEl.classList.add('show');
+  // Activate single source mode
+  sourceMode = 'single';
+  activeSingleSource = key;
+  activeSingleSourceName = name;
+  // Show SSI bar
+  document.getElementById('ssiName').textContent = name;
+  document.getElementById('ssiBar').classList.add('show');
+  // Dim preset buttons to signal they are inactive
+  document.querySelectorAll('.preset-btn').forEach(b => { b.style.opacity = '0.4'; b.style.pointerEvents = 'none'; });
+}
+
+function returnToPresets() {
+  sourceMode = 'preset';
+  activeSingleSource = null;
+  activeSingleSourceName = null;
+  // Reset lens chips
+  document.querySelectorAll('.lens-chip').forEach(c => c.classList.remove('active'));
+  document.getElementById('lensDesc').classList.remove('show');
+  document.getElementById('ssiBar').classList.remove('show');
+  // Restore preset buttons
+  document.querySelectorAll('.preset-btn').forEach(b => { b.style.opacity = ''; b.style.pointerEvents = ''; });
 }
 
 // Init balanced preset badges
@@ -808,10 +898,17 @@ async function analyze() {
     if (mi < MSGS.length) { document.getElementById('loadTitle').textContent = MSGS[mi][0]; document.getElementById('loadSub').textContent = MSGS[mi][1]; mi++; }
   }, 2000);
   try {
+    const payload = { profession: prof, sourceMode };
+    if (sourceMode === 'single') {
+      payload.singleSource = activeSingleSource;
+    } else {
+      payload.preset = currentPreset;
+      payload.sources = PRESETS[currentPreset].sources;
+    }
     const res = await fetch('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ profession: prof, preset: currentPreset, sources: PRESETS[currentPreset].sources })
+      body: JSON.stringify(payload)
     });
     clearInterval(msgInt); stopSrc();
     document.getElementById('loadBox').classList.remove('show');
@@ -828,6 +925,18 @@ async function analyze() {
   }
 }
 function render(r) {
+  // Result source label
+  const labelEl = document.getElementById('resultSourceLabel');
+  if (r.sourceMode === 'single' && r.singleSource) {
+    const srcName = activeSingleSourceName || r.sourceLensName || r.singleSource;
+    labelEl.innerHTML = '<div class="result-source-label single">Single Source Lens: ' + srcName + '</div>'
+      + '<div class="single-source-note">This result focuses on one source lens. For a broader view, rerun the Analyzer using Balanced or another preset.</div>';
+  } else {
+    const presetNames = { balanced:'Balanced', conservative:'Conservative', disruption:'Disruption Weighted', emerging:'Emerging Focus' };
+    const pLabel = presetNames[r.activePreset || currentPreset] || 'Balanced';
+    labelEl.innerHTML = '<div class="result-source-label preset">Source Preset: ' + pLabel + '</div>';
+  }
+
   document.getElementById('resName').textContent = r.profession || '-';
   const pill = document.getElementById('resPill');
   pill.textContent = r.riskLevel || '-';
@@ -853,12 +962,24 @@ function render(r) {
   document.getElementById('jobsEl').textContent = r.jobsRemain || '-';
   document.getElementById('tagsRisk').innerHTML = (r.tasksAtRisk||[]).map(t=>`<span class="tag tag-r">${t}</span>`).join('');
   document.getElementById('tagsSafe').innerHTML = (r.tasksSurvive||[]).map(t=>`<span class="tag tag-s">${t}</span>`).join('');
-  document.getElementById('sourcesEl').innerHTML = (r.sources||[]).map(s=>
+
+  let sourcesHtml = (r.sources||[]).map(s=>
     `<li class="src-item"><div class="src-dot"></div><div><span class="src-name">${s.name}</span> - <span style="color:var(--muted)">${s.detail}</span></div></li>`).join('');
-  if (r.presetNote) {
-    document.getElementById('sourcesEl').innerHTML +=
-      `<li class="src-item" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)"><div class="src-dot" style="background:var(--gold)"></div><div><span class="src-name" style="color:var(--gold)">Preset Note</span> - <span style="color:var(--muted)">${r.presetNote}</span></div></li>`;
+
+  // Single source lens extra detail
+  if (r.sourceMode === 'single') {
+    if (r.sourceLensEmphasis) {
+      sourcesHtml += `<li class="src-item" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)"><div class="src-dot" style="background:var(--blue)"></div><div><span class="src-name" style="color:var(--blue)">What This Lens Emphasizes</span> - <span style="color:var(--muted)">${r.sourceLensEmphasis}</span></div></li>`;
+    }
+    if (r.sourceLensGaps) {
+      sourcesHtml += `<li class="src-item"><div class="src-dot" style="background:var(--muted)"></div><div><span class="src-name" style="color:var(--muted)">What This Lens May Miss</span> - <span style="color:var(--muted)">${r.sourceLensGaps}</span></div></li>`;
+    }
   }
+
+  if (r.presetNote) {
+    sourcesHtml += `<li class="src-item" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)"><div class="src-dot" style="background:var(--gold)"></div><div><span class="src-name" style="color:var(--gold)">Preset Note</span> - <span style="color:var(--muted)">${r.presetNote}</span></div></li>`;
+  }
+  document.getElementById('sourcesEl').innerHTML = sourcesHtml;
   document.getElementById('resBox').classList.add('show');
   document.getElementById('resBox').scrollIntoView({ behavior:'smooth', block:'start' });
 }

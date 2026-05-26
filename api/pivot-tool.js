@@ -15,13 +15,10 @@ export default async function handler(req, res) {
 
   // Build Career Assessment import context if available
   let caContext = '';
-  if (caImport) {
-    if (caImport.summary && caImport.summary.length > 50) {
-      // Full plain-text handoff summary - use directly
-      caContext = '\n\nCAREER ASSESSMENT PROFILE (imported from Career Assessment tool):\n' + caImport.summary + '\n\nThis is a full Career Assessment profile. Use it as the primary source of truth about this person. Do not treat the selected direction as the only data point.';
-    } else if (caImport.selectedDirection) {
-      caContext = '\n\nSelected direction from Career Assessment: ' + caImport.selectedDirection;
-    }
+  if (caImport && caImport.selectedDirection) {
+    const roles = (caImport.roles||[]).slice(0,6).map(r => `${r.title} (${r.expertise}, ~${r.estimatedHours||0} hrs)`).join(', ');
+    const strengths = (caImport.crossoverStrengths||[]).slice(0,4).join(', ');
+    caContext = `\n\nCARRIED OVER FROM CAREER ASSESSMENT:\nSelected direction: ${caImport.selectedDirection}\n${roles ? 'Roles and experience: ' + roles : ''}\n${strengths ? 'Crossover strengths: ' + strengths : ''}\n${caImport.insight && caImport.insight !== '-' ? 'Assessment insight: ' + caImport.insight : ''}\nRarity index: ${caImport.rarityIndex||''}\n\nUse this Career Assessment data to enrich the analysis. It is more detailed than a simple background description.`;
   }
 
   const system = isCM

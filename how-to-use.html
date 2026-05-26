@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="/favicon.ico?v=2" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=2">
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=2">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Use Landor's Curve</title>
+<meta name="description" content="Start with the question you are actually trying to answer. Choose the right Landor's Curve tool for your situation.">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #F0A500;
+  --dark: #050505;
+  --panel: #111118;
+  --panel2: #16161F;
+  --border: rgba(240,165,0,0.15);
+  --text: #E8E8F0;
+  --muted: #888899;
+  --red: #FF4757;
+  --orange: #FF6B35;
+  --yellow: #FFD32A;
+  --green: #2ED573;
+  --blue: #1E90FF;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: #050505; color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+
+/* NAV */
+.nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.96); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+.nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--gold); letter-spacing: 2px; text-decoration: none; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.nav-logo img { width: 22px; height: 22px; border-radius: 4px; }
+.nav-links { display: flex; align-items: center; gap: 2px; }
+.nav-links a { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 6px 10px; border-radius: 4px; transition: all 0.2s; white-space: nowrap; }
+.nav-links a:hover, .nav-links a.active { color: var(--gold); background: rgba(240,165,0,0.08); }
+.nav-dropdown { position: relative; }
+.nav-dropdown-btn { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); background: none; border: none; cursor: pointer; padding: 6px 10px; border-radius: 4px; transition: all 0.2s; display: flex; align-items: center; gap: 4px; }
+.nav-dropdown-btn:hover, .nav-dropdown.open .nav-dropdown-btn { color: var(--gold); background: rgba(240,165,0,0.08); }
+.nav-dropdown-btn svg { width: 10px; height: 10px; transition: transform 0.2s; }
+.nav-dropdown.open .nav-dropdown-btn svg { transform: rotate(180deg); }
+.nav-dropdown-menu { display: none; position: absolute; top: calc(100% + 8px); left: 0; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; min-width: 190px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.4); z-index: 200; }
+.nav-dropdown.open .nav-dropdown-menu { display: block; }
+.nav-dropdown-menu a { display: block; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 12px 16px; transition: all 0.15s; border-bottom: 1px solid var(--border); }
+.nav-dropdown-menu a:last-child { border-bottom: none; }
+.nav-dropdown-menu a:hover { color: var(--gold); background: rgba(240,165,0,0.06); }
+.nav-dropdown-divider { border-top: 1px solid var(--border); margin: 4px 0; }
+.nav-hamburger { display: none; background: none; border: none; cursor: pointer; padding: 6px; color: var(--gold); align-items: center; }
+.nav-hamburger svg { width: 22px; height: 22px; }
+.mobile-menu { display: none; position: fixed; inset: 0; z-index: 999; }
+.mobile-menu.open { display: block; }
+.mobile-menu-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.65); }
+.mobile-menu-panel { position: absolute; top: 0; right: 0; width: 280px; height: 100%; background: var(--panel); border-left: 1px solid var(--border); display: flex; flex-direction: column; overflow-y: auto; }
+.mobile-menu-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+.mobile-menu-logo { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--gold); letter-spacing: 2px; text-decoration: none; }
+.mobile-menu-close { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 24px; line-height: 1; padding: 0; }
+.mobile-menu-close:hover { color: var(--gold); }
+.mobile-menu a { display: block; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 14px 20px; border-bottom: 1px solid rgba(240,165,0,0.06); transition: all 0.15s; }
+.mobile-menu a:hover { color: var(--gold); background: rgba(240,165,0,0.06); }
+.mobile-menu a.sub { padding-left: 32px; font-size: 10px; }
+.mobile-menu-section { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); opacity: 0.45; padding: 12px 20px 4px; }
+@media (max-width: 720px) { .nav-links { display: none; } .nav-hamburger { display: flex; } }
+
+/* LAYOUT */
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 28px; }
+.eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; opacity: 0.8; }
+.section-heading { font-family: 'Bebas Neue', sans-serif; font-size: clamp(28px,4vw,44px); color: var(--text); letter-spacing: 1px; margin-bottom: 12px; line-height: 1; }
+
+/* HERO */
+.htu-hero { padding: 72px 0 48px; }
+.htu-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px,6vw,64px); color: var(--text); letter-spacing: 2px; line-height: 1; margin-bottom: 12px; }
+.htu-title span { color: var(--gold); }
+.htu-subtitle { font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: 1px; color: var(--gold); opacity: 0.8; margin-bottom: 24px; }
+.htu-intro { font-size: 15px; color: var(--muted); line-height: 1.8; max-width: 640px; }
+
+/* QUESTION CARDS */
+.cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+@media (max-width: 640px) { .cards-grid { grid-template-columns: 1fr; } }
+.q-card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 24px 26px; display: flex; flex-direction: column; transition: border-color 0.2s; }
+.q-card:hover { border-color: rgba(240,165,0,0.3); }
+.q-card-question { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 12px; font-style: italic; }
+.q-card-tool { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: var(--gold); letter-spacing: 1px; margin-bottom: 10px; }
+.q-card-desc { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 14px; flex: 1; }
+.q-card-best { margin-bottom: 16px; }
+.q-card-best-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); opacity: 0.5; margin-bottom: 6px; }
+.q-card-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.q-card-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; background: rgba(240,165,0,0.06); border: 1px solid rgba(240,165,0,0.15); color: var(--muted); }
+.q-card-btn { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 9px 18px; border-radius: 7px; background: var(--gold); color: #000; text-decoration: none; display: inline-block; align-self: flex-start; font-weight: 600; transition: opacity 0.2s; }
+.q-card-btn:hover { opacity: 0.85; }
+.q-card-next { font-size: 11px; color: var(--muted); margin-top: 10px; line-height: 1.6; opacity: 0.7; }
+
+/* PATHS */
+.paths-section { padding: 64px 0 0; }
+.paths-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 28px; }
+@media (max-width: 720px) { .paths-grid { grid-template-columns: 1fr; } }
+@media (max-width: 900px) and (min-width: 641px) { .paths-grid { grid-template-columns: 1fr 1fr; } }
+.path-card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; }
+.path-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); opacity: 0.8; margin-bottom: 8px; }
+.path-name { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--text); letter-spacing: 1px; margin-bottom: 8px; }
+.path-flow { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; color: var(--gold); margin-bottom: 10px; opacity: 0.9; }
+.path-desc { font-size: 12px; color: var(--muted); line-height: 1.65; }
+
+/* FAQ */
+.faq-section { padding: 64px 0 72px; }
+.faq-list { margin-top: 28px; display: flex; flex-direction: column; gap: 2px; }
+.faq-item { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.faq-item + .faq-item { border-top: none; border-radius: 0; }
+.faq-item:first-child { border-radius: 10px 10px 0 0; }
+.faq-item:last-child { border-radius: 0 0 10px 10px; border-top: none; }
+.faq-item:only-child { border-radius: 10px; }
+.faq-q { width: 100%; background: none; border: none; text-align: left; padding: 18px 20px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.faq-q-text { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--text); }
+.faq-q-arrow { font-size: 16px; color: var(--gold); transition: transform 0.2s; flex-shrink: 0; }
+.faq-item.open .faq-q-arrow { transform: rotate(180deg); }
+.faq-a { display: none; padding: 0 20px 18px; font-size: 13px; color: var(--muted); line-height: 1.75; border-top: 1px solid var(--border); padding-top: 14px; }
+.faq-item.open .faq-a { display: block; }
+
+/* DIVIDER */
+.section-divider { border: none; border-top: 1px solid rgba(240,165,0,0.1); margin: 0; }
+
+/* FOOTER */
+.page-disclaimer { border-top: 1px solid rgba(240,165,0,0.1); margin-top: 48px; padding: 20px 28px 28px; }
+.page-disclaimer-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.page-disclaimer-text { font-family: 'DM Mono', monospace; font-size: 10px; color: #555566; line-height: 1.7; letter-spacing: 0.5px; flex: 1; min-width: 200px; }
+.page-disclaimer-link { font-family: 'DM Mono', monospace; font-size: 10px; color: #F0A500; text-decoration: none; white-space: nowrap; }
+.page-disclaimer-link:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="nav-logo"><img src="/favicon.ico?v=2" alt="LC">Landor's Curve</a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/how-to-use" class="active">How to Use</a>
+    <div class="nav-dropdown" id="toolsDropdown">
+      <button class="nav-dropdown-btn" onclick="toggleDropdown()">Tools
+        <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+      <div class="nav-dropdown-menu">
+        <a href="/#analyzer">Analyzer</a>
+        <a href="/pivot">Career Assessment</a>
+        <a href="/study">Roadmap</a>
+        <a href="/target-resume">Resume</a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="/rebound">Rebound Radar</a>
+        <a href="/safe-list">Safe Careers List</a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" style="opacity:0.7;">PathDecider ↗</a>
+      </div>
+    </div>
+    <a href="/pricing">Pricing</a>
+    <a href="/sources">Sources</a>
+    <a href="/about">About</a>
+  </div>
+  <button class="nav-hamburger" onclick="openMobile()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-overlay" onclick="closeMobile()"></div>
+  <div class="mobile-menu-panel">
+    <div class="mobile-menu-header">
+      <a href="/" class="mobile-menu-logo" onclick="closeMobile()">Landor's Curve</a>
+      <button class="mobile-menu-close" onclick="closeMobile()">&#215;</button>
+    </div>
+    <a href="/" onclick="closeMobile()">Home</a>
+    <a href="/how-to-use" onclick="closeMobile()">How to Use</a>
+    <div class="mobile-menu-section">Tools</div>
+    <a href="/#analyzer" class="sub" onclick="closeMobile()">Analyzer</a>
+    <a href="/pivot" class="sub" onclick="closeMobile()">Career Assessment</a>
+    <a href="/study" class="sub" onclick="closeMobile()">Roadmap</a>
+    <a href="/target-resume" class="sub" onclick="closeMobile()">Resume</a>
+    <a href="/rebound" class="sub" onclick="closeMobile()">Rebound Radar</a>
+    <a href="/safe-list" class="sub" onclick="closeMobile()">Safe Careers List</a>
+    <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" class="sub" onclick="closeMobile()" style="opacity:0.6;">PathDecider ↗</a>
+    <a href="/pricing" onclick="closeMobile()">Pricing</a>
+    <a href="/sources" onclick="closeMobile()">Sources</a>
+    <a href="/about" onclick="closeMobile()">About</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="wrap">
+  <div class="htu-hero">
+    <div class="eyebrow">Guide</div>
+    <h1 class="htu-title">How to Use<br><span>Landor's Curve</span></h1>
+    <div class="htu-subtitle">Start with the question you are actually trying to answer.</div>
+    <p class="htu-intro">You do not have to use every tool, and you do not have to use them in one fixed order. Landor's Curve is designed so you can start with the tool that matches your situation, then move deeper if needed.<br><br>Some users only want to understand a profession. Others want to understand their own experience, build a plan, or prepare a resume for a real opportunity.</p>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- QUESTION CARDS -->
+<div class="wrap" style="padding-top:64px;padding-bottom:64px;">
+  <div class="eyebrow">Start Here</div>
+  <div class="section-heading">Choose the Question That Fits You Best</div>
+  <p style="font-size:14px;color:var(--muted);line-height:1.7;max-width:540px;margin-bottom:36px;">Each tool is built around a specific type of question. Pick the one closest to what you are actually trying to figure out.</p>
+
+  <div class="cards-grid">
+
+    <!-- Card 1: Analyzer -->
+    <div class="q-card" style="border-top:3px solid var(--green);">
+      <div class="q-card-question">"I want to know how my profession may be changing."</div>
+      <div class="q-card-tool">Analyzer</div>
+      <div class="q-card-desc">Use Analyzer when you want to understand how AI, automation, market expectations, licensing, trust, physical presence, or human judgment may affect a profession.</div>
+      <div class="q-card-best">
+        <div class="q-card-best-label">Best for</div>
+        <div class="q-card-tags">
+          <span class="q-card-tag">Curiosity</span>
+          <span class="q-card-tag">Early Warning</span>
+          <span class="q-card-tag">Career Risk Awareness</span>
+          <span class="q-card-tag">Broad Change</span>
+        </div>
+      </div>
+      <a href="/#analyzer" class="q-card-btn" style="background:var(--green);color:#000;">Open Analyzer</a>
+      <div class="q-card-next">If the result makes you wonder what else you could do, run Career Assessment next.</div>
+    </div>
+
+    <!-- Card 2: Career Assessment -->
+    <div class="q-card" style="border-top:3px solid var(--gold);">
+      <div class="q-card-question">"I want to understand what my experience may already be worth."</div>
+      <div class="q-card-tool">Career Assessment</div>
+      <div class="q-card-desc">Use Career Assessment when you have work experience and want to understand your skills, expertise, crossover strengths, and career options that may already exist inside your background.</div>
+      <div class="q-card-best">
+        <div class="q-card-best-label">Best for</div>
+        <div class="q-card-tags">
+          <span class="q-card-tag">Career Changers</span>
+          <span class="q-card-tag">Experienced Workers</span>
+          <span class="q-card-tag">Mixed Work History</span>
+          <span class="q-card-tag">Underestimated Experience</span>
+        </div>
+      </div>
+      <a href="/pivot" class="q-card-btn">Open Career Assessment</a>
+      <div class="q-card-next">Send the result to Roadmap when you are ready to plan your next move.</div>
+    </div>
+
+    <!-- Card 3: Roadmap -->
+    <div class="q-card" style="border-top:3px solid var(--blue);">
+      <div class="q-card-question">"I know my field is changing, and I need a plan."</div>
+      <div class="q-card-tool">Roadmap</div>
+      <div class="q-card-desc">Use Roadmap when you are still working but want a practical plan around your current schedule, budget, study time, location, and goals.<br><br>Roadmap has two modes: Find Job Paths, for jobs or adjacent roles you may already be close to. Build a Skill Plan, for building toward something new while keeping your current job.</div>
+      <div class="q-card-best">
+        <div class="q-card-best-label">Best for</div>
+        <div class="q-card-tags">
+          <span class="q-card-tag">Planning Ahead</span>
+          <span class="q-card-tag">Career Transition</span>
+          <span class="q-card-tag">Working Adults</span>
+          <span class="q-card-tag">Learning While Employed</span>
+        </div>
+      </div>
+      <a href="/study" class="q-card-btn" style="background:var(--blue);">Open Roadmap</a>
+    </div>
+
+    <!-- Card 4: Resume Studio -->
+    <div class="q-card" style="border-top:3px solid var(--gold);">
+      <div class="q-card-question">"I found a job and want my resume to fit it better."</div>
+      <div class="q-card-tool">Resume Studio</div>
+      <div class="q-card-desc">Use Resume Studio when you have a real job posting and want to target your resume without exaggerating your experience. It can also clean up your current resume or help shape a future-facing resume draft.</div>
+      <div class="q-card-best">
+        <div class="q-card-best-label">Best for</div>
+        <div class="q-card-tags">
+          <span class="q-card-tag">Job Applications</span>
+          <span class="q-card-tag">Resume Cleanup</span>
+          <span class="q-card-tag">Targeted Resumes</span>
+          <span class="q-card-tag">Future Direction</span>
+        </div>
+      </div>
+      <a href="/target-resume" class="q-card-btn">Open Resume Studio</a>
+    </div>
+
+    <!-- Card 5: Rebound Radar -->
+    <div class="q-card" style="border-top:3px solid var(--red);">
+      <div class="q-card-question">"Something changed, and I need to regroup."</div>
+      <div class="q-card-tool" style="color:var(--red);">Rebound Radar</div>
+      <div class="q-card-desc">Use Rebound Radar when you are dealing with a layoff, disruption, uncertainty, burnout, or a growing sense that your current path is shifting.</div>
+      <div class="q-card-best">
+        <div class="q-card-best-label">Best for</div>
+        <div class="q-card-tags">
+          <span class="q-card-tag">Unexpected Change</span>
+          <span class="q-card-tag">Career Disruption</span>
+          <span class="q-card-tag">Resetting Direction</span>
+          <span class="q-card-tag">Uncertainty</span>
+        </div>
+      </div>
+      <a href="/rebound" class="q-card-btn" style="background:var(--red);">Open Rebound Radar</a>
+    </div>
+
+    <!-- Card 6: Safe Careers List -->
+    <div class="q-card" style="border-top:3px solid var(--green);">
+      <div class="q-card-question">"I want to browse more durable careers."</div>
+      <div class="q-card-tool" style="color:var(--green);">Safe Careers List</div>
+      <div class="q-card-desc">Use Safe Careers List when you want a reference list of careers that may have stronger durability signals because they rely on physical presence, trust, licensing, human judgment, emotional complexity, or unpredictable real-world conditions.</div>
+      <div class="q-card-best">
+        <div class="q-card-best-label">Best for</div>
+        <div class="q-card-tags">
+          <span class="q-card-tag">Career Browsing</span>
+          <span class="q-card-tag">Long-term Planning</span>
+          <span class="q-card-tag">Safe Career Research</span>
+          <span class="q-card-tag">Durability Comparison</span>
+        </div>
+      </div>
+      <a href="/safe-list" class="q-card-btn" style="background:var(--green);color:#000;">Open Safe Careers List</a>
+    </div>
+
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- COMMON PATHS -->
+<div class="wrap paths-section">
+  <div class="eyebrow">Paths</div>
+  <div class="section-heading">Common Ways to Use the System</div>
+  <p style="font-size:14px;color:var(--muted);line-height:1.7;max-width:540px;">You do not have to start at the beginning. These are the most common starting points based on what people are actually dealing with.</p>
+  <div class="paths-grid">
+    <div class="path-card">
+      <div class="path-label">Path 1</div>
+      <div class="path-name">Just Curious</div>
+      <div class="path-flow">Analyzer → Career Assessment</div>
+      <div class="path-desc">Start by understanding how a profession may be changing, then look at what your own experience could transfer into.</div>
+    </div>
+    <div class="path-card">
+      <div class="path-label">Path 2</div>
+      <div class="path-name">Worried About My Current Job</div>
+      <div class="path-flow">Analyzer → Career Assessment → Roadmap</div>
+      <div class="path-desc">Understand the pressure on the profession, assess your current experience, then build a practical plan.</div>
+    </div>
+    <div class="path-card">
+      <div class="path-label">Path 3</div>
+      <div class="path-name">Ready to Apply</div>
+      <div class="path-flow">Resume Studio</div>
+      <div class="path-desc">If you already have a job posting, go straight to Resume Studio and target your resume for that opportunity.</div>
+    </div>
+    <div class="path-card">
+      <div class="path-label">Path 4</div>
+      <div class="path-name">Planning a Longer Transition</div>
+      <div class="path-flow">Career Assessment → Roadmap → Resume Studio</div>
+      <div class="path-desc">Start with your existing experience, build a skill plan or job path, then shape your resume toward the direction you are building.</div>
+    </div>
+    <div class="path-card">
+      <div class="path-label">Path 5</div>
+      <div class="path-name">Recovering From Disruption</div>
+      <div class="path-flow">Rebound Radar → Roadmap → Resume Studio</div>
+      <div class="path-desc">Use Rebound Radar to regroup, Roadmap to plan, and Resume Studio when you are ready to present yourself.</div>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider" style="margin-top:64px;">
+
+<!-- FAQ -->
+<div class="wrap faq-section">
+  <div class="eyebrow">FAQ</div>
+  <div class="section-heading">Frequently Asked Questions</div>
+  <div class="faq-list">
+
+    <div class="faq-item open">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">How do you store my data?</span>
+        <span class="faq-q-arrow">&#9650;</span>
+      </button>
+      <div class="faq-a">Landor's Curve is designed to avoid building persistent personal profiles from your tool activity. Your inputs are used to generate the result you requested. For paid reports, your email may be used to deliver the report, manage credits, and support the transaction.<br><br>Your information is not sold to schools, employers, recruiters, or advertisers.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Do I need an account?</span>
+        <span class="faq-q-arrow">&#9660;</span>
+      </button>
+      <div class="faq-a">No traditional account is required. Landor's Curve is intentionally lightweight. You do not need a password, profile, or dashboard to explore the tools. Some paid features may use your email to deliver reports and manage credits.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">How do credits work?</span>
+        <span class="faq-q-arrow">&#9660;</span>
+      </button>
+      <div class="faq-a">Credits are planned for deeper reports that require more analysis, search resources, formatting, and email delivery. Exploring the platform and using free tools does not automatically use a credit.<br><br>A credit should only be used when you generate a paid report or premium output. Final credit rules may change before launch, but the goal is simple: users should understand when a credit is being used before they use it.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Can I recover a previous result?</span>
+        <span class="faq-q-arrow">&#9660;</span>
+      </button>
+      <div class="faq-a">Because Landor's Curve is designed to avoid building persistent user profiles, users should save or email reports they want to keep. If you generate a report by email, that report becomes your copy.<br><br>If you close a browser session without sending or saving the result, we may not be able to recover it later.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">How is AI used?</span>
+        <span class="faq-q-arrow">&#9660;</span>
+      </button>
+      <div class="faq-a">Landor's Curve uses AI to compare, organize, and explain information from source layers and user-provided inputs. The system is designed for low-creativity, source-grounded analysis, not open-ended guessing.<br><br>The goal is to reduce unsupported claims by grounding outputs in public data, published research, user inputs, and the structure of the tool being used.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Are the results official forecasts?</span>
+        <span class="faq-q-arrow">&#9660;</span>
+      </button>
+      <div class="faq-a">No. Landor's Curve provides directional analysis and planning support. It is not an official labor forecast, a guarantee of employment, or a substitute for professional guidance.<br><br>It is meant to help users ask better questions and make better-informed decisions.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">Are schools, employers, or recruiters paying to influence results?</span>
+        <span class="faq-q-arrow">&#9660;</span>
+      </button>
+      <div class="faq-a">No. Landor's Curve is not built around paid placements from schools, employers, recruiters, or training programs. The goal is objective, source-aware career analysis.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span class="faq-q-text">What if I do not know where to start?</span>
+        <span class="faq-q-arrow">&#9660;</span>
+      </button>
+      <div class="faq-a">Start with the question you are trying to answer. If you want to understand a profession, use Analyzer. If you want to understand your own experience, use Career Assessment. If you want a plan, use Roadmap. If you have a job posting, use Resume Studio.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="page-disclaimer">
+  <div class="page-disclaimer-inner">
+    <span class="page-disclaimer-text">How to Use Guide. Results from Landor's Curve tools are directional estimates, not official forecasts or professional advice.</span>
+    <a href="/sources" class="page-disclaimer-link">Sources →</a>
+  </div>
+</div>
+
+<script>
+function toggleDropdown() { document.getElementById('toolsDropdown').classList.toggle('open'); }
+function openMobile() { document.getElementById('mobileMenu').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeMobile() { document.getElementById('mobileMenu').classList.remove('open'); document.body.style.overflow=''; }
+document.addEventListener('click', function(e) {
+  var dd = document.getElementById('toolsDropdown');
+  if (dd && !dd.contains(e.target)) dd.classList.remove('open');
+});
+function toggleFaq(btn) {
+  var item = btn.parentElement;
+  var isOpen = item.classList.contains('open');
+  item.classList.toggle('open');
+  var arrow = btn.querySelector('.faq-q-arrow');
+  if (arrow) arrow.innerHTML = isOpen ? '&#9660;' : '&#9650;';
+}
+</script>
+</body>
+</html>

@@ -370,7 +370,7 @@ body::before { display: none; }
   <a href="/" class="nav-logo"><img src="/favicon.ico?v=2" alt="LC">Landor's Curve</a>
   <div class="nav-links">
     <a href="/">Home</a>
-    <a href="/#how-to-use">How to Use</a>
+    <a href="/how-to-use">How to Use</a>
     <div class="nav-dropdown" id="toolsDropdown">
       <button class="nav-dropdown-btn" onclick="toggleDropdown()">Tools
         <svg width="10" height="6" viewBox="0 0 10 6" fill="none" style="margin-left:4px;"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -403,7 +403,7 @@ body::before { display: none; }
       <button class="mobile-menu-close" onclick="closeMobile()">&#215;</button>
     </div>
     <a href="/" onclick="closeMobile()">Home</a>
-    <a href="/#how-to-use" onclick="closeMobile()">How to Use</a>
+    <a href="/how-to-use" onclick="closeMobile()">How to Use</a>
     <div class="mobile-menu-section-label" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:12px 0 4px 0;opacity:0.6;">Tools</div>
     <a href="/#analyzer" class="sub" onclick="closeMobile()">Analyzer</a>
     <a href="/pivot" class="sub" onclick="closeMobile()">Career Assessment</a>
@@ -560,62 +560,17 @@ body::before { display: none; }
 <hr class="divider-line">
 
 
-<div id="how-to-use" class="wrap">
-  <div class="how-section">
-    <div class="eyebrow">Recommended Workflow</div>
-    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,5vw,52px);color:var(--text);letter-spacing:2px;line-height:1;margin-bottom:14px;">HOW TO USE<br>LANDOR'S CURVE</h2>
-    <p style="font-size:15px;color:var(--muted);line-height:1.8;max-width:640px;margin-bottom:16px;font-weight:300;">Going through the tools is the best way to understand what the system can do. You do not have to use every tool, and you do not have to use them in this exact order. This is a recommended workflow to help you familiarize yourself with each module and see how the system works. The Tools menu is organized in this same order from top to bottom, so you can start at the beginning or jump directly to what you need.</p>
-    <div class="how-tagline"><span>Analyze the role.</span><span class="sep">/</span><span>Assess your experience.</span><span class="sep">/</span><span>Build the roadmap.</span><span class="sep">/</span><span>Target the resume.</span></div>
 
-    <div class="workflow-grid">
-      <a href="/#analyzer" class="workflow-card" style="text-decoration:none;border-top:3px solid var(--green);">
-        <div class="workflow-step">Step 1</div>
-        <div class="workflow-name" style="color:var(--green);">Analyzer</div>
-        <div class="workflow-short">See how a profession may be changing.</div>
-        <div class="workflow-desc">Start here if you want to understand the pressure around a job or career. Analyzer looks at how technology, AI, automation, human judgment, trust, licensing, physical presence, and market shifts may affect the work.</div>
-        <span class="workflow-btn" style="color:var(--green);">Open Analyzer</span>
-      </a>
-      <a href="/pivot" class="workflow-card" style="text-decoration:none;border-top:3px solid var(--green);">
-        <div class="workflow-step">Step 2</div>
-        <div class="workflow-name" style="color:var(--green);">Career Assessment</div>
-        <div class="workflow-short">See what your experience may already unlock.</div>
-        <div class="workflow-desc">Upload your resume or enter your background to identify your strongest skills, expertise levels, crossover strengths, and career options you may already fit without assuming you need more school or a major reinvention.</div>
-        <span class="workflow-btn" style="color:var(--green);">Open Career Assessment</span>
-      </a>
-      <a href="/study" class="workflow-card" style="text-decoration:none;border-top:3px solid var(--green);">
-        <div class="workflow-step">Step 3</div>
-        <div class="workflow-name" style="color:var(--green);">Learning Roadmap</div>
-        <div class="workflow-short">Build toward something new while keeping your current job.</div>
-        <div class="workflow-desc">Use this when you want to move toward a new direction but need a realistic plan around your work schedule, available study hours, budget, location, and goals. It can compare free learning, certifications, portfolio projects, community college, and degree-based paths.</div>
-        <span class="workflow-btn" style="color:var(--green);">Open Learning Roadmap</span>
-      </a>
-      <a href="/target-resume" class="workflow-card" style="text-decoration:none;border-top:3px solid var(--gold);">
-        <div class="workflow-step">Step 4</div>
-        <div class="workflow-name" style="color:var(--gold);">Target Resume</div>
-        <div class="workflow-short">Rewrite your resume for a specific job.</div>
-        <div class="workflow-desc">Use this when you have a real job description and want your resume reframed for that opportunity. It helps identify what already fits, what to emphasize, what to address, and how to rewrite your resume without exaggerating your experience.</div>
-        <span class="workflow-btn" style="color:var(--gold);">Open Target Resume</span>
-      </a>
-    </div>
-
-    <div class="other-tools-label">Other Helpful Tools</div>
-    <div class="secondary-grid">
-      <a href="/rebound" class="secondary-card" style="text-decoration:none;border-top:3px solid var(--red);">
-        <div class="secondary-name" style="color:var(--red);">Rebound Radar</div>
-        <div class="secondary-short">Plan your next move when there is a sense of disruption or uncertainty.</div>
-        <div class="secondary-desc">Use this if you are dealing with a layoff, career disruption, sudden market change, or a growing sense that your current path may be shifting. It helps organize immediate next steps and possible directions.</div>
-        <span class="secondary-btn" style="color:var(--red);">Open Rebound Radar</span>
-      </a>
-      <a href="/safe-list" class="secondary-card" style="text-decoration:none;border-top:3px solid var(--green);">
-        <div class="secondary-name" style="color:var(--green);">Safe Careers List</div>
-        <div class="secondary-short">Browse careers with stronger durability signals.</div>
-        <div class="secondary-desc">Use this as a reference list to explore careers that may have stronger protection from automation or AI pressure because they rely on physical presence, trust, licensing, human judgment, emotional complexity, or unpredictable real-world conditions.</div>
-        <span class="secondary-btn" style="color:var(--green);">Open Safe Careers List</span>
-      </a>
-    </div>
+<div class="wrap" style="padding:64px 0 48px;">
+  <div style="background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:32px 36px;max-width:620px;">
+    <div class="eyebrow" style="margin-bottom:10px;">Guide</div>
+    <h3 style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--text);letter-spacing:1px;margin-bottom:10px;">Not Sure Where to Start?</h3>
+    <p style="font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:20px;">Landor's Curve has several tools, but you do not have to use all of them. The How to Use guide helps you choose the right starting point based on what you are trying to figure out.</p>
+    <a href="/how-to-use" style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:11px 22px;border-radius:7px;background:var(--gold);color:#000;text-decoration:none;font-weight:600;display:inline-block;">Open How to Use Guide</a>
   </div>
 </div>
 
+<hr style="border:none;border-top:1px solid rgba(240,165,0,0.1);">
 <hr style="border:none;border-top:1px solid rgba(240,165,0,0.1);">
 <!-- CURVE -->
 <div class="wrap">

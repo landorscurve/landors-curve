@@ -386,7 +386,6 @@ body::before { display: none; }
       </div>
     </div>
     <a href="/pricing">Pricing</a>
-    <a href="/pricing">Pricing</a>
     <a href="/sources">Sources</a>
     <a href="/about">About</a>
   </div>
@@ -445,7 +444,48 @@ body::before { display: none; }
   <div class="section-heading" style="margin-bottom:8px;">Where Does Your Profession Stand?</div>
   <p class="section-sub" style="margin-bottom:28px;">Enter any job or profession to see how work in that field may be changing, what tasks are under pressure, what remains human, and where adaptation may be needed next.</p>
 
-  <div class="analyzer-card">
+  <div class="preset-wrap">
+    <div class="preset-wrap-label">Choose a Source Preset</div>
+    <div class="preset-row">
+      <button class="preset-btn active" id="preset-balanced" onclick="setPreset('balanced')">Balanced</button>
+      <button class="preset-btn" id="preset-conservative" onclick="setPreset('conservative')">Conservative</button>
+      <button class="preset-btn" id="preset-disruption" onclick="setPreset('disruption')">Disruption Weighted</button>
+      <button class="preset-btn" id="preset-emerging" onclick="setPreset('emerging')">Emerging Focus</button>
+    </div>
+    <div class="preset-descs">
+      <div class="preset-desc-item visible" id="desc-balanced">
+        <div class="preset-desc-name">Balanced</div>
+        <div class="preset-desc-text">Uses a mix of official workforce data, published research, and current signals for a broad view.</div>
+      </div>
+      <div class="preset-desc-item" id="desc-conservative">
+        <div class="preset-desc-name">Conservative</div>
+        <div class="preset-desc-text">Leans more heavily on official workforce data and stable occupational sources.</div>
+      </div>
+      <div class="preset-desc-item" id="desc-disruption">
+        <div class="preset-desc-name">Disruption Weighted</div>
+        <div class="preset-desc-text">Emphasizes AI exposure, automation pressure, and market disruption signals.</div>
+      </div>
+      <div class="preset-desc-item" id="desc-emerging">
+        <div class="preset-desc-name">Emerging Focus</div>
+        <div class="preset-desc-text">Highlights newer role patterns, emerging skills, and current market signals when available.</div>
+      </div>
+    </div>
+    <a href="/sources#source-layers" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--muted);text-decoration:none;opacity:0.55;display:inline-block;margin-top:10px;">About these sources →</a>
+  </div>
+
+
+  <div class="sources-row" id="sourcesRow">
+    <span class="src-badge" id="sb-onet">O*NET</span>
+    <span class="src-badge" id="sb-bls">BLS</span>
+    <span class="src-badge" id="sb-brookings">Brookings</span>
+    <span class="src-badge" id="sb-gs">Goldman Sachs</span>
+    <span class="src-badge" id="sb-mckinsey">McKinsey</span>
+    <span class="src-badge" id="sb-wef">WEF</span>
+    <span class="src-badge" id="sb-linkedin">LinkedIn</span>
+    <span class="src-badge" id="sb-oecd">OECD</span>
+  </div>
+
+    <div class="analyzer-card">
     <div class="analyzer-label">Check Any Profession</div>
     <div class="search-row">
       <input class="search-input" id="profInput" type="text" placeholder="Enter any profession or job title..." />
@@ -480,44 +520,6 @@ body::before { display: none; }
     </div>
   </div>
 
-  <div class="sources-row" id="sourcesRow">
-    <span class="src-badge" id="sb-onet">O*NET</span>
-    <span class="src-badge" id="sb-bls">BLS</span>
-    <span class="src-badge" id="sb-brookings">Brookings</span>
-    <span class="src-badge" id="sb-gs">Goldman Sachs</span>
-    <span class="src-badge" id="sb-mckinsey">McKinsey</span>
-    <span class="src-badge" id="sb-wef">WEF</span>
-    <span class="src-badge" id="sb-linkedin">LinkedIn</span>
-    <span class="src-badge" id="sb-oecd">OECD</span>
-  </div>
-  <div class="preset-wrap">
-    <div class="preset-wrap-label">Choose a Source Preset</div>
-    <div class="preset-row">
-      <button class="preset-btn active" id="preset-balanced" onclick="setPreset('balanced')">Balanced</button>
-      <button class="preset-btn" id="preset-conservative" onclick="setPreset('conservative')">Conservative</button>
-      <button class="preset-btn" id="preset-disruption" onclick="setPreset('disruption')">Disruption Weighted</button>
-      <button class="preset-btn" id="preset-emerging" onclick="setPreset('emerging')">Emerging Focus</button>
-    </div>
-    <div class="preset-descs">
-      <div class="preset-desc-item visible" id="desc-balanced">
-        <div class="preset-desc-name">Balanced</div>
-        <div class="preset-desc-text">Uses a mix of official workforce data, published research, and current signals for a broad view.</div>
-      </div>
-      <div class="preset-desc-item" id="desc-conservative">
-        <div class="preset-desc-name">Conservative</div>
-        <div class="preset-desc-text">Leans more heavily on official workforce data and stable occupational sources.</div>
-      </div>
-      <div class="preset-desc-item" id="desc-disruption">
-        <div class="preset-desc-name">Disruption Weighted</div>
-        <div class="preset-desc-text">Emphasizes AI exposure, automation pressure, and market disruption signals.</div>
-      </div>
-      <div class="preset-desc-item" id="desc-emerging">
-        <div class="preset-desc-name">Emerging Focus</div>
-        <div class="preset-desc-text">Highlights newer role patterns, emerging skills, and current market signals when available.</div>
-      </div>
-    </div>
-    <a href="/sources#source-layers" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--muted);text-decoration:none;opacity:0.55;display:inline-block;margin-top:10px;">About these sources →</a>
-  </div>
 
   <div class="error-box" id="errBox"></div>
   <div class="loading-box" id="loadBox">

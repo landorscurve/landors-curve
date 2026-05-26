@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../PathDeciderIcon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Degree ROI Calculator - PathDecider</title>
+  <meta name="description" content="Enter your major, school cost, and career goals. Get a 40-year earnings projection, breakeven timeline, and automation risk." />
+  <script src="../js/decision-lens.js"></script>
+  <style>
+    .fl{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-hint);margin-bottom:5px;}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+    .form-grid select,.form-grid input{font-family:'DM Sans',sans-serif;font-size:14px;width:100%;height:40px;padding:0 12px;border:0.5px solid var(--border-med);border-radius:var(--radius);background:#fff;color:var(--text);outline:none;}
+    .form-grid input:focus,.form-grid select:focus{border-color:var(--coral);}
+    .slider-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+    .slider-row label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-hint);white-space:nowrap;width:140px;}
+    .slider-row input[type=range]{flex:1;}
+    .slider-val{font-size:13px;font-weight:500;min-width:80px;text-align:right;color:var(--text);}
+    .calc-btn{width:100%;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;height:46px;background:#D85A30;color:#fff;border:none;border-radius:var(--radius);cursor:pointer;margin-top:8px;}
+    .results{display:none;margin-top:2rem;}.results.show{display:block;}
+    .verdict-row{display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;padding:1rem 1.25rem;border:0.5px solid var(--border);border-radius:var(--radius-lg);}
+    .verdict-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .verdict-title{font-size:15px;font-weight:500;margin-bottom:.2rem;}
+    .verdict-sub{font-size:12px;color:var(--text-muted);line-height:1.5;}
+    .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:1.75rem;}
+    .sc{background:var(--gray-50);border-radius:var(--radius);padding:.875rem 1rem;}
+    .sl{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-hint);margin-bottom:.4rem;}
+    .sv{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;line-height:1;margin-bottom:.2rem;}
+    .sv.green{color:#1D9E75;}.sv.red{color:#D85A30;}.sv.amber{color:#BA7517;}.sv.blue{color:#185FA5;}
+    .sn{font-size:11px;color:var(--text-hint);line-height:1.4;}
+    .section-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-hint);margin-bottom:.875rem;}
+    .legend-row{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:.875rem;font-size:12px;color:var(--text-muted);}
+    .legend-item{display:flex;align-items:center;gap:5px;}
+    .legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+    .insight-block{border-left:3px solid var(--border);padding:.875rem 1rem;margin-bottom:1.5rem;border-radius:0 var(--radius) var(--radius) 0;}
+    .insight-block.good{border-left-color:#1D9E75;}.insight-block.ok{border-left-color:#BA7517;}.insight-block.warn{border-left-color:#D85A30;}
+    .insight-title{font-size:13px;font-weight:500;margin-bottom:.3rem;}
+    .insight-body{font-size:12px;color:var(--text-muted);line-height:1.5;}
+    .divider{border:none;border-top:0.5px solid var(--border);margin:1.5rem 0;}
+    .cta-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+    .cta-text p:first-child{font-size:14px;font-weight:500;margin-bottom:.2rem;}
+    .cta-text p:last-child{font-size:12px;color:var(--text-muted);}
+    .cta-btn{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:10px 16px;border:0.5px solid var(--border-med);border-radius:var(--radius);background:transparent;color:var(--text);cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-block;}
+    .quick-majors{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.25rem;}
+    .qm{font-size:12px;padding:5px 12px;border:0.5px solid var(--border-med);border-radius:100px;background:transparent;color:var(--text-muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s;}
+    .qm:hover{background:var(--gray-100);}
+    .annotation{font-size:12px;color:var(--text-muted);line-height:1.5;padding:.75rem 1rem;background:var(--gray-50);border-radius:var(--radius);margin-bottom:1.75rem;}
+  </style>
+  <script src="../js/decision-lens.js" defer></script>
+</head>
+<body class="tool-page">
+<nav>
+  <a href="../index.html" class="nav-logo"><img src="../PathDeciderIcon.png" alt="" style="width:28px;height:28px;display:block;" /><span>PathDecider</span></a>
+  <button class="nav-hamburger" id="navToggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+    <ul class="nav-links" id="navLinks">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="career-match.html">What's my career?</a></li>
+    <li><a href="degree-roi.html" style="color:var(--coral);font-weight:500;">Is my degree worth it?</a></li>
+    <li><a href="career-stats.html">How much does that job pay?</a></li>
+    <li><a href="career-reality-check.html">How's the job market?</a></li>
+    <li><a href="student-pivot.html">I have a resume</a></li>
+    <li><a href="../how-we-work.html">How we work</a></li>
+    <li><a href="../pricing.html">Pricing</a></li>
+  </ul>
+</nav>
+<script>document.getElementById('navToggle').addEventListener('click',function(){this.classList.toggle('open');document.getElementById('navLinks').classList.toggle('open')});</script>
+<div class="tool-body" style="max-width:860px;padding-top:3rem;">
+  <a href="../index.html" style="font-size:13px;color:var(--text-hint);display:flex;align-items:center;gap:6px;margin-bottom:2rem;text-decoration:none;">← All tools</a>
+  <p style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-hint);margin-bottom:.5rem;">Degree ROI Calculator</p>
+  <h1 style="font-family:'DM Serif Display',serif;font-size:clamp(26px,5vw,44px);font-weight:400;line-height:1.15;margin-bottom:.75rem;">Is this degree<br><span style="font-style:italic;color:#D85A30;">worth the investment?</span></h1>
+  <p style="font-size:15px;color:var(--text-muted);line-height:1.65;margin-bottom:2rem;max-width:520px;">Enter your major, cost, and situation. Get a real picture of lifetime earnings, breakeven timeline, and how AI affects the return on your degree.</p>
+
+  <p class="section-lbl" style="margin-bottom:.625rem;">Quick select major</p>
+  <div class="quick-majors">
+    <button class="qm" onclick="quickSet('Computer Science','public',65000)">Computer science</button>
+    <button class="qm" onclick="quickSet('Nursing','public',55000)">Nursing</button>
+    <button class="qm" onclick="quickSet('Engineering','public',72000)">Engineering</button>
+    <button class="qm" onclick="quickSet('Business Administration','public',50000)">Business</button>
+    <button class="qm" onclick="quickSet('Psychology','public',42000)">Psychology</button>
+    <button class="qm" onclick="quickSet('English','public',38000)">English</button>
+    <button class="qm" onclick="quickSet('Finance','public',62000)">Finance</button>
+    <button class="qm" onclick="quickSet('Biology','public',45000)">Biology</button>
+    <button class="qm" onclick="quickSet('Marketing','public',48000)">Marketing</button>
+    <button class="qm" onclick="quickSet('Graphic Design','public',40000)">Graphic design</button>
+    <button class="qm" onclick="quickSet('Political Science','public',41000)">Political science</button>
+    <button class="qm" onclick="quickSet('History','public',38000)">History</button>
+  </div>
+
+  <div class="form-grid">
+    <div><p class="fl">Major</p><input type="text" id="major" placeholder="e.g. Psychology" /></div>
+    <div><p class="fl">School type</p>
+      <select id="school-type">
+        <option value="public">Public university (in-state)</option>
+        <option value="public-out">Public university (out-of-state)</option>
+        <option value="private">Private university</option>
+        <option value="cc">Community college (2yr + transfer)</option>
+        <option value="trade">Trade / vocational school</option>
+      </select>
+    </div>
+  </div>
+  <div class="slider-row">
+    <label>Total degree cost</label>
+    <input type="range" id="cost-slider" min="5000" max="280000" step="1000" value="80000" oninput="syncCost(this.value)" />
+    <span class="slider-val" id="cost-display">$80,000</span>
+  </div>
+  <div class="slider-row">
+    <label>Expected starting salary</label>
+    <input type="range" id="salary-slider" min="28000" max="120000" step="1000" value="50000" oninput="syncSalary(this.value)" />
+    <span class="slider-val" id="salary-display">$50,000</span>
+  </div>
+  <div class="slider-row">
+    <label>Years to complete</label>
+    <input type="range" id="years-slider" min="1" max="6" step="1" value="4" oninput="syncYears(this.value)" />
+    <span class="slider-val" id="years-display">4 years</span>
+  </div>
+  <div class="form-grid" style="margin-top:4px;">
+    <div><p class="fl">Financial aid / scholarships</p>
+      <select id="aid">
+        <option value="0">None</option>
+        <option value="0.15">Some (~15% covered)</option>
+        <option value="0.35">Moderate (~35% covered)</option>
+        <option value="0.60">Significant (~60% covered)</option>
+        <option value="0.85">Near full ride (~85% covered)</option>
+      </select>
+    </div>
+    <div><p class="fl">Career ambition</p>
+      <select id="ambition">
+        <option value="median">Work in the field at median salary</option>
+        <option value="top">Aim for top 25% of earners</option>
+        <option value="pivot">Likely to pivot out of field</option>
+        <option value="grad">Plan to pursue grad school</option>
+      </select>
+    </div>
+  </div>
+  <div id="degree-roi-lens"></div>
+  <button class="calc-btn" onclick="calculate()">Calculate my degree ROI</button>
+
+  <div class="results" id="results">
+    <div class="verdict-row" id="verdict-row">
+      <div class="verdict-icon" id="verdict-icon"></div>
+      <div><p class="verdict-title" id="verdict-title"></p><p class="verdict-sub" id="verdict-sub"></p></div>
+    </div>
+    <div class="stat-grid" id="stat-grid"></div>
+    <p class="section-lbl">40-year earnings projection</p>
+    <div class="legend-row">
+      <span class="legend-item"><span class="legend-dot" style="background:#1D9E75;"></span>Cumulative earnings (with degree)</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#B5D4F4;border:1px dashed #378ADD;"></span>Without degree (comparison)</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#D85A30;"></span>Total cost including debt interest</span>
+    </div>
+    <div style="position:relative;height:280px;margin-bottom:.75rem;">
+      <canvas id="roiChart" role="img" aria-label="Line chart showing cumulative earnings with degree versus without degree over 40 years.">Earnings projection over 40 years.</canvas>
+    </div>
+    <div class="annotation" id="chart-note"></div>
+    <p class="section-lbl">What the numbers mean for you</p>
+    <div class="insight-block" id="insight-block">
+      <p class="insight-title" id="insight-title"></p>
+      <p class="insight-body" id="insight-body"></p>
+    </div>
+    <div class="insight-block ok" style="margin-bottom:1.5rem;">
+      <p class="insight-title" style="color:#854F0B;">automation risk for this field</p>
+      <p class="insight-body" id="ai-risk-body"></p>
+    </div>
+
+      <div style="background:var(--teal-light);border-radius:var(--radius-lg);padding:1.25rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+        <div>
+          <p style="font-size:14px;font-weight:500;color:var(--teal-dark);margin-bottom:.25rem;">Save this analysis as a PDF</p>
+          <p style="font-size:12px;color:var(--text-muted);">Get your ROI calculation, education path, and action plan in one printable report.</p>
+        </div>
+        <a id="roi-report-link" href="report.html" style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;padding:10px 18px;background:#1D9E75;color:#fff;border-radius:10px;text-decoration:none;white-space:nowrap;flex-shrink:0;">Generate my report →</a>
+      </div>
+    <div class="divider"></div>
+    <div class="cta-row">
+      <div class="cta-text"><p>Want to improve this ROI?</p><p>See exactly which skills and certs to add to your degree</p></div>
+      <a href="student-pivot.html" class="cta-btn" id="pivot-cta">Student Pivot Tool →</a>
+    </div>
+  </div>
+</div>
+<footer>
+  <span class="footer-logo"><img src="../PathDeciderIcon.png" alt="" style="width:24px;height:24px;display:block;flex-shrink:0;" /><span>PathDecider</span></span>
+  <span class="footer-note">Analysis informed by O*NET, BLS, College Scorecard, IPEDS, Brookings, Federal Reserve NY, Pew Research, Goldman Sachs, and McKinsey workforce research.</span>
+  <ul class="footer-links">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="career-match.html">Career Match</a></li>
+    <li><a href="degree-roi.html">Degree ROI</a></li>
+    <li><a href="career-stats.html">Career Lookup</a></li>
+    <li><a href="student-pivot.html">Pivot Tool</a></li>
+    <li><a href="../how-we-work.html">How We Work</a></li>
+    <li><a href="../pricing.html">Pricing</a></li>
+    <li><a href="../access-credits.html">Access Credits</a></li>
+  </ul>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const MAJOR_DATA={'computer science':{medianSalary:130160,topSalary:180000,noDegree:42000,aiRisk:'medium',aiNote:'AI coding tools are raising the productivity bar for every developer. Junior roles face pressure. Specialization in ML, systems, or architecture significantly reduces displacement risk.'},nursing:{medianSalary:81220,topSalary:120000,noDegree:35000,aiRisk:'low',aiNote:'Nursing is among the most automation-resistant careers. Patient care, emotional support, and real-time clinical judgment are irreplaceable. AI will assist nurses, not replace them.'},engineering:{medianSalary:96000,topSalary:145000,noDegree:38000,aiRisk:'low',aiNote:'Engineering requires physical judgment, safety accountability, and systems thinking that AI cannot replicate. High automation displacement protection.'},'business administration':{medianSalary:65000,topSalary:110000,noDegree:36000,aiRisk:'medium',aiNote:'Generalist business roles face automation pressure in reporting and coordination. Specialized business graduates are significantly more protected than generalists.'},psychology:{medianSalary:55000,topSalary:85000,noDegree:34000,aiRisk:'low',aiNote:"Clinical and counseling psychology is highly AI-resistant - human relationships are irreplaceable. Non-clinical psychology roles face moderate disruption."},english:{medianSalary:52000,topSalary:80000,noDegree:34000,aiRisk:'high',aiNote:'AI tools are automating production-level writing rapidly. Technical writing, content strategy, and editorial judgment roles are more protected than general content creation.'},finance:{medianSalary:96000,topSalary:160000,noDegree:36000,aiRisk:'medium',aiNote:'Execution-layer financial analysis faces automation pressure. Deal judgment, client relationships, and regulatory navigation remain human-intensive.'},biology:{medianSalary:58000,topSalary:90000,noDegree:34000,aiRisk:'low',aiNote:"Lab research, clinical roles, and bioinformatics are AI-resistant. AI is becoming a powerful tool in biology that expands rather than displaces skilled biologists."},marketing:{medianSalary:65000,topSalary:120000,noDegree:35000,aiRisk:'medium',aiNote:'Campaign execution faces growing AI automation. Brand strategy, customer insight, and growth leadership remain human-judgment-intensive.'},'graphic design':{medianSalary:57990,topSalary:94000,noDegree:34000,aiRisk:'high',aiNote:'AI image generation is disrupting production design significantly. Designers who specialize in UX and brand strategy are repositioning successfully.'},'political science':{medianSalary:58000,topSalary:90000,noDegree:34000,aiRisk:'low',aiNote:'Policy analysis, stakeholder navigation, and legislative judgment are deeply human competencies.'},history:{medianSalary:52000,topSalary:78000,noDegree:34000,aiRisk:'low',aiNote:'Research synthesis and contextual analysis are AI-resistant skills. The challenge is credential translation, not automation risk.'}};
+const SCHOOL_COSTS={public:40000,'public-out':110000,private:200000,cc:16000,trade:18000};
+let chartInstance=null;
+function fmt(n){return'$'+Math.round(n).toLocaleString();}
+function fmtK(n){return'$'+Math.round(n/1000)+'K';}
+function syncCost(v){document.getElementById('cost-display').textContent=fmt(v);}
+function syncSalary(v){document.getElementById('salary-display').textContent=fmt(v);}
+function syncYears(v){document.getElementById('years-display').textContent=v+' year'+(v>1?'s':'');}
+function updateCostHint(){const type=document.getElementById('school-type').value;const cost=SCHOOL_COSTS[type];document.getElementById('cost-slider').value=cost;syncCost(cost);}
+function quickSet(major,school,salary){document.getElementById('major').value=major;
+  // Only set school type if user hasn't changed it from default
+  const schoolEl = document.getElementById('school-type');
+  if(!schoolEl.dataset.userSelected) { schoolEl.value=school; updateCostHint(); }
+  document.getElementById('salary-slider').value=salary;syncSalary(salary);}
+  // Mark school type as user-selected when they change it
+  document.getElementById('school-type').addEventListener('change', function(){ this.dataset.userSelected='true'; updateCostHint(); });
+function getMajorKey(input){const norm=input.toLowerCase().trim();if(MAJOR_DATA[norm])return norm;for(const k of Object.keys(MAJOR_DATA)){if(norm.includes(k)||k.includes(norm))return k;}return null;}
+function calculate(){
+  const majorInput=document.getElementById('major').value.trim();
+  const totalCost=parseFloat(document.getElementById('cost-slider').value);
+  const startSalary=parseFloat(document.getElementById('salary-slider').value);
+  const yearsSchool=parseInt(document.getElementById('years-slider').value);
+  const aidPct=parseFloat(document.getElementById('aid').value);
+  const ambition=document.getElementById('ambition').value;
+  const majorKey=getMajorKey(majorInput);
+  const majorInfo=majorKey?MAJOR_DATA[majorKey]:null;
+  const netCost=totalCost*(1-aidPct);
+  const debtInterest=netCost*0.18;
+  const totalDebt=netCost+debtInterest;
+  let projectedSalary=startSalary;
+  if(majorInfo){if(ambition==='top')projectedSalary=majorInfo.topSalary;else if(ambition==='pivot')projectedSalary=Math.min(startSalary,majorInfo.medianSalary*0.72);else if(ambition==='grad')projectedSalary=majorInfo.medianSalary*1.25;else projectedSalary=majorInfo.medianSalary;}
+  const growthRate=0.028;const noDegreeStart=majorInfo?majorInfo.noDegree:34000;const noDegreeGrowth=0.018;
+  const labels=[];const withDegree=[];const withoutDegree=[];const costLine=[];
+  let cumDeg=0,cumNoDeg=0,breakevenYear=null;
+  for(let yr=1;yr<=40;yr++){labels.push('Yr '+yr);if(yr<=yearsSchool){cumDeg+=0;cumNoDeg+=noDegreeStart*Math.pow(1+noDegreeGrowth,yr-1);}else{const workYr=yr-yearsSchool;cumDeg+=projectedSalary*Math.pow(1+growthRate,workYr-1);cumNoDeg+=noDegreeStart*Math.pow(1+noDegreeGrowth,yr-1);}const netDeg=cumDeg-totalDebt;if(breakevenYear===null&&netDeg>cumNoDeg)breakevenYear=yr;withDegree.push(Math.round(cumDeg));withoutDegree.push(Math.round(cumNoDeg));costLine.push(Math.round(totalDebt));}
+  const lifetime40Deg=withDegree[39];const lifetime40NoDeg=withoutDegree[39];const lifetimePremium=lifetime40Deg-lifetime40NoDeg;const roiMultiple=(lifetimePremium/Math.max(totalDebt,1));const midSalary=Math.round(projectedSalary*Math.pow(1+growthRate,15));
+  document.getElementById('stat-grid').innerHTML=`<div class="sc"><p class="sl">Net degree cost</p><p class="sv ${netCost>60000?'red':'amber'}">${fmtK(netCost)}</p><p class="sn">after aid/scholarships</p></div><div class="sc"><p class="sl">Total with interest</p><p class="sv red">${fmtK(totalDebt)}</p><p class="sn">including estimated loan interest</p></div><div class="sc"><p class="sl">Starting salary</p><p class="sv blue">${fmtK(projectedSalary)}</p><p class="sn">projected at graduation</p></div><div class="sc"><p class="sl">Salary at 15 yrs</p><p class="sv green">${fmtK(midSalary)}</p><p class="sn">estimated with annual growth</p></div><div class="sc"><p class="sl">Breakeven point</p><p class="sv ${breakevenYear&&breakevenYear<=15?'green':breakevenYear&&breakevenYear<=25?'amber':'red'}">${breakevenYear?'Yr '+breakevenYear:'Never'}</p><p class="sn">when degree earnings surpass no-degree path</p></div><div class="sc"><p class="sl">Lifetime premium</p><p class="sv ${lifetimePremium>0?'green':'red'}">${lifetimePremium>0?'+':''}${fmtK(lifetimePremium)}</p><p class="sn">vs. no-degree path over 40 years</p></div><div class="sc"><p class="sl">ROI multiple</p><p class="sv ${roiMultiple>3?'green':roiMultiple>1.5?'amber':'red'}">${roiMultiple.toFixed(1)}x</p><p class="sn">return per dollar invested</p></div><div class="sc"><p class="sl">40-yr earnings</p><p class="sv green">${fmtK(lifetime40Deg)}</p><p class="sn">cumulative with degree</p></div>`;
+  const isGood=roiMultiple>3&&breakevenYear&&breakevenYear<=15;const isOk=roiMultiple>1.5&&breakevenYear&&breakevenYear<=25;
+  const verdictColor=isGood?'#1D9E75':isOk?'#BA7517':'#D85A30';const verdictBg=isGood?'#E1F5EE':isOk?'#FAEEDA':'#FAECE7';
+  document.getElementById('verdict-icon').style.background=verdictBg;
+  document.getElementById('verdict-icon').innerHTML=`<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="${verdictColor}" stroke-width="1.5"/>${isGood?'<path d="M6 9l2 2 4-4" stroke="'+verdictColor+'" stroke-width="1.5" stroke-linecap="round"/>':isOk?'<path d="M9 6v4M9 12v.5" stroke="'+verdictColor+'" stroke-width="1.5" stroke-linecap="round"/>':'<path d="M6.5 6.5l5 5M11.5 6.5l-5 5" stroke="'+verdictColor+'" stroke-width="1.5" stroke-linecap="round"/>'}</svg>`;
+  document.getElementById('verdict-title').textContent=isGood?'Strong ROI - this degree pays off well.':isOk?'Moderate ROI - worth it with the right moves.':'Challenging ROI - needs a clear strategy.';
+  document.getElementById('verdict-sub').textContent=isGood?`This degree pays back ${roiMultiple.toFixed(1)}x what it costs over 40 years, breaking even around year ${breakevenYear}.`:isOk?`This degree is a reasonable investment but requires intentional career moves. Breakeven around year ${breakevenYear||'25+'}.`:`The math is challenging with this cost and salary combination. You need a clear plan to maximize the return.`;
+  document.getElementById('chart-note').textContent=`The green line shows cumulative earnings with your degree (starting after ${yearsSchool} year${yearsSchool>1?'s':''} of school). The dashed blue line shows what someone without a degree earns over the same period. The red line shows your total cost including debt. ${breakevenYear?'The lines cross around year '+breakevenYear+'.':'At these numbers, the degree path may not surpass the no-degree path within 40 years.'}`;
+  const insightClass=isGood?'good':isOk?'ok':'warn';const insightColor=isGood?'#085041':isOk?'#854F0B':'#712B13';
+  const insightBlock=document.getElementById('insight-block');insightBlock.className='insight-block '+insightClass;
+  document.getElementById('insight-title').style.color=insightColor;
+  document.getElementById('insight-title').textContent=isGood?'What makes this work - and how to protect it.':isOk?'How to push this ROI from moderate to strong.':'What you need to do to make this investment pay off.';
+  document.getElementById('insight-body').textContent=isGood?`A ${fmtK(projectedSalary)} starting salary and ${fmtK(netCost)} net cost is a solid combination. The two biggest risks are underemployment and early career drift. Adding one or two relevant certifications before graduation significantly increases the probability of landing in the upper salary range.`:isOk?`The gap between a strong and weak ROI here comes down to getting a job in your field and salary trajectory. Graduates who specialize with certifications and network into the field early earn $10–20K more at entry - which compounds dramatically over 40 years.`:`At this cost-to-salary ratio, the degree needs to open doors that are otherwise closed. If this is a terminal degree, look hard at alternatives: community college + transfer, trade school, or a high-ROI private program.`;
+  if(majorInfo){const riskColors={low:'#085041',medium:'#854F0B',high:'#712B13'};document.getElementById('ai-risk-body').style.color=riskColors[majorInfo.aiRisk]||'#888780';document.getElementById('ai-risk-body').textContent=`${majorInfo.aiRisk.charAt(0).toUpperCase()+majorInfo.aiRisk.slice(1)} risk: ${majorInfo.aiNote}`;}else{document.getElementById('ai-risk-body').textContent='automation risk varies significantly within this field. Use the Career Stats Lookup tool to explore your specific career path.';}
+  if(chartInstance){chartInstance.destroy();chartInstance=null;}
+  chartInstance=new Chart(document.getElementById('roiChart'),{type:'line',data:{labels,datasets:[{label:'With degree',data:withDegree,borderColor:'#1D9E75',borderWidth:2,pointRadius:0,tension:0.3,fill:false},{label:'Without degree',data:withoutDegree,borderColor:'#378ADD',borderWidth:1.5,borderDash:[5,4],pointRadius:0,tension:0.3,fill:false},{label:'Total cost',data:costLine,borderColor:'#D85A30',borderWidth:1,borderDash:[3,3],pointRadius:0,tension:0,fill:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' '+fmtK(ctx.parsed.y)}}},scales:{x:{grid:{color:'rgba(128,128,128,0.1)'},ticks:{font:{size:10},color:'#888780',maxTicksLimit:10}},y:{grid:{color:'rgba(128,128,128,0.1)'},ticks:{font:{size:10},color:'#888780',callback:v=>'$'+Math.round(v/1000)+'K'}}}}});
+  // update report link
+  const roiLink=document.getElementById('roi-report-link');if(roiLink&&majorInput){roiLink.href='report.html?career='+encodeURIComponent(majorInput);}
+  document.getElementById('results').classList.add('show');
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+updateCostHint();
+</script>
+</body>
+</html>

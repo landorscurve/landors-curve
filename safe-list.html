@@ -2,143 +2,34 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" href="/favicon.ico?v=2" sizes="any">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=2">
-<link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=2">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico?v=2" sizes="any">
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=2">
 <title>Safe Careers List — Landor's Curve</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#F0A500;--dark:#0A0A0F;--panel:#111118;--panel2:#16161F;--border:rgba(240,165,0,0.15);--text:#E8E8F0;--muted:#888899;--red:#FF4757;--orange:#FF6B35;--yellow:#FFD32A;--green:#2ED573;--blue:#1E90FF;--purple:#A855F7;}
-*{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
-body{background:#050505;color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;}
-body::before { display: none; }
-.nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 40px;display:flex;align-items:center;justify-content:space-between;height:56px;}
-.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold);letter-spacing:2px;text-decoration:none;}
-.nav-links{display:flex;gap:2px;}
-.nav-links a{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:6px 12px;border-radius:4px;transition:all 0.2s;}
-.nav-links a:hover{color:var(--gold);background:rgba(240,165,0,0.08);}
-.nav-links a.active{color:var(--green);}
-@media(max-width:720px){.nav-links{display:none;}}
-.wrap{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 28px;}
-.hero{padding:64px 0 32px;}
-.eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:4px;color:var(--green);text-transform:uppercase;margin-bottom:16px;opacity:0.8;}
-.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,9vw,88px);line-height:0.88;color:var(--text);letter-spacing:2px;margin-bottom:10px;}
-.hero-title span{color:var(--green);}
-.hero-sub{font-family:'Bebas Neue',sans-serif;font-size:clamp(16px,2.5vw,22px);color:var(--muted);letter-spacing:1px;margin-bottom:20px;}
-.hero-body{font-size:14px;color:var(--muted);line-height:1.75;max-width:620px;}
-.filter-wrap{padding:32px 0 24px;}
-.filter-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
-.filter-tabs{display:flex;gap:10px;flex-wrap:wrap;}
-.tab-btn{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 20px;border-radius:8px;cursor:pointer;border:1px solid;transition:all 0.18s;display:flex;align-items:center;gap:8px;}
-.tab-dot{width:8px;height:8px;border-radius:50%;}
-.tab-green{background:rgba(46,213,115,0.08);color:var(--green);border-color:rgba(46,213,115,0.3);}
-.tab-green.active{background:rgba(46,213,115,0.2);border-color:var(--green);}
-.tab-yellow{background:rgba(255,211,42,0.08);color:var(--yellow);border-color:rgba(255,211,42,0.3);}
-.tab-yellow.active{background:rgba(255,211,42,0.2);border-color:var(--yellow);}
-.tab-red{background:rgba(255,71,87,0.08);color:var(--red);border-color:rgba(255,71,87,0.3);}
-.tab-red.active{background:rgba(255,71,87,0.2);border-color:var(--red);}
-.tab-purple{background:rgba(168,85,247,0.08);color:var(--purple);border-color:rgba(168,85,247,0.3);}
-.tab-purple.active{background:rgba(168,85,247,0.2);border-color:var(--purple);}
-.obsolete-note{background:rgba(168,85,247,0.06);border:1px solid rgba(168,85,247,0.2);border-left:3px solid var(--purple);border-radius:0 10px 10px 0;padding:14px 18px;margin-bottom:20px;display:none;}
-.obsolete-note.show{display:block;}
-.obsolete-note-text{font-size:13px;color:var(--muted);line-height:1.65;}
-.obsolete-note-text strong{color:var(--text);}
-.list-meta{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
-.career-list{display:flex;flex-direction:column;gap:12px;min-height:200px;}
-.career-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:22px 24px;transition:border-color 0.2s;}
-.career-card:hover{border-color:rgba(240,165,0,0.3);}
-.career-card.obsolete-card{border-color:rgba(168,85,247,0.2);}
-.career-card.obsolete-card:hover{border-color:rgba(168,85,247,0.4);}
-.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px;flex-wrap:wrap;}
-.card-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1px;color:var(--text);margin-bottom:4px;}
-.badge-cat{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;padding:3px 10px;border-radius:4px;display:inline-block;}
-.badge-green{background:rgba(46,213,115,0.12);color:var(--green);border:1px solid rgba(46,213,115,0.25);}
-.badge-yellow{background:rgba(255,211,42,0.1);color:var(--yellow);border:1px solid rgba(255,211,42,0.25);}
-.badge-red{background:rgba(255,71,87,0.1);color:var(--red);border:1px solid rgba(255,71,87,0.25);}
-.badge-purple{background:rgba(168,85,247,0.12);color:var(--purple);border:1px solid rgba(168,85,247,0.25);}
-.score-circle{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:18px;border:2px solid;flex-shrink:0;}
-.score-green{border-color:var(--green);color:var(--green);background:rgba(46,213,115,0.08);}
-.score-yellow{border-color:var(--yellow);color:var(--yellow);background:rgba(255,211,42,0.08);}
-.score-red{border-color:var(--red);color:var(--red);background:rgba(255,71,87,0.08);}
-.score-purple{border-color:var(--purple);color:var(--purple);background:rgba(168,85,247,0.08);}
-.era-badge{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;padding:2px 8px;border-radius:4px;background:rgba(168,85,247,0.1);color:var(--purple);border:1px solid rgba(168,85,247,0.2);margin-left:6px;}
-.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-@media(max-width:560px){.card-grid{grid-template-columns:1fr;}}
-.card-field{font-size:12px;color:var(--muted);line-height:1.6;}
-.card-field strong{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:3px;}
-.card-full{grid-column:1 / -1;}
-.related-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;}
-.related-tag{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:4px;padding:3px 10px;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);}
-.pagination{display:flex;align-items:center;justify-content:center;gap:16px;padding:32px 0 72px;}
-.page-btn{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:10px 20px;border-radius:8px;border:1px solid var(--border);color:var(--muted);background:var(--panel);cursor:pointer;transition:all 0.2s;}
-.page-btn:hover:not(:disabled){border-color:var(--gold);color:var(--gold);background:rgba(240,165,0,0.08);}
-.page-btn:disabled{opacity:0.3;cursor:not-allowed;}
-.page-info{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--muted);}
-.footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
-.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--gold);letter-spacing:2px;}
-.footer-copy{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);opacity:0.45;}
-.footer-links{display:flex;gap:16px;}
-.footer-links a{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--muted);text-decoration:none;text-transform:uppercase;}
-.footer-links a:hover{color:var(--gold);}
+:root{
+  --gold:#F0A500;--dark:#050505;--panel:#0f0f0f;--panel2:#161616;
+  --border:rgba(240,165,0,0.12);--text:#E8E8F0;--muted:#888899;
+  --red:#FF4757;--orange:#FF6B35;--yellow:#FFD32A;--green:#2ED573;--blue:#1E90FF;--purple:#A855F7;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;}
 
 /* NAV */
-.nav {
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(10,10,15,0.96);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-  padding: 0 32px;
-  display: flex; align-items: center; justify-content: space-between;
-  height: 56px;
-}
-.nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--gold); letter-spacing: 2px; text-decoration: none; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.nav-logo img { width: 22px; height: 22px; border-radius: 4px; }
-.nav-links { display: flex; align-items: center; gap: 2px; }
-.nav-links a { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 6px 10px; border-radius: 4px; transition: all 0.2s; white-space: nowrap; }
-.nav-links a:hover { color: var(--gold); background: rgba(240,165,0,0.08); }
-.nav-links a.active { color: var(--gold); }
-.nav-dropdown { position: relative; }
-.nav-dropdown-btn { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); background: none; border: none; cursor: pointer; padding: 6px 10px; border-radius: 4px; transition: all 0.2s; display: flex; align-items: center; gap: 4px; }
-.nav-dropdown-btn:hover { color: var(--gold); background: rgba(240,165,0,0.08); }
-.nav-dropdown-btn svg { width: 10px; height: 10px; transition: transform 0.2s; }
-.nav-dropdown.open .nav-dropdown-btn svg { transform: rotate(180deg); }
-.nav-dropdown.open .nav-dropdown-btn { color: var(--gold); }
-.nav-dropdown-menu { display: none; position: absolute; top: calc(100% + 8px); left: 0; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; min-width: 180px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.4); z-index: 200; }
-.nav-dropdown.open .nav-dropdown-menu { display: block; }
-.nav-dropdown-menu a { display: block; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 12px 16px; transition: all 0.15s; border-bottom: 1px solid var(--border); }
-.nav-dropdown-menu a:last-child { border-bottom: none; }
-.nav-dropdown-menu a:hover { color: var(--gold); background: rgba(240,165,0,0.06); }
-.nav-hamburger { display: none; background: none; border: none; cursor: pointer; padding: 6px; color: var(--gold); align-items: center; }
-.nav-hamburger svg { width: 22px; height: 22px; }
-.mobile-menu { display: none; position: fixed; inset: 0; z-index: 999; }
-.mobile-menu.open { display: block; }
-.mobile-menu-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.65); }
-.mobile-menu-panel { position: absolute; top: 0; right: 0; width: 280px; height: 100%; background: var(--panel); border-left: 1px solid var(--border); display: flex; flex-direction: column; padding: 0; overflow-y: auto; }
-.mobile-menu-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); }
-.mobile-menu-logo { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--gold); letter-spacing: 2px; text-decoration: none; }
-.mobile-menu-close { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 24px; line-height: 1; padding: 0; }
-.mobile-menu-close:hover { color: var(--gold); }
-.mobile-menu a { display: block; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 14px 20px; border-bottom: 1px solid rgba(240,165,0,0.06); transition: all 0.15s; }
-.mobile-menu a:hover { color: var(--gold); background: rgba(240,165,0,0.06); }
-.mobile-menu-section { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); opacity: 0.4; padding: 12px 20px 4px; }
-.mobile-menu a.sub { padding-left: 32px; font-size: 10px; }
-@media (max-width: 720px) { .nav-links { display: none; } .nav-hamburger { display: flex; } }
-
-
-/* ── SHARED NAV ── */
-.nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:56px;}
+.nav{position:sticky;top:0;z-index:100;background:rgba(5,5,5,0.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:56px;}
 .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold);letter-spacing:2px;text-decoration:none;display:flex;align-items:center;gap:8px;flex-shrink:0;}
 .nav-logo img{width:22px;height:22px;border-radius:4px;}
 .nav-links{display:flex;align-items:center;gap:2px;}
-.nav-links a{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:4px;transition:all 0.2s;white-space:nowrap;}
+.nav-links a{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:4px;transition:all 0.2s;}
 .nav-links a:hover,.nav-links a.active{color:var(--gold);background:rgba(240,165,0,0.08);}
 .nav-dropdown{position:relative;}
 .nav-dropdown-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);background:none;border:none;cursor:pointer;padding:6px 10px;border-radius:4px;transition:all 0.2s;display:flex;align-items:center;gap:4px;}
 .nav-dropdown-btn:hover,.nav-dropdown.open .nav-dropdown-btn{color:var(--gold);background:rgba(240,165,0,0.08);}
 .nav-dropdown-btn svg{width:10px;height:10px;transition:transform 0.2s;}
 .nav-dropdown.open .nav-dropdown-btn svg{transform:rotate(180deg);}
-.nav-dropdown-menu{display:none;position:absolute;top:calc(100% + 8px);left:0;background:var(--panel);border:1px solid var(--border);border-radius:10px;min-width:190px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.4);z-index:200;}
+.nav-dropdown-menu{display:none;position:absolute;top:calc(100% + 8px);left:0;background:var(--panel);border:1px solid var(--border);border-radius:10px;min-width:190px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.5);z-index:200;}
 .nav-dropdown.open .nav-dropdown-menu{display:block;}
 .nav-dropdown-menu a{display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:12px 16px;transition:all 0.15s;border-bottom:1px solid var(--border);}
 .nav-dropdown-menu a:last-child{border-bottom:none;}
@@ -147,54 +38,158 @@ body::before { display: none; }
 .nav-hamburger svg{width:22px;height:22px;}
 .mobile-menu{display:none;position:fixed;inset:0;z-index:999;}
 .mobile-menu.open{display:block;}
-.mobile-menu-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.65);}
+.mobile-menu-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.7);}
 .mobile-menu-panel{position:absolute;top:0;right:0;width:280px;height:100%;background:var(--panel);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;}
 .mobile-menu-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);}
 .mobile-menu-logo{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold);letter-spacing:2px;text-decoration:none;}
 .mobile-menu-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:24px;line-height:1;padding:0;}
 .mobile-menu-close:hover{color:var(--gold);}
 .mobile-menu a{display:block;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:14px 20px;border-bottom:1px solid rgba(240,165,0,0.06);transition:all 0.15s;}
-.mobile-menu a:hover{color:var(--gold);background:rgba(240,165,0,0.06);}
-.mobile-menu-section{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);opacity:0.45;padding:12px 20px 4px;}
+.mobile-menu a:hover{color:var(--gold);}
+.mobile-menu-section{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);opacity:0.4;padding:12px 20px 4px;}
 .mobile-menu a.sub{padding-left:32px;font-size:10px;}
 @media(max-width:720px){.nav-links{display:none;}.nav-hamburger{display:flex;}}
 
-/* PAGE DISCLAIMER */
-.page-disclaimer { border-top: 1px solid rgba(240,165,0,0.1); margin-top: 48px; padding: 20px 28px 28px; }
-.page-disclaimer-inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-.page-disclaimer-text { font-family: 'DM Mono', monospace; font-size: 10px; color: #555566; line-height: 1.7; letter-spacing: 0.5px; flex: 1; min-width: 200px; }
-.page-disclaimer-link { font-family: 'DM Mono', monospace; font-size: 10px; color: #F0A500; text-decoration: none; white-space: nowrap; letter-spacing: 0.5px; flex-shrink: 0; }
-.page-disclaimer-link:hover { text-decoration: underline; }
-@media (max-width: 520px) { .page-disclaimer-inner { flex-direction: column; gap: 8px; } }
-@media print { .page-disclaimer { text-align: center; border-top: 1px solid #ccc; padding: 12px 0; } .page-disclaimer-inner { justify-content: center; flex-direction: column; gap: 4px; } }
+/* LAYOUT */
+.wrap{max-width:1040px;margin:0 auto;padding:0 28px;}
+.section{padding:64px 0;}
+
+/* HERO */
+.hero{padding:64px 0 40px;}
+.eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:4px;color:var(--green);text-transform:uppercase;margin-bottom:16px;opacity:0.8;}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,8vw,80px);line-height:0.9;color:var(--text);letter-spacing:2px;margin-bottom:14px;}
+.hero-title span{color:var(--green);}
+.hero-sub{font-size:15px;color:var(--muted);line-height:1.75;max-width:640px;margin-bottom:10px;}
+.hero-note{font-size:12px;color:var(--muted);opacity:0.6;line-height:1.7;max-width:600px;font-style:italic;padding:12px 16px;border-left:2px solid rgba(240,165,0,0.2);margin-top:16px;}
+
+/* SEARCH + FILTER */
+.search-filter-wrap{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin-bottom:20px;}
+.search-row{display:flex;gap:10px;margin-bottom:18px;}
+.search-inp{flex:1;background:var(--dark);border:1px solid var(--border);border-radius:8px;padding:13px 18px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);outline:none;transition:border-color 0.2s;}
+.search-inp:focus{border-color:var(--gold);}
+.search-inp::placeholder{color:var(--muted);}
+.sort-sel{background:var(--dark);border:1px solid var(--border);border-radius:8px;padding:13px 14px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--muted);outline:none;cursor:pointer;transition:border-color 0.2s;}
+.sort-sel:focus{border-color:var(--gold);}
+
+/* TABS */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;}
+.tab{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 14px;border-radius:6px;cursor:pointer;border:1px solid;transition:all 0.18s;background:transparent;}
+.tab-all{color:var(--gold);border-color:rgba(240,165,0,0.3);}
+.tab-all.active,.tab-all:hover{background:rgba(240,165,0,0.12);border-color:var(--gold);color:var(--gold);}
+.tab-green{color:var(--green);border-color:rgba(46,213,115,0.25);}
+.tab-green.active,.tab-green:hover{background:rgba(46,213,115,0.1);border-color:var(--green);}
+.tab-yellow{color:var(--yellow);border-color:rgba(255,211,42,0.25);}
+.tab-yellow.active,.tab-yellow:hover{background:rgba(255,211,42,0.1);border-color:var(--yellow);}
+.tab-orange{color:var(--orange);border-color:rgba(255,107,53,0.25);}
+.tab-orange.active,.tab-orange:hover{background:rgba(255,107,53,0.1);border-color:var(--orange);}
+.tab-blue{color:var(--blue);border-color:rgba(30,144,255,0.25);}
+.tab-blue.active,.tab-blue:hover{background:rgba(30,144,255,0.1);border-color:var(--blue);}
+.tab-red{color:var(--red);border-color:rgba(255,71,87,0.25);}
+.tab-red.active,.tab-red:hover{background:rgba(255,71,87,0.1);border-color:var(--red);}
+.tab-purple{color:var(--purple);border-color:rgba(168,85,247,0.25);}
+.tab-purple.active,.tab-purple:hover{background:rgba(168,85,247,0.1);border-color:var(--purple);}
+
+/* RESULTS META */
+.results-meta{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
+
+/* CARDS GRID */
+.cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:640px){.cards-grid{grid-template-columns:1fr;}}
+
+/* CAREER CARD */
+.career-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:20px 22px;transition:border-color 0.18s;display:flex;flex-direction:column;}
+.career-card:hover{border-color:rgba(240,165,0,0.3);}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px;}
+.card-name{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--text);letter-spacing:1px;line-height:1;}
+.card-score-wrap{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.card-score{font-family:'Bebas Neue',sans-serif;font-size:22px;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid;flex-shrink:0;}
+.score-green{color:var(--green);border-color:rgba(46,213,115,0.4);background:rgba(46,213,115,0.06);}
+.score-yellow{color:var(--yellow);border-color:rgba(255,211,42,0.4);background:rgba(255,211,42,0.06);}
+.score-orange{color:var(--orange);border-color:rgba(255,107,53,0.4);background:rgba(255,107,53,0.06);}
+.score-red{color:var(--red);border-color:rgba(255,71,87,0.4);background:rgba(255,71,87,0.06);}
+.score-blue{color:var(--blue);border-color:rgba(30,144,255,0.4);background:rgba(30,144,255,0.06);}
+.score-purple{color:var(--purple);border-color:rgba(168,85,247,0.4);background:rgba(168,85,247,0.06);}
+.score-gray{color:var(--muted);border-color:rgba(136,136,153,0.3);background:rgba(136,136,153,0.05);}
+.card-badge{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;padding:3px 8px;border-radius:4px;display:inline-block;margin-bottom:8px;}
+.badge-green{background:rgba(46,213,115,0.1);color:var(--green);border:1px solid rgba(46,213,115,0.2);}
+.badge-yellow{background:rgba(255,211,42,0.1);color:var(--yellow);border:1px solid rgba(255,211,42,0.2);}
+.badge-orange{background:rgba(255,107,53,0.1);color:var(--orange);border:1px solid rgba(255,107,53,0.2);}
+.badge-red{background:rgba(255,71,87,0.1);color:var(--red);border:1px solid rgba(255,71,87,0.2);}
+.badge-blue{background:rgba(30,144,255,0.1);color:var(--blue);border:1px solid rgba(30,144,255,0.2);}
+.badge-purple{background:rgba(168,85,247,0.1);color:var(--purple);border:1px solid rgba(168,85,247,0.2);}
+.badge-gray{background:rgba(136,136,153,0.1);color:var(--muted);border:1px solid rgba(136,136,153,0.2);}
+.card-desc{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:10px;flex:1;}
+.card-expand-btn{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);background:none;border:1px solid var(--border);border-radius:4px;padding:4px 10px;cursor:pointer;transition:all 0.15s;align-self:flex-start;}
+.card-expand-btn:hover{color:var(--gold);border-color:rgba(240,165,0,0.3);}
+.card-detail{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
+.card-detail.open{display:block;}
+.detail-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;margin-top:10px;}
+.detail-label:first-child{margin-top:0;}
+.detail-label-risk{color:var(--orange);}
+.detail-label-boost{color:var(--green);}
+.detail-text{font-size:11px;color:var(--muted);line-height:1.65;}
+
+/* SKILLS TAB */
+.skills-section{padding:40px 0;}
+.skills-intro{font-size:13px;color:var(--muted);line-height:1.7;max-width:600px;margin-bottom:28px;}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+.skill-group-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:20px 22px;}
+.skill-group-title{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold);letter-spacing:1px;margin-bottom:12px;}
+.skill-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.skill-tag{font-family:'DM Mono',monospace;font-size:10px;color:var(--text);background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:4px;padding:4px 10px;}
+
+/* PAGINATION */
+.pagination{display:flex;align-items:center;justify-content:center;gap:12px;padding:32px 0 56px;}
+.page-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:9px 18px;border-radius:6px;border:1px solid var(--border);color:var(--muted);background:var(--panel);cursor:pointer;transition:all 0.2s;}
+.page-btn:hover:not(:disabled){border-color:var(--gold);color:var(--gold);}
+.page-btn:disabled{opacity:0.25;cursor:not-allowed;}
+.page-info{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;}
+
+/* CATEGORY LEGEND */
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px;}
+.legend-item{display:flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--muted);}
+.legend-dot{width:8px;height:8px;border-radius:50%;}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:20px;margin-top:40px;}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--gold);letter-spacing:2px;}
+.footer-copy{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);opacity:0.4;}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-links a{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--muted);text-decoration:none;text-transform:uppercase;}
+.footer-links a:hover{color:var(--gold);}
+.footer-related-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);opacity:0.45;margin-bottom:6px;}
+.no-results{text-align:center;padding:60px 20px;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;}
 </style>
 </head>
 <body>
+
 <nav class="nav">
   <a href="/" class="nav-logo"><img src="/favicon.ico?v=2" alt="LC">Landor's Curve</a>
   <div class="nav-links">
     <a href="/">Home</a>
-    <a href="/#analyzer">Analyzer</a>
+    <a href="/#how-to-use">How to Use</a>
     <div class="nav-dropdown" id="toolsDropdown">
       <button class="nav-dropdown-btn" onclick="toggleDropdown()">Tools
-        <svg viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <svg width="10" height="6" viewBox="0 0 10 6" fill="none" style="margin-left:4px;"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       </button>
       <div class="nav-dropdown-menu">
         <a href="/#analyzer">Analyzer</a>
         <a href="/pivot">Career Assessment</a>
         <a href="/study">Roadmap</a>
         <a href="/target-resume">Resume</a>
-        <a href="/rebound" style="border-top:1px solid rgba(240,165,0,0.2);margin-top:2px;">Rebound Radar</a>
-        <a href="/safe-list">Safe Careers List</a>
-        <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" style="border-top:1px solid rgba(240,165,0,0.25);margin-top:2px;color:var(--muted);font-size:9px;display:flex;justify-content:space-between;align-items:center;">PathDecider <span style="opacity:0.5;">↗</span></a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="/rebound">Rebound Radar</a>
+        <a href="/safe-list" class="active">Safe Careers List</a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" style="opacity:0.7;">PathDecider ↗</a>
       </div>
     </div>
-    <a href="/#papers">Sources</a>
     <a href="/pricing">Pricing</a>
+    <a href="/sources">Sources</a>
     <a href="/about">About</a>
   </div>
   <button class="nav-hamburger" onclick="openMobile()" aria-label="Open menu">
-    <svg viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1h20M1 8h20M1 15h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <svg viewBox="0 0 22 16" fill="none"><path d="M1 1h20M1 8h20M1 15h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
   </button>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
@@ -205,251 +200,434 @@ body::before { display: none; }
       <button class="mobile-menu-close" onclick="closeMobile()">&#215;</button>
     </div>
     <a href="/" onclick="closeMobile()">Home</a>
-    <a href="/#analyzer" onclick="closeMobile()">Analyzer</a>
-    <div class="mobile-menu-section">Tools</div>
+    <a href="/#how-to-use" onclick="closeMobile()">How to Use</a>
+    <div class="mobile-menu-section-label" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:12px 0 4px 0;opacity:0.6;">Tools</div>
+    <a href="/#analyzer" class="sub" onclick="closeMobile()">Analyzer</a>
     <a href="/pivot" class="sub" onclick="closeMobile()">Career Assessment</a>
     <a href="/study" class="sub" onclick="closeMobile()">Roadmap</a>
-    <a href="/safe-list" class="sub" onclick="closeMobile()">Safe Careers List</a>
-    <a href="/rebound" class="sub" onclick="closeMobile()">Rebound Radar</a>
     <a href="/target-resume" class="sub" onclick="closeMobile()">Resume</a>
+    <a href="/rebound" class="sub" onclick="closeMobile()">Rebound Radar</a>
+    <a href="/safe-list" class="sub" onclick="closeMobile()">Safe Careers List</a>
     <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" class="sub" onclick="closeMobile()" style="opacity:0.6;">PathDecider ↗</a>
-    <a href="/#papers" onclick="closeMobile()">Sources</a>
     <a href="/pricing" onclick="closeMobile()">Pricing</a>
+    <a href="/sources" onclick="closeMobile()">Sources</a>
     <a href="/about" onclick="closeMobile()">About</a>
   </div>
 </div>
+
 <div class="wrap">
   <div class="hero">
     <div class="eyebrow">Applied Tool</div>
     <h1 class="hero-title"><span>SAFE CAREERS LIST</span></h1>
-    <div class="hero-sub">Explore career paths with stronger durability signals in an AI-changing economy.</div>
-    <p class="hero-body">No career is completely safe from technological change. This list ranks careers by relative pressure: how much the work depends on human judgment, physical presence, trust, licensing, unpredictable real-world conditions, and emotional complexity. The Obsolete category documents professions that technology has already fully replaced.</p>
+    <p class="hero-sub">Explore career paths with stronger durability signals in an AI-changing economy.</p>
+    <p class="hero-sub" style="margin-top:8px;">No career is completely safe from technological change. This list ranks careers by relative pressure: how much the work depends on human judgment, physical presence, trust, licensing, unpredictable real-world conditions, and emotional complexity.</p>
+    <div class="hero-note">The Durability Score is a directional estimate, not a prediction. It reflects visible durability signals such as licensing, physical-world execution, human judgment, trust, emotional complexity, regulation, and adaptability. Use it as a thinking tool, not a guarantee.</div>
   </div>
-  <div class="filter-wrap">
-    <div class="filter-label">Filter by pressure level</div>
-    <div class="filter-tabs">
-      <button class="tab-btn tab-green active" onclick="setTab('green')"><div class="tab-dot" style="background:var(--green)"></div>More Stable</button>
-      <button class="tab-btn tab-yellow" onclick="setTab('yellow')"><div class="tab-dot" style="background:var(--yellow)"></div>Moderate Shift</button>
-      <button class="tab-btn tab-red" onclick="setTab('red')"><div class="tab-dot" style="background:var(--red)"></div>Higher Pressure</button>
-      <button class="tab-btn tab-purple" onclick="setTab('purple')"><div class="tab-dot" style="background:var(--purple)"></div>Obsolete</button>
+
+  <!-- SEARCH + FILTER -->
+  <div class="search-filter-wrap">
+    <div class="search-row">
+      <input class="search-inp" id="searchInp" type="text" placeholder="Search careers or skills..." oninput="onSearch()">
+      <select class="sort-sel" id="sortSel" onchange="render()">
+        <option value="score-desc">Highest Score</option>
+        <option value="score-asc">Lowest Score</option>
+        <option value="alpha">A to Z</option>
+      </select>
     </div>
+    <div class="tabs" id="tabsEl"></div>
   </div>
-  <div class="obsolete-note" id="obsoleteNote">
-    <div class="obsolete-note-text"><strong>These professions no longer exist as working careers.</strong> They were not downsized or restructured. They were fully replaced by technology. They are documented here as historical evidence of Landor's Curve in action. The Knocker-Upper, the Switchboard Operator, the Keypunch Operator. Each one was once a stable, respectable profession. Each one disappeared within a generation of a new tool arriving.</div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Lower Risk (75-95)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--yellow)"></div>Moderate Shift (45-75)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--orange)"></div>High Disruption (15-50)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>Emerging / Rebound (45-80)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--muted)"></div>Obsolete (0-15)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div>Durable Skills</div>
   </div>
-  <div class="list-meta" id="listMeta"></div>
-  <div class="career-list" id="careerList"></div>
-  <div class="pagination">
-    <button class="page-btn" id="prevBtn" onclick="changePage(-1)">Previous</button>
-    <span class="page-info" id="pageInfo"></span>
-    <button class="page-btn" id="nextBtn" onclick="changePage(1)">Next</button>
-  </div>
+
+  <div class="results-meta" id="metaEl"></div>
+  <div id="listEl"></div>
+  <div class="pagination" id="paginationEl"></div>
 </div>
 
-<div style="border-top:1px solid rgba(240,165,0,0.08);margin-top:48px;padding:20px 0 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-<a href="/about" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);text-decoration:none;opacity:0.7;white-space:nowrap;">About &amp; Sources →</a>
-</div>
-<div class="page-disclaimer">
-  <div class="page-disclaimer-inner">
-    <span class="page-disclaimer-text">Results are directional estimates drawn from publicly available workforce research. Not a guarantee of individual outcomes.</span>
-    <a href="/about" class="page-disclaimer-link">About &amp; Sources →</a>
-  </div>
-</div>
 <footer class="footer">
-  <div class="footer-logo">Landor's Curve</div>
-  <div class="footer-copy">2026 Orlando Rashid LandorsCurve.com</div>
-  <div class="footer-links"><a href="/">Home</a><a href="/pivot">Career Assessment</a><a href="/study">Roadmap</a><a href="/safe-list">Safe Careers List</a></div>
-
-<div style="margin-top:40px;padding:24px;background:var(--panel);border:1px solid var(--border);border-radius:14px;">
-  <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;">Explore More Tools</div>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;">
-    <a href="/pivot" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);text-decoration:none;padding:8px 16px;border:1px solid rgba(240,165,0,0.3);border-radius:6px;">Career Assessment</a>
-    <a href="/study" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);text-decoration:none;padding:8px 16px;border:1px solid rgba(240,165,0,0.3);border-radius:6px;">Learning Roadmap</a>
-    <a href="/safe-list" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);text-decoration:none;padding:8px 16px;border:1px solid rgba(240,165,0,0.3);border-radius:6px;">Safe Careers List</a>
+  <div>
+    <div class="footer-logo">Landor's Curve</div>
+    <div class="footer-copy" style="margin-top:6px;">© 2026 Landor Media. LandorsCurve.com</div>
   </div>
-</div>
-
-    <div style="display:flex;flex-direction:column;gap:4px;">
-      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);opacity:0.5;margin-bottom:4px;">Related Tools</div>
-      <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--muted);text-decoration:none;text-transform:uppercase;opacity:0.7;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--muted)'">PathDecider ↗</a>
-    </div>
+  <div class="footer-links">
+    <a href="/pivot">Pivot</a>
+    <a href="/study">Build Roadmap</a>
+    <a href="/safe-list">Safe Careers List</a>
+  </div>
+  <div>
+    <div class="footer-related-label">Related Tools</div>
+    <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--muted);text-decoration:none;text-transform:uppercase;opacity:0.7;">PathDecider ↗</a>
+  </div>
 </footer>
-<script>
-const PER_PAGE=10;
-let currentTab="green",currentPage=1;
-const LABELS={green:"More Stable",yellow:"Moderate Shift",red:"Higher Pressure",purple:"Obsolete"};
-const DATA={
-green:[
-{title:"Surgeon",score:97,income:"Very high",training:"Medical degree and residency",why:"Requires physical skill, intraoperative judgment, and patient trust. AI assists planning but does not replace surgical responsibility.",changing:"AI tools are entering pre-operative planning and robotic assistance but surgeons remain responsible for all decisions.",related:["Physician Assistant","Nurse Practitioner","Surgical Technologist"]},
-{title:"Physical Therapist",score:94,income:"Strong",training:"Doctoral degree and license",why:"Requires hands-on evaluation, physical coaching, and patient-specific adaptation. AI cannot replicate physical guidance.",changing:"Documentation and outcome tracking are being digitized but hands-on delivery of care remains human.",related:["Occupational Therapist","Athletic Trainer","Rehab Specialist"]},
-{title:"Child Psychologist",score:94,income:"Strong",training:"Doctoral or specialist degree and license",why:"Requires trust, emotional nuance, and long-term therapeutic relationship. AI may support screening but not the relationship.",changing:"AI tools are entering intake screening. The therapeutic relationship remains irreplaceable.",related:["School Psychologist","Therapist","Counselor"]},
-{title:"Occupational Therapist",score:93,income:"Strong",training:"Graduate degree and license",why:"Requires hands-on evaluation, physical guidance, and real-time patient adaptation.",changing:"Scheduling and documentation are being automated. Physical care delivery is not.",related:["Physical Therapist","Speech Therapist","Rehab Specialist"]},
-{title:"Criminal Defense Attorney",score:92,income:"Strong",training:"Law degree and bar license",why:"Requires courtroom strategy, persuasion, ethical judgment, and client trust.",changing:"Legal research and document drafting are AI-assisted. Courtroom advocacy and client strategy remain human.",related:["Trial Attorney","Public Defender","Legal Consultant"]},
-{title:"Nurse Practitioner",score:92,income:"Strong",training:"Graduate nursing degree and license",why:"Combines medical judgment, patient trust, and hands-on care. Requires diagnosis, communication, and clinical accountability.",changing:"Documentation and triage workflows are being automated. Clinical judgment and patient care remain human.",related:["Registered Nurse","Physician Assistant","Clinical Nurse Specialist"]},
-{title:"Electrician",score:91,income:"Strong",training:"Apprenticeship and license",why:"Requires physical presence, safety judgment, local code knowledge, and site-specific problem solving.",changing:"Smart diagnostics are improving but licensed installation and repair remain hands-on human work.",related:["HVAC Technician","Solar Installer","Electrical Inspector"]},
-{title:"Plumber",score:91,income:"Strong",training:"Apprenticeship and license",why:"Requires physical presence, local building knowledge, and hands-on repair in unpredictable conditions.",changing:"Leak detection is improving. Physical repair and installation in real environments remain human.",related:["Pipefitter","HVAC Technician","Building Inspector"]},
-{title:"Oral Surgeon",score:91,income:"Very high",training:"Dental degree plus surgical residency",why:"Requires precise physical skill, licensed judgment, and patient trust.",changing:"AI aids imaging and treatment planning. Surgical execution remains human.",related:["Dentist","Plastic Surgeon","Anesthesiologist"]},
-{title:"Firefighter",score:90,income:"Moderate",training:"Academy training and certification",why:"Requires physical presence, emergency judgment, teamwork, and public trust in high-stakes situations.",changing:"Predictive fire modeling is improving. Emergency response remains human.",related:["EMT","Paramedic","Fire Inspector"]},
-{title:"Paramedic",score:90,income:"Moderate",training:"Certification or associate degree",why:"Requires real-time human judgment and physical emergency care in unpredictable conditions.",changing:"Dispatch systems are being digitized. On-scene care and emergency decision-making remain human.",related:["EMT","Registered Nurse","Firefighter"]},
-{title:"Special Education Teacher",score:90,income:"Moderate",training:"Degree and certification",why:"Requires human relationship, individual adaptation, patience, and care for students with complex needs.",changing:"Lesson planning tools are improving. The human relationship with students remains essential.",related:["School Counselor","Occupational Therapist","Speech Therapist"]},
-{title:"Aircraft Mechanic",score:89,income:"Strong",training:"FAA certification or technical training",why:"Requires physical inspection, safety accountability, and regulated maintenance with legal responsibility.",changing:"Diagnostic tools are improving but FAA-regulated physical inspection and sign-off remain human.",related:["Avionics Technician","Maintenance Inspector","Automotive Technician"]},
-{title:"Speech-Language Pathologist",score:89,income:"Strong",training:"Graduate degree and license",why:"Requires clinical evaluation, patient relationship, and individualized therapy.",changing:"Screening and documentation tools are improving. Therapeutic delivery and patient coaching remain human.",related:["Occupational Therapist","Audiologist","Special Education Teacher"]},
-{title:"Construction Manager",score:88,income:"Strong",training:"Experience or degree",why:"Requires real-world coordination, safety judgment, negotiation, and field leadership.",changing:"Project management software is improving. On-site leadership and safety judgment remain human.",related:["Project Manager","Building Inspector","General Contractor"]},
-{title:"Dental Hygienist",score:87,income:"Strong",training:"Associate degree and license",why:"Requires hands-on clinical care, patient interaction, and licensed treatment delivery.",changing:"AI-assisted imaging is entering dental practices. Hands-on cleaning and patient care remain human.",related:["Dental Assistant","Dentist","Health Educator"]},
-{title:"HVAC Technician",score:87,income:"Strong",training:"Apprenticeship and certification",why:"Requires physical installation, diagnostic judgment, and repair in site-specific conditions.",changing:"Smart HVAC systems are improving remote monitoring. Installation, repair, and inspection remain hands-on.",related:["Electrician","Plumber","Building Inspector"]},
-{title:"Veterinarian",score:86,income:"Strong",training:"Veterinary degree and license",why:"Requires physical examination, diagnostic judgment, surgical skill, and client communication.",changing:"Diagnostic AI is entering veterinary imaging. Physical examination and surgical care remain human.",related:["Veterinary Technician","Animal Behaviorist","Wildlife Biologist"]},
-{title:"Police Officer",score:86,income:"Moderate",training:"Academy training and certification",why:"Requires physical presence, community trust, judgment in unpredictable situations, and legal authority.",changing:"Predictive policing tools and surveillance are advancing. Human judgment in real situations remains required.",related:["Detective","Security Manager","Probation Officer"]},
-{title:"School Counselor",score:85,income:"Moderate",training:"Graduate degree and certification",why:"Requires student trust, emotional support, and individualized guidance.",changing:"Administrative scheduling tools are improving. Counseling and student support relationships remain human.",related:["Therapist","Social Worker","Special Education Teacher"]},
-{title:"Social Worker",score:85,income:"Moderate",training:"Graduate degree and license",why:"Requires human connection, advocacy, and navigating complex personal situations.",changing:"Case management software is improving. Human assessment and relationship remain central.",related:["School Counselor","Child Psychologist","Probation Officer"]},
-{title:"Optometrist",score:85,income:"Strong",training:"Doctoral degree and license",why:"Requires clinical examination, diagnosis, and licensed prescribing.",changing:"AI is assisting image analysis. Licensed examination and prescribing remain human.",related:["Ophthalmologist","Physician Assistant","Audiologist"]},
-{title:"Audiologist",score:84,income:"Strong",training:"Doctoral degree and license",why:"Requires diagnostic testing, fitting, counseling, and licensed practice.",changing:"Hearing aid technology is advancing. Licensed assessment and fitting remain human.",related:["Speech-Language Pathologist","Otolaryngologist","Occupational Therapist"]},
-{title:"Ironworker",score:84,income:"Strong",training:"Apprenticeship",why:"Requires physical presence, structural judgment, and skilled labor in construction environments.",changing:"Design and planning tools are advancing. Physical construction work remains human.",related:["Structural Engineer","Construction Manager","Welder"]},
-{title:"Carpenter",score:83,income:"Moderate to strong",training:"Apprenticeship or experience",why:"Requires physical skill, measurement judgment, and site-specific adaptation.",changing:"Prefabrication and CNC cutting are advancing. Custom installation and finish work remain human.",related:["Construction Manager","Cabinetmaker","Building Inspector"]},
-{title:"Funeral Director",score:83,income:"Moderate",training:"Associate degree and license",why:"Requires human presence, family trust, cultural sensitivity, and licensed funeral practice.",changing:"Administrative and planning tools are improving. Human presence and care for families remain essential.",related:["Grief Counselor","Hospital Chaplain","Social Worker"]},
-{title:"Geologist",score:82,income:"Strong",training:"Degree, often graduate level",why:"Requires field judgment, physical sample collection, and interpretation of complex natural systems.",changing:"AI is assisting data interpretation and modeling. Field assessment and physical sampling remain human.",related:["Environmental Scientist","Mining Engineer","Petroleum Engineer"]},
-{title:"Nuclear Plant Operator",score:82,income:"Strong",training:"Technical training and NRC license",why:"Requires licensed operation, safety judgment, and physical monitoring of regulated systems.",changing:"Automated monitoring is advancing. Licensed operators remain required for safety oversight and response.",related:["Electrical Engineer","Industrial Mechanic","Safety Inspector"]},
-{title:"Chiropractor",score:81,income:"Moderate to strong",training:"Doctoral degree and license",why:"Requires physical examination, hands-on adjustment, and patient relationship.",changing:"Diagnostic tools are improving. Physical manipulation and patient care remain human.",related:["Physical Therapist","Osteopath","Sports Medicine Physician"]},
-{title:"Wildlife Biologist",score:80,income:"Moderate",training:"Degree, often graduate level",why:"Requires field observation, physical sample collection, and ecological interpretation.",changing:"Data analysis and modeling tools are advancing. Field research and physical observation remain human.",related:["Ecologist","Conservation Scientist","Environmental Manager"]},
-{title:"Air Traffic Controller",score:79,income:"Very high",training:"FAA training and certification",why:"Requires real-time judgment, communication, and safety accountability in complex and unpredictable airspace.",changing:"Automation is assisting routine tracking. Complex traffic management and emergency judgment remain human.",related:["Aviation Safety Inspector","Aerospace Engineer","Pilot"]},
-{title:"Pharmacist",score:78,income:"Strong",training:"Doctoral degree and license",why:"Requires medication counseling, drug interaction judgment, and licensed dispensing.",changing:"Automated dispensing systems are advancing. Clinical consultation and complex medication management remain human.",related:["Pharmacy Technician","Nurse Practitioner","Clinical Pharmacologist"]},
-{title:"Marine Engineer",score:76,income:"Strong",training:"Degree and Coast Guard license",why:"Requires physical systems knowledge, safety judgment, and licensed operation of marine vessels and equipment.",changing:"Navigation and monitoring systems are advancing. Licensed engineering and safety accountability remain human.",related:["Naval Architect","Mechanical Engineer","Industrial Mechanic"]}
-],
-yellow:[
-{title:"Registered Nurse",score:78,income:"Strong",training:"Nursing degree and license",why:"Requires patient care, clinical judgment, and human communication. Valued for presence and trust.",changing:"Documentation, monitoring alerts, and scheduling are increasingly automated. Direct patient care and clinical judgment remain human.",related:["Nurse Practitioner","Clinical Nurse Specialist","Care Coordinator"]},
-{title:"Radiologic Technologist",score:76,income:"Strong",training:"Associate degree and license",why:"Requires patient handling, equipment operation, and positioning judgment.",changing:"AI is assisting image interpretation and anomaly flagging. Patient interaction and equipment operation remain human.",related:["MRI Technologist","Sonographer","Radiation Therapist"]},
-{title:"Chef",score:75,income:"Variable",training:"Training or culinary experience",why:"Requires taste, physical execution, kitchen leadership, and creative judgment.",changing:"Standardized food production continues to automate. Creative and high-skill cooking roles remain more durable.",related:["Restaurant Owner","Culinary Director","Food Product Developer"]},
-{title:"Teacher",score:74,income:"Moderate",training:"Degree and certification",why:"Requires classroom relationship, student engagement, and real-time adaptation.",changing:"Lesson planning, grading, and content delivery are being affected by AI tools. Classroom relationship remains human.",related:["Instructional Designer","Tutor","Education Technologist"]},
-{title:"Architect",score:73,income:"Strong",training:"Degree and license",why:"Requires design judgment, client communication, and accountability for safety and livability.",changing:"Drafting, rendering, and visualization are increasingly automated. Design judgment and client responsibility remain human.",related:["Urban Planner","Construction Manager","BIM Specialist"]},
-{title:"Film Director",score:72,income:"Variable",training:"Portfolio and experience",why:"Requires creative vision, leadership, storytelling instinct, and human decision-making across complex productions.",changing:"Production tools are becoming more automated. The creative and leadership role of the director remains human.",related:["Creative Director","Producer","Editor"]},
-{title:"HR Manager",score:71,income:"Strong",training:"Degree or experience",why:"Requires human judgment in conflict resolution, policy interpretation, and employee relationships.",changing:"Screening, scheduling, and administrative HR workflows are being automated. Strategic and interpersonal roles remain human.",related:["Talent Strategist","Organizational Development Specialist","Employee Relations Manager"]},
-{title:"Real Estate Agent",score:70,income:"Variable",training:"License",why:"Requires trust, negotiation, and local market knowledge.",changing:"Listing discovery, paperwork, and market data are increasingly automated. Client negotiation and local expertise remain human.",related:["Broker","Property Manager","Real Estate Analyst"]},
-{title:"Software Developer",score:69,income:"Strong",training:"Degree or portfolio",why:"Requires systems thinking, architecture decisions, and creative problem solving.",changing:"Routine coding and boilerplate generation are under pressure from AI coding tools. Systems design and architecture remain human.",related:["Software Architect","AI Integration Specialist","Product Engineer"]},
-{title:"Accountant",score:68,income:"Strong",training:"Degree and certification",why:"Requires compliance judgment, strategic planning, and interpretation of complex financial situations.",changing:"Bookkeeping, transaction entry, and routine reporting are increasingly automated. Advisory and compliance roles remain human.",related:["CPA","Financial Analyst","Tax Advisor"]},
-{title:"Marketing Manager",score:67,income:"Strong",training:"Degree or experience",why:"Requires market strategy, brand judgment, and understanding of human behavior.",changing:"Content production, ad testing, and performance reporting are heavily automated. Strategic direction remains human.",related:["Brand Strategist","Growth Manager","Creative Director"]},
-{title:"Truck Driver",score:65,income:"Moderate",training:"CDL training",why:"Currently requires physical work, route judgment, and customer interaction.",changing:"Autonomous vehicle development creates long-term pressure. Short-haul and complex urban routes will likely remain human longer.",related:["Logistics Coordinator","Fleet Supervisor","Heavy Equipment Operator"]},
-{title:"UX Designer",score:64,income:"Strong",training:"Degree or portfolio",why:"Requires user empathy, research interpretation, and design judgment.",changing:"Prototyping and UI generation tools are advancing. User research and complex design decisions remain human.",related:["Product Designer","UX Researcher","Interaction Designer"]},
-{title:"Event Planner",score:63,income:"Moderate",training:"Degree or experience",why:"Requires vendor coordination, client relationship, and real-world problem solving under time pressure.",changing:"Scheduling and vendor management tools are advancing. Client relationship and on-site coordination remain human.",related:["Wedding Coordinator","Hospitality Manager","Marketing Manager"]},
-{title:"Civil Engineer",score:62,income:"Strong",training:"Degree and PE license",why:"Requires infrastructure design judgment, safety accountability, and licensed professional engineering responsibility.",changing:"Design and simulation tools are advancing. Licensed engineering judgment and accountability remain human.",related:["Structural Engineer","Urban Planner","Construction Manager"]},
-{title:"Financial Planner",score:60,income:"Strong",training:"Degree and CFP certification",why:"Requires client trust, life-stage judgment, and complex financial planning.",changing:"Robo-advisors handle routine investment management. Complex planning, tax strategy, and client relationships remain human.",related:["Wealth Manager","Tax Advisor","Insurance Specialist"]},
-{title:"Graphic Designer",score:58,income:"Variable",training:"Degree or portfolio",why:"Requires taste, client interpretation, and creative direction.",changing:"Routine design production and social graphics are rapidly automatable. Art direction and brand strategy remain human.",related:["Art Director","UX Designer","Brand Strategist"]},
-{title:"Environmental Scientist",score:58,income:"Moderate to strong",training:"Degree, often graduate level",why:"Requires field sampling, data interpretation, and regulatory judgment.",changing:"Data analysis and modeling tools are advancing. Field assessment and regulatory compliance remain human.",related:["Geologist","Environmental Engineer","Conservation Scientist"]},
-{title:"Museum Curator",score:57,income:"Moderate",training:"Graduate degree",why:"Requires deep subject expertise, provenance judgment, and institutional stewardship.",changing:"Digitization and metadata tools are advancing. Curatorial judgment and collection stewardship remain human.",related:["Art Historian","Archivist","Conservator"]},
-{title:"Supply Chain Manager",score:56,income:"Strong",training:"Degree or experience",why:"Requires judgment in complex disruptions, vendor relationships, and global logistics coordination.",changing:"Inventory forecasting and routing automation are advancing. Disruption management and vendor relationships remain human.",related:["Logistics Manager","Procurement Specialist","Operations Manager"]},
-{title:"Journalist",score:53,income:"Moderate",training:"Degree or portfolio",why:"Requires source relationships, investigative judgment, and editorial accountability.",changing:"Routine data journalism and summaries are being automated. Investigative and narrative journalism remain human.",related:["Editor","Documentary Filmmaker","Content Strategist"]},
-{title:"Paralegal",score:51,income:"Moderate",training:"Certificate or degree",why:"Requires legal process knowledge, organization, and complex document management.",changing:"Legal research, document drafting, and contract review are increasingly AI-assisted. Strategic case support remains human.",related:["Legal Operations Specialist","Compliance Analyst","Legal Technologist"]},
-{title:"Technical Writer",score:50,income:"Moderate to strong",training:"Degree or portfolio",why:"Requires subject mastery, audience judgment, and clear communication of complex information.",changing:"AI is generating basic technical content. Complex documentation requiring subject expertise remains human.",related:["Content Strategist","Instructional Designer","Editor"]},
-{title:"Loan Officer",score:48,income:"Moderate to strong",training:"License and experience",why:"Requires client assessment, financial judgment, and relationship building.",changing:"Automated underwriting handles routine applications. Complex loans, client relationships, and judgment calls remain human.",related:["Financial Planner","Mortgage Broker","Credit Analyst"]},
-{title:"Fashion Designer",score:47,income:"Variable",training:"Degree or portfolio",why:"Requires aesthetic vision, material judgment, and client or brand-specific creative direction.",changing:"AI design tools are generating patterns and concepts. Original creative vision and brand stewardship remain human.",related:["Textile Designer","Art Director","Merchandiser"]},
-{title:"Photographer",score:46,income:"Variable",training:"Portfolio and experience",why:"Commercial and editorial photography requires client relationship, creative direction, and professional judgment.",changing:"Stock photography is under pressure from AI. Commercial, portrait, and editorial photography remain more durable.",related:["Art Director","Videographer","Visual Producer"]},
-{title:"Sports Coach",score:45,income:"Variable",training:"Certification and experience",why:"Requires player trust, motivational judgment, and adaptive coaching in real time.",changing:"Analytics and video tools are advancing. Human coaching, motivation, and real-time adaptation remain human.",related:["Athletic Trainer","Physical Therapist","Scout"]},
-{title:"Radiologist",score:44,income:"Very high",training:"Medical degree and radiology residency",why:"AI is advancing rapidly in image reading, but human radiologists retain diagnostic accountability and handle complex cases.",changing:"AI is matching or exceeding human performance on some routine reads. Complex, ambiguous, and high-stakes cases remain human.",related:["Pathologist","Oncologist","Nuclear Medicine Physician"]}
-],
-red:[
-{title:"Basic Copywriter",score:38,income:"Variable",training:"Portfolio",why:"Routine content generation including blog posts, product descriptions, and ad copy is heavily affected by generative AI.",changing:"AI generates standard content at scale. Brand voice, strategy, and original storytelling remain human.",related:["Content Strategist","Brand Voice Director","Creative Director"]},
-{title:"Tax Preparer",score:39,income:"Moderate",training:"Certification or short-term training",why:"Tax software and AI tools handle most routine individual tax preparation.",changing:"Basic individual returns are increasingly automated. Complex, multi-entity, and strategic tax work remains human.",related:["CPA","Tax Attorney","Financial Planner"]},
-{title:"Social Media Coordinator",score:40,income:"Moderate",training:"Degree or portfolio",why:"Routine posting, scheduling, and caption writing are increasingly handled by AI content tools.",changing:"AI tools are generating social content and scheduling posts. Strategy, brand voice, and community management remain human.",related:["Content Strategist","Brand Manager","Digital Marketing Manager"]},
-{title:"Insurance Underwriter",score:40,income:"Moderate to strong",training:"Degree and experience",why:"Automated underwriting systems handle most standard applications using rules-based models.",changing:"Standard risk assessment is increasingly automated. Complex, unusual, and high-value underwriting remains human.",related:["Actuary","Risk Manager","Claims Adjuster"]},
-{title:"Logo Designer",score:34,income:"Variable",training:"Portfolio",why:"Routine logo concepts are rapidly generated by AI design tools.",changing:"AI tools generate logo options quickly. Brand strategy, identity systems, and senior creative direction remain human.",related:["Brand Strategist","Art Director","UX Designer"]},
-{title:"Customer Service Representative",score:34,income:"Moderate",training:"Short-term training",why:"Repetitive support tasks are increasingly handled by chatbots and AI voice agents at scale.",changing:"Tier-one support, FAQ resolution, and simple transactions are heavily automated. Complex escalations remain human.",related:["Customer Success Manager","Support Operations Specialist","Client Relations Manager"]},
-{title:"Claims Processor",score:33,income:"Moderate",training:"Short-term training",why:"Rules-based document review and claims routing are increasingly automated by insurance AI platforms.",changing:"Straight-through processing handles standard claims. Complex, disputed, and fraud cases remain human.",related:["Claims Adjuster","Compliance Analyst","Risk Specialist"]},
-{title:"Payroll Clerk",score:32,income:"Moderate",training:"Certificate or associate degree",why:"Payroll processing software and integrated HR platforms have automated most routine payroll calculation and distribution.",changing:"Most payroll calculation and tax filing is now automated. Complex, multi-jurisdiction, and exception cases remain human.",related:["Payroll Manager","HR Specialist","Accountant"]},
-{title:"Proofreader",score:32,income:"Variable",training:"Portfolio or editing experience",why:"Routine grammar and spelling correction are heavily automated by AI writing tools.",changing:"Grammar and spell check AI handles most surface errors. Developmental editing, voice, and content strategy remain human.",related:["Developmental Editor","Technical Editor","Content Quality Manager"]},
-{title:"Medical Transcriptionist",score:31,income:"Moderate",training:"Certificate program",why:"Voice recognition and clinical AI are handling a growing share of physician note transcription.",changing:"Automated transcription handles standard clinical notes. Complex, specialized, and quality review roles remain.",related:["Medical Coder","Clinical Documentation Specialist","Health Information Manager"]},
-{title:"Basic Video Editor",score:31,income:"Variable",training:"Portfolio",why:"Routine clipping, captioning, and template-based edits are increasingly automated by AI video tools.",changing:"AI tools handle cuts, captions, and template formatting. Storytelling, creative direction, and complex editing remain human.",related:["Story Producer","Post-Production Supervisor","Creative Director"]},
-{title:"Bookkeeper",score:30,income:"Moderate",training:"Certificate or experience",why:"Routine transaction tracking and reconciliation have been automated across most small business contexts.",changing:"Accounting software and AI tools handle most routine bookkeeping. Advisory and exception work remains human.",related:["Accountant","Payroll Specialist","Financial Operations Analyst"]},
-{title:"Stock Photographer",score:26,income:"Variable",training:"Portfolio",why:"Generic image demand is under significant pressure from AI image generation at scale.",changing:"AI image tools generate stock-quality content quickly and cheaply. Original and editorial photography remains more durable.",related:["Commercial Photographer","Art Director","Visual Producer"]},
-{title:"Telemarketer",score:25,income:"Low to moderate",training:"Short-term training",why:"Scripted outreach is highly exposed to automation through AI voice agents and dialing platforms.",changing:"AI dialers and voice agents handle large volumes of outbound calls. Relationship-based sales remain human.",related:["Sales Development Representative","Customer Success Associate","Account Manager"]},
-{title:"Data Entry Clerk",score:23,income:"Low to moderate",training:"Short-term training",why:"Routine digital input is among the most automatable categories of work.",changing:"OCR, RPA, and AI document processing have replaced most routine data entry. Data quality and exception review remain.",related:["Data Quality Analyst","Administrative Coordinator","Operations Assistant"]},
-{title:"Appointment Scheduler",score:24,income:"Low to moderate",training:"Short-term training",why:"Scheduling and reminder workflows are among the earliest and most complete automation targets.",changing:"AI scheduling tools and calendar integrations have automated most routine scheduling.",related:["Patient Coordinator","Operations Coordinator","Executive Assistant"]},
-{title:"Transcriptionist",score:20,income:"Low to moderate",training:"Short-term training",why:"Routine transcription has been largely replaced by speech-to-text systems across most industries.",changing:"Speech-to-text AI has automated most standard transcription. Specialized medical and legal review roles remain but are shrinking.",related:["Court Reporter","Medical Documentation Specialist","Quality Reviewer"]}
-],
-purple:[
-{title:"Knocker-Upper",era:"1800s-1920s",income:"Low",training:"None",why:"Walked factory neighborhoods tapping on windows to wake workers for morning shifts. Replaced entirely by the mass-produced mechanical alarm clock.",changing:"The alarm clock eliminated the role completely within a single generation. Not one Knocker-Upper survived as a professional category.",related:["Factory Supervisor","Labor Coordinator","Timekeeper"]},
-{title:"Elevator Operator",era:"1900s-1970s",income:"Low to moderate",training:"Short-term training",why:"Manually operated elevator controls, managed passenger flow, and announced floors in hotels, department stores, and office buildings.",changing:"Automatic push-button elevators eliminated the role entirely. The last major elevator operator unions dissolved by the 1980s.",related:["Building Manager","Facilities Coordinator","Concierge"]},
-{title:"Switchboard Operator",era:"1880s-1980s",income:"Low to moderate",training:"Short-term training",why:"Manually connected telephone calls by plugging physical cables into a switchboard panel. Required speed, accuracy, and voice presence.",changing:"Automated telephone switching systems eliminated manual connection. The role vanished within two decades of automation arriving.",related:["Receptionist","Administrative Assistant","Communications Coordinator"]},
-{title:"Keypunch Operator",era:"1950s-1980s",income:"Moderate",training:"Vocational training",why:"Typed data onto punched cards that were fed into early mainframe computers. Required speed and precision with specialized keypunch machines.",changing:"The personal computer and keyboard data entry eliminated the need for punched cards entirely.",related:["Data Analyst","Database Administrator","IT Specialist"]},
-{title:"Darkroom Technician",era:"1880s-2000s",income:"Moderate",training:"Technical training",why:"Developed and printed photographic film and paper in light-controlled darkrooms. Skilled craft requiring chemical knowledge and precise timing.",changing:"Digital photography eliminated the commercial darkroom processing industry. Film photography remains as niche art but the profession is gone.",related:["Digital Photo Editor","Photographer","Lab Technician"]},
-{title:"Telegraph Operator",era:"1840s-1960s",income:"Moderate",training:"Morse code certification",why:"Transmitted and received messages in Morse code via telegraph lines. Skilled communicators who served commerce, military, and the press.",changing:"The telephone, then fax, then email eliminated telegraph communication entirely. Western Union sent its last telegram in 2006.",related:["Communications Specialist","Radio Operator","Network Technician"]},
-{title:"Lamplighter",era:"1700s-1900s",income:"Low",training:"None",why:"Walked city streets each evening lighting gas street lamps and returned each morning to extinguish them.",changing:"Electric street lighting with automatic timers eliminated the role completely in most cities by the early twentieth century.",related:["Utilities Technician","City Maintenance Worker","Electrician"]},
-{title:"Ice Cutter",era:"1800s-1930s",income:"Low to moderate",training:"Physical labor",why:"Cut large blocks of natural ice from frozen lakes and rivers in winter for delivery and storage in icehouses throughout the year.",changing:"The mechanical refrigerator eliminated both the ice trade and the need for natural ice harvesting within a single generation.",related:["Refrigeration Technician","Cold Storage Manager","HVAC Technician"]},
-{title:"Leech Collector",era:"1700s-1800s",income:"Low",training:"None",why:"Waded through ponds and marshes to collect medicinal leeches for sale to physicians who used bloodletting as a medical treatment.",changing:"The decline of bloodletting as a medical practice eliminated demand entirely. Modern medicine uses leeches rarely and farms them commercially.",related:["Medical Technician","Laboratory Assistant","Pharmaceutical Worker"]},
-{title:"Film Projectionist",era:"1890s-2010s",income:"Low to moderate",training:"Technical training",why:"Operated mechanical film projectors, changed reels, managed focus and sound, and maintained equipment in movie theaters.",changing:"Digital projection systems eliminated manual film handling. Most theaters converted entirely to digital by 2015.",related:["Audiovisual Technician","Theater Manager","Broadcast Technician"]},
-{title:"Lector",era:"1880s-1930s",income:"Moderate",training:"Reading and oratory",why:"Read aloud to factory workers during long shifts in cigar factories, textile mills, and other repetitive labor environments to provide entertainment and education.",changing:"The radio eliminated the need for human readers in factories. The role vanished almost entirely within a decade of radio adoption.",related:["Narrator","Educator","Broadcaster"]},
-{title:"Pinsetter",era:"1900s-1950s",income:"Low",training:"None",why:"Stood at the end of bowling lanes to manually reset pins and return balls to bowlers between frames.",changing:"The automatic pinsetting machine, introduced in the 1950s, eliminated the role entirely. Most pinsetters were young boys.",related:["Recreation Facility Manager","Mechanical Technician","Sports Equipment Technician"]},
-{title:"Town Crier",era:"Medieval-1800s",income:"Low to moderate",training:"Voice and literacy",why:"Walked public areas announcing official news, proclamations, and local information to communities where most people could not read.",changing:"The printed newspaper and later mass literacy eliminated the need for public oral announcement of information.",related:["Public Relations Specialist","Broadcaster","Communications Officer"]},
-{title:"Log Driver",era:"1700s-1950s",income:"Moderate",training:"Physical skill",why:"Rode and guided logs floating down rivers from forest to sawmill, a dangerous and skilled outdoor profession.",changing:"Road and rail transport of timber eliminated river log drives. The last commercial log drive in the United States ended in 1971.",related:["Forestry Worker","Transportation Specialist","Heavy Equipment Operator"]},
-{title:"Linotype Operator",era:"1880s-1970s",income:"Strong",training:"Apprenticeship",why:"Operated Linotype machines that cast entire lines of metal type for newspaper and book printing. Highly skilled and well-paid craft.",changing:"Desktop publishing software and digital typesetting eliminated hot metal type entirely. The transition happened rapidly in the 1970s and 1980s.",related:["Graphic Designer","Typographer","Print Production Manager"]},
-{title:"Cordwainer",era:"Medieval-1900s",income:"Moderate",training:"Long apprenticeship",why:"Handcrafted shoes from new leather, a distinct craft from cobblers who repaired shoes. Required years of training and fine manual skill.",changing:"Factory shoe production eliminated bespoke cordwaining as a mass profession. A small artisan community survives but the profession as a working category is gone.",related:["Cobbler","Leatherworker","Footwear Designer"]},
-{title:"Powder Monkey",era:"1600s-1800s",income:"None — naval service",training:"None",why:"Young boys who carried gunpowder from storage to cannons during naval battles aboard warships.",changing:"The transition from black powder artillery to modern naval weapons systems eliminated the role entirely.",related:["Naval Officer","Munitions Technician","Military Logistics"]},
-{title:"Rat Catcher",era:"Medieval-1900s",income:"Low",training:"None",why:"Caught rats for pest control in cities, farms, and food storage facilities. Some sold live rats for use in rat-baiting entertainment.",changing:"Modern poison and trap systems combined with improved sanitation eliminated the standalone rat catcher profession.",related:["Pest Control Technician","Sanitation Inspector","Environmental Health Specialist"]},
-{title:"Phrenologist",era:"1800s-early 1900s",income:"Moderate",training:"Pseudoscientific training",why:"Read the shape of a person's skull to diagnose personality, intelligence, and character traits. Once considered a legitimate professional service.",changing:"The rejection of phrenology as pseudoscience by the medical community eliminated it as a profession entirely.",related:["Psychologist","Neurologist","Counselor"]},
-{title:"Vellum Maker",era:"Medieval-1800s",income:"Moderate",training:"Craft apprenticeship",why:"Prepared animal skins, primarily calfskin, into smooth writing material used for manuscripts, legal documents, and books before paper became common.",changing:"The wide availability of paper and eventually digital documents eliminated commercial vellum production as a profession.",related:["Papermaker","Bookbinder","Archivist"]}
-]};
 
-Object.keys(DATA).forEach(k=>{
-  if(k!=="purple") DATA[k].sort((a,b)=>b.score-a.score);
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────
+const CATS = {
+  green:  { label:'Lower Risk',        badge:'badge-green',  score:'score-green',  tab:'tab-green'  },
+  yellow: { label:'Moderate Shift',    badge:'badge-yellow', score:'score-yellow', tab:'tab-yellow' },
+  orange: { label:'High Disruption',   badge:'badge-orange', score:'score-orange', tab:'tab-orange' },
+  blue:   { label:'Emerging / Rebound',badge:'badge-blue',   score:'score-blue',   tab:'tab-blue'   },
+  gray:   { label:'Obsolete',          badge:'badge-gray',   score:'score-gray',   tab:'tab-red'    },
+  purple: { label:'Durable Skills',    badge:'badge-purple', score:'score-purple', tab:'tab-purple' },
+};
+
+const DATA = [
+  // ── LOWER RISK ──────────────────────────────────────────────────────────
+  {n:"Surgeon",cat:"green",s:96,d:"Requires precise physical skill, intraoperative judgment, and patient trust. Surgical responsibility cannot be transferred to software.",r:"AI is assisting pre-operative planning, imaging, and robotic guidance.",b:"Complex anatomy, minimally invasive technique, emergency judgment, subspecialty expertise."},
+  {n:"Physician",cat:"green",s:88,d:"Diagnosis, patient relationship, clinical judgment, and liability require a licensed human. AI is a support tool, not a replacement.",r:"Administrative documentation, routine triage, and data-driven screening are being automated.",b:"Complex diagnosis, chronic care management, patient advocacy, procedural skills."},
+  {n:"Nurse Practitioner",cat:"green",s:91,d:"Advanced clinical judgment, prescribing authority, and direct patient relationships. Combines the best of human care with growing autonomy.",r:"Routine documentation and scheduling are being automated.",b:"Independent practice authority, primary care, specialty focus, patient trust."},
+  {n:"Registered Nurse",cat:"green",s:85,d:"Direct bedside care, clinical monitoring, and emotional presence cannot be automated. The human relationship is central to nursing.",r:"Documentation, scheduling, and triage protocols are being digitized.",b:"ICU specialization, surgical nursing, care coordination, patient advocacy."},
+  {n:"Dentist",cat:"green",s:87,d:"Requires manual dexterity, licensed diagnosis, and direct patient trust. Licensing and physical practice create strong barriers.",r:"Imaging AI is improving diagnostic support. Some imaging interpretation is partially automated.",b:"Complex restorative work, oral surgery, implants, patient relationships."},
+  {n:"Dental Hygienist",cat:"green",s:84,d:"Hands-on care, licensed practice, and patient communication remain human. AI is improving imaging but not replacing the clinical interaction.",r:"Automated imaging and screening tools are improving.",b:"Patient education, periodontal therapy, preventive care, licensed clinical judgment."},
+  {n:"Physical Therapist",cat:"green",s:92,d:"Physical evaluation, hands-on treatment, and adaptive coaching require human presence and judgment. Each patient is different.",r:"Documentation and tracking software are improving. Some exercise programs are being digitized.",b:"Manual therapy, sports rehabilitation, post-surgical recovery, motor relearning."},
+  {n:"Occupational Therapist",cat:"green",s:91,d:"Adapts treatment in real time to each patient's needs. Physical presence, creativity, and human relationship are central.",r:"Digital tracking tools are advancing. Some cognitive training is moving to apps.",b:"Pediatric specialization, hand therapy, vocational rehabilitation, adaptive equipment."},
+  {n:"Speech-Language Pathologist",cat:"green",s:90,d:"Requires clinical evaluation, trust, and individualized treatment. Disorders of communication are complex and deeply personal.",r:"Some screening tools and apps are improving. Teletherapy is expanding access.",b:"Pediatric speech, swallowing disorders, neurological rehabilitation, AAC."},
+  {n:"Mental Health Therapist",cat:"green",s:93,d:"The therapeutic relationship is the treatment. Human presence, empathy, and judgment cannot be replicated by AI tools.",r:"AI companion apps and digital CBT tools are entering the market. Some administrative tasks are being automated.",b:"Specialized modalities, trauma-informed care, licensed practice, cultural competency."},
+  {n:"Psychologist",cat:"green",s:92,d:"Doctoral-level assessment, licensed diagnosis, and therapeutic relationships require deep human skill and accountability.",r:"Diagnostic tools and screening instruments are improving with AI assistance.",b:"Neuropsychological assessment, forensic psychology, research, specialized treatment."},
+  {n:"Paramedic",cat:"green",s:90,d:"Real-time emergency judgment in unpredictable environments cannot be automated. Physical presence and fast decision-making are essential.",r:"Dispatch and triage systems are being digitized.",b:"Critical care transport, flight paramedicine, specialty certifications, field leadership."},
+  {n:"Firefighter",cat:"green",s:89,d:"Physical presence, emergency judgment, teamwork, and public trust in life-or-death situations. The work cannot be done remotely.",r:"Predictive modeling and dispatch optimization are improving.",b:"Technical rescue, hazmat, wildland certification, fire investigation, officer track."},
+  {n:"Police Officer",cat:"green",s:83,d:"Community presence, real-time situational judgment, and legal authority require human discretion and accountability.",r:"Predictive policing tools, surveillance, and body camera AI are advancing.",b:"Detective work, specialized units, community policing, crisis negotiation."},
+  {n:"Electrician",cat:"green",s:91,d:"Licensed, site-specific physical work in unpredictable environments. Tools improve diagnostics but cannot perform installation or repair.",r:"Smart diagnostics and remote monitoring are improving.",b:"Master electrician license, industrial systems, renewable energy, project leadership."},
+  {n:"Plumber",cat:"green",s:90,d:"Physical presence, local code knowledge, and hands-on repair in unpredictable conditions. Requires real-world problem-solving.",r:"Leak detection and diagnostic tools are improving.",b:"Master plumber license, commercial work, gas fitting, project management."},
+  {n:"HVAC Technician",cat:"green",s:87,d:"Physically demanding, site-specific installation and repair. Tools improve diagnostics but the work remains hands-on.",r:"Smart building systems and remote monitoring are advancing.",b:"Refrigeration license, commercial HVAC, controls integration, energy efficiency."},
+  {n:"Welder",cat:"green",s:83,d:"Skilled physical craft requiring precision, safety judgment, and real-world execution. Complex welds require human skill.",r:"Robotic welding is advancing in structured factory environments.",b:"Specialty certifications, pipe welding, underwater welding, inspection track."},
+  {n:"Aircraft Mechanic",cat:"green",s:89,d:"FAA-regulated, safety-critical physical work with legal accountability. Humans must inspect and certify every aircraft.",r:"Diagnostic tools and predictive maintenance systems are improving.",b:"FAA certifications, avionics specialty, inspection authority, airline track."},
+  {n:"Auto Mechanic",cat:"green",s:79,d:"Physical diagnostic skill and hands-on repair in unpredictable vehicle conditions remain human. Modern vehicles are increasingly complex.",r:"AI-assisted diagnostics and OBD systems are improving.",b:"EV certification, advanced diagnostics, specialty vehicles, shop management."},
+  {n:"Diesel Mechanic",cat:"green",s:82,d:"Heavy equipment and commercial vehicle repair require physical skill and safety judgment in demanding environments.",r:"Fleet telematics and predictive maintenance are advancing.",b:"Fleet management, emissions certification, heavy equipment specialty."},
+  {n:"Elevator Technician",cat:"green",s:88,d:"Licensed, regulated work in vertical transportation systems. Safety accountability and physical repair remain human.",r:"Remote monitoring and predictive maintenance are improving.",b:"State licensing, commercial systems, modernization specialty."},
+  {n:"Lineworker",cat:"green",s:87,d:"High-voltage power line work requiring physical skill, safety certification, and real-world judgment in dangerous conditions.",r:"Drone inspection and remote monitoring are advancing.",b:"Journeyman license, substation work, storm restoration, foreman track."},
+  {n:"Solar Installer",cat:"green",s:85,d:"Physical installation, electrical licensing, and site-specific judgment. Growing demand as energy transitions.",r:"Design and simulation software is improving. Some estimating is being automated.",b:"Electrical license, battery storage, commercial scale, project management."},
+  {n:"Wind Turbine Technician",cat:"green",s:86,d:"Physical maintenance of complex equipment in demanding environments. Growing demand, specialized training required.",r:"Remote monitoring and predictive maintenance are improving.",b:"Electrical certification, blade inspection, offshore specialty."},
+  {n:"Construction Manager",cat:"green",s:84,d:"Real-world site coordination, safety judgment, vendor management, and adaptive problem-solving cannot be automated.",r:"Project management software and scheduling tools are advancing.",b:"PMP certification, specialty construction, owner's representative, leadership."},
+  {n:"Civil Engineer",cat:"green",s:82,d:"Licensed professional engineering with safety accountability. Design judgment and site-specific solutions require human expertise.",r:"BIM software, simulation tools, and AI-assisted design are advancing.",b:"PE license, specialty engineering, project leadership, infrastructure management."},
+  {n:"Structural Engineer",cat:"green",s:83,d:"Licensed engineering with direct safety accountability. Structural judgment and site-specific design remain human.",r:"Simulation and analysis tools are advancing.",b:"PE license, seismic specialty, forensic engineering, project leadership."},
+  {n:"Farmer",cat:"green",s:80,d:"Complex, adaptive management of biological systems in unpredictable conditions. Judgment, physical presence, and local knowledge are essential.",r:"Precision agriculture, drone monitoring, and AI crop analysis are advancing.",b:"Specialty crops, organic certification, agritourism, market gardening."},
+  {n:"Rancher",cat:"green",s:79,d:"Animal husbandry, land management, and physical operations in variable conditions require human judgment and presence.",r:"Livestock monitoring technology and GPS systems are advancing.",b:"Specialty breeds, organic certification, direct-to-consumer, land stewardship."},
+  {n:"Veterinarian",cat:"green",s:86,d:"Licensed diagnosis, surgical skill, and animal care require human judgment and accountability.",r:"Diagnostic imaging AI is entering veterinary practice.",b:"Specialty medicine, surgery, exotic animals, public health, research."},
+  {n:"Pharmacist",cat:"green",s:81,d:"Licensed dispensing, drug interaction judgment, and patient counseling require human expertise.",r:"Automated dispensing systems and telepharmacy are advancing.",b:"Clinical pharmacy, specialty pharmacy, hospital pharmacy, pharmacogenomics."},
+  {n:"Respiratory Therapist",cat:"green",s:85,d:"Hands-on respiratory care and critical care judgment in unpredictable patient situations require licensed human skill.",r:"Ventilator management protocols are being digitized.",b:"Neonatal specialty, sleep medicine, pulmonary rehabilitation, critical care."},
+  {n:"Radiologic Technologist",cat:"green",s:82,d:"Patient positioning, equipment operation, and safety require hands-on human work. Imaging acquisition remains human.",r:"AI is advancing in image interpretation and anomaly detection.",b:"CT/MRI specialty, interventional radiology, radiation therapy."},
+  {n:"Ultrasound Technician",cat:"green",s:83,d:"Highly skilled image acquisition requiring physical presence, probe technique, and real-time clinical judgment.",r:"AI interpretation tools are improving.",b:"Vascular specialty, echocardiography, OB specialty, cardiac sonography."},
+  {n:"Special Education Teacher",cat:"green",s:90,d:"Individualized human relationship, adaptive teaching, and emotional support for students with complex needs. Irreplaceable human role.",r:"Adaptive learning tools and IEP software are advancing.",b:"Autism specialization, behavioral therapy, assistive technology, inclusion leadership."},
+  {n:"Early Childhood Educator",cat:"green",s:88,d:"Human relationship, emotional attunement, and physical care for young children. Trust from families and regulatory presence.",r:"Educational apps and curricula are advancing.",b:"Infant-toddler specialization, leadership certification, bilingual education."},
+  {n:"Chef",cat:"green",s:80,d:"Creative culinary leadership, taste judgment, and kitchen management require human craft and sensory skill.",r:"Standardized food production is increasingly automated.",b:"Specialty cuisine, restaurant ownership, culinary education, food product development."},
+  {n:"Barber",cat:"green",s:82,d:"Personal service requiring touch, taste, and client relationship. Licensed, physical, and deeply interpersonal.",r:"Some automated tools exist for basic cuts.",b:"Master barber license, specialty techniques, shop ownership, education."},
+  {n:"Hair Stylist",cat:"green",s:81,d:"Requires physical presence, personal relationship, creative judgment, and client trust. Licensing creates professional entry barrier.",r:"Some styling tools are improving.",b:"Color specialty, extension work, editorial styling, salon ownership."},
+  {n:"Massage Therapist",cat:"green",s:84,d:"Touch-based therapy requiring physical presence, licensed practice, and therapeutic relationship.",r:"Massage chairs and devices are improving.",b:"Specialty modalities, medical massage, sports therapy, private practice."},
+  {n:"Athletic Trainer",cat:"green",s:85,d:"Real-time injury prevention, rehabilitation, and emergency response at sporting events. Physical presence and judgment required.",r:"Wearable technology and biometrics are improving monitoring.",b:"Sports medicine certification, collegiate or pro sports, physical therapy bridge."},
+  {n:"Funeral Director",cat:"green",s:84,d:"Licensed, human-centered work requiring cultural sensitivity, family trust, and physical care for the deceased.",r:"Administrative and planning tools are advancing.",b:"Embalming certification, cremation specialty, grief support, management."},
+  {n:"Court Reporter",cat:"green",s:78,d:"Verbatim legal transcription with real-time accuracy and legal accountability. Certified and licensed for official proceedings.",r:"Voice recognition is improving but faces accuracy and certification challenges in legal settings.",b:"Realtime certification, CART services, broadcast captioning, scopist."},
+  {n:"Building Inspector",cat:"green",s:85,d:"Licensed field inspection with legal accountability. Physical presence and real-world judgment are required by law.",r:"Drone inspection and remote sensing are advancing.",b:"Specialty certifications, plans examination, code official track."},
+  {n:"Commercial Pilot",cat:"green",s:88,d:"High-stakes judgment, physical operation, and regulatory accountability in safety-critical transportation.",r:"Autopilot and AI-assisted navigation are advancing. Cargo automation is being explored.",b:"Type ratings, captain upgrade, cargo specialty, instructor certification."},
+  {n:"Air Traffic Controller",cat:"green",s:89,d:"Real-time safety judgment in complex, high-stakes airspace management. FAA certified and legally accountable.",r:"Automation is assisting routine tracking but human judgment remains required.",b:"TRACON specialty, en route facility, supervisor track, military equivalence."},
+  {n:"Maritime Captain",cat:"green",s:87,d:"Licensed navigation of commercial vessels with safety and regulatory accountability. Physical presence required.",r:"Automated navigation and routing tools are advancing.",b:"Advanced licenses, vessel ownership, harbor piloting."},
+  {n:"Heavy Equipment Operator",cat:"green",s:83,d:"Physical operation of complex machinery in variable environments. Site judgment and equipment control require skilled human operation.",r:"Autonomous heavy equipment is being developed for structured environments.",b:"Multiple machine certifications, grade control systems, supervision track."},
+
+  // ── MODERATE SHIFT ───────────────────────────────────────────────────────
+  {n:"Teacher",cat:"yellow",s:72,d:"Human relationship, classroom management, and adaptive teaching are valuable and difficult to automate. But content delivery and assessment are changing.",r:"AI tutoring, adaptive learning platforms, and automated grading are improving.",b:"Subject mastery, differentiated instruction, mentorship, technology integration."},
+  {n:"Professor",cat:"yellow",s:68,d:"Research, intellectual leadership, and mentorship remain human. Lecture delivery and routine grading are under pressure.",r:"Online learning, AI tutoring, and automated feedback are changing higher education.",b:"Research output, graduate mentorship, industry connection, specialized expertise."},
+  {n:"Accountant",cat:"yellow",s:66,d:"Complex tax strategy, client advisory, and compliance judgment remain valuable. Routine bookkeeping is heavily automated.",r:"Bookkeeping, tax preparation software, and financial reporting are increasingly automated.",b:"CPA license, specialty taxation, advisory services, audit, forensic accounting."},
+  {n:"Financial Advisor",cat:"yellow",s:67,d:"Client relationship, life planning, and complex financial judgment require human trust and accountability.",r:"Robo-advisors and automated portfolio management are advancing.",b:"CFP, estate planning, business succession, specialized client relationships."},
+  {n:"Paralegal",cat:"yellow",s:59,d:"Legal document management and case support remain valuable but are changing rapidly.",r:"AI is advancing in document review, legal research, and contract analysis.",b:"Specialty litigation support, trial preparation, legal operations, technology skills."},
+  {n:"Lawyer",cat:"yellow",s:65,d:"Legal strategy, advocacy, client representation, and courtroom judgment require licensed human expertise and accountability.",r:"Research, document review, contract drafting, and discovery are being automated.",b:"Trial practice, complex litigation, specialty law, client development, partnership."},
+  {n:"HR Specialist",cat:"yellow",s:62,d:"Employee relations, conflict resolution, and policy interpretation require human judgment and sensitivity.",r:"Recruiting screening, onboarding, payroll, and performance tracking are being automated.",b:"Employment law, labor relations, HRBP role, organizational development."},
+  {n:"Marketing Manager",cat:"yellow",s:60,d:"Brand strategy, market judgment, and creative direction remain human. Campaign execution is being heavily automated.",r:"Content generation, ad targeting, performance reporting, and A/B testing are increasingly automated.",b:"Brand strategy, market positioning, integrated campaigns, analytics literacy."},
+  {n:"Sales Manager",cat:"yellow",s:64,d:"Coaching, relationship building, and complex deal strategy require human skill and judgment.",r:"Sales automation, CRM AI, and outbound sequencing tools are advancing.",b:"Enterprise sales, key account management, sales coaching, revenue operations."},
+  {n:"Real Estate Agent",cat:"yellow",s:61,d:"Local market knowledge, negotiation, and client trust remain valuable. Transaction discovery and paperwork are being automated.",r:"Listing platforms, automated valuation models, and virtual tours are advancing.",b:"Luxury specialization, investment properties, commercial real estate, broker license."},
+  {n:"Insurance Agent",cat:"yellow",s:58,d:"Complex coverage judgment and client relationships remain valuable. Routine quoting and claims are being automated.",r:"Automated underwriting, comparison platforms, and claims processing are advancing.",b:"Specialty coverage, commercial insurance, risk management, benefits specialization."},
+  {n:"Loan Officer",cat:"yellow",s:57,d:"Complex loans, client relationships, and judgment in unusual situations remain human. Routine applications are being automated.",r:"Automated underwriting handles most standard mortgage and consumer applications.",b:"Commercial lending, jumbo loans, SBA specialty, relationship banking."},
+  {n:"Project Manager",cat:"yellow",s:66,d:"Human coordination, stakeholder management, and adaptive problem-solving remain valuable.",r:"Project tracking, scheduling, and reporting tools are increasingly automated.",b:"PMP certification, agile methodology, complex program management, executive visibility."},
+  {n:"Operations Manager",cat:"yellow",s:63,d:"Real-world operational judgment, team leadership, and process improvement require human presence.",r:"Scheduling, inventory, and workflow optimization tools are advancing.",b:"Supply chain expertise, lean certification, multi-site management."},
+  {n:"Audio Engineer",cat:"yellow",s:62,d:"Audio engineering is not disappearing, but the low-end digital parts of the work are under pressure. Live sound, signal flow, troubleshooting, client trust, and production judgment remain more durable.",r:"Basic cleanup, mixing, podcast editing, mastering, and template-based production are increasingly automated.",b:"Live production, broadcast systems, AV integration, Dante, immersive audio, AI-assisted workflows, client-facing production, and technical troubleshooting."},
+  {n:"Video Producer",cat:"yellow",s:63,d:"Creative direction, client relationships, and production judgment remain valuable. Basic editing and delivery workflows are changing.",r:"AI-assisted editing, automated captioning, and template-based production are advancing.",b:"Narrative production, documentary, branded content, technical directing, post supervision."},
+  {n:"Film Director",cat:"yellow",s:65,d:"Creative vision, storytelling leadership, and cast and crew direction remain distinctly human.",r:"Production planning tools, virtual production, and AI pre-visualization are advancing.",b:"Feature narrative, documentary, episodic television, branded content, international co-production."},
+  {n:"Documentary Director",cat:"yellow",s:67,d:"Investigative journalism skills, narrative judgment, and human access remain difficult to replicate.",r:"Archival research, some transcription, and distribution are being automated.",b:"Long-form narrative, investigative journalism, festival track, streaming distribution."},
+  {n:"Photographer",cat:"yellow",s:58,d:"Commercial and editorial photography requiring unique vision and client relationship remains valuable. Generic stock is under severe pressure.",r:"AI image generation is rapidly replacing stock and generic commercial photography.",b:"Editorial, portrait, documentary, event, architectural, brand identity photography."},
+  {n:"Graphic Designer",cat:"yellow",s:55,d:"Senior design thinking, brand strategy, and creative direction remain human. Production-level design is rapidly automating.",r:"Template tools, AI image generation, and automated layout are advancing rapidly.",b:"Art direction, brand identity systems, senior creative leadership, UX strategy."},
+  {n:"UX Researcher",cat:"yellow",s:68,d:"Human empathy, research design, and interpretation of user behavior require skilled human judgment.",r:"Automated usability testing and survey analysis tools are improving.",b:"Research strategy, mixed methods, participant recruitment, insight synthesis."},
+  {n:"UX Designer",cat:"yellow",s:64,d:"Design thinking, information architecture, and user advocacy remain human. Prototyping and visual work are changing.",r:"AI-assisted wireframing, prototyping tools, and design generation are advancing.",b:"Systems design, accessibility, research integration, product strategy."},
+  {n:"Software Developer",cat:"yellow",s:60,d:"System architecture, complex problem solving, and engineering judgment remain valuable. Routine code is under significant pressure.",r:"AI coding assistants are generating large portions of routine and boilerplate code.",b:"System architecture, API design, performance engineering, technical leadership."},
+  {n:"Data Analyst",cat:"yellow",s:59,d:"Data storytelling, business context, and complex analytical judgment remain valuable. Basic analysis is being automated.",r:"Automated dashboards, AI-assisted analysis, and natural language querying are advancing.",b:"Domain expertise, advanced statistics, SQL mastery, business communication."},
+  {n:"Journalist",cat:"yellow",s:64,d:"Investigative reporting, source relationships, and editorial judgment remain distinctly human.",r:"Routine data journalism, press release rewrites, and sports scores are being automated.",b:"Investigative reporting, long-form narrative, data journalism, broadcast journalism."},
+  {n:"Editor",cat:"yellow",s:63,d:"Developmental editing, voice development, and editorial judgment remain human. Copy editing is partially automated.",r:"Grammar checking, proofreading, and some structural feedback are being automated.",b:"Acquisitions editing, developmental editing, literary representation, editorial leadership."},
+  {n:"Technical Writer",cat:"yellow",s:57,d:"Complex documentation requiring deep subject knowledge and user empathy remains valuable.",r:"AI-assisted documentation generation is rapidly improving for routine technical content.",b:"API documentation, UX writing, compliance documentation, knowledge management."},
+  {n:"Social Worker",cat:"yellow",s:74,d:"Human relationships, crisis intervention, and advocacy in complex personal situations require licensed human skill.",r:"Case management software and administrative tasks are being automated.",b:"Clinical license, specialty populations, policy advocacy, program leadership."},
+  {n:"Case Manager",cat:"yellow",s:71,d:"Care coordination, advocacy, and complex systems navigation require human judgment and trust.",r:"Care coordination platforms and automated task management are advancing.",b:"Clinical case management, complex populations, transitions of care."},
+  {n:"Urban Planner",cat:"yellow",s:65,d:"Community engagement, political judgment, and adaptive planning require human presence.",r:"Simulation tools, AI-assisted zoning analysis, and planning software are advancing.",b:"AICP certification, sustainability specialty, transportation planning, housing policy."},
+  {n:"Librarian",cat:"yellow",s:68,d:"Information literacy, community service, and collection expertise remain valuable.",r:"Digital cataloging, search tools, and AI-assisted reference are advancing.",b:"Special library, archival specialty, digital preservation, information management."},
+  {n:"Translator",cat:"yellow",s:51,d:"Literary, legal, and high-nuance translation requiring cultural depth remains valuable. Routine document translation is under heavy pressure.",r:"Machine translation handles most standard content with increasing accuracy.",b:"Literary translation, legal interpretation, localization specialty, subtitling."},
+  {n:"Interpreter",cat:"yellow",s:69,d:"Real-time spoken interpretation, especially in legal, medical, and diplomatic settings, requires human skill and cultural depth.",r:"Real-time AI translation is improving but faces significant nuance challenges.",b:"Conference interpretation, medical interpretation, legal certification, simultaneous technique."},
+  {n:"Customer Success Manager",cat:"yellow",s:62,d:"Strategic client relationships, churn prevention, and escalation management require human judgment.",r:"Automated onboarding, health scoring, and routine communications are being automated.",b:"Enterprise accounts, technical domains, renewal strategy, executive sponsorship."},
+  {n:"IT Support Specialist",cat:"yellow",s:56,d:"Complex troubleshooting and human communication in unusual situations remain valuable.",r:"Tier-one support, password resets, and routine fixes are increasingly handled by AI chatbots.",b:"Cybersecurity, cloud administration, endpoint management, advanced troubleshooting."},
+  {n:"Network Technician",cat:"yellow",s:63,d:"Physical network infrastructure, hands-on troubleshooting, and site-specific configuration require human skill.",r:"Network monitoring and management tools are increasingly automated.",b:"Security certifications, cloud networking, SD-WAN, enterprise scale."},
+  {n:"Broadcast Engineer",cat:"yellow",s:65,d:"Live production systems, signal integrity, and real-time troubleshooting in broadcast environments require skilled human operators.",r:"IP-based workflows and software-defined broadcasting are advancing.",b:"IP media, SMPTE standards, live production specialty, chief engineer track."},
+  {n:"Post-Production Supervisor",cat:"yellow",s:63,d:"Pipeline management, vendor coordination, and quality oversight in complex production workflows remain human.",r:"Automated transcoding, QC tools, and delivery platforms are advancing.",b:"VFX supervision, finishing specialty, streaming delivery, studio leadership."},
+  {n:"Instructional Designer",cat:"yellow",s:60,d:"Learning strategy, adult education theory, and curriculum development require human expertise.",r:"AI course generation, automated assessment, and templated e-learning are advancing.",b:"Learning technology mastery, performance consulting, organizational learning leadership."},
+  {n:"Event Planner",cat:"yellow",s:61,d:"Vendor coordination, real-time problem solving, and client relationship require human judgment.",r:"Planning software, automated scheduling, and vendor platforms are advancing.",b:"Corporate specialty, destination events, luxury weddings, convention management."},
+  {n:"Bookkeeper",cat:"yellow",s:45,d:"Basic bookkeeping is heavily automated. Value lies in advisory context and complex reconciliation.",r:"Accounting software, AI categorization, and automated bank feeds handle most routine work.",b:"CPA bridge, advisory services, specialty industry knowledge, CFO track."},
+
+  // ── HIGH DISRUPTION ──────────────────────────────────────────────────────
+  {n:"Data Entry Clerk",cat:"orange",s:18,d:"Routine digital input is among the most automatable job categories.",r:"OCR, RPA, and AI document processing have replaced most routine data entry.",b:"Quality control, process mapping, exception handling, operations analysis."},
+  {n:"Transcriptionist",cat:"orange",s:20,d:"Speech-to-text AI handles most standard transcription with high accuracy.",r:"AI transcription tools have automated most of the standard work.",b:"Medical documentation specialist, legal transcription quality review, captioning quality control."},
+  {n:"Telemarketer",cat:"orange",s:22,d:"Scripted outbound calling is highly exposed to AI voice automation.",r:"AI voice agents and automated dialers handle most scripted outbound calls.",b:"Relationship-based sales, inbound qualification, account management."},
+  {n:"Basic Customer Support Representative",cat:"orange",s:28,d:"Tier-one support for routine, scripted inquiries is heavily automated.",r:"AI chatbots and voice agents handle most routine support tickets and inquiries.",b:"Complex escalations, enterprise support, technical support, customer success."},
+  {n:"Basic Copywriter",cat:"orange",s:30,d:"Routine content generation for blogs, product descriptions, and ad copy is rapidly automated.",r:"AI writing tools generate standard content faster and cheaper than most entry-level writers.",b:"Brand voice strategy, content direction, editorial judgment, specialized subject expertise."},
+  {n:"SEO Content Writer",cat:"orange",s:25,d:"Keyword-driven, template-based SEO content is among the first categories being replaced by AI.",r:"AI generates SEO content at scale with minimal human input.",b:"Content strategy, editorial leadership, specialized subject expertise."},
+  {n:"Entry-Level Graphic Designer",cat:"orange",s:32,d:"Template-based and production graphic design is under severe automation pressure.",r:"AI design tools, template platforms, and automated layout engines are replacing routine production work.",b:"Art direction, brand strategy, motion graphics, UX design, senior creative roles."},
+  {n:"Basic Video Editor",cat:"orange",s:35,d:"Routine cutting, captioning, and template-based video edits are increasingly automated.",r:"AI editing tools handle cuts, captions, subtitles, and template-based deliverables.",b:"Narrative editing, documentary storytelling, post-production supervision, color grading."},
+  {n:"Social Media Scheduler",cat:"orange",s:22,d:"Scheduling and routine posting management is almost entirely automated.",r:"Social scheduling tools, AI caption generators, and automated posting platforms replace this role.",b:"Community strategy, brand voice management, content direction, influencer relations."},
+  {n:"Simple Logo Designer",cat:"orange",s:28,d:"Routine logo creation is rapidly automated at the entry level.",r:"AI logo generators produce functional logos quickly. Basic logo work is being commoditized.",b:"Brand identity systems, art direction, packaging design, senior creative."},
+  {n:"Stock Photo Contributor",cat:"orange",s:20,d:"Generic stock photography demand is collapsing under AI image generation.",r:"AI generates stock-quality images at scale, destroying the generic stock market.",b:"Editorial photography, commercial photography, documentary, unique licensed content."},
+  {n:"Basic Web Template Builder",cat:"orange",s:28,d:"Template-based web building is heavily automated by no-code tools and AI site builders.",r:"Platforms like Wix, Squarespace, and AI site generators replace most template web work.",b:"Custom development, UX design, web strategy, accessibility specialization."},
+  {n:"Appointment Setter",cat:"orange",s:22,d:"Scheduling and meeting coordination is highly automatable.",r:"AI scheduling tools and calendar automation handle most appointment setting.",b:"Sales development, relationship-based outreach, enterprise coordination."},
+  {n:"Travel Agent",cat:"orange",s:33,d:"Standard travel booking has moved almost entirely to self-service platforms.",r:"Online booking platforms and comparison tools handle most standard travel planning.",b:"Luxury travel curation, complex itineraries, destination wedding planning, corporate travel management."},
+  {n:"Proofreader",cat:"orange",s:30,d:"Routine grammar and spelling correction is heavily automated.",r:"AI writing tools catch most surface errors. Routine proofreading is largely replaced.",b:"Developmental editing, copyediting with style judgment, specialized technical editing."},
+  {n:"Resume Writer",cat:"orange",s:32,d:"Routine resume writing is easily replaced by AI tools and templates.",r:"AI resume writers and templates generate functional resumes quickly.",b:"Executive coaching, career strategy, LinkedIn strategy, personal branding."},
+  {n:"Payroll Clerk",cat:"orange",s:25,d:"Routine payroll processing is heavily automated by integrated HR and accounting platforms.",r:"Payroll software handles calculation, tax filing, and direct deposit automatically.",b:"Payroll management, compliance specialty, HR operations, HRIS administration."},
+  {n:"Claims Processor",cat:"orange",s:30,d:"Rules-based claims routing and processing is increasingly automated.",r:"Straight-through processing handles standard claims without human review.",b:"Complex claims adjustment, fraud investigation, compliance analysis."},
+  {n:"Loan Processor",cat:"orange",s:32,d:"Standard loan processing documentation and verification is increasingly automated.",r:"Automated underwriting and document verification handle most routine applications.",b:"Commercial lending, complex underwriting, relationship banking."},
+  {n:"Medical Coder",cat:"orange",s:35,d:"AI-assisted coding is advancing rapidly, reducing the need for manual ICD and CPT coding.",r:"AI coding tools are improving accuracy and speed in standard coding environments.",b:"Coding auditing, compliance, specialty coding, healthcare revenue cycle management."},
+  {n:"Basic Financial Analyst",cat:"orange",s:38,d:"Routine financial modeling and data compilation are being automated.",r:"AI tools generate financial models, reports, and data summaries faster than entry-level analysts.",b:"Specialized industry knowledge, investment banking, buy-side analysis, CFO track."},
+  {n:"QA Tester",cat:"orange",s:40,d:"Manual software testing is declining as automated testing frameworks advance.",r:"Automated testing, continuous integration, and AI-assisted QA are replacing manual test execution.",b:"Automation engineering, security testing, performance engineering, QA leadership."},
+  {n:"Virtual Assistant",cat:"orange",s:35,d:"Routine administrative task handling is being absorbed by AI assistants and automation.",r:"AI tools handle email drafting, scheduling, research, and routine task management.",b:"Executive operations, specialized domain support, operations management."},
+  {n:"Receptionist",cat:"orange",s:38,d:"Front desk and phone reception is increasingly handled by automated systems.",r:"Digital check-in systems, AI phone routing, and automated scheduling replace much of this work.",b:"Office management, executive assistant track, hospitality management."},
+  {n:"Cashier",cat:"orange",s:28,d:"Self-checkout, contactless payment, and automated kiosks are rapidly replacing cashier roles.",r:"Automated checkout is expanding in retail and food service.",b:"Customer service leadership, retail management, operations."},
+  {n:"Bank Teller",cat:"orange",s:32,d:"ATMs, mobile banking, and digital transfers handle most routine transactions.",r:"Branch transaction volumes are declining as digital banking expands.",b:"Personal banker, financial advisory, business banking, relationship management."},
+  {n:"Warehouse Picker",cat:"orange",s:30,d:"Robotic picking systems in structured warehouse environments are advancing rapidly.",r:"Automated picking robots are replacing human pickers in large, structured fulfillment centers.",b:"Robotics oversight, warehouse management, logistics coordination."},
+  {n:"Insurance Underwriter",cat:"orange",s:38,d:"Rules-based underwriting for standard policies is increasingly automated.",r:"AI underwriting platforms make real-time decisions on standard risk categories.",b:"Complex risk specialty, commercial underwriting, actuarial track, risk management."},
+  {n:"Basic Music Producer",cat:"orange",s:40,d:"Template-based beat production and generic backing tracks are being automated.",r:"AI music generation tools produce beats and stems quickly at low cost.",b:"Artist development, sound design, mixing and mastering, live production, music supervision."},
+
+  // ── EMERGING / REBOUND ───────────────────────────────────────────────────
+  {n:"AI Workflow Consultant",cat:"blue",s:68,d:"High demand as organizations try to integrate AI into operations. This role may consolidate or evolve as tools become more accessible.",r:"As AI tools become easier to use, some aspects of this role may be absorbed into general operations.",b:"Deep domain expertise, implementation track record, change management, technical fluency."},
+  {n:"Small Business Automation Consultant",cat:"blue",s:65,d:"Growing demand from small businesses trying to automate operations. A practical bridge role.",r:"As no-code tools mature, some of this work may become self-service.",b:"Domain expertise in specific industries, ROI documentation, client relationships."},
+  {n:"AI Implementation Specialist",cat:"blue",s:66,d:"Organizations need help deploying AI tools at scale. Technical and change management skills are valued.",r:"May consolidate into general IT and operations roles over time.",b:"Technical integration, project management, vendor evaluation, training design."},
+  {n:"AI Trainer",cat:"blue",s:58,d:"Data labeling, model evaluation, and AI behavior training are growing fields. Quality and consistency matter.",r:"Some aspects may be automated. Demand may shift as models improve.",b:"Domain expertise for specialized labeling, quality evaluation, annotation leadership."},
+  {n:"Prompt Workflow Designer",cat:"blue",s:62,d:"Designing and maintaining complex AI prompt workflows for business processes is a practical, growing skill.",r:"As AI interfaces improve, some prompt work becomes embedded in tools.",b:"Systems thinking, domain knowledge, documentation, continuous iteration."},
+  {n:"AI Content Operations Manager",cat:"blue",s:64,d:"Managing the workflow of AI-assisted content production requires editorial judgment and process design.",r:"May consolidate into content director or editorial roles as AI tools normalize.",b:"Editorial leadership, quality standards, workflow design, team management."},
+  {n:"AI Quality Reviewer",cat:"blue",s:60,d:"Human review of AI outputs for accuracy, bias, and quality is needed across industries.",r:"As AI improves, some review tasks may be handled by AI itself.",b:"Domain expertise, quality standards, critical evaluation, documentation."},
+  {n:"No-Code Automation Specialist",cat:"blue",s:67,d:"Building automated workflows without code is a growing, practical skill that reduces reliance on developers.",r:"As tools mature, more non-specialists will build their own automations.",b:"Multiple platform expertise, process design, documentation, training."},
+  {n:"Process Documentation Specialist",cat:"blue",s:63,d:"As organizations adopt AI, clear process documentation becomes essential. Human judgment in mapping workflows is needed.",r:"AI documentation tools are improving.",b:"Systems thinking, knowledge management, training design, operations expertise."},
+  {n:"AI-Assisted Video Workflow Specialist",cat:"blue",s:65,d:"Managing AI-augmented video production pipelines requires both technical and creative judgment.",r:"As tools normalize, this may become a standard part of editor and producer roles.",b:"Post-production expertise, AI tool fluency, workflow design, team training."},
+  {n:"AI Ethics Consultant",cat:"blue",s:64,d:"Organizations need guidance on responsible AI deployment. Growing regulatory environment creates demand.",r:"May consolidate into compliance and legal roles over time.",b:"Ethics frameworks, regulatory knowledge, communication, stakeholder management."},
+  {n:"AI Safety Analyst",cat:"blue",s:66,d:"Evaluating AI system behavior for safety, bias, and alignment is a specialized growing field.",r:"May consolidate as safety becomes embedded in standard engineering practice.",b:"Technical understanding, policy knowledge, documentation, red-teaming experience."},
+  {n:"Robotics Fleet Operator",cat:"blue",s:69,d:"Supervising fleets of autonomous robots in logistics, agriculture, and manufacturing is a growing hands-on role.",r:"Full automation may eventually reduce the need for human fleet operators.",b:"Technical troubleshooting, system administration, logistics knowledge."},
+  {n:"Drone Operator",cat:"blue",s:67,d:"FAA-certified drone operation for inspection, mapping, agriculture, and media is a growing licensed field.",r:"Autonomous drones may reduce the need for manual pilots over time.",b:"FAA Part 107, thermal imaging, photogrammetry, agricultural applications."},
+  {n:"Virtual Production Technician",cat:"blue",s:65,d:"LED volume and virtual production stages require specialized technical skills combining real-time 3D and broadcast.",r:"Tooling is evolving rapidly. Skills may need continuous updating.",b:"Unreal Engine, LED wall systems, camera tracking, real-time compositing."},
+  {n:"Digital Twin Specialist",cat:"blue",s:64,d:"Building and maintaining digital replicas of physical systems is growing in manufacturing, infrastructure, and healthcare.",r:"As platforms mature, some digital twin work may become a standard engineering skill.",b:"3D modeling, sensor integration, simulation software, domain engineering expertise."},
+  {n:"AR/VR Training Designer",cat:"blue",s:60,d:"Immersive training experiences for complex skills are growing in enterprise and healthcare.",r:"May consolidate into instructional design as tools become more accessible.",b:"Instructional design, 3D environment design, learning science, domain expertise."},
+  {n:"Creator Operations Manager",cat:"blue",s:62,d:"Managing the business operations, workflows, and team behind content creators is a growing role.",r:"As creator tools mature, some operations may be self-managed.",b:"Digital marketing, business operations, team management, platform expertise."},
+  {n:"Fractional AI Officer",cat:"blue",s:65,d:"Small and midsize businesses need AI strategy without a full-time hire. Fractional expertise is in demand.",r:"May consolidate as AI strategy becomes a standard business function.",b:"AI literacy, business strategy, change management, executive communication."},
+  {n:"AI Curriculum Designer",cat:"blue",s:66,d:"Designing training and educational content for AI skills is growing as organizations upskill their workforce.",r:"AI-generated curricula are improving.",b:"Adult learning, AI fluency, domain expertise, curriculum development."},
+
+  // ── OBSOLETE ─────────────────────────────────────────────────────────────
+  {n:"Switchboard Operator",cat:"gray",s:0,d:"Manually connecting telephone calls via physical switchboard. Fully replaced by automated phone systems.",r:"Automated switching and VoIP routing replaced this role entirely.",b:"The role no longer exists as a working profession."},
+  {n:"Typist",cat:"gray",s:0,d:"Professional typing of documents for others. Replaced by word processing software and the personal computer.",r:"Word processing made professional typing services obsolete.",b:"The role no longer exists as a standalone profession."},
+  {n:"Elevator Operator",cat:"gray",s:0,d:"Manually operating elevator controls and announcing floors. Replaced by push-button automatic elevators.",r:"Automatic elevators replaced manual operation entirely.",b:"The role no longer exists as a working profession."},
+  {n:"Pinsetter",cat:"gray",s:0,d:"Manually resetting bowling pins. Replaced by mechanical pinsetting machines in the 1950s.",r:"Mechanical pinsetters replaced human pinsetters entirely.",b:"The role no longer exists as a working profession."},
+  {n:"Lamplighter",cat:"gray",s:0,d:"Lighting and extinguishing gas street lamps by hand each day. Replaced by electric street lighting.",r:"Electric street lighting with automatic timers replaced the role entirely.",b:"The role no longer exists as a working profession."},
+  {n:"Milkman",cat:"gray",s:3,d:"Daily doorstep delivery of glass milk bottles. Largely replaced by supermarket distribution and refrigeration.",r:"Supermarket refrigeration and centralized distribution replaced daily doorstep delivery.",b:"Small-scale artisan dairy delivery persists in limited markets."},
+  {n:"Ice Cutter",cat:"gray",s:0,d:"Harvesting ice from frozen lakes for commercial refrigeration. Replaced by mechanical refrigeration.",r:"The mechanical refrigerator eliminated the entire ice trade industry.",b:"The role no longer exists as a working profession."},
+  {n:"Town Crier",cat:"gray",s:0,d:"Publicly announcing official news and proclamations in communities before mass literacy. Replaced by print and broadcast media.",r:"Print media and later broadcast replaced the need for oral announcement of public information.",b:"The role no longer exists as a working profession."},
+  {n:"Telegraph Operator",cat:"gray",s:0,d:"Transmitting and receiving messages in Morse code via telegraph lines. Replaced by telephone, fax, and digital communication.",r:"The telephone, then fax, then digital messaging replaced telegraph communication entirely.",b:"The role no longer exists as a working profession."},
+  {n:"Film Projectionist",cat:"gray",s:4,d:"Operating mechanical film projectors in movie theaters. Largely replaced by digital projection systems.",r:"Digital cinema replaced film projection in nearly all commercial theaters by 2015.",b:"A small number of theatrical purists maintain film projection for repertory and festival screenings."},
+  {n:"Darkroom Technician",cat:"gray",s:3,d:"Developing and printing photographic film in chemical darkrooms. Replaced by digital photography.",r:"Digital photography eliminated commercial darkroom processing almost entirely.",b:"Niche film photography communities maintain some darkroom practice."},
+  {n:"Video Store Clerk",cat:"gray",s:0,d:"Retail rental of physical video cassettes and DVDs. Replaced by streaming platforms.",r:"Streaming services eliminated the video rental industry.",b:"The role no longer exists as a working profession."},
+  {n:"Directory Assistance Operator",cat:"gray",s:0,d:"Looking up and connecting telephone numbers for callers. Replaced by internet search.",r:"Internet search and smartphone apps eliminated the need for directory assistance operators.",b:"The role no longer exists as a working profession."},
+  {n:"Manual Paste-Up Artist",cat:"gray",s:0,d:"Physically arranging printed type and images for publication layout. Replaced by desktop publishing software.",r:"Desktop publishing software eliminated manual paste-up from commercial printing.",b:"The role no longer exists as a working profession."},
+  {n:"Typesetter",cat:"gray",s:0,d:"Setting type for printing by hand or machine. Replaced by digital typesetting and desktop publishing.",r:"Digital type eliminated the need for manual typesetting.",b:"The role no longer exists as a working profession."},
+  {n:"Keypunch Operator",cat:"gray",s:0,d:"Entering data onto punched cards for mainframe computing. Replaced by keyboards and direct computer input.",r:"The personal computer and keyboard eliminated the need for punched card input.",b:"The role no longer exists as a working profession."},
+  {n:"Human Computer",cat:"gray",s:0,d:"Performing mathematical calculations by hand before electronic computers. Replaced by computing machines.",r:"Electronic computers replaced human mathematical computation entirely.",b:"The role no longer exists as a working profession."},
+  {n:"Linotype Operator",cat:"gray",s:0,d:"Operating Linotype machines to cast metal type for newspaper and book printing. Replaced by digital typesetting.",r:"Desktop publishing and digital typesetting eliminated hot metal type.",b:"The role no longer exists as a working profession."},
+  {n:"One-Hour Photo Clerk",cat:"gray",s:0,d:"Processing photographic film in retail photo labs. Eliminated by digital photography.",r:"Digital cameras eliminated consumer film processing.",b:"The role no longer exists as a working profession."},
+  {n:"CD Store Clerk",cat:"gray",s:2,d:"Retail sales of physical music CDs and merchandise. Largely eliminated by digital music platforms.",r:"Streaming and digital downloads collapsed the physical music retail industry.",b:"A small number of record stores persist serving vinyl and collector markets."},
+  {n:"Fax Machine Operator",cat:"gray",s:0,d:"Operating dedicated fax equipment for document transmission. Replaced by email and digital document transmission.",r:"Email and digital file sharing replaced fax communication in most contexts.",b:"The role no longer exists as a standalone profession."},
+
+  // ── DURABLE SKILLS ───────────────────────────────────────────────────────
+  {n:"Python",cat:"purple",s:null,d:"A foundational programming language for data, automation, AI integration, and scripting across many fields.",r:"AI coding assistants can generate Python code, but understanding it remains essential.",b:"Data science, machine learning integration, automation scripting, API development."},
+  {n:"SQL",cat:"purple",s:null,d:"The core language for querying, analyzing, and managing relational databases. Widely applicable across industries.",r:"AI-assisted query generation is advancing.",b:"Data analysis, business intelligence, database administration, backend development."},
+  {n:"APIs and Integration",cat:"purple",s:null,d:"Understanding how software systems connect and communicate is essential in an automated world.",r:"No-code integration tools are making some API work more accessible.",b:"Backend development, workflow automation, product management, technical consulting."},
+  {n:"Project Management",cat:"purple",s:null,d:"Coordinating people, timelines, and resources toward clear goals is a durable cross-industry skill.",r:"Project management software is advancing.",b:"PMP certification, agile, product management, operations, consulting."},
+  {n:"Prompt Design",cat:"purple",s:null,d:"Knowing how to communicate effectively with AI systems to get useful outputs is a growing practical skill.",r:"As AI interfaces improve, some prompt knowledge becomes embedded in tools.",b:"AI workflow design, content operations, AI integration consulting."},
+  {n:"Excel and Spreadsheet Modeling",cat:"purple",s:null,d:"Advanced spreadsheet skills remain widely applicable in finance, operations, and analysis.",r:"AI-assisted spreadsheet tools are advancing.",b:"Financial modeling, operations analysis, business intelligence, data presentation."},
+  {n:"Workflow Mapping and Documentation",cat:"purple",s:null,d:"Clearly documenting how work gets done is essential for automation, training, and operations improvement.",r:"AI documentation tools are improving.",b:"Operations management, knowledge management, process improvement, consulting."},
+  {n:"Client Communication",cat:"purple",s:null,d:"The ability to translate complex technical or specialist knowledge into clear client-facing communication is broadly durable.",r:"AI tools assist with drafting and summarizing communication.",b:"Sales, consulting, account management, project management, any client-facing role."},
+  {n:"Systems Thinking",cat:"purple",s:null,d:"Understanding how parts of a system interact is a rare and valuable cognitive skill across engineering, operations, and strategy.",r:"No significant automation pressure.",b:"Engineering leadership, organizational design, strategy, consulting."},
+  {n:"Figma and UX Tools",cat:"purple",s:null,d:"Interface design tools used across product, web, and app development remain in demand.",r:"AI design generation is advancing.",b:"UX design, product design, visual design, frontend development."},
+  {n:"Adobe Premiere and DaVinci Resolve",cat:"purple",s:null,d:"Professional video editing tools used across media, marketing, and entertainment production.",r:"AI-assisted editing is advancing.",b:"Video production, documentary, content creation, broadcast, post-production."},
+  {n:"Pro Tools and Logic Pro",cat:"purple",s:null,d:"Industry-standard digital audio workstations for music production, post-production, and broadcast.",r:"AI music generation tools are advancing.",b:"Music production, audio post-production, podcast production, broadcast audio."},
+  {n:"Public Speaking and Teaching",cat:"purple",s:null,d:"The ability to communicate ideas clearly to groups is a durable human skill that commands attention and trust.",r:"AI presentation tools are improving.",b:"Training, consulting, leadership, sales, education, media."},
+  {n:"Data Visualization",cat:"purple",s:null,d:"Translating data into clear visual stories is a valuable skill for analysts, communicators, and executives.",r:"AI-assisted visualization tools are advancing.",b:"Business intelligence, journalism, research, executive communication."},
+  {n:"Cybersecurity Basics",cat:"purple",s:null,d:"Understanding how systems are attacked and defended is increasingly essential across many technical roles.",r:"Security automation is advancing.",b:"Security operations, compliance, IT administration, software engineering."},
+  {n:"Airtable and No-Code Tools",cat:"purple",s:null,d:"Building functional databases and workflows without code enables non-developers to automate operations.",r:"As tools mature, more people will have these skills.",b:"Operations, product management, marketing operations, small business automation."},
+  {n:"Quality Control and Testing",cat:"purple",s:null,d:"The ability to evaluate outputs, catch errors, and maintain standards is broadly applicable and increasingly valuable in AI-assisted workflows.",r:"Automated testing tools are advancing.",b:"QA engineering, content operations, manufacturing, regulatory compliance."},
+  {n:"Grant Writing and Proposal Writing",cat:"purple",s:null,d:"Strategic writing for funding and business development requires human judgment, relationship context, and organizational knowledge.",r:"AI writing assistants are improving.",b:"Nonprofit development, research, government relations, business development."},
+  {n:"Leadership and Team Management",cat:"purple",s:null,d:"The ability to develop people, build teams, and make organizational decisions is a durable human skill.",r:"No significant automation pressure.",b:"Management, executive roles, consulting, entrepreneurship."},
+];
+
+// ── TABS CONFIG ───────────────────────────────────────────────────────────
+const TABS = [
+  { id:'all',   label:'All',               cls:'tab-all'    },
+  { id:'green', label:'Lower Risk',        cls:'tab-green'  },
+  { id:'yellow',label:'Moderate Shift',    cls:'tab-yellow' },
+  { id:'orange',label:'High Disruption',   cls:'tab-orange' },
+  { id:'blue',  label:'Emerging / Rebound',cls:'tab-blue'   },
+  { id:'gray',  label:'Obsolete',          cls:'tab-red'    },
+  { id:'purple',label:'Durable Skills',    cls:'tab-purple' },
+];
+
+const PER_PAGE = 20;
+let currentTab = 'all';
+let currentPage = 1;
+let searchTerm = '';
+
+// Build tabs
+const tabsEl = document.getElementById('tabsEl');
+TABS.forEach(t => {
+  const btn = document.createElement('button');
+  btn.className = 'tab ' + t.cls + (t.id === 'all' ? ' active' : '');
+  btn.textContent = t.label;
+  btn.onclick = () => setTab(t.id, btn);
+  tabsEl.appendChild(btn);
 });
 
-function setTab(tab){
-  currentTab=tab;currentPage=1;
-  document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
-  document.querySelector(".tab-"+tab).classList.add("active");
-  const note=document.getElementById("obsoleteNote");
-  tab==="purple"?note.classList.add("show"):note.classList.remove("show");
+function setTab(id, btn) {
+  currentTab = id;
+  currentPage = 1;
+  document.querySelectorAll('.tabs .tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
   render();
 }
-function changePage(dir){
-  const pages=Math.ceil(DATA[currentTab].length/PER_PAGE);
-  currentPage=Math.max(1,Math.min(pages,currentPage+dir));
+
+function onSearch() {
+  searchTerm = document.getElementById('searchInp').value.toLowerCase().trim();
+  currentPage = 1;
   render();
-  window.scrollTo({top:0,behavior:"smooth"});
 }
-function render(){
-  const careers=DATA[currentTab];
-  const total=careers.length;
-  const pages=Math.ceil(total/PER_PAGE);
-  const start=(currentPage-1)*PER_PAGE;
-  const end=Math.min(start+PER_PAGE,total);
-  const slice=careers.slice(start,end);
-  const bc="badge-"+currentTab;
-  const sc="score-"+currentTab;
-  const isObsolete=currentTab==="purple";
-  document.getElementById("listMeta").textContent="Showing "+(start+1)+"\u2013"+end+" of "+total+" careers \u2014 "+LABELS[currentTab];
-  document.getElementById("careerList").innerHTML=slice.map(c=>{
-    const scoreDisplay=isObsolete?"Gone":c.score;
-    const eraField=isObsolete?`<div class="card-field"><strong>Era</strong>${c.era}</div>`:"";
-    const incomeLabel=isObsolete?"Last Known Income":"Income";
-    return `<div class="career-card${isObsolete?" obsolete-card":""}">
-      <div class="card-top">
-        <div>
-          <div class="card-title">${c.title}${isObsolete?`<span class="era-badge">Obsolete</span>`:""}</div>
-          <span class="badge-cat ${bc}">${LABELS[currentTab]}</span>
-        </div>
-        <div class="score-circle ${sc}" title="${isObsolete?"Fully replaced":"Stability score"}">${scoreDisplay}</div>
-      </div>
-      <div class="card-grid">
-        <div class="card-field"><strong>${incomeLabel}</strong>${c.income}</div>
-        <div class="card-field"><strong>Typical Training</strong>${c.training}</div>
-        ${eraField}
-        <div class="card-field card-full"><strong>What It Was</strong>${c.why}</div>
-        <div class="card-field card-full"><strong>What Replaced It</strong>${c.changing}</div>
-        <div class="card-field card-full"><strong>Related Modern Paths</strong>
-          <div class="related-wrap">${c.related.map(r=>`<span class="related-tag">${r}</span>`).join("")}</div>
-        </div>
-      </div>
-    </div>`;
-  }).join("");
-  document.getElementById("pageInfo").textContent="Page "+currentPage+" of "+pages;
-  document.getElementById("prevBtn").disabled=currentPage===1;
-  document.getElementById("nextBtn").disabled=currentPage===pages;
+
+function getFiltered() {
+  let d = DATA;
+  if (currentTab !== 'all') d = d.filter(x => x.cat === currentTab);
+  if (searchTerm) d = d.filter(x =>
+    x.n.toLowerCase().includes(searchTerm) ||
+    x.d.toLowerCase().includes(searchTerm) ||
+    (x.b && x.b.toLowerCase().includes(searchTerm)) ||
+    CATS[x.cat].label.toLowerCase().includes(searchTerm)
+  );
+  const sort = document.getElementById('sortSel').value;
+  if (sort === 'score-desc') d = [...d].sort((a,b) => (b.s||0)-(a.s||0));
+  else if (sort === 'score-asc') d = [...d].sort((a,b) => (a.s||0)-(b.s||0));
+  else d = [...d].sort((a,b) => a.n.localeCompare(b.n));
+  return d;
 }
-render();
-</script>
-<script>
+
+function scoreClass(cat, s) {
+  if (cat === 'gray') return 'score-gray';
+  if (cat === 'purple') return 'score-purple';
+  if (cat === 'blue') return 'score-blue';
+  if (s >= 75) return 'score-green';
+  if (s >= 50) return 'score-yellow';
+  if (s >= 25) return 'score-orange';
+  return 'score-red';
+}
+
+function render() {
+  const filtered = getFiltered();
+  const total = filtered.length;
+  const pages = Math.max(1, Math.ceil(total / PER_PAGE));
+  currentPage = Math.min(currentPage, pages);
+  const start = (currentPage-1)*PER_PAGE;
+  const slice = filtered.slice(start, start+PER_PAGE);
+
+  document.getElementById('metaEl').textContent =
+    'Showing ' + (total === 0 ? 0 : start+1) + '\u2013' + Math.min(start+PER_PAGE, total) + ' of ' + total + ' entries';
+
+  const listEl = document.getElementById('listEl');
+
+  // Durable Skills tab — special layout
+  if (currentTab === 'purple' && !searchTerm) {
+    const GROUPS = [
+      { title:'Technical', skills:['Python','SQL','JavaScript','TypeScript','HTML/CSS','APIs and Integration','Git/GitHub','Linux basics','Cloud basics','Cybersecurity Basics','Databases','Basic networking','System troubleshooting'] },
+      { title:'Automation', skills:['Zapier','Make / n8n','Airtable and No-Code Tools','Excel and Spreadsheet Modeling','Google Sheets automation','Workflow Mapping and Documentation','Process automation','CRM automation'] },
+      { title:'AI Workflow', skills:['ChatGPT','Claude','NotebookLM','Perplexity','Cursor / GitHub Copilot','Prompt Design','AI evaluation','AI quality checking','AI-assisted research','AI-assisted writing'] },
+      { title:'Data and Reporting', skills:['Power BI','Tableau','Looker Studio','Dashboard building','Data Visualization','Data cleaning','Basic statistics','Spreadsheet modeling'] },
+      { title:'Creative and Media Tech', skills:['Adobe Premiere and DaVinci Resolve','After Effects','Pro Tools and Logic Pro','Ableton Live','OBS / Descript','Figma and UX Tools','Canva','Motion graphics','Color correction','Audio restoration'] },
+      { title:'Human and Business', skills:['Project Management','Client Communication','Systems Thinking','Leadership and Team Management','Public Speaking and Teaching','Grant Writing and Proposal Writing','Quality Control and Testing','Negotiation','Strategic planning','Vendor coordination'] },
+    ];
+    listEl.innerHTML = '<div class="skills-section"><p class="skills-intro">These are not careers by themselves. They are skills, tools, and abilities that can strengthen almost any career path. Building a personal stack of durable skills creates resilience across multiple possible futures.</p><div class="skills-grid">' +
+      GROUPS.map(g => `<div class="skill-group-card"><div class="skill-group-title">${g.title}</div><div class="skill-tags">${g.skills.map(s=>`<span class="skill-tag">${s}</span>`).join('')}</div></div>`).join('') +
+      '</div><br><div class="section-heading" style="font-family:\'Bebas Neue\',sans-serif;font-size:28px;color:var(--text);letter-spacing:1px;margin-bottom:16px;">Individual Skill Cards</div><div class="cards-grid">' +
+      slice.map(c => renderCard(c)).join('') + '</div></div>';
+    renderPagination(pages, total, start);
+    return;
+  }
+
+  if (total === 0) {
+    listEl.innerHTML = '<div class="no-results">No results found. Try a different search or filter.</div>';
+    document.getElementById('paginationEl').innerHTML = '';
+    return;
+  }
+
+  listEl.innerHTML = '<div class="cards-grid">' + slice.map(c => renderCard(c)).join('') + '</div>';
+  renderPagination(pages, total, start);
+}
+
+function renderCard(c) {
+  const cat = CATS[c.cat];
+  const sc = scoreClass(c.cat, c.s);
+  const scoreDisplay = c.s === null ? '—' : (c.cat === 'gray' && c.s === 0 ? '✗' : c.s);
+  return `<div class="career-card" id="card-${c.n.replace(/\s+/g,'_')}">
+    <div class="card-top">
+      <div>
+        <div class="card-name">${c.n}</div>
+        <span class="card-badge ${cat.badge}">${cat.label}</span>
+      </div>
+      ${c.cat !== 'purple' ? `<div class="card-score ${sc}" title="Durability Score">${scoreDisplay}</div>` : `<div class="card-score ${sc}" style="font-size:10px;font-family:'DM Mono',monospace;letter-spacing:1px;">SKILL</div>`}
+    </div>
+    <div class="card-desc">${c.d}</div>
+    ${(c.r || c.b) ? `<button class="card-expand-btn" onclick="toggleDetail(this)">Details ↓</button>
+    <div class="card-detail">
+      ${c.r ? `<div class="detail-label detail-label-risk">Risk Factors</div><div class="detail-text">${c.r}</div>` : ''}
+      ${c.b ? `<div class="detail-label detail-label-boost">Durability Boosters</div><div class="detail-text">${c.b}</div>` : ''}
+    </div>` : ''}
+  </div>`;
+}
+
+function toggleDetail(btn) {
+  const detail = btn.nextElementSibling;
+  const isOpen = detail.classList.toggle('open');
+  btn.textContent = isOpen ? 'Details ↑' : 'Details ↓';
+}
+
+function renderPagination(pages, total, start) {
+  const pEl = document.getElementById('paginationEl');
+  if (pages <= 1) { pEl.innerHTML = ''; return; }
+  pEl.innerHTML = `
+    <button class="page-btn" onclick="changePage(-1)" ${currentPage===1?'disabled':''}>← Previous</button>
+    <span class="page-info">Page ${currentPage} of ${pages}</span>
+    <button class="page-btn" onclick="changePage(1)" ${currentPage===pages?'disabled':''}>Next →</button>`;
+}
+
+function changePage(dir) {
+  const filtered = getFiltered();
+  const pages = Math.ceil(filtered.length / PER_PAGE);
+  currentPage = Math.max(1, Math.min(pages, currentPage + dir));
+  render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
 function toggleDropdown(){document.getElementById('toolsDropdown').classList.toggle('open');}
 function openMobile(){document.getElementById('mobileMenu').classList.add('open');document.body.style.overflow='hidden';}
 function closeMobile(){document.getElementById('mobileMenu').classList.remove('open');document.body.style.overflow='';}
 document.addEventListener('click',function(e){var dd=document.getElementById('toolsDropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open');});
+
+render();
 </script>
 </body>
 </html>

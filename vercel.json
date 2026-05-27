@@ -1,6 +1,14 @@
 {
   "rewrites": [
     {
+      "source": "/military-pathways",
+      "destination": "/military-pathways.html"
+    },
+    {
+      "source": "/api/military-pathways",
+      "destination": "/api/military-pathways.js"
+    },
+    {
       "source": "/how-to-use",
       "destination": "/how-to-use.html"
     },

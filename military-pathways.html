@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico?v=2" sizes="any">
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico?v=2">
+<title>Military-to-Civilian Pathways - Landor's Curve</title>
+<meta name="description" content="Translate military experience into civilian career opportunities using O*NET, BLS, military occupation crosswalks, and AI-assisted career analysis.">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#F0A500;--dark:#050505;--panel:#111118;--panel2:#16161F;--border:rgba(240,165,0,0.15);--text:#E8E8F0;--muted:#888899;--red:#FF4757;--orange:#FF6B35;--yellow:#FFD32A;--green:#2ED573;--blue:#1E90FF;}
+*{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{background:#050505;color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:56px;}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold);letter-spacing:2px;text-decoration:none;display:flex;align-items:center;gap:8px;}
+.nav-logo img{width:22px;height:22px;border-radius:4px;}
+.nav-links{display:flex;align-items:center;gap:2px;}
+.nav-links a{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:4px;transition:all 0.2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);background:rgba(240,165,0,0.08);}
+.nav-dropdown{position:relative;}
+.nav-dropdown-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);background:none;border:none;cursor:pointer;padding:6px 10px;border-radius:4px;transition:all 0.2s;display:flex;align-items:center;gap:4px;}
+.nav-dropdown-btn:hover,.nav-dropdown.open .nav-dropdown-btn{color:var(--gold);background:rgba(240,165,0,0.08);}
+.nav-dropdown-btn svg{width:10px;height:10px;transition:transform 0.2s;}
+.nav-dropdown.open .nav-dropdown-btn svg{transform:rotate(180deg);}
+.nav-dropdown-menu{display:none;position:absolute;top:calc(100% + 8px);left:0;background:var(--panel);border:1px solid var(--border);border-radius:10px;min-width:210px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.5);z-index:200;}
+.nav-dropdown.open .nav-dropdown-menu{display:block;}
+.nav-dropdown-menu a{display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:12px 16px;transition:all 0.15s;border-bottom:1px solid var(--border);}
+.nav-dropdown-menu a:last-child{border-bottom:none;}
+.nav-dropdown-menu a:hover{color:var(--gold);background:rgba(240,165,0,0.06);}
+.nav-dropdown-divider{border-top:1px solid var(--border);margin:4px 0;}
+.nav-hamburger{display:none;background:none;border:none;cursor:pointer;padding:6px;color:var(--gold);align-items:center;}
+.nav-hamburger svg{width:22px;height:22px;}
+.mobile-menu{display:none;position:fixed;inset:0;z-index:999;}
+.mobile-menu.open{display:block;}
+.mobile-menu-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.7);}
+.mobile-menu-panel{position:absolute;top:0;right:0;width:280px;height:100%;background:var(--panel);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;}
+.mobile-menu-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);}
+.mobile-menu-logo{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold);letter-spacing:2px;text-decoration:none;}
+.mobile-menu-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:24px;line-height:1;padding:0;}
+.mobile-menu a{display:block;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:14px 20px;border-bottom:1px solid rgba(240,165,0,0.06);transition:all 0.15s;}
+.mobile-menu a:hover{color:var(--gold);}
+.mobile-menu a.sub{padding-left:32px;font-size:10px;}
+.mobile-menu-section-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);opacity:0.4;padding:12px 20px 4px;}
+@media(max-width:720px){.nav-links{display:none;}.nav-hamburger{display:flex;}}
+
+/* LAYOUT */
+.wrap{max-width:960px;margin:0 auto;padding:0 28px;}
+.eyebrow{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;opacity:0.8;}
+.section-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(26px,3.5vw,38px);color:var(--text);letter-spacing:1px;margin-bottom:10px;line-height:1;}
+.divider{border:none;border-top:1px solid var(--border);margin:0;}
+
+/* HERO */
+.hero{padding:72px 0 52px;}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(38px,6vw,68px);color:var(--text);letter-spacing:2px;line-height:0.95;margin-bottom:16px;}
+.hero-title span{color:var(--gold);}
+.hero-sub{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:1px;color:var(--muted);margin-bottom:22px;line-height:1.7;max-width:620px;}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px;}
+.btn-primary{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:12px 24px;border-radius:8px;background:var(--gold);color:#000;border:none;cursor:pointer;font-weight:600;transition:opacity 0.2s;text-decoration:none;display:inline-block;}
+.btn-primary:hover{opacity:0.85;}
+.btn-secondary{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:12px 24px;border-radius:8px;background:transparent;color:var(--gold);border:1px solid rgba(240,165,0,0.35);cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block;}
+.btn-secondary:hover{background:rgba(240,165,0,0.06);}
+
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:44px;}
+@media(max-width:640px){.stats-row{grid-template-columns:1fr 1fr;}}
+.stat-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px 18px;}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--gold);letter-spacing:1px;line-height:1;}
+.stat-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-top:4px;line-height:1.4;}
+
+/* INPUT FORM */
+.form-section{padding:52px 0;}
+.form-card{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:32px 36px;}
+@media(max-width:600px){.form-card{padding:22px 18px;}}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr;}}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.form-inp,.form-select,.form-textarea{background:#0a0a12;border:1px solid rgba(240,165,0,0.18);border-radius:8px;padding:11px 14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;width:100%;outline:none;transition:border-color 0.2s;}
+.form-inp:focus,.form-select:focus,.form-textarea:focus{border-color:rgba(240,165,0,0.5);}
+.form-select option{background:#0a0a12;}
+.form-textarea{resize:vertical;min-height:100px;line-height:1.6;}
+.form-hint{font-size:11px;color:var(--muted);opacity:0.6;margin-top:2px;}
+.code-type-badge{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;padding:3px 8px;border-radius:4px;background:rgba(240,165,0,0.08);border:1px solid rgba(240,165,0,0.2);color:var(--gold);display:inline-block;margin-top:4px;}
+.or-divider{text-align:center;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);opacity:0.4;padding:12px 0;}
+
+/* DROP ZONE */
+.drop-zone{border:2px dashed rgba(240,165,0,0.2);border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all 0.2s;background:rgba(240,165,0,0.02);}
+.drop-zone:hover,.drop-zone.drag-over{border-color:rgba(240,165,0,0.5);background:rgba(240,165,0,0.04);}
+.drop-zone-text{font-size:13px;color:var(--muted);margin-bottom:8px;}
+.drop-zone-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:7px 16px;border-radius:6px;border:1px solid rgba(240,165,0,0.3);color:var(--gold);background:transparent;cursor:pointer;}
+
+/* LOADING */
+.load-box{display:none;text-align:center;padding:40px 0;}
+.load-box.show{display:block;}
+.load-spinner{width:36px;height:36px;border:3px solid rgba(240,165,0,0.15);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.load-msg{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--muted);}
+
+/* ERROR */
+.err-box{display:none;background:rgba(255,71,87,0.08);border:1px solid rgba(255,71,87,0.25);border-radius:8px;padding:12px 16px;font-size:13px;color:#FF4757;margin-bottom:16px;}
+.err-box.show{display:block;}
+
+/* RESULTS */
+.results-area{display:none;padding:52px 0;}
+.results-area.show{display:block;}
+.result-headline{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,4vw,44px);color:var(--text);letter-spacing:1px;margin-bottom:6px;line-height:1;}
+.result-summary{font-size:14px;color:var(--muted);line-height:1.75;max-width:680px;margin-bottom:32px;}
+
+/* MATCH CARDS */
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+@media(max-width:580px){.match-grid{grid-template-columns:1fr;}}
+.match-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:20px 22px;position:relative;}
+.match-badge{position:absolute;top:16px;right:16px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:4px;}
+.badge-high{background:rgba(46,213,115,0.1);color:var(--green);border:1px solid rgba(46,213,115,0.25);}
+.badge-med-high{background:rgba(240,165,0,0.08);color:var(--gold);border:1px solid rgba(240,165,0,0.2);}
+.badge-med{background:rgba(30,144,255,0.08);color:var(--blue);border:1px solid rgba(30,144,255,0.2);}
+.match-soc{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--muted);margin-bottom:4px;opacity:0.6;}
+.match-title{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--text);letter-spacing:1px;margin-bottom:8px;padding-right:80px;}
+.match-why{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:14px;}
+.match-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding-top:12px;border-top:1px solid var(--border);}
+.match-stat-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);opacity:0.5;margin-bottom:2px;}
+.match-stat-val{font-size:13px;color:var(--text);font-weight:500;}
+.future-score{font-family:'DM Mono',monospace;font-size:18px;font-weight:700;}
+.score-hi{color:var(--green);}
+.score-med{color:var(--gold);}
+.score-lo{color:var(--red);}
+
+/* SKILLS / GAPS / STEPS */
+.tags-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.skill-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:5px 10px;border-radius:5px;background:rgba(240,165,0,0.06);border:1px solid rgba(240,165,0,0.15);color:var(--muted);}
+.gap-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:10px;}
+.gap-name{font-size:14px;color:var(--text);font-weight:500;margin-bottom:6px;}
+.gap-meta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:6px;}
+.gap-pill{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;padding:2px 8px;border-radius:3px;}
+.pill-high{background:rgba(255,71,87,0.08);color:var(--red);border:1px solid rgba(255,71,87,0.2);}
+.pill-med{background:rgba(240,165,0,0.08);color:var(--gold);border:1px solid rgba(240,165,0,0.2);}
+.pill-low{background:rgba(136,136,153,0.08);color:var(--muted);border:1px solid rgba(136,136,153,0.2);}
+.gap-why{font-size:12px;color:var(--muted);line-height:1.6;}
+.gap-detail{font-size:11px;color:var(--muted);opacity:0.65;margin-top:4px;}
+.resume-suggestion{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:10px;font-size:13px;color:var(--muted);line-height:1.65;}
+.resume-suggestion strong{color:var(--text);}
+.step-item{display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-bottom:1px solid rgba(240,165,0,0.06);}
+.step-item:last-child{border-bottom:none;}
+.step-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);flex-shrink:0;margin-top:1px;opacity:0.7;}
+.step-text{font-size:13px;color:var(--text);line-height:1.65;}
+.future-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:10px;}
+.future-title{font-size:15px;color:var(--text);font-weight:500;margin-bottom:6px;}
+.future-rationale{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:8px;}
+
+/* SECTION CARDS */
+.result-section{margin-bottom:36px;}
+.result-section-title{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--text);letter-spacing:1px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.result-section-icon{font-size:18px;}
+.result-panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:20px 24px;}
+
+/* RESUME STUDIO HANDOFF */
+.handoff-card{background:rgba(240,165,0,0.04);border:1px solid rgba(240,165,0,0.2);border-radius:14px;padding:24px 28px;margin-top:32px;}
+.handoff-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.handoff-title{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--text);letter-spacing:1px;margin-bottom:8px;}
+.handoff-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px;}
+.handoff-btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+
+/* CODE EXPLORER */
+.explorer-section{padding:52px 0;}
+.code-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:16px;}
+@media(max-width:640px){.code-grid{grid-template-columns:1fr 1fr;}}
+.code-chip{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:12px 14px;cursor:pointer;transition:all 0.18s;}
+.code-chip:hover{border-color:rgba(240,165,0,0.35);background:rgba(240,165,0,0.04);}
+.code-chip.selected{border-color:var(--gold);background:rgba(240,165,0,0.07);}
+.chip-code{font-family:'DM Mono',monospace;font-size:13px;color:var(--gold);margin-bottom:2px;}
+.chip-title{font-size:11px;color:var(--muted);line-height:1.4;}
+.chip-branch{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);opacity:0.5;margin-top:2px;}
+
+/* SOURCES */
+.sources-section{background:var(--panel);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:40px 0;margin-top:52px;}
+.sources-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px;}
+@media(max-width:620px){.sources-grid{grid-template-columns:1fr 1fr;}}
+.source-badge{background:rgba(240,165,0,0.04);border:1px solid var(--border);border-radius:8px;padding:10px 12px;text-align:center;}
+.source-name{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:2px;}
+.source-desc{font-size:10px;color:var(--muted);}
+
+/* FOOTER */
+.page-disclaimer{border-top:1px solid rgba(240,165,0,0.1);padding:20px 28px 28px;}
+.page-disclaimer-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.page-disclaimer-text{font-family:'DM Mono',monospace;font-size:10px;color:#555566;line-height:1.7;letter-spacing:0.5px;flex:1;min-width:200px;}
+.page-disclaimer-link{font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);text-decoration:none;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="nav-logo"><img src="/favicon.ico?v=2" alt="LC">Landor's Curve</a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/how-to-use">How to Use</a>
+    <div class="nav-dropdown" id="toolsDropdown">
+      <button class="nav-dropdown-btn" onclick="toggleDropdown()">Tools
+        <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+      <div class="nav-dropdown-menu">
+        <a href="/#analyzer">Analyzer</a>
+        <a href="/pivot">Career Assessment</a>
+        <a href="/study">Roadmap</a>
+        <a href="/target-resume">Resume</a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="/rebound">Rebound Radar</a>
+        <a href="/safe-list">Safe Careers List</a>
+        <a href="/military-pathways" class="active">Military Pathways</a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" style="opacity:0.7;">PathDecider ↗</a>
+      </div>
+    </div>
+    <a href="/pricing">Pricing</a>
+    <a href="/sources">Sources</a>
+    <a href="/about">About</a>
+  </div>
+  <button class="nav-hamburger" onclick="openMobile()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-overlay" onclick="closeMobile()"></div>
+  <div class="mobile-menu-panel">
+    <div class="mobile-menu-header">
+      <a href="/" class="mobile-menu-logo" onclick="closeMobile()">Landor's Curve</a>
+      <button class="mobile-menu-close" onclick="closeMobile()">&#215;</button>
+    </div>
+    <a href="/" onclick="closeMobile()">Home</a>
+    <a href="/how-to-use" onclick="closeMobile()">How to Use</a>
+    <div class="mobile-menu-section-label">Tools</div>
+    <a href="/#analyzer" class="sub" onclick="closeMobile()">Analyzer</a>
+    <a href="/pivot" class="sub" onclick="closeMobile()">Career Assessment</a>
+    <a href="/study" class="sub" onclick="closeMobile()">Roadmap</a>
+    <a href="/target-resume" class="sub" onclick="closeMobile()">Resume</a>
+    <a href="/rebound" class="sub" onclick="closeMobile()">Rebound Radar</a>
+    <a href="/safe-list" class="sub" onclick="closeMobile()">Safe Careers List</a>
+    <a href="/military-pathways" class="sub" onclick="closeMobile()">Military Pathways</a>
+    <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" class="sub" onclick="closeMobile()" style="opacity:0.6;">PathDecider ↗</a>
+    <a href="/pricing" onclick="closeMobile()">Pricing</a>
+    <a href="/sources" onclick="closeMobile()">Sources</a>
+    <a href="/about" onclick="closeMobile()">About</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="wrap">
+  <div class="hero">
+    <div class="eyebrow">Military-to-Civilian Pathways</div>
+    <h1 class="hero-title">Your Service<br><span>Has a Civilian Value.</span></h1>
+    <p class="hero-sub">Turn MOS, AFSC, NEC, Ratings, and SFSC codes into realistic civilian career pathways, resume language, credential gaps, and future-ready job options using O*NET, BLS, military occupation crosswalks, and AI-assisted career analysis.</p>
+    <div class="hero-btns">
+      <a href="#analyze" class="btn-primary">Analyze Military Experience</a>
+      <a href="#explore" class="btn-secondary">Explore Military Code Translator</a>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num">200K+</div>
+        <div class="stat-label">Veterans transition annually</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">1,100+</div>
+        <div class="stat-label">Military occupation codes</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">1,000+</div>
+        <div class="stat-label">O*NET civilian occupations</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">$0</div>
+        <div class="stat-label">Cost to analyze</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- INPUT FORM -->
+<div class="wrap form-section" id="analyze">
+  <div class="eyebrow">Step 1</div>
+  <div class="section-heading">Enter Your Military Background</div>
+  <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:24px;max-width:560px;">Enter your military occupation code or describe your background. The more detail you provide, the more specific the output will be.</p>
+
+  <div class="err-box" id="errBox"></div>
+
+  <div class="form-card">
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">Branch of Service</label>
+        <select class="form-select" id="branchSel" onchange="updateCodeLabel()">
+          <option value="">Select branch...</option>
+          <option>Army</option>
+          <option>Navy</option>
+          <option>Marine Corps</option>
+          <option>Air Force</option>
+          <option>Space Force</option>
+          <option>Coast Guard</option>
+          <option>National Guard</option>
+          <option>Reserves</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Military Occupation Code <span id="codeTypeLabel" style="opacity:0.5;">(MOS / AFSC / NEC / Rating / SFSC)</span></label>
+        <input class="form-inp" id="codeInp" type="text" placeholder="e.g. 11B, 6F0X1, HM, IT...">
+        <div id="codeTypeBadge" class="code-type-badge" style="display:none;"></div>
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">Military Job Title</label>
+        <input class="form-inp" id="titleInp" type="text" placeholder="e.g. Infantry Officer, IT Specialist, Hospital Corpsman...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Rank / Leadership Level</label>
+        <input class="form-inp" id="rankInp" type="text" placeholder="e.g. E-5, O-3, SSG, CPT, PO2...">
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">Years of Experience</label>
+        <select class="form-select" id="yearsInp">
+          <option value="">Select...</option>
+          <option>Less than 2 years</option>
+          <option>2-4 years</option>
+          <option>5-9 years</option>
+          <option>10-14 years</option>
+          <option>15-19 years</option>
+          <option>20+ years</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Security Clearance <span style="opacity:0.4;">(optional)</span></label>
+        <select class="form-select" id="clearanceInp">
+          <option value="">None / Not applicable</option>
+          <option>Confidential</option>
+          <option>Secret</option>
+          <option>Top Secret</option>
+          <option>Top Secret / SCI</option>
+          <option>Top Secret / SAP</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:16px;">
+      <label class="form-label">Certifications / Specialized Training <span style="opacity:0.4;">(optional)</span></label>
+      <input class="form-inp" id="certsInp" type="text" placeholder="e.g. EMT-B, CompTIA Security+, PMP, Airborne, Ranger...">
+    </div>
+
+    <div class="or-divider">Optional: Add Your Background or Upload Resume</div>
+
+    <input type="file" id="resumeFileInp" accept=".pdf,.doc,.docx" style="display:none;" onchange="handleResumeFile(this.files[0])">
+    <label for="resumeFileInp" class="drop-zone" id="dropZone"
+           ondragover="event.preventDefault();this.classList.add('drag-over')"
+           ondragleave="this.classList.remove('drag-over')"
+           ondrop="event.preventDefault();this.classList.remove('drag-over');handleResumeFile(event.dataTransfer.files[0])">
+      <div class="drop-zone-text">Drop your resume here or click to upload. PDF or Word documents supported. Never stored or shared.</div>
+      <span class="drop-zone-btn">Choose File</span>
+    </label>
+
+    <div class="or-divider">or paste your background below</div>
+
+    <div class="form-group" style="margin-bottom:20px;">
+      <label class="form-label">Background / Resume Text <span style="opacity:0.4;">(optional)</span></label>
+      <textarea class="form-textarea" id="bgTextarea" placeholder="Paste your resume, describe your military experience, or list key responsibilities and accomplishments..." style="min-height:120px;"></textarea>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+      <button class="btn-primary" onclick="runAnalysis()">Analyze Military Experience</button>
+      <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);opacity:0.5;">Results appear below in 10-20 seconds</span>
+    </div>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div class="wrap">
+  <div class="load-box" id="loadBox">
+    <div class="load-spinner"></div>
+    <div class="load-msg" id="loadMsg">Analyzing your military background...</div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div class="wrap results-area" id="resultsArea">
+
+  <div class="eyebrow">Your Pathway Analysis</div>
+  <div class="result-headline" id="resultHeadline">-</div>
+  <div class="result-summary" id="resultSummary">-</div>
+
+  <hr class="divider" style="margin-bottom:32px;">
+
+  <!-- BEST CIVILIAN MATCHES -->
+  <div class="result-section">
+    <div class="result-section-title"><span class="result-section-icon">🎯</span>Best Civilian Matches</div>
+    <div class="match-grid" id="matchesEl"></div>
+  </div>
+
+  <!-- TRANSFERABLE SKILLS -->
+  <div class="result-section">
+    <div class="result-section-title"><span class="result-section-icon">⚡</span>Transferable Skills</div>
+    <div class="result-panel">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">These are skills from your military background that translate directly to civilian roles. Use this language in your resume and interviews.</p>
+      <div class="tags-wrap" id="skillsEl"></div>
+    </div>
+  </div>
+
+  <!-- RESUME TRANSLATION -->
+  <div class="result-section">
+    <div class="result-section-title"><span class="result-section-icon">📝</span>Resume Translation Suggestions</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Specific rewrites to turn military language into civilian resume language that hiring managers will understand.</p>
+    <div id="resumeSuggestionsEl"></div>
+  </div>
+
+  <!-- CREDENTIAL GAPS -->
+  <div class="result-section">
+    <div class="result-section-title"><span class="result-section-icon">📌</span>Credential Gap Finder</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Certifications and credentials that would strengthen your civilian transition.</p>
+    <div id="credentialGapsEl"></div>
+  </div>
+
+  <!-- FUTURE-PROOF OPTIONS -->
+  <div class="result-section">
+    <div class="result-section-title"><span class="result-section-icon">🔭</span>Future-Proof Career Options</div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Emerging or longer-term roles that build on your military background and are more resistant to automation and market shifts.</p>
+    <div id="futureOptionsEl"></div>
+  </div>
+
+  <!-- SALARY / OUTLOOK SNAPSHOT -->
+  <div class="result-section">
+    <div class="result-section-title"><span class="result-section-icon">📊</span>Salary and Outlook Snapshot</div>
+    <div class="result-panel" id="salaryEl"></div>
+  </div>
+
+  <!-- REGIONAL NOTE -->
+  <div class="result-section">
+    <div class="result-section-title"><span class="result-section-icon">📍</span>Regional Opportunities</div>
+    <div class="result-panel">
+      <p class="gap-why" id="regionalEl">-</p>
+    </div>
+  </div>
+
+  <!-- NEXT STEPS -->
+  <div class="result-section">
+    <div class="result-section-title"><span class="result-section-icon">✅</span>Recommended Next Steps</div>
+    <div class="result-panel">
+      <div id="nextStepsEl"></div>
+    </div>
+  </div>
+
+  <!-- RESUME STUDIO HANDOFF -->
+  <div class="handoff-card">
+    <div class="handoff-label">Next Step</div>
+    <div class="handoff-title">Send This Analysis to Resume Studio</div>
+    <div class="handoff-desc">Resume Studio will use your military background translation to rewrite your resume in civilian language, target a specific job posting, or build a future-facing resume draft without overclaiming experience you do not yet have.</div>
+    <div class="handoff-btns">
+      <button class="btn-primary" onclick="sendToResumeStudio()">Open Resume Studio</button>
+      <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);opacity:0.6;">Opens in a new tab so your analysis stays open.</span>
+    </div>
+  </div>
+
+</div>
+
+<hr class="divider">
+
+<!-- CODE EXPLORER -->
+<div class="wrap explorer-section" id="explore">
+  <div class="eyebrow">Code Translator</div>
+  <div class="section-heading">Military Code Examples</div>
+  <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px;max-width:540px;">Select a sample occupation code to see how the translation works. Then enter your own code above for a personalized analysis.</p>
+  <div class="code-grid" id="codeExplorerGrid"></div>
+  <div id="explorerDetail" style="margin-top:20px;display:none;"></div>
+</div>
+
+<!-- SOURCES -->
+<div class="sources-section">
+  <div class="wrap">
+    <div class="eyebrow">Sources and Methodology</div>
+    <div class="section-heading" style="margin-bottom:12px;">How This Tool Works</div>
+    <p style="font-size:14px;color:var(--muted);line-height:1.75;max-width:680px;margin-bottom:20px;">Military-to-Civilian Pathways is designed to synthesize publicly available workforce and military occupation data. It uses O*NET occupational crosswalks, BLS labor market projections, SOC classification standards, and published military occupation data to map military experience to civilian career options. Landor's Curve adds its own AI-assisted interpretation, skill transfer analysis, and pathway weighting. This tool does not represent or replace official guidance from O*NET, BLS, the Department of Defense, DMDC, or any government agency. Results are directional estimates.</p>
+    <div class="sources-grid">
+      <div class="source-badge"><div class="source-name">O*NET</div><div class="source-desc">Occupational skills and crosswalks</div></div>
+      <div class="source-badge"><div class="source-name">BLS</div><div class="source-desc">Salary and job outlook data</div></div>
+      <div class="source-badge"><div class="source-name">SOC Codes</div><div class="source-desc">Occupational classification</div></div>
+      <div class="source-badge"><div class="source-name">AI Analysis</div><div class="source-desc">Pathway interpretation and weighting</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="page-disclaimer">
+  <div class="page-disclaimer-inner">
+    <span class="page-disclaimer-text">Military-to-Civilian Pathways. Results are directional estimates based on publicly available workforce data. Not official government guidance. Salary and outlook figures sourced from BLS.</span>
+    <a href="/sources" class="page-disclaimer-link">Sources →</a>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script>
+if(typeof pdfjsLib!=='undefined'){pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';}
+
+// ── STATE ─────────────────────────────────────────────────────────────────
+let lastResult = null;
+let extractedResume = '';
+
+const CODE_TYPES = {
+  'Army': 'MOS', 'Navy': 'NEC / Rating', 'Marine Corps': 'MOS',
+  'Air Force': 'AFSC', 'Space Force': 'SFSC', 'Coast Guard': 'Rating',
+  'National Guard': 'MOS', 'Reserves': 'MOS / NEC / AFSC'
+};
+
+const LOAD_MSGS = [
+  'Analyzing your military background...',
+  'Mapping to O*NET civilian occupations...',
+  'Identifying transferable skills...',
+  'Calculating credential gaps...',
+  'Building your pathway report...',
+];
+
+// ── NAV ───────────────────────────────────────────────────────────────────
+function toggleDropdown(){document.getElementById('toolsDropdown').classList.toggle('open');}
+function openMobile(){document.getElementById('mobileMenu').classList.add('open');document.body.style.overflow='hidden';}
+function closeMobile(){document.getElementById('mobileMenu').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('click',function(e){var dd=document.getElementById('toolsDropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open');});
+
+// ── CODE LABEL ────────────────────────────────────────────────────────────
+function updateCodeLabel() {
+  var branch = document.getElementById('branchSel').value;
+  var badge = document.getElementById('codeTypeBadge');
+  var label = document.getElementById('codeTypeLabel');
+  if (branch && CODE_TYPES[branch]) {
+    badge.textContent = CODE_TYPES[branch];
+    badge.style.display = 'inline-block';
+    label.textContent = CODE_TYPES[branch];
+  } else {
+    badge.style.display = 'none';
+    label.textContent = '(MOS / AFSC / NEC / Rating / SFSC)';
+  }
+}
+
+// ── FILE UPLOAD ───────────────────────────────────────────────────────────
+async function handleResumeFile(file) {
+  if (!file) return;
+  var name = file.name.toLowerCase();
+  try {
+    var text = '';
+    if (name.endsWith('.pdf')) {
+      var ab = await file.arrayBuffer();
+      var pdf = await pdfjsLib.getDocument({data: ab}).promise;
+      var pages = [];
+      for (var i = 1; i <= Math.min(pdf.numPages, 8); i++) {
+        var page = await pdf.getPage(i);
+        var content = await page.getTextContent();
+        pages.push(content.items.map(function(s){return s.str;}).join(' '));
+      }
+      text = pages.join('\n');
+    } else if (name.endsWith('.docx') || name.endsWith('.doc')) {
+      var ab2 = await file.arrayBuffer();
+      var result = await mammoth.extractRawText({arrayBuffer: ab2});
+      text = result.value;
+    }
+    if (text.trim().length > 20) {
+      extractedResume = text;
+      document.getElementById('bgTextarea').value = text.slice(0, 4000);
+      document.getElementById('dropZone').style.display = 'none';
+      showSuccess('Resume loaded. Review below before analyzing.');
+    }
+  } catch(e) {
+    showErr('Could not read this file. Try a Word document or paste your background below.');
+  }
+}
+
+// ── ANALYSIS ──────────────────────────────────────────────────────────────
+async function runAnalysis() {
+  var branch = document.getElementById('branchSel').value;
+  var code = document.getElementById('codeInp').value.trim();
+  var title = document.getElementById('titleInp').value.trim();
+  var rank = document.getElementById('rankInp').value.trim();
+  var years = document.getElementById('yearsInp').value;
+  var certs = document.getElementById('certsInp').value.trim();
+  var clearance = document.getElementById('clearanceInp').value;
+  var bg = document.getElementById('bgTextarea').value.trim();
+  var resume = extractedResume || bg;
+
+  if (!branch && !code && !title && !resume) {
+    showErr('Please enter at least your branch and occupation code, or describe your military background below.');
+    return;
+  }
+
+  clearErr();
+  document.getElementById('loadBox').classList.add('show');
+  document.getElementById('resultsArea').classList.remove('show');
+
+  // Cycle loading messages
+  var msgIdx = 0;
+  var msgEl = document.getElementById('loadMsg');
+  var msgInt = setInterval(function(){
+    msgIdx = (msgIdx + 1) % LOAD_MSGS.length;
+    msgEl.textContent = LOAD_MSGS[msgIdx];
+  }, 2800);
+
+  try {
+    var res = await fetch('/api/military-pathways', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        branch, code, militaryTitle: title, rank,
+        yearsExp: years, certifications: certs,
+        clearance: clearance || undefined,
+        resumeText: resume.slice(0, 6000),
+        background: bg.slice(0, 3000)
+      })
+    });
+    var data = await res.json();
+    clearInterval(msgInt);
+    document.getElementById('loadBox').classList.remove('show');
+    if (!res.ok || data.error) {
+      showErr(data.error || 'Analysis failed. Please try again.');
+      return;
+    }
+    lastResult = data;
+    renderResults(data);
+  } catch(e) {
+    clearInterval(msgInt);
+    document.getElementById('loadBox').classList.remove('show');
+    showErr('Could not reach the analysis service. Please try again.');
+  }
+}
+
+// ── RENDER RESULTS ────────────────────────────────────────────────────────
+function renderResults(r) {
+  document.getElementById('resultHeadline').textContent = r.headline || 'Your Civilian Pathway';
+  document.getElementById('resultSummary').textContent = r.summary || '';
+
+  // Civilian matches
+  var matchesEl = document.getElementById('matchesEl');
+  matchesEl.innerHTML = (r.civilianMatches || []).map(function(m) {
+    var scoreClass = m.futureProofScore >= 80 ? 'score-hi' : m.futureProofScore >= 60 ? 'score-med' : 'score-lo';
+    var badgeClass = m.matchStrength === 'High' ? 'badge-high' :
+                     m.matchStrength === 'Medium-High' ? 'badge-med-high' : 'badge-med';
+    var salary = m.bls && m.bls.medianSalary ? '$' + m.bls.medianSalary.toLocaleString() : 'See BLS';
+    var outlook = m.bls && m.bls.jobOutlook ? m.bls.jobOutlook : 'See BLS';
+    return '<div class="match-card">'
+      + '<span class="match-badge ' + badgeClass + '">' + (m.matchStrength || '') + '</span>'
+      + '<div class="match-soc">' + (m.socCode || '') + '</div>'
+      + '<div class="match-title">' + m.title + '</div>'
+      + '<div class="match-why">' + (m.whyItFits || '') + '</div>'
+      + '<div class="match-stats">'
+      + '<div><div class="match-stat-label">Median Salary</div><div class="match-stat-val">' + salary + '</div></div>'
+      + '<div><div class="match-stat-label">Job Outlook</div><div class="match-stat-val">' + outlook + '</div></div>'
+      + '<div><div class="match-stat-label">Future Score</div><div class="match-stat-val future-score ' + scoreClass + '">' + (m.futureProofScore || '-') + '</div></div>'
+      + '</div></div>';
+  }).join('');
+
+  // Transferable skills
+  document.getElementById('skillsEl').innerHTML = (r.transferableSkills || []).map(function(s) {
+    return '<span class="skill-tag">' + s + '</span>';
+  }).join('');
+
+  // Resume suggestions
+  document.getElementById('resumeSuggestionsEl').innerHTML = (r.resumeSuggestions || []).map(function(s) {
+    var parts = s.split(/Replace |with /i);
+    if (parts.length >= 2) {
+      return '<div class="resume-suggestion">' + s + '</div>';
+    }
+    return '<div class="resume-suggestion">' + s + '</div>';
+  }).join('');
+
+  // Credential gaps
+  document.getElementById('credentialGapsEl').innerHTML = (r.credentialGaps || []).map(function(g) {
+    var pillClass = g.priority === 'High' ? 'pill-high' : g.priority === 'Medium' ? 'pill-med' : 'pill-low';
+    return '<div class="gap-card">'
+      + '<div class="gap-name">' + g.gap + '</div>'
+      + '<div class="gap-meta">'
+      + '<span class="gap-pill ' + pillClass + '">' + (g.priority || '') + ' priority</span>'
+      + (g.timeToComplete ? '<span class="gap-pill pill-low">' + g.timeToComplete + '</span>' : '')
+      + (g.cost ? '<span class="gap-pill pill-low">' + g.cost + '</span>' : '')
+      + '</div>'
+      + '<div class="gap-why">' + (g.why || '') + '</div>'
+      + '</div>';
+  }).join('');
+
+  // Future-proof options
+  document.getElementById('futureOptionsEl').innerHTML = (r.futureProofOptions || []).map(function(f) {
+    var blocks = (f.buildingBlocks || []).map(function(b){ return '<span class="skill-tag">' + b + '</span>'; }).join('');
+    return '<div class="future-card">'
+      + '<div class="future-title">' + f.title + '</div>'
+      + '<div class="future-rationale">' + (f.rationale || '') + '</div>'
+      + (blocks ? '<div class="tags-wrap">' + blocks + '</div>' : '')
+      + '</div>';
+  }).join('');
+
+  // Salary snapshot
+  var topMatches = (r.civilianMatches || []).slice(0, 3);
+  document.getElementById('salaryEl').innerHTML = topMatches.map(function(m) {
+    if (!m.bls) return '';
+    return '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">'
+      + '<div style="font-size:13px;color:var(--text);">' + m.title + '</div>'
+      + '<div style="text-align:right;">'
+      + '<div style="font-family:\'DM Mono\',monospace;font-size:13px;color:var(--gold);">' + (m.bls.medianSalary ? '$' + m.bls.medianSalary.toLocaleString() : 'See BLS') + '</div>'
+      + '<div style="font-size:10px;color:var(--muted);margin-top:2px;">' + (m.bls.jobOutlook || '') + '</div>'
+      + '</div></div>';
+  }).join('') + '<p style="font-size:10px;color:var(--muted);opacity:0.5;margin-top:10px;">Source: U.S. Bureau of Labor Statistics. Figures are national medians and may vary by region, employer, and experience level.</p>';
+
+  // Regional note
+  document.getElementById('regionalEl').textContent = r.regionalNote || 'Regional demand varies by occupation. Consult BLS state and area data for local figures.';
+
+  // Next steps
+  document.getElementById('nextStepsEl').innerHTML = (r.nextSteps || []).map(function(s, i) {
+    return '<div class="step-item"><span class="step-num">0' + (i+1) + '</span><span class="step-text">' + s + '</span></div>';
+  }).join('');
+
+  document.getElementById('resultsArea').classList.add('show');
+  document.getElementById('resultsArea').scrollIntoView({behavior: 'smooth', block: 'start'});
+}
+
+// ── RESUME STUDIO HANDOFF ─────────────────────────────────────────────────
+function sendToResumeStudio() {
+  var r = lastResult || {};
+  var branch = document.getElementById('branchSel').value;
+  var code = document.getElementById('codeInp').value.trim();
+  var resumeText = r.resumeHandoffSummary || extractedResume || document.getElementById('bgTextarea').value.trim() || '';
+
+  // Build enriched background text
+  var skillsList = (r.transferableSkills || []).map(function(s){ return '- ' + s; }).join('\n');
+  var background = [
+    'MILITARY-TO-CIVILIAN PATHWAY ANALYSIS',
+    '',
+    branch ? 'Branch: ' + branch : '',
+    code ? 'Occupation Code: ' + code : '',
+    '',
+    r.headline || '',
+    '',
+    r.summary || '',
+    '',
+    'Transferable Skills:',
+    skillsList,
+    '',
+    'Background:',
+    resumeText.slice(0, 4000)
+  ].filter(Boolean).join('\n');
+
+  try {
+    localStorage.setItem('resumeStudioHandoff', JSON.stringify({
+      mode: 'target',
+      resumeText: background.slice(0, 12000),
+      topRole: r.civilianMatches && r.civilianMatches[0] ? r.civilianMatches[0].title : '',
+      source: 'military-pathways',
+      exportedAt: Date.now()
+    }));
+  } catch(e) {}
+
+  window.open('/target-resume?mode=target-job', '_blank', 'noopener,noreferrer');
+}
+
+// ── CODE EXPLORER ─────────────────────────────────────────────────────────
+var SAMPLE_CODES = [
+  {code:'11A', branch:'Army', type:'MOS', title:'Infantry Officer'},
+  {code:'25B', branch:'Army', type:'MOS', title:'IT Specialist'},
+  {code:'68W', branch:'Army', type:'MOS', title:'Combat Medic'},
+  {code:'6F0X1', branch:'Air Force', type:'AFSC', title:'Services Specialist'},
+  {code:'HM', branch:'Navy', type:'Rating', title:'Hospital Corpsman'},
+  {code:'IT', branch:'Navy', type:'Rating', title:'Information Systems Tech'},
+];
+
+(function buildExplorer() {
+  var grid = document.getElementById('codeExplorerGrid');
+  grid.innerHTML = SAMPLE_CODES.map(function(c, i) {
+    return '<div class="code-chip" onclick="loadSampleCode(' + i + ')">'
+      + '<div class="chip-code">' + c.code + '</div>'
+      + '<div class="chip-title">' + c.title + '</div>'
+      + '<div class="chip-branch">' + c.branch + ' / ' + c.type + '</div>'
+      + '</div>';
+  }).join('');
+})();
+
+function loadSampleCode(idx) {
+  var sample = SAMPLE_CODES[idx];
+  document.querySelectorAll('.code-chip').forEach(function(c){ c.classList.remove('selected'); });
+  document.querySelectorAll('.code-chip')[idx].classList.add('selected');
+  // Pre-fill the form
+  document.getElementById('branchSel').value = sample.branch;
+  document.getElementById('codeInp').value = sample.code;
+  document.getElementById('titleInp').value = sample.title;
+  updateCodeLabel();
+  // Scroll to form
+  document.getElementById('analyze').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// ── UTILITIES ─────────────────────────────────────────────────────────────
+function showErr(msg) {
+  var el = document.getElementById('errBox');
+  el.textContent = msg;
+  el.classList.add('show');
+}
+function clearErr() {
+  document.getElementById('errBox').classList.remove('show');
+}
+function showSuccess(msg) {
+  var el = document.getElementById('dropZone');
+  el.innerHTML = '<div style="font-size:13px;color:var(--green);">Resume loaded. ' + msg + '</div>';
+}
+</script>
+</body>
+</html>

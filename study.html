@@ -319,6 +319,7 @@ input[type=file]#pivotFile{display:none;}
         <div class="nav-dropdown-divider"></div>
         <a href="/rebound">Rebound Radar</a>
         <a href="/safe-list">Safe Careers List</a>
+        <a href="/military-pathways">Military Pathways</a>
         <div class="nav-dropdown-divider"></div>
         <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" style="opacity:0.7;">PathDecider ↗</a>
       </div>
@@ -347,6 +348,7 @@ input[type=file]#pivotFile{display:none;}
     <a href="/target-resume" class="sub" onclick="closeMobile()">Resume</a>
     <a href="/rebound" class="sub" onclick="closeMobile()">Rebound Radar</a>
     <a href="/safe-list" class="sub" onclick="closeMobile()">Safe Careers List</a>
+    <a href="/military-pathways" class="sub" onclick="closeMobile()">Military Pathways</a>
     <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" class="sub" onclick="closeMobile()" style="opacity:0.6;">PathDecider ↗</a>
     <a href="/pricing" onclick="closeMobile()">Pricing</a>
     <a href="/sources" onclick="closeMobile()">Sources</a>
@@ -415,7 +417,7 @@ input[type=file]#pivotFile{display:none;}
 
   <!-- STEP 2: CHOOSE YOUR ROADMAP TYPE -->
   <div class="mode-wrap">
-    <div class="mode-label">Step 2: Choose Your Roadmap Type</div>
+    <div class="mode-label">Step 1: Choose Your Roadmap Type</div>
     <div class="mode-grid">
       <div class="mode-card mode-cm" id="modeCM" onclick="setMode('cm')">
         <div class="mode-card-icon">🎯</div>
@@ -641,6 +643,7 @@ const LP_MSGS = [
 ];
 
 function setMode(mode) {
+  if (mode === currentMode) return;
   currentMode = mode;
   document.getElementById('modeCM').classList.toggle('selected-cm', mode==='cm');
   document.getElementById('modeLP').classList.toggle('selected-lp', mode==='lp');
@@ -648,6 +651,13 @@ function setMode(mode) {
   document.getElementById('lpFields').classList.toggle('show', mode==='lp');
   document.getElementById('noModeMsg').style.display = mode ? 'none' : 'block';
   document.getElementById('buildBtn').textContent = mode==='cm' ? 'FIND MY PATHS' : 'BUILD MY SKILL PLAN';
+  // Hide old results and dim button so user knows to re-run
+  document.getElementById('cmResults').style.display = 'none';
+  document.getElementById('lpResults').style.display = 'none';
+  var btn = document.getElementById('buildBtn');
+  btn.style.opacity = '0.45';
+  btn.style.filter = 'grayscale(0.4)';
+  btn.title = 'Click to generate your ' + (mode==='cm' ? 'job paths' : 'skill plan');
 }
 
 function selChip(btn, group) {
@@ -1176,11 +1186,11 @@ function showReboundImport(p) {
   card.className = 'rebound-import-card';
   card.id = 'reboundImportCard';
   var learnList = (p.learn || []).slice(0, 4).map(function(l){ return l.skill || l; }).join(', ');
-  card.innerHTML = `<div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#1e90ff;margin-bottom:6px;">Imported from Rebound Radar</div>`
-    + `<div style="font-size:15px;font-family:'Bebas Neue',sans-serif;letter-spacing:1px;color:#E8E8F0;margin-bottom:8px;">` + (p.headline || p.field || 'Rebound Opportunity') + `</div>`
-    + `<div style="font-size:13px;color:#888899;line-height:1.7;margin-bottom:10px;">We brought over the opportunity area, recommended learning targets, and available background from Rebound Radar. Review it below before building your plan.</div>`
-    + (learnList ? `<div style="font-size:12px;color:#E8E8F0;margin-bottom:8px;"><strong>Recommended Learning Areas:</strong> ` + learnList + `</div>` : '')
-    + `<button onclick="clearReboundImport()" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:5px;border:1px solid rgba(30,144,255,0.3);color:#888899;background:transparent;cursor:pointer;margin-top:4px;">Clear Import</button>`;
+  card.innerHTML = '<div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#1e90ff;margin-bottom:6px;">Imported from Rebound Radar</div>'
+    + '<div style="font-size:15px;font-family:'Bebas Neue',sans-serif;letter-spacing:1px;color:#E8E8F0;margin-bottom:8px;">' + (p.headline || p.field || 'Rebound Opportunity') + '</div>'
+    + '<div style="font-size:13px;color:#888899;line-height:1.7;margin-bottom:10px;">We brought over the opportunity area, recommended learning targets, and available background from Rebound Radar. Review it below before building your plan.</div>'
+    + (learnList ? '<div style="font-size:12px;color:#E8E8F0;margin-bottom:8px;"><strong>Recommended Learning Areas:</strong> ' + learnList + '</div>' : '')
+    + '<button onclick="clearReboundImport()" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:5px;border:1px solid rgba(30,144,255,0.3);color:#888899;background:transparent;cursor:pointer;margin-top:4px;">Clear Import</button>';
   document.getElementById('step1Card').prepend(card);
 }
 
@@ -1189,8 +1199,8 @@ function showReboundPartial() {
   const card = document.createElement('div');
   card.className = 'rebound-import-card';
   card.id = 'reboundImportCard';
-  card.innerHTML = `<div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#1e90ff;margin-bottom:6px;">Partial Rebound Import Received</div>`
-    + `<div style="font-size:13px;color:#888899;line-height:1.6;">We opened Roadmap from Rebound Radar, but the full Rebound result was not available. Add the opportunity area or your background below to build a stronger plan.</div>`;
+  card.innerHTML = '<div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#1e90ff;margin-bottom:6px;">Partial Rebound Import Received</div>'
+    + '<div style="font-size:13px;color:#888899;line-height:1.6;">We opened Roadmap from Rebound Radar, but the full Rebound result was not available. Add the opportunity area or your background below to build a stronger plan.</div>';
   document.getElementById('step1Card').prepend(card);
 }
 
@@ -1226,10 +1236,8 @@ function clearImport() {
 
 // ── OVERRIDE build() to check context and inject CP data ─────────────────
 function build() {
-  if (!limitedContextOverride && !checkLimitedContext()) return;
-  limitedContextOverride = false;
-  run();
-}
+  var btn = document.getElementById('buildBtn');
+  if (btn) { btn.style.opacity = '1'; btn.style.filter = ''; btn.title = ''; }
 
 // ── ENRICH API PAYLOAD with full career profile ───────────────────────────
 const _origFetch = window.fetch;

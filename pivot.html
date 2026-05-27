@@ -279,6 +279,7 @@ input[type="file"]#resumeFile { display: none; }
         <div class="nav-dropdown-divider"></div>
         <a href="/rebound">Rebound Radar</a>
         <a href="/safe-list">Safe Careers List</a>
+        <a href="/military-pathways">Military Pathways</a>
         <div class="nav-dropdown-divider"></div>
         <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" style="opacity:0.7;">PathDecider ↗</a>
       </div>
@@ -307,6 +308,7 @@ input[type="file"]#resumeFile { display: none; }
     <a href="/target-resume" class="sub" onclick="closeMobile()">Resume</a>
     <a href="/rebound" class="sub" onclick="closeMobile()">Rebound Radar</a>
     <a href="/safe-list" class="sub" onclick="closeMobile()">Safe Careers List</a>
+    <a href="/military-pathways" class="sub" onclick="closeMobile()">Military Pathways</a>
     <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" class="sub" onclick="closeMobile()" style="opacity:0.6;">PathDecider ↗</a>
     <a href="/pricing" onclick="closeMobile()">Pricing</a>
     <a href="/sources" onclick="closeMobile()">Sources</a>
@@ -795,7 +797,7 @@ function exportToStudy() {
     crossoverStrengths: strengths,
     skillLevels: skillPills,
     insight: insightText,
-    resumeText: rawResumeText.slice(0, 12000),
+    resumeText: rawResumeText.slice(0, 6000),
     exportedAt: Date.now(),
     source: 'career-assessment'
   };

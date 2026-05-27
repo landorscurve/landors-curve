@@ -1,0 +1,239 @@
+{
+  "branches": ["Army", "Navy", "Marine Corps", "Air Force", "Space Force", "Coast Guard", "National Guard", "Reserves"],
+  "codeTypes": {
+    "Army": "MOS",
+    "Navy": "NEC / Rating",
+    "Marine Corps": "MOS",
+    "Air Force": "AFSC",
+    "Space Force": "SFSC",
+    "Coast Guard": "Rating",
+    "National Guard": "MOS",
+    "Reserves": "MOS / NEC / AFSC"
+  },
+  "occupations": [
+    {
+      "code": "11A",
+      "branch": "Army",
+      "type": "MOS",
+      "militaryTitle": "Infantry Officer",
+      "rank": "Officer",
+      "transferableSkills": [
+        "Mission planning and execution under pressure",
+        "Leading teams of 10-200+ personnel",
+        "Risk assessment and contingency planning",
+        "Cross-functional coordination",
+        "Decision-making with incomplete information",
+        "Training program development and delivery",
+        "Budget and resource management",
+        "After-action review and continuous improvement"
+      ],
+      "civilianMatches": [
+        {
+          "socCode": "11-1021.00",
+          "title": "General and Operations Managers",
+          "matchStrength": "High",
+          "bls": { "medianSalary": 98100, "jobOutlook": "+3% (2022-2032)", "jobOpenings": 294000 },
+          "automationRisk": "Low",
+          "futureProofScore": 82,
+          "whyItFits": "Infantry officers directly transfer command and control skills, planning under uncertainty, and leading diverse teams to operations management roles."
+        },
+        {
+          "socCode": "13-1111.00",
+          "title": "Management Analysts",
+          "matchStrength": "High",
+          "bls": { "medianSalary": 95290, "jobOutlook": "+10% (2022-2032)", "jobOpenings": 99400 },
+          "automationRisk": "Low-Medium",
+          "futureProofScore": 78,
+          "whyItFits": "Military planning and AAR methodology map directly to process improvement and organizational consulting."
+        },
+        {
+          "socCode": "11-3131.00",
+          "title": "Training and Development Managers",
+          "matchStrength": "Medium-High",
+          "bls": { "medianSalary": 120000, "jobOutlook": "+6% (2022-2032)", "jobOpenings": 3900 },
+          "automationRisk": "Low",
+          "futureProofScore": 80,
+          "whyItFits": "Military training doctrine and instruction experience translates directly to civilian training program leadership."
+        }
+      ],
+      "credentialGaps": [
+        { "gap": "PMP (Project Management Professional)", "priority": "High", "timeToComplete": "3-6 months", "cost": "$400-600 exam fee", "why": "Civilian employers often require formal PM certification for roles that parallel military planning experience." },
+        { "gap": "Industry-specific knowledge (healthcare, tech, finance, logistics)", "priority": "Medium", "timeToComplete": "6-12 months", "why": "Military experience is broad but civilian employers often want domain expertise." },
+        { "gap": "MBA or graduate business degree", "priority": "Low-Medium", "timeToComplete": "1-2 years", "why": "Accelerates path to senior leadership in civilian organizations, though not required." }
+      ],
+      "resumeSuggestions": [
+        "Replace 'Commanded 120-soldier infantry company' with 'Led cross-functional team of 120 personnel across operations, logistics, training, and support functions'",
+        "Replace 'Executed combat operations in austere environments' with 'Managed high-stakes operations under time pressure with incomplete information, maintaining 94% mission completion rate'",
+        "Replace 'MDMP planning' with 'Structured decision-making and operational planning methodology applied to complex, time-sensitive problems'",
+        "Replace rank titles with civilian equivalents: Company Commander = Director or Senior Manager; Battalion Commander = Vice President or Senior Director"
+      ]
+    },
+    {
+      "code": "25B",
+      "branch": "Army",
+      "type": "MOS",
+      "militaryTitle": "Information Technology Specialist",
+      "rank": "Enlisted",
+      "transferableSkills": [
+        "Network installation, configuration, and maintenance",
+        "Systems administration (Windows, Linux)",
+        "Help desk and tier 1-3 support",
+        "Cybersecurity fundamentals and OPSEC",
+        "IT asset management",
+        "User training and documentation",
+        "Classified systems handling",
+        "Field-expedient technical problem solving"
+      ],
+      "civilianMatches": [
+        {
+          "socCode": "15-1244.00",
+          "title": "Network and Computer Systems Administrators",
+          "matchStrength": "High",
+          "bls": { "medianSalary": 90520, "jobOutlook": "+2% (2022-2032)", "jobOpenings": 23700 },
+          "automationRisk": "Medium",
+          "futureProofScore": 72,
+          "whyItFits": "Direct skill transfer in network management, systems configuration, and infrastructure support."
+        },
+        {
+          "socCode": "15-1212.00",
+          "title": "Information Security Analysts",
+          "matchStrength": "High",
+          "bls": { "medianSalary": 112000, "jobOutlook": "+32% (2022-2032)", "jobOpenings": 19500 },
+          "automationRisk": "Low",
+          "futureProofScore": 91,
+          "whyItFits": "Security clearance + military OPSEC and cybersecurity fundamentals are highly valued. Fastest-growing IT specialty."
+        },
+        {
+          "socCode": "15-1232.00",
+          "title": "Computer User Support Specialists",
+          "matchStrength": "Medium",
+          "bls": { "medianSalary": 57910, "jobOutlook": "+5% (2022-2032)", "jobOpenings": 71900 },
+          "automationRisk": "Medium-High",
+          "futureProofScore": 58,
+          "whyItFits": "Entry-level civilian pathway. Better to use as a stepping stone than a destination."
+        }
+      ],
+      "credentialGaps": [
+        { "gap": "CompTIA Security+", "priority": "High", "timeToComplete": "2-3 months", "cost": "$380 exam fee", "why": "DoD 8570 baseline requirement already familiar. Civilian employers recognize it as IT security baseline." },
+        { "gap": "CompTIA Network+", "priority": "Medium", "timeToComplete": "1-2 months", "cost": "$338 exam fee", "why": "Formalizes existing networking knowledge for civilian hiring managers." },
+        { "gap": "AWS or Azure Cloud Certifications", "priority": "High", "timeToComplete": "3-6 months", "cost": "$150-300 per exam", "why": "Cloud infrastructure is where the market is moving. Essential for future-proofing." }
+      ],
+      "resumeSuggestions": [
+        "Replace 'Maintained SIPR/NIPR network' with 'Administered classified and unclassified enterprise networks supporting 500+ end users'",
+        "Replace 'Performed PMCS on IT equipment' with 'Managed lifecycle maintenance and asset tracking for enterprise IT infrastructure'",
+        "Highlight active security clearance prominently: 'Active TS/SCI clearance' is a significant competitive advantage in the civilian market",
+        "Quantify: number of users supported, uptime percentage, ticket volume, response time"
+      ]
+    },
+    {
+      "code": "68W",
+      "branch": "Army",
+      "type": "MOS",
+      "militaryTitle": "Combat Medic Specialist",
+      "rank": "Enlisted",
+      "transferableSkills": [
+        "Emergency trauma assessment and treatment",
+        "Patient care under austere conditions",
+        "Medication administration and documentation",
+        "TCCC (Tactical Combat Casualty Care)",
+        "Team leadership and mentorship",
+        "Equipment maintenance and supply management",
+        "Medical record-keeping and compliance",
+        "Training and instruction of non-medical personnel"
+      ],
+      "civilianMatches": [
+        {
+          "socCode": "29-2041.00",
+          "title": "Emergency Medical Technicians",
+          "matchStrength": "High",
+          "bls": { "medianSalary": 36680, "jobOutlook": "+6% (2022-2032)", "jobOpenings": 20700 },
+          "automationRisk": "Low",
+          "futureProofScore": 78,
+          "whyItFits": "Direct skill transfer. Most states accept military medical training toward EMT or paramedic licensure."
+        },
+        {
+          "socCode": "29-2061.00",
+          "title": "Licensed Practical and Licensed Vocational Nurses",
+          "matchStrength": "Medium-High",
+          "bls": { "medianSalary": 54620, "jobOutlook": "+5% (2022-2032)", "jobOpenings": 54500 },
+          "automationRisk": "Low",
+          "futureProofScore": 82,
+          "whyItFits": "With additional civilian licensure, 68Ws have a strong pathway into LPN/LVN roles."
+        },
+        {
+          "socCode": "29-1141.00",
+          "title": "Registered Nurses",
+          "matchStrength": "Medium",
+          "bls": { "medianSalary": 81220, "jobOutlook": "+6% (2022-2032)", "jobOpenings": 193100 },
+          "automationRisk": "Low",
+          "futureProofScore": 88,
+          "whyItFits": "Longer credentialing path but strong long-term outcome. Military medical experience gives you a head start on clinical thinking."
+        }
+      ],
+      "credentialGaps": [
+        { "gap": "State EMT or Paramedic License", "priority": "High", "timeToComplete": "1-6 months depending on state", "cost": "$100-500", "why": "Required to practice. Many states have military reciprocity programs." },
+        { "gap": "NREMT (National Registry EMT)", "priority": "High", "timeToComplete": "1-3 months", "cost": "$80-125 exam fee", "why": "Nationally portable credential that reduces state-by-state relicensure." },
+        { "gap": "LPN or RN Nursing Degree", "priority": "Medium (long-term)", "timeToComplete": "1-4 years", "cost": "Varies by program", "why": "Unlocks higher pay and more career options. Military training may count toward credit hours." }
+      ],
+      "resumeSuggestions": [
+        "Replace 'Performed TCCC on simulated casualties' with 'Provided emergency trauma care under time-critical conditions, including hemorrhage control, airway management, and casualty stabilization'",
+        "Replace 'Maintained medical supplies IAW SOP' with 'Managed pharmaceutical and medical equipment inventory, ensuring 100% supply readiness for 500-person unit'",
+        "Replace 'Trained soldiers on first aid' with 'Developed and delivered emergency medical training curriculum to 120+ personnel; maintained unit qualification rates above 98%'"
+      ]
+    },
+    {
+      "code": "6F0X1",
+      "branch": "Air Force",
+      "type": "AFSC",
+      "militaryTitle": "Services Specialist",
+      "rank": "Enlisted",
+      "transferableSkills": [
+        "Food service operations management",
+        "Lodging and hospitality management",
+        "Event planning and execution",
+        "Customer service and guest relations",
+        "Inventory and supply chain management",
+        "Staff training and supervision",
+        "Budget tracking and cost control",
+        "Compliance with health and safety regulations"
+      ],
+      "civilianMatches": [
+        {
+          "socCode": "11-9051.00",
+          "title": "Food Service Managers",
+          "matchStrength": "High",
+          "bls": { "medianSalary": 61310, "jobOutlook": "+10% (2022-2032)", "jobOpenings": 45000 },
+          "automationRisk": "Low-Medium",
+          "futureProofScore": 70,
+          "whyItFits": "Direct operations management transfer from DFAC management to civilian food service leadership."
+        },
+        {
+          "socCode": "11-9081.00",
+          "title": "Lodging Managers",
+          "matchStrength": "High",
+          "bls": { "medianSalary": 59430, "jobOutlook": "+9% (2022-2032)", "jobOpenings": 10200 },
+          "automationRisk": "Low",
+          "futureProofScore": 72,
+          "whyItFits": "Military lodging management experience maps directly to hotel or hospitality management."
+        },
+        {
+          "socCode": "13-1121.00",
+          "title": "Meeting, Convention, and Event Planners",
+          "matchStrength": "Medium",
+          "bls": { "medianSalary": 52560, "jobOutlook": "+8% (2022-2032)", "jobOpenings": 15600 },
+          "automationRisk": "Low",
+          "futureProofScore": 68,
+          "whyItFits": "Military event coordination and protocol experience transfers to civilian event management."
+        }
+      ],
+      "credentialGaps": [
+        { "gap": "ServSafe Manager Certification", "priority": "High", "timeToComplete": "1-2 weeks", "cost": "$15-150", "why": "Industry standard for food service management. Quick to obtain and widely recognized." },
+        { "gap": "Certified Hospitality Supervisor (CHS)", "priority": "Medium", "timeToComplete": "1-3 months", "cost": "$200-400", "why": "AHLEI credential that formalizes supervisory experience for hospitality employers." }
+      ],
+      "resumeSuggestions": [
+        "Replace 'Managed DFAC operations' with 'Directed food service operations serving 2,000+ daily meals, managing staff scheduling, inventory, and quality compliance'",
+        "Replace 'Performed billeting duties' with 'Managed lodging operations for 200-room facility, overseeing reservations, housekeeping standards, and guest services'"
+      ]
+    }
+  ]
+}

@@ -377,13 +377,13 @@ body::before { display: none; }
       </button>
       <div class="nav-dropdown-menu">
         <a href="/#analyzer">Analyzer</a>
+        <a href="/military-pathways">Military Pathways</a>
+        <a href="/target-resume">Resume</a>
         <a href="/pivot">Career Assessment</a>
         <a href="/study">Roadmap</a>
-        <a href="/target-resume">Resume</a>
         <div class="nav-dropdown-divider"></div>
         <a href="/rebound">Rebound Radar</a>
         <a href="/safe-list">Safe Careers List</a>
-        <a href="/military-pathways">Military Pathways</a>
         <div class="nav-dropdown-divider"></div>
         <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" style="opacity:0.7;">PathDecider ↗</a>
       </div>
@@ -407,12 +407,12 @@ body::before { display: none; }
     <a href="/how-to-use" onclick="closeMobile()">How to Use</a>
     <div class="mobile-menu-section-label" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:12px 0 4px 0;opacity:0.6;">Tools</div>
     <a href="/#analyzer" class="sub" onclick="closeMobile()">Analyzer</a>
+    <a href="/military-pathways" class="sub" onclick="closeMobile()">Military Pathways</a>
+    <a href="/target-resume" class="sub" onclick="closeMobile()">Resume</a>
     <a href="/pivot" class="sub" onclick="closeMobile()">Career Assessment</a>
     <a href="/study" class="sub" onclick="closeMobile()">Roadmap</a>
-    <a href="/target-resume" class="sub" onclick="closeMobile()">Resume</a>
     <a href="/rebound" class="sub" onclick="closeMobile()">Rebound Radar</a>
     <a href="/safe-list" class="sub" onclick="closeMobile()">Safe Careers List</a>
-    <a href="/military-pathways" class="sub" onclick="closeMobile()">Military Pathways</a>
     <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" class="sub" onclick="closeMobile()" style="opacity:0.6;">PathDecider ↗</a>
     <a href="/pricing" onclick="closeMobile()">Pricing</a>
     <a href="/sources" onclick="closeMobile()">Sources</a>
@@ -456,6 +456,7 @@ body::before { display: none; }
       <button class="preset-btn" id="preset-conservative" onclick="setPreset('conservative')">Conservative</button>
       <button class="preset-btn" id="preset-disruption" onclick="setPreset('disruption')">Disruption Weighted</button>
       <button class="preset-btn" id="preset-emerging" onclick="setPreset('emerging')">Emerging Focus</button>
+      <button class="preset-btn" id="preset-military" onclick="setPreset('military')" style="border-color:rgba(30,144,255,0.3);color:var(--blue);">Military Transition</button>
     </div>
     <div class="preset-descs">
       <div class="preset-desc-item visible" id="desc-balanced">
@@ -469,6 +470,10 @@ body::before { display: none; }
       <div class="preset-desc-item" id="desc-disruption">
         <div class="preset-desc-name">Disruption Weighted</div>
         <div class="preset-desc-text">Emphasizes AI exposure, automation pressure, and market disruption signals.</div>
+      </div>
+      <div class="preset-desc-item" id="desc-military">
+        <div class="preset-desc-name" style="color:var(--blue);">Military Transition</div>
+        <div class="preset-desc-text">Prioritizes O*NET military crosswalk data, BLS occupational outlook, credential gaps, and civilian job transfer analysis. Best for transitioning service members, veterans, and military spouses.</div>
       </div>
       <div class="preset-desc-item" id="desc-emerging">
         <div class="preset-desc-name">Emerging Focus</div>
@@ -763,6 +768,7 @@ const PRESETS = {
   balanced:     { label:'Balanced',          sources:['O*NET','BLS','Brookings','Goldman Sachs','McKinsey','WEF','LinkedIn Workforce Reports','OECD'], badges:['sb-onet','sb-bls','sb-brookings','sb-gs','sb-mckinsey','sb-wef','sb-linkedin','sb-oecd'] },
   conservative: { label:'Conservative',      sources:['BLS','O*NET'],                                                                                  badges:['sb-bls','sb-onet'] },
   disruption:   { label:'Disruption Weighted',sources:['McKinsey','Goldman Sachs','Brookings'],                                                         badges:['sb-mckinsey','sb-gs','sb-brookings'] },
+  military:     { label:'Military Transition', sources:['O*NET','BLS','SOC Classifications','Military Crosswalk Data','Credential Datasets'], badges:['sb-onet','sb-bls'] },
   emerging:     { label:'Emerging Focus',    sources:['Brookings','WEF','LinkedIn Workforce Reports','OECD'],                                           badges:['sb-brookings','sb-wef','sb-linkedin','sb-oecd'] },
 };
 
@@ -777,8 +783,26 @@ function setPreset(key) {
   if (desc) desc.classList.add('visible');
 }
 
-// Init balanced preset badges
-setPreset('balanced');
+// Init balanced preset badges - check for military handoff first
+(function() {
+  try {
+    var stored = localStorage.getItem('analyzerHandoff');
+    if (stored) {
+      var h = JSON.parse(stored);
+      if (h && h.exportedAt && Date.now() - h.exportedAt < 300000) {
+        localStorage.removeItem('analyzerHandoff');
+        if (h.preset && document.getElementById('preset-' + h.preset)) setPreset(h.preset);
+        else setPreset('balanced');
+        if (h.query) {
+          var inp = document.getElementById('profInput');
+          if (inp) inp.value = h.query;
+        }
+        return;
+      }
+    }
+  } catch(e) {}
+  setPreset('balanced');
+})();
 let srcInt, msgInt;
 const MSGS = [
   ['CROSS-REFERENCING O*NET','Pulling occupation task and skills data...'],

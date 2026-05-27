@@ -187,6 +187,7 @@ body{background:#050505;color:var(--text);font-family:'DM Sans',sans-serif;min-h
 .page-disclaimer-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
 .page-disclaimer-text{font-family:'DM Mono',monospace;font-size:10px;color:#555566;line-height:1.7;letter-spacing:0.5px;flex:1;min-width:200px;}
 .page-disclaimer-link{font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);text-decoration:none;}
+@media(max-width:680px){.handoff-grid-3{grid-template-columns:1fr !important;}}
 </style>
 </head>
 <body>
@@ -202,10 +203,16 @@ body{background:#050505;color:var(--text);font-family:'DM Sans',sans-serif;min-h
       </button>
       <div class="nav-dropdown-menu">
         <a href="/#analyzer">Analyzer</a>
+        <a href="/military-pathways" class="active">Military Pathways</a>
+        <a href="/target-resume">Resume</a>
         <a href="/pivot">Career Assessment</a>
         <a href="/study">Roadmap</a>
-        <a href="/target-resume">Resume</a>
         <div class="nav-dropdown-divider"></div>
+        <a href="/rebound">Rebound Radar</a>
+        <a href="/safe-list">Safe Careers List</a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" style="opacity:0.7;">PathDecider ↗</a>
+      </div>
         <a href="/rebound">Rebound Radar</a>
         <a href="/safe-list">Safe Careers List</a>
         <a href="/military-pathways" class="active">Military Pathways</a>
@@ -233,12 +240,12 @@ body{background:#050505;color:var(--text);font-family:'DM Sans',sans-serif;min-h
     <a href="/how-to-use" onclick="closeMobile()">How to Use</a>
     <div class="mobile-menu-section-label">Tools</div>
     <a href="/#analyzer" class="sub" onclick="closeMobile()">Analyzer</a>
+    <a href="/military-pathways" class="sub" onclick="closeMobile()">Military Pathways</a>
+    <a href="/target-resume" class="sub" onclick="closeMobile()">Resume</a>
     <a href="/pivot" class="sub" onclick="closeMobile()">Career Assessment</a>
     <a href="/study" class="sub" onclick="closeMobile()">Roadmap</a>
-    <a href="/target-resume" class="sub" onclick="closeMobile()">Resume</a>
     <a href="/rebound" class="sub" onclick="closeMobile()">Rebound Radar</a>
     <a href="/safe-list" class="sub" onclick="closeMobile()">Safe Careers List</a>
-    <a href="/military-pathways" class="sub" onclick="closeMobile()">Military Pathways</a>
     <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" class="sub" onclick="closeMobile()" style="opacity:0.6;">PathDecider ↗</a>
     <a href="/pricing" onclick="closeMobile()">Pricing</a>
     <a href="/sources" onclick="closeMobile()">Sources</a>
@@ -450,14 +457,33 @@ body{background:#050505;color:var(--text);font-family:'DM Sans',sans-serif;min-h
     </div>
   </div>
 
-  <!-- RESUME STUDIO HANDOFF -->
-  <div class="handoff-card">
-    <div class="handoff-label">Next Step</div>
-    <div class="handoff-title">Send This Analysis to Resume Studio</div>
-    <div class="handoff-desc">Resume Studio will use your military background translation to rewrite your resume in civilian language, target a specific job posting, or build a future-facing resume draft without overclaiming experience you do not yet have.</div>
-    <div class="handoff-btns">
-      <button class="btn-primary" onclick="sendToResumeStudio()">Open Resume Studio</button>
-      <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);opacity:0.6;">Opens in a new tab so your analysis stays open.</span>
+  <!-- RECOMMENDED NEXT STEPS - THREE HANDOFF CARDS -->
+  <div class="result-section" style="margin-top:36px;">
+    <div class="result-section-title"><span class="result-section-icon">🔀</span>Recommended Next Step</div>
+    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:20px;">Based on your analysis, choose the best next step. Each one opens in a new tab so your results stay open.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
+
+      <div style="background:var(--panel);border:1px solid rgba(240,165,0,0.25);border-radius:14px;padding:22px 22px;display:flex;flex-direction:column;">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Option 1</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--text);letter-spacing:1px;margin-bottom:8px;line-height:1.1;">Create Civilian Resume</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.65;flex:1;margin-bottom:16px;">You have strong civilian job matches. Use Resume Studio to rewrite your military experience in civilian language and target a specific job posting.</div>
+        <button onclick="sendToTool('resume_specific')" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:10px 18px;border-radius:7px;background:var(--gold);color:#000;border:none;cursor:pointer;font-weight:600;">Open Resume Studio</button>
+      </div>
+
+      <div style="background:var(--panel);border:1px solid rgba(30,144,255,0.25);border-radius:14px;padding:22px 22px;display:flex;flex-direction:column;">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:8px;">Option 2</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--text);letter-spacing:1px;margin-bottom:8px;line-height:1.1;">Explore Career Roadmap</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.65;flex:1;margin-bottom:16px;">You have broad transferable skills across multiple civilian paths. Use Roadmap to build a practical transition plan around your schedule, budget, and goals.</div>
+        <button onclick="sendToTool('roadmap')" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:10px 18px;border-radius:7px;background:var(--blue);color:#fff;border:none;cursor:pointer;font-weight:600;">Open Roadmap</button>
+      </div>
+
+      <div style="background:var(--panel);border:1px solid rgba(46,213,115,0.25);border-radius:14px;padding:22px 22px;display:flex;flex-direction:column;">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:8px;">Option 3</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--text);letter-spacing:1px;margin-bottom:8px;line-height:1.1;">Run Deeper Analysis</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.65;flex:1;margin-bottom:16px;">Compare multiple civilian job options, check automation risk, and get source-grounded future risk analysis using the Analyzer with the Military Transition preset.</div>
+        <button onclick="sendToTool('analyzer')" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:10px 18px;border-radius:7px;background:var(--green);color:#000;border:none;cursor:pointer;font-weight:600;">Open Analyzer</button>
+      </div>
+
     </div>
   </div>
 
@@ -716,20 +742,30 @@ function renderResults(r) {
   document.getElementById('resultsArea').scrollIntoView({behavior: 'smooth', block: 'start'});
 }
 
-// ── RESUME STUDIO HANDOFF ─────────────────────────────────────────────────
-function sendToResumeStudio() {
+// ── SHARED HANDOFF SCHEMA ────────────────────────────────────────────────
+function buildHandoffPayload(handoffType) {
   var r = lastResult || {};
   var branch = document.getElementById('branchSel').value;
   var code = document.getElementById('codeInp').value.trim();
+  var title = document.getElementById('titleInp').value.trim();
+  var rank = document.getElementById('rankInp').value.trim();
+  var years = document.getElementById('yearsInp').value;
+  var certs = document.getElementById('certsInp').value.trim();
+  var clearance = document.getElementById('clearanceInp').value;
   var resumeText = r.resumeHandoffSummary || extractedResume || document.getElementById('bgTextarea').value.trim() || '';
-
-  // Build enriched background text
   var skillsList = (r.transferableSkills || []).map(function(s){ return '- ' + s; }).join('\n');
+  var topMatch = r.civilianMatches && r.civilianMatches[0] ? r.civilianMatches[0] : null;
+
   var background = [
     'MILITARY-TO-CIVILIAN PATHWAY ANALYSIS',
     '',
     branch ? 'Branch: ' + branch : '',
     code ? 'Occupation Code: ' + code : '',
+    title ? 'Military Title: ' + title : '',
+    rank ? 'Rank: ' + rank : '',
+    years ? 'Years of Service: ' + years : '',
+    clearance && clearance !== 'None / Not applicable' ? 'Security Clearance: ' + clearance : '',
+    certs ? 'Certifications: ' + certs : '',
     '',
     r.headline || '',
     '',
@@ -738,21 +774,88 @@ function sendToResumeStudio() {
     'Transferable Skills:',
     skillsList,
     '',
-    'Background:',
-    resumeText.slice(0, 4000)
+    'Top Civilian Match: ' + (topMatch ? topMatch.title : 'See analysis'),
+    '',
+    'User Background:',
+    resumeText.slice(0, 3000)
   ].filter(Boolean).join('\n');
 
+  return {
+    // Shared handoff schema
+    sourceTool: 'military-pathways',
+    destinationTool: handoffType === 'roadmap' ? 'roadmap' : handoffType === 'analyzer' ? 'analyzer' : 'resume-studio',
+    handoffType: handoffType, // military_to_resume_specific_job | military_to_resume_future_direction | military_to_roadmap | military_to_analyzer
+    userGoal: 'military-to-civilian-transition',
+    selectedCareerPath: topMatch ? topMatch.title : '',
+    targetJobTitle: topMatch ? topMatch.title : '',
+    militaryContext: {
+      branch: branch,
+      code: code,
+      title: title,
+      rank: rank,
+      yearsOfService: years,
+      certifications: certs,
+      clearance: clearance
+    },
+    careerMatches: r.civilianMatches || [],
+    skills: r.transferableSkills || [],
+    credentialGaps: r.credentialGaps || [],
+    resumeSuggestions: r.resumeSuggestions || [],
+    analysisSummary: r.summary || '',
+    recommendedNextStep: handoffType,
+    resumeText: background.slice(0, 12000),
+    exportedAt: Date.now()
+  };
+}
+
+function sendToTool(handoffType) {
+  var payload = buildHandoffPayload(handoffType);
+
+  if (handoffType === 'analyzer') {
+    // Open Analyzer with military preset pre-selected
+    try {
+      localStorage.setItem('analyzerHandoff', JSON.stringify({
+        preset: 'military',
+        query: payload.selectedCareerPath || (document.getElementById('titleInp').value.trim() + ' civilian equivalent'),
+        source: 'military-pathways',
+        exportedAt: Date.now()
+      }));
+    } catch(e) {}
+    window.open('/?preset=military', '_blank', 'noopener,noreferrer');
+    return;
+  }
+
+  if (handoffType === 'roadmap') {
+    try {
+      localStorage.setItem('landorsCurveReboundRoadmapHandoff', JSON.stringify({
+        source: 'military-pathways',
+        field: payload.militaryContext.title || payload.militaryContext.code,
+        summary: payload.resumeText,
+        learn: (payload.credentialGaps || []).map(function(g){ return { skill: g.gap }; }),
+        steps: (payload.skills || []).slice(0, 4).map(function(s){ return { action: s }; }),
+        headline: 'Military-to-Civilian Transition: ' + (payload.selectedCareerPath || 'Civilian Pathway'),
+        exportedAt: Date.now()
+      }));
+    } catch(e) {}
+    window.open('/study?rebound_import=1', '_blank', 'noopener,noreferrer');
+    return;
+  }
+
+  // Resume Studio (specific job or future direction)
+  var mode = payload.careerMatches.length >= 3 ? 'future-direction' : 'target-job';
+  if (handoffType === 'resume_specific') mode = 'target-job';
   try {
     localStorage.setItem('resumeStudioHandoff', JSON.stringify({
-      mode: 'target',
-      resumeText: background.slice(0, 12000),
-      topRole: r.civilianMatches && r.civilianMatches[0] ? r.civilianMatches[0].title : '',
+      mode: mode === 'target-job' ? 'target' : 'future',
+      resumeText: payload.resumeText,
+      topRole: payload.selectedCareerPath,
       source: 'military-pathways',
+      militaryContext: payload.militaryContext,
       exportedAt: Date.now()
     }));
   } catch(e) {}
-
-  window.open('/target-resume?mode=target-job', '_blank', 'noopener,noreferrer');
+  var modeParam = mode === 'target-job' ? 'target-job' : 'future-direction';
+  window.open('/target-resume?mode=' + modeParam, '_blank', 'noopener,noreferrer');
 }
 
 // ── CODE EXPLORER ─────────────────────────────────────────────────────────

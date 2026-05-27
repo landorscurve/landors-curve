@@ -131,13 +131,13 @@ body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;m
       </button>
       <div class="nav-dropdown-menu">
         <a href="/#analyzer">Analyzer</a>
+        <a href="/military-pathways">Military Pathways</a>
+        <a href="/target-resume">Resume</a>
         <a href="/pivot">Career Assessment</a>
         <a href="/study">Roadmap</a>
-        <a href="/target-resume">Resume</a>
         <div class="nav-dropdown-divider"></div>
         <a href="/rebound">Rebound Radar</a>
         <a href="/safe-list">Safe Careers List</a>
-        <a href="/military-pathways">Military Pathways</a>
         <div class="nav-dropdown-divider"></div>
         <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" style="opacity:0.7;">PathDecider ↗</a>
       </div>
@@ -162,12 +162,12 @@ body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;m
     <a href="/how-to-use" onclick="closeMobile()">How to Use</a>
     <div class="mobile-menu-section" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);opacity:0.4;padding:12px 20px 4px;">Tools</div>
     <a href="/#analyzer" class="sub" onclick="closeMobile()">Analyzer</a>
+    <a href="/military-pathways" class="sub" onclick="closeMobile()">Military Pathways</a>
+    <a href="/target-resume" class="sub" onclick="closeMobile()">Resume</a>
     <a href="/pivot" class="sub" onclick="closeMobile()">Career Assessment</a>
     <a href="/study" class="sub" onclick="closeMobile()">Roadmap</a>
-    <a href="/target-resume" class="sub" onclick="closeMobile()">Resume</a>
     <a href="/rebound" class="sub" onclick="closeMobile()">Rebound Radar</a>
     <a href="/safe-list" class="sub" onclick="closeMobile()">Safe Careers List</a>
-    <a href="/military-pathways" class="sub" onclick="closeMobile()">Military Pathways</a>
     <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" class="sub" onclick="closeMobile()" style="opacity:0.6;">PathDecider ↗</a>
     <a href="/pricing" onclick="closeMobile()">Pricing</a>
     <a href="/sources" onclick="closeMobile()">Sources</a>
@@ -492,6 +492,62 @@ body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;m
         </div>
       </div>
 
+    </div>
+  </div>
+
+
+  <div class="divider"></div>
+
+  <!-- MILITARY SOURCES -->
+  <div class="section">
+    <div class="eyebrow">Military Transition</div>
+    <div class="section-title">Military-to-Civilian Sources</div>
+    <p class="muted" style="margin-bottom:20px;">The Military-to-Civilian Pathways tool draws from additional source types specific to military occupation translation and veteran career transition research.</p>
+
+    <div class="src-grid">
+      <div class="src-card" style="border-top:3px solid var(--blue);">
+        <div class="src-name">O*NET Military Occupational Classification Crosswalk</div>
+        <div class="src-contrib">Maps military occupation codes (MOS, AFSC, NEC, Ratings, SFSC) to O*NET-SOC civilian occupation codes and titles.</div>
+        <div class="src-row">
+          <div><div class="src-label src-label-green">Strengths</div><div class="src-text">Publicly available. Developed by the National Center for O*NET Development. Widely used by veteran employment services.</div></div>
+          <div><div class="src-label src-label-orange">Limitations</div><div class="src-text">Crosswalks may not reflect every specialty or new military role. Translation is directional, not guaranteed.</div></div>
+        </div>
+        <div class="src-row">
+          <div><div class="src-label src-label-blue">Update rhythm</div><div class="src-text">Updated periodically by O*NET. Landor's Curve reviews when new crosswalk data is published.</div></div>
+          <div><div class="src-label src-label-gold">How we use it</div><div class="src-text">Used to identify civilian occupational equivalents for military occupation codes and to map transferable skills.</div></div>
+        </div>
+      </div>
+
+      <div class="src-card" style="border-top:3px solid var(--blue);">
+        <div class="src-name">SOC Classification System</div>
+        <div class="src-contrib">Standard Occupational Classification codes that link military crosswalks, O*NET occupations, and BLS labor market data into a unified taxonomy.</div>
+        <div class="src-row">
+          <div><div class="src-label src-label-green">Strengths</div><div class="src-text">Official U.S. government standard. Enables consistent comparison across all workforce data sources.</div></div>
+          <div><div class="src-label src-label-orange">Limitations</div><div class="src-text">Classification can lag behind new job categories and emerging hybrid roles.</div></div>
+        </div>
+        <div class="src-row">
+          <div><div class="src-label src-label-blue">Update rhythm</div><div class="src-text">Updated on a decadal cycle by the Bureau of Labor Statistics and Office of Management and Budget.</div></div>
+          <div><div class="src-label src-label-gold">How we use it</div><div class="src-text">Used to connect military occupation data to BLS wage and outlook information.</div></div>
+        </div>
+      </div>
+
+      <div class="src-card src-card-wide" style="border-top:3px solid var(--blue);">
+        <div class="src-name">DoD and DMDC Military Occupation References</div>
+        <div class="src-contrib">Publicly available Department of Defense and Defense Manpower Data Center references covering military occupation titles, codes, and descriptions.</div>
+        <div class="src-row">
+          <div><div class="src-label src-label-green">Strengths</div><div class="src-text">Authoritative source for military occupation definitions and code structures.</div></div>
+          <div><div class="src-label src-label-orange">Limitations</div><div class="src-text">Official documents describe military roles, not civilian equivalents. Translation requires interpretation.</div></div>
+        </div>
+        <div class="src-row">
+          <div><div class="src-label src-label-blue">Update rhythm</div><div class="src-text">Reviewed when new public reference materials are available.</div></div>
+          <div><div class="src-label src-label-gold">How we use it</div><div class="src-text">Used as reference for occupation code definitions and military title accuracy. Landor's Curve adds its own AI-assisted civilian translation layer on top of these public references.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:rgba(30,144,255,0.04);border:1px solid rgba(30,144,255,0.2);border-radius:10px;padding:18px 22px;margin-top:20px;max-width:720px;">
+      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:8px;">Disclaimer</div>
+      <p style="font-size:13px;color:var(--muted);line-height:1.75;">Landor's Curve is not affiliated with or endorsed by the Department of Defense, DMDC, O*NET, the Bureau of Labor Statistics, or any government agency. The Military-to-Civilian Pathways tool uses publicly available workforce data and adds proprietary AI-assisted interpretation, weighting, and pathway analysis. Results are directional estimates, not official guidance. For official transition assistance, visit the DoD Transition Assistance Program (TAP).</p>
     </div>
   </div>
 

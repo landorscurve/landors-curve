@@ -1186,11 +1186,36 @@ function showReboundImport(p) {
   card.className = 'rebound-import-card';
   card.id = 'reboundImportCard';
   var learnList = (p.learn || []).slice(0, 4).map(function(l){ return l.skill || l; }).join(', ');
-  card.innerHTML = '<div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#1e90ff;margin-bottom:6px;">Imported from Rebound Radar</div>'
-    + '<div style="font-size:15px;font-family:'Bebas Neue',sans-serif;letter-spacing:1px;color:#E8E8F0;margin-bottom:8px;">' + (p.headline || p.field || 'Rebound Opportunity') + '</div>'
-    + '<div style="font-size:13px;color:#888899;line-height:1.7;margin-bottom:10px;">We brought over the opportunity area, recommended learning targets, and available background from Rebound Radar. Review it below before building your plan.</div>'
-    + (learnList ? '<div style="font-size:12px;color:#E8E8F0;margin-bottom:8px;"><strong>Recommended Learning Areas:</strong> ' + learnList + '</div>' : '')
-    + '<button onclick="clearReboundImport()" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:5px;border:1px solid rgba(30,144,255,0.3);color:#888899;background:transparent;cursor:pointer;margin-top:4px;">Clear Import</button>';
+  var labelDiv = document.createElement('div');
+  labelDiv.style.cssText = 'font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#1e90ff;margin-bottom:6px;';
+  labelDiv.textContent = 'Imported from Rebound Radar';
+
+  var titleDiv = document.createElement('div');
+  titleDiv.style.cssText = 'font-size:15px;font-family:"Bebas Neue",sans-serif;letter-spacing:1px;color:#E8E8F0;margin-bottom:8px;';
+  titleDiv.textContent = p.headline || p.field || 'Rebound Opportunity';
+
+  var bodyDiv = document.createElement('div');
+  bodyDiv.style.cssText = 'font-size:13px;color:#888899;line-height:1.7;margin-bottom:10px;';
+  bodyDiv.textContent = 'We brought over the opportunity area, recommended learning targets, and available background from Rebound Radar. Review it below before building your plan.';
+
+  var learnText = (p.learn || []).slice(0, 4).map(function(l){ return l.skill || l; }).join(', ');
+  var learnDiv = null;
+  if (learnText) {
+    learnDiv = document.createElement('div');
+    learnDiv.style.cssText = 'font-size:12px;color:#E8E8F0;margin-bottom:8px;';
+    learnDiv.innerHTML = '<strong>Recommended Learning Areas:</strong> ' + learnText;
+  }
+
+  var clearBtn = document.createElement('button');
+  clearBtn.textContent = 'Clear Import';
+  clearBtn.style.cssText = 'font-family:"DM Mono",monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:5px;border:1px solid rgba(30,144,255,0.3);color:#888899;background:transparent;cursor:pointer;margin-top:4px;';
+  clearBtn.onclick = clearReboundImport;
+
+  card.appendChild(labelDiv);
+  card.appendChild(titleDiv);
+  card.appendChild(bodyDiv);
+  if (learnDiv) card.appendChild(learnDiv);
+  card.appendChild(clearBtn);
   document.getElementById('step1Card').prepend(card);
 }
 
@@ -1199,8 +1224,14 @@ function showReboundPartial() {
   const card = document.createElement('div');
   card.className = 'rebound-import-card';
   card.id = 'reboundImportCard';
-  card.innerHTML = '<div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#1e90ff;margin-bottom:6px;">Partial Rebound Import Received</div>'
-    + '<div style="font-size:13px;color:#888899;line-height:1.6;">We opened Roadmap from Rebound Radar, but the full Rebound result was not available. Add the opportunity area or your background below to build a stronger plan.</div>';
+  var lbl = document.createElement('div');
+  lbl.style.cssText = 'font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#1e90ff;margin-bottom:6px;';
+  lbl.textContent = 'Partial Rebound Import Received';
+  var msg = document.createElement('div');
+  msg.style.cssText = 'font-size:13px;color:#888899;line-height:1.6;';
+  msg.textContent = 'We opened Roadmap from Rebound Radar, but the full Rebound result was not available. Add the opportunity area or your background below to build a stronger plan.';
+  card.appendChild(lbl);
+  card.appendChild(msg);
   document.getElementById('step1Card').prepend(card);
 }
 
@@ -1238,6 +1269,7 @@ function clearImport() {
 function build() {
   var btn = document.getElementById('buildBtn');
   if (btn) { btn.style.opacity = '1'; btn.style.filter = ''; btn.title = ''; }
+}
 
 // ── ENRICH API PAYLOAD with full career profile ───────────────────────────
 const _origFetch = window.fetch;

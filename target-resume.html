@@ -682,7 +682,7 @@ async function handleResumeFile(file) {
     const words = text.trim().split(/\s+/).filter(w=>w.length>0).length;
     if(words<15) { setDS('warn','Could not read enough text. Try a Word document or paste manually.'); return; }
     extractedResumeText = text;
-    document.getElementById('resumeText').value = text.slice(0,3000);
+    document.getElementById('resumeText').value = text.slice(0,12000);
     setDS('ok','Resume loaded. '+words+' words extracted. Review and edit below if needed.');
   } catch(e) { setDS('warn','Could not read this file. Please paste your experience manually.'); }
 }
@@ -755,7 +755,7 @@ async function runAnalysis() {
 }
 
 function buildPayload(resumeText) {
-  const base = { resumeText: resumeText.slice(0,6000), mode: currentMode };
+  const base = { resumeText: resumeText.slice(0,12000), mode: currentMode };
   if(currentMode==='target') {
     return {...base,
       jobTitle: document.getElementById('jobTitle').value.trim(),

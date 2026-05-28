@@ -217,12 +217,473 @@ input[type=file].resume-mini-input{display:none;}
         <div class="nav-dropdown-divider"></div>
         <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" style="opacity:0.7;">PathDecider ↗</a>
       </div>
+        <a href="/rebound" class="active">Rebound Radar</a>
+        <a href="/safe-list">Safe Careers List</a>
+        <a href="/military-pathways">Military Pathways</a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" style="opacity:0.7;">PathDecider ↗</a>
+      </div>
     </div>
     <a href="/pricing">Pricing</a>
     <a href="/sources">Sources</a>
     <a href="/about">About</a>
   </div>
-  <button class="nav-hamburger" onclick="openMobile()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+  <button class="nav-hamburger" onclick="openMobile()" aria-label="Open menu">
+    <svg viewBox="0 0 22 16" fill="none"><path d="M1 1h20M1 8h20M1 15h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
   </button>
 </nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-overlay" onclick="closeMobile()"></div>
+  <div class="mobile-menu-panel">
+    <div class="mobile-menu-header">
+      <a href="/" class="mobile-menu-logo" onclick="closeMobile()">Landor's Curve</a>
+      <button class="mobile-menu-close" onclick="closeMobile()">&#215;</button>
+    </div>
+    <a href="/" onclick="closeMobile()">Home</a>
+    <a href="/how-to-use" onclick="closeMobile()">How to Use</a>
+    <div class="mobile-menu-section-label" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:12px 0 4px 0;opacity:0.6;">Tools</div>
+    <a href="/#analyzer" class="sub" onclick="closeMobile()">Analyzer</a>
+    <a href="/military-pathways" class="sub" onclick="closeMobile()">Military Pathways</a>
+    <a href="/target-resume" class="sub" onclick="closeMobile()">Resume</a>
+    <a href="/pivot" class="sub" onclick="closeMobile()">Career Assessment</a>
+    <a href="/study" class="sub" onclick="closeMobile()">Roadmap</a>
+    <a href="/rebound" class="sub" onclick="closeMobile()">Rebound Radar</a>
+    <a href="/safe-list" class="sub" onclick="closeMobile()">Safe Careers List</a>
+    <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" class="sub" onclick="closeMobile()" style="opacity:0.6;">PathDecider ↗</a>
+    <a href="/pricing" onclick="closeMobile()">Pricing</a>
+    <a href="/sources" onclick="closeMobile()">Sources</a>
+    <a href="/about" onclick="closeMobile()">About</a>
+    </div>
+</div>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="eyebrow">Applied Tool: The Rebound Effect</div>
+    <h1 class="hero-title">REBOUND<br><span>RADAR</span></h1>
+    <p class="hero-tagline">What to learn next while the market is still catching up.</p>
+    <p class="hero-sub">Technology does not only compress and remove old work. It also creates new demand around adoption, training, oversight, integration, trust, repair, and transition. Rebound Radar helps you spot where that demand is appearing now.</p>
+    <div class="hero-disclaimer">Some opportunities here may become lasting careers. Others may be valuable long-term skills. Some may be temporary bridge roles that fade once tools become easier or built into standard software. The goal is not to predict the future perfectly. The goal is to help you see what is worth learning and testing while the window is open.</div>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-card">
+    <div class="form-label">Tell Us About You</div>
+
+    <label class="form-label" style="margin-top:0;margin-bottom:6px;">Your current field or area of interest</label>
+    <input class="form-inp" id="fieldInp" type="text" placeholder="e.g. Marketing, Healthcare, Audio Production, Education, Law...">
+
+    <div class="form-grid" style="margin-bottom:20px;">
+      <div>
+        <label class="form-label">Experience level</label>
+        <div class="chip-group" id="expChips">
+          <button class="chip" onclick="toggleChip(this,'exp')">Just starting out</button>
+          <button class="chip" onclick="toggleChip(this,'exp')">1 to 3 years</button>
+          <button class="chip" onclick="toggleChip(this,'exp')">4 to 10 years</button>
+          <button class="chip" onclick="toggleChip(this,'exp')">10 or more years</button>
+        </div>
+      </div>
+      <div>
+        <label class="form-label">How technical do you want to get?</label>
+        <div class="chip-group" id="techChips">
+          <button class="chip" onclick="toggleChip(this,'tech')">Non-technical</button>
+          <button class="chip" onclick="toggleChip(this,'tech')">Some tools</button>
+          <button class="chip" onclick="toggleChip(this,'tech')">Comfortable with tech</button>
+          <button class="chip" onclick="toggleChip(this,'tech')">Full technical</button>
+        </div>
+      </div>
+    </div>
+
+    <label class="form-label">What are you looking for?</label>
+    <div class="chip-group" id="pathChips">
+      <button class="chip" onclick="toggleChip(this,'path')">Job path</button>
+      <button class="chip" onclick="toggleChip(this,'path')">Freelance path</button>
+      <button class="chip" onclick="toggleChip(this,'path')">Business idea</button>
+      <button class="chip" onclick="toggleChip(this,'path')">Student learning path</button>
+      <button class="chip" onclick="toggleChip(this,'path')">Skill building</button>
+    </div>
+
+    <label class="form-label">Any specific interests? <span style="opacity:0.4;font-size:9px;">(optional)</span></label>
+    <input class="form-inp" id="interestInp" type="text" placeholder="e.g. AI tools, video production, small business, healthcare, writing...">
+
+<!-- MINI RESUME DROP -->
+  <div class="resume-mini-wrap">
+    <input type="file" id="miniFileInput" class="resume-mini-input" accept=".pdf,.doc,.docx" onchange="miniHandleFile(this.files[0])">
+    <label for="miniFileInput" class="resume-mini-zone" id="miniZone"
+           ondragover="miniDragOver(event)" ondragleave="miniDragLeave()" ondrop="miniDrop(event)">
+      <div class="resume-mini-left">
+        <div class="resume-mini-icon">📄</div>
+        <div>
+          <div class="resume-mini-text">Have a resume? Drop it to auto-fill</div>
+          <div class="resume-mini-sub">PDF or Word, never stored or uploaded</div>
+        </div>
+      </div>
+      <span class="resume-mini-btn">Choose File</span>
+    </label>
+    <div class="resume-mini-status" id="miniStatus"></div>
+  </div>
+    <button class="build-btn" id="buildBtn" onclick="runRadar()">RUN REBOUND RADAR</button>
+    <p class="helper-text">Results are directional. Treat them as a starting point for exploration, not a guarantee.</p>
+  </div>
+
+  <div class="error-box" id="errBox"></div>
+
+  <div class="loading-box" id="loadBox">
+    <div class="spin-wrap"><div class="spin-icon">📡</div></div>
+    <div class="loading-title" id="loadTitle">SCANNING THE REBOUND</div>
+    <div class="loading-sub" id="loadSub">Identifying emerging opportunity zones...</div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results-box" id="resBox">
+
+    <div class="results-intro">
+      <div class="results-label" id="resLabel">Rebound Radar Results</div>
+      <h2 class="results-heading" id="resHeading">Your Opportunity Map</h2>
+      <div class="results-summary" id="resSummary">-</div>
+    </div>
+
+    <div class="divider-line"></div>
+
+    <!-- OPPORTUNITY ZONES -->
+    <div class="sec-eyebrow">Section 1</div>
+    <div class="sec-title">Opportunity Zones</div>
+    <div class="sec-sub">Areas where new demand is currently appearing. Some will grow into lasting careers. Others are windows that may close as tools mature.</div>
+    <div class="zones-grid" id="zonesEl"></div>
+
+    <div class="divider-line"></div>
+
+    <!-- WHAT TO LEARN -->
+    <div class="sec-eyebrow">Section 2</div>
+    <div class="sec-title">What to Learn Next</div>
+    <div class="sec-sub">Skills and tools where demand is currently outpacing supply. Prioritized for your technical comfort level and path.</div>
+    <div class="learn-grid" id="learnEl"></div>
+
+    <div class="divider-line"></div>
+
+    <!-- WHY NOW -->
+    <div class="sec-eyebrow">Section 3</div>
+    <div class="sec-title">Why It Matters Now</div>
+    <div class="sec-sub">The context behind where this demand is coming from.</div>
+    <div class="why-card"><div class="why-text" id="whyEl">-</div></div>
+
+    <div class="divider-line"></div>
+
+    <!-- FIRST STEPS -->
+    <div class="sec-eyebrow">Section 4</div>
+    <div class="sec-title">First Steps</div>
+    <div class="sec-sub">Practical actions you can take in the next 30 days.</div>
+    <div class="steps-list" id="stepsEl"></div>
+
+    <div class="divider-line"></div>
+
+    <!-- INSIGHT -->
+    <div class="sec-eyebrow">Personal Insight</div>
+    <div class="insight-card"><div class="insight-text" id="insightEl">-</div></div>
+
+    <!-- ROADMAP HANDOFF -->
+    <div id="reboundHandoffCard" style="background:rgba(30,144,255,0.05);border:1px solid rgba(30,144,255,0.25);border-radius:14px;padding:22px 26px;margin-top:28px;margin-bottom:0;">
+      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#1e90ff;margin-bottom:8px;">Next Step</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#E8E8F0;letter-spacing:1px;margin-bottom:6px;">Build a Roadmap From This</div>
+      <div style="font-size:13px;color:#888899;line-height:1.7;margin-bottom:16px;">Found an opportunity zone you want to explore? Send this result to Roadmap and build a practical plan around it.</div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <button onclick="sendToRoadmap()" style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;padding:11px 28px;border-radius:8px;background:#1e90ff;color:#fff;border:none;cursor:pointer;">Build a Roadmap From This</button>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#888899;opacity:0.6;">Opens in a new tab so your Rebound Radar results stay open.</span>
+      </div>
+    </div>
+
+    <!-- CROSS NAV -->
+    <div class="cross-nav">
+      <div class="cross-nav-label">Explore More Tools</div>
+      <div class="cross-nav-links">
+        <a href="/pivot">Career Assessment</a>
+        <a href="/study">Roadmap</a>
+        <a href="/safe-list">Safe Careers List</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div style="border-top:1px solid rgba(240,165,0,0.08);margin-top:48px;padding:20px 0 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+<a href="/about" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);text-decoration:none;opacity:0.7;white-space:nowrap;">About &amp; Sources →</a>
+</div>
+<div class="page-disclaimer">
+  <div class="page-disclaimer-inner">
+    <span class="page-disclaimer-text">Results are directional estimates drawn from publicly available workforce research. Not a guarantee of individual outcomes.</span>
+    <a href="/about" class="page-disclaimer-link">About &amp; Sources →</a>
+  </div>
+</div>
+<footer class="footer">
+  <div>
+    <div class="footer-logo">Landor's Curve</div>
+    <div class="footer-copy">© 2026 Landor Media. LandorsCurve.com</div>
+  </div>
+  <div class="footer-links">
+    <a href="/pivot">Career Assessment</a>
+    <a href="/study">Roadmap</a>
+    <a href="/safe-list">Safe Careers List</a>
+    <a href="/rebound">Rebound Radar</a>
+    <a href="/pricing">Pricing</a>
+    <a href="/about">About</a>
+  </div>
+  <div>
+    <div class="footer-related-label">Related Tools</div>
+    <a href="https://www.pathdecider.com/" target="_blank" rel="noopener" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--muted);text-decoration:none;text-transform:uppercase;opacity:0.7;">PathDecider ↗</a>
+  </div>
+</footer>
+
+<script>
+const MSGS = [
+  ['SCANNING THE REBOUND','Identifying emerging opportunity zones...'],
+  ['MAPPING SKILL DEMAND','Finding where supply has not caught up yet...'],
+  ['READING THE MARKET','Analyzing adoption curves and transition gaps...'],
+  ['CALCULATING DURABILITY','Assessing short-term vs long-term signals...'],
+  ['BUILDING YOUR RADAR','Finalizing your opportunity map...'],
+];
+
+const chipState = { exp: null, tech: null, path: null };
+let lastReboundResult = null;
+let lastReboundField = null;
+
+function toggleChip(btn, group) {
+  document.querySelectorAll(`#${group}Chips .chip`).forEach(c => c.classList.remove('selected'));
+  btn.classList.add('selected');
+  chipState[group] = btn.textContent;
+}
+
+async function runRadar() {
+  const field = document.getElementById('fieldInp').value.trim();
+  if (!field) {
+    document.getElementById('errBox').textContent = 'Please enter your current field or area of interest.';
+    document.getElementById('errBox').classList.add('show');
+    return;
+  }
+  document.getElementById('errBox').classList.remove('show');
+  document.getElementById('resBox').classList.remove('show');
+  document.getElementById('loadBox').classList.add('show');
+  document.getElementById('buildBtn').disabled = true;
+
+  let mi = 0;
+  const msgInt = setInterval(() => {
+    if (mi < MSGS.length) {
+      document.getElementById('loadTitle').textContent = MSGS[mi][0];
+      document.getElementById('loadSub').textContent = MSGS[mi][1];
+      mi++;
+    }
+  }, 2200);
+
+  const interests = document.getElementById('interestInp').value.trim();
+  const payload = {
+    field,
+    experience: chipState.exp || 'Not specified',
+    technical: chipState.tech || 'Not specified',
+    path: chipState.path || 'Not specified',
+    interests
+  };
+
+  try {
+    const res = await fetch('/api/rebound', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    clearInterval(msgInt);
+    document.getElementById('loadBox').classList.remove('show');
+    document.getElementById('buildBtn').disabled = false;
+    if (!res.ok) { const e = await res.json(); throw new Error(e.error || 'Server error'); }
+    const r = await res.json();
+    renderResults(r, field);
+  } catch(err) {
+    clearInterval(msgInt);
+    document.getElementById('loadBox').classList.remove('show');
+    document.getElementById('buildBtn').disabled = false;
+    document.getElementById('errBox').textContent = 'We had trouble running the radar. Please try again.';
+    document.getElementById('errBox').classList.add('show');
+  }
+}
+
+function pillClass(d) {
+  if (!d) return 'pill-medium';
+  const l = d.toLowerCase();
+  if (l.includes('short') || l.includes('bridge')) return 'pill-bridge';
+  if (l.includes('medium')) return 'pill-medium';
+  if (l.includes('durable skill')) return 'pill-durable-skill';
+  if (l.includes('durable role')) return 'pill-durable-role';
+  return 'pill-medium';
+}
+
+function renderResults(r, field) {
+  lastReboundResult = r;
+  lastReboundField = field;
+  document.getElementById('resLabel').textContent = 'Rebound Radar: ' + field;
+  document.getElementById('resHeading').textContent = r.headline || 'Your Opportunity Map';
+  document.getElementById('resSummary').textContent = r.summary || '';
+
+  // Opportunity zones
+  document.getElementById('zonesEl').innerHTML = (r.zones || []).map(z => `
+    <div class="zone-card">
+      <div class="zone-name">${z.name}</div>
+      <div class="zone-desc">${z.description}</div>
+      <div class="zone-meta">
+        <span class="durability-pill ${pillClass(z.durability)}">${z.durability || 'Medium-term'}</span>
+        <span class="zone-category">${z.category || ''}</span>
+      </div>
+    </div>`).join('');
+
+  // Learn next
+  document.getElementById('learnEl').innerHTML = (r.learn || []).map(l => `
+    <div class="learn-card">
+      <div class="learn-card-title">${l.skill}</div>
+      <div class="learn-card-desc">${l.why}</div>
+      <span class="learn-pill ${pillClass(l.durability)}">${l.durability || 'Medium-term'}</span>
+    </div>`).join('');
+
+  // Why now
+  document.getElementById('whyEl').textContent = r.whyNow || '';
+
+  // Steps
+  document.getElementById('stepsEl').innerHTML = (r.steps || []).map((s, i) => `
+    <div class="step-item">
+      <div class="step-num">${i + 1}</div>
+      <div>
+        <div class="step-text">${s.action}</div>
+        ${s.note ? `<div class="step-note">${s.note}</div>` : ''}
+      </div>
+    </div>`).join('');
+
+  document.getElementById('insightEl').textContent = r.insight || '';
+  document.getElementById('resBox').classList.add('show');
+  document.getElementById('resBox').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function sendToRoadmap() {
+  var r = lastReboundResult || {};
+  var field = lastReboundField || document.getElementById('fieldInp').value.trim();
+
+  // Build text summary
+  var zones = (r.zones || []).map(function(z) { return z.name + (z.description ? ': ' + z.description : ''); }).join('\n');
+  var learn = (r.learn || []).map(function(l) { return '- ' + l.skill + (l.why ? ': ' + l.why : ''); }).join('\n');
+  var steps = (r.steps || []).map(function(s,i) { return (i+1) + '. ' + s.action + (s.note ? ' (' + s.note + ')' : ''); }).join('\n');
+
+  var summary = [
+    'REBOUND RADAR HANDOFF SUMMARY',
+    '',
+    'Field: ' + field,
+    '',
+    'Opportunity Zones:',
+    zones || 'See results',
+    '',
+    'Recommended Learning Areas:',
+    learn || 'See results',
+    '',
+    'First Steps:',
+    steps || 'See results',
+    '',
+    'Rebound Summary:',
+    r.summary || '',
+    '',
+    'Insight:',
+    r.insight || ''
+  ].join('\n');
+
+  try {
+    localStorage.setItem('landorsCurveReboundRoadmapHandoff', JSON.stringify({
+      source: 'rebound-radar',
+      field: field,
+      summary: summary,
+      zones: r.zones || [],
+      learn: r.learn || [],
+      steps: r.steps || [],
+      whyNow: r.whyNow || '',
+      headline: r.headline || '',
+      exportedAt: Date.now()
+    }));
+  } catch(e) {}
+
+  window.open('/study?rebound_import=1', '_blank', 'noopener,noreferrer');
+}
+
+function toggleDropdown(){document.getElementById('toolsDropdown').classList.toggle('open');}
+function openMobile(){document.getElementById('mobileMenu').classList.add('open');document.body.style.overflow='hidden';}
+function closeMobile(){document.getElementById('mobileMenu').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('click',function(e){var dd=document.getElementById('toolsDropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open');});
+
+document.getElementById('fieldInp').addEventListener('keydown', e => { if(e.key==='Enter') runRadar(); });
+</script>
+<script>
+// MINI RESUME DROP: REBOUND RADAR ────────────────────────────────────
+(function(){
+  if(typeof pdfjsLib!=='undefined'){
+    pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+})();
+
+function miniDragOver(e){e.preventDefault();document.getElementById('miniZone').style.borderColor='rgba(240,165,0,0.6)';}
+function miniDragLeave(){document.getElementById('miniZone').style.borderColor='rgba(240,165,0,0.25)';}
+function miniDrop(e){e.preventDefault();document.getElementById('miniZone').style.borderColor='rgba(240,165,0,0.25)';var f=e.dataTransfer.files[0];if(f)miniHandleFile(f);}
+
+async function miniHandleFile(file){
+  var name=file.name.toLowerCase();
+  if(!name.endsWith('.pdf')&&!name.endsWith('.doc')&&!name.endsWith('.docx')){
+    miniStatus('warn','Please upload a PDF or Word document.');return;
+  }
+  miniStatus('loading','Reading your resume...');
+  try{
+    var text=name.endsWith('.pdf')?await miniReadPDF(file):await miniReadDOCX(file);
+    var words=text.trim().split(/\s+/).filter(w=>w.length>0).length;
+    if(words<15){miniStatus('warn','Could not read enough text. Try a Word document.');return;}
+    miniStatus('loading','Extracting your field and experience...');
+    var res=await fetch('/api/analyze-resume',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({resumeText:text.slice(0,7000)})});
+    if(!res.ok)throw new Error('API error');
+    var data=await res.json();
+    var skills=data.skills||[];
+    if(!skills.length){miniStatus('warn','Could not identify your field. Please fill in manually.');return;}
+    // Fill field with top skill by years
+    var top=skills.reduce(function(a,b){return((b.years||0)>(a.years||0)?b:a);},skills[0]);
+    document.getElementById('fieldInp').value=top.skill||'';
+    // Auto-select experience chip based on total years
+    var totalYears=skills.reduce(function(sum,s){return sum+(s.years||0);},0);
+    var expLabel='';
+    if(totalYears<1)expLabel='Just starting out';
+    else if(totalYears<=3)expLabel='1 to 3 years';
+    else if(totalYears<=10)expLabel='4 to 10 years';
+    else expLabel='10 or more years';
+    document.querySelectorAll('#expChips .chip').forEach(function(c){
+      c.classList.remove('selected');
+      if(c.textContent.trim()===expLabel){c.classList.add('selected');chipState.exp=expLabel;}
+    });
+    miniStatus('ok','Field and experience auto-filled from your resume. Review before running.');
+  }catch(e){miniStatus('warn','Could not process this file. Please fill in manually.');}
+}
+
+async function miniReadPDF(file){
+  if(typeof pdfjsLib==='undefined')throw new Error('PDF reader not loaded');
+  var buf=await file.arrayBuffer();
+  var pdf=await pdfjsLib.getDocument({data:buf}).promise;
+  var text='';
+  for(var i=1;i<=Math.min(pdf.numPages,6);i++){
+    var page=await pdf.getPage(i);
+    var content=await page.getTextContent();
+    text+=content.items.map(function(item){return item.str;}).join(' ')+'\n';
+  }
+  return text;
+}
+
+async function miniReadDOCX(file){
+  var buf=await file.arrayBuffer();
+  if(typeof mammoth!=='undefined'){
+    try{var r=await mammoth.extractRawText({arrayBuffer:buf});if(r.value&&r.value.trim().length>20)return r.value;}catch(e){}
+  }
+  return new Promise(function(resolve){var reader=new FileReader();reader.onload=function(e){resolve(e.target.result||'');};reader.onerror=function(){resolve('');};reader.readAsText(file);});
+}
+
+function miniStatus(type,msg){
+  var el=document.getElementById('miniStatus');
+  el.className='resume-mini-status show '+type;
+  el.innerHTML=(type==='loading'?'<div class="resume-mini-spin"></div>':'<span>'+(type==='ok'?'✓':'⚠')+' </span>')+'<span>'+msg+'</span>';
+}
+</script>
+</body>
+</html>

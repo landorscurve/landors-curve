@@ -290,14 +290,6 @@ input[type=file]#pivotFile{display:none;}
 .cp-add-btn{background:none;border:1px dashed rgba(240,165,0,0.3);border-radius:7px;color:var(--gold);padding:10px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;width:100%;margin-top:4px;transition:all 0.2s;}
 .cp-add-btn:hover{background:rgba(240,165,0,0.06);border-color:var(--gold);}
 .cp-summary{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:8px;padding:6px 10px;background:var(--dark);border-radius:6px;opacity:0.7;}
-.import-summary-bar{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-radius:8px;margin-bottom:10px;cursor:pointer;border:1px solid;}
-.import-summary-bar:hover{opacity:0.85;}
-.import-summary-bar-left{display:flex;align-items:center;gap:8px;min-width:0;}
-.import-summary-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
-.import-summary-source{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;flex-shrink:0;}
-.import-summary-text{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.import-summary-toggle{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);flex-shrink:0;margin-left:10px;}
-#step1Body.collapsed{display:none;}
 
 .limited-warning{background:rgba(240,165,0,0.06);border:1px solid rgba(240,165,0,0.25);border-radius:10px;padding:16px 18px;margin-bottom:14px;display:none;}
 .limited-warning-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--yellow);margin-bottom:6px;}
@@ -397,7 +389,6 @@ input[type=file]#pivotFile{display:none;}
     </div>
 
     <!-- RESUME UPLOAD AREA -->
-    <div id="step1Body">
     <div id="resumeUploadArea">
       <input type="file" id="pivotFile" accept=".pdf,.doc,.docx" onchange="handleFile(this.files[0])">
       <label for="pivotFile" class="drop-zone" id="dropZone"
@@ -426,7 +417,6 @@ input[type=file]#pivotFile{display:none;}
     <div class="or-divider" style="margin-top:12px;"><div class="or-line"></div><div class="or-text">Or briefly describe your background</div><div class="or-line"></div></div>
     <label class="form-label">Background summary <span class="opt-tag">optional</span></label>
     <input class="form-inp" id="background" type="text" placeholder="e.g. 15 years in marketing, recently pivoting to UX...">
-    </div><!-- end step1Body -->
   </div>
 
 
@@ -1236,7 +1226,11 @@ function initImport() {
 }
 
 function showFullImport(p) {
-  // Populate data first — nothing moves, everything stays in DOM
+  document.getElementById('step1Title').textContent = 'Your Imported Career Profile';
+  document.getElementById('step1Sub').textContent = 'Review your roles and experience below before generating your roadmap.';
+  const uploadArea = document.getElementById('resumeUploadArea');
+  if (uploadArea) uploadArea.style.display = 'none';
+
   if (p.roles && p.roles.length) {
     document.getElementById('cpRows').innerHTML = '';
     cpRowCount = 0;
@@ -1247,59 +1241,24 @@ function showFullImport(p) {
       cpAddRow(r.title || '', r.organization || '', yrs, Array.isArray(days)?days:['Mon','Tue','Wed','Thu','Fri'], hpd);
     });
   }
+
   const bg = document.getElementById('background');
   if (bg && p.profileSummary) bg.value = p.profileSummary;
-  cpUpdateSummary();
 
-  // Collapse the body
-  document.getElementById('step1Body').classList.add('collapsed');
-
-  // Build summary line
-  const roleNames = (p.roles||[]).slice(0,3).map(r=>r.title).filter(Boolean).join(' · ');
-  const direction = p.selectedDirection ? ' → ' + p.selectedDirection : '';
-  const summaryText = (roleNames || 'Profile loaded') + direction;
-
-  // Inject summary bar + detail card above step1Body
-  const bar = document.createElement('div');
-  bar.id = 'importSummaryBar';
-  bar.className = 'import-summary-bar';
-  bar.style.cssText = 'background:rgba(46,213,115,0.07);border-color:rgba(46,213,115,0.25);';
-  bar.onclick = function(){ toggleStep1Body('importSummaryBar'); };
-  bar.innerHTML =
-    '<div class="import-summary-bar-left">' +
-      '<div class="import-summary-dot" style="background:var(--green);"></div>' +
-      '<span class="import-summary-source" style="color:var(--green);">Career Assessment</span>' +
-      '<span class="import-summary-text">' + summaryText + '</span>' +
-    '</div>' +
-    '<span class="import-summary-toggle" id="importSummaryToggle">▼ Review / Edit</span>';
-
-  // Detail card (visible when expanded)
+  const card = document.createElement('div');
+  card.className = 'import-card';
+  card.id = 'caImportCard';
   const strengths = (p.crossoverStrengths||[]).slice(0,4).join(' · ');
-  const detail = document.createElement('div');
-  detail.id = 'importDetailCard';
-  detail.style.display = 'none';
-  detail.className = 'import-card';
-  detail.innerHTML =
-    '<div class="import-card-label">Career Assessment Import</div>' +
-    (p.selectedDirection ? '<div class="import-detail"><div class="import-detail-label">Direction</div><div class="import-detail-value">' + p.selectedDirection + '</div></div>' : '') +
+  card.innerHTML =
+    '<div class="import-card-label">Imported from Career Assessment</div>' +
+    '<div class="import-card-title">Your Career Assessment Profile</div>' +
+    '<div class="import-card-body">Your Career Assessment profile has been brought into Roadmap. Your roles and experience are loaded below.</div>' +
+    (p.selectedDirection ? '<div class="import-detail"><div class="import-detail-label">Selected Direction</div><div class="import-detail-value">' + p.selectedDirection + '</div></div>' : '') +
     (strengths ? '<div class="import-detail"><div class="import-detail-label">Crossover Strengths</div><div class="import-detail-value">' + strengths + '</div></div>' : '') +
-    (p.rarityIndex ? '<div class="import-detail"><div class="import-detail-label">Rarity Index</div><div class="import-detail-value">' + p.rarityIndex + '</div></div>' : '') +
-    '<div style="margin-top:10px;"><button class="import-action-btn import-clear-btn" onclick="clearImport()">Clear Import</button></div>';
-
-  document.getElementById('step1Title').textContent = 'Background';
-  document.getElementById('step1Sub').textContent = 'Career Assessment profile loaded.';
-  const step1Card = document.getElementById('step1Card');
-  step1Card.insertBefore(detail, document.getElementById('step1Body'));
-  step1Card.insertBefore(bar, detail);
-}
-
-function toggleStep1Body(barId) {
-  const body = document.getElementById('step1Body');
-  const toggle = document.getElementById('importSummaryToggle');
-  const detail = document.getElementById('importDetailCard');
-  const isCollapsed = body.classList.toggle('collapsed');
-  if (toggle) toggle.textContent = isCollapsed ? '▼ Review / Edit' : '▲ Collapse';
-  if (detail) detail.style.display = isCollapsed ? 'none' : 'block';
+    (p.rarityIndex ? '<div class="import-detail"><div class="import-detail-label">Crossover Rarity Index</div><div class="import-detail-value">' + p.rarityIndex + '</div></div>' : '') +
+    '<div class="import-actions" style="margin-top:12px;"><button class="import-action-btn import-clear-btn" onclick="clearImport()">Clear Import and Upload Resume</button></div>';
+  document.getElementById('step1Card').prepend(card);
+  cpUpdateSummary();
 }
 
 
@@ -1317,47 +1276,52 @@ function showPartialImport(career) {
 
 function showReboundImport(p) {
   if (typeof setMode === 'function') setMode('lp');
+  document.getElementById('step1Title').textContent = 'Imported from Rebound Radar';
+  document.getElementById('step1Sub').textContent = 'Review the opportunity area and background below before building your plan.';
+  const uploadArea = document.getElementById('resumeUploadArea');
+  if (uploadArea) uploadArea.style.display = 'none';
 
-  // Pre-fill background
   const bg = document.getElementById('background');
   if (bg && p.summary) bg.value = p.summary;
 
-  // Collapse body
-  document.getElementById('step1Body').classList.add('collapsed');
-
+  const card = document.createElement('div');
+  card.className = 'rebound-import-card';
+  card.id = 'reboundImportCard';
+  var learnText = (p.learn || []).slice(0,4).map(function(l){ return l.skill || l; }).join(', ');
   var sourceLabel = (p.source === 'military-pathways') ? 'Military Pathways' : 'Rebound Radar';
-  var sourceColor = '#1e90ff';
-  var learnText = (p.learn || []).slice(0,3).map(function(l){ return l.skill || l; }).join(' · ');
-  var summaryText = (p.headline || p.field || 'Opportunity') + (learnText ? ' · ' + learnText : '');
 
-  var bar = document.createElement('div');
-  bar.id = 'importSummaryBar';
-  bar.className = 'import-summary-bar';
-  bar.style.cssText = 'background:rgba(30,144,255,0.07);border-color:rgba(30,144,255,0.25);';
-  bar.onclick = function(){ toggleStep1Body('importSummaryBar'); };
-  bar.innerHTML =
-    '<div class="import-summary-bar-left">' +
-      '<div class="import-summary-dot" style="background:' + sourceColor + ';"></div>' +
-      '<span class="import-summary-source" style="color:' + sourceColor + ';">' + sourceLabel + '</span>' +
-      '<span class="import-summary-text">' + summaryText + '</span>' +
-    '</div>' +
-    '<span class="import-summary-toggle" id="importSummaryToggle">▼ Review / Edit</span>';
+  var labelDiv = document.createElement('div');
+  labelDiv.style.cssText = 'font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#1e90ff;margin-bottom:6px;';
+  labelDiv.textContent = 'Imported from ' + sourceLabel;
 
-  var detail = document.createElement('div');
-  detail.id = 'importDetailCard';
-  detail.style.cssText = 'display:none;background:rgba(30,144,255,0.07);border:1px solid rgba(30,144,255,0.2);border-radius:10px;padding:14px 16px;margin-bottom:12px;';
-  detail.innerHTML =
-    '<div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:' + sourceColor + ';margin-bottom:8px;">' + sourceLabel + ' Import</div>' +
-    '<div style="font-size:15px;font-family:'Bebas Neue',sans-serif;color:#E8E8F0;margin-bottom:6px;">' + (p.headline || p.field || 'Opportunity') + '</div>' +
-    (learnText ? '<div style="font-size:12px;color:#888899;margin-bottom:8px;"><strong style="color:#E8E8F0;">Learning Areas:</strong> ' + learnText + '</div>' : '') +
-    '<button onclick="clearReboundImport()" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:5px;border:1px solid rgba(30,144,255,0.3);color:#888899;background:transparent;cursor:pointer;margin-top:4px;">Clear Import</button>';
+  var titleDiv = document.createElement('div');
+  titleDiv.style.cssText = 'font-size:15px;font-family:"Bebas Neue",sans-serif;letter-spacing:1px;color:#E8E8F0;margin-bottom:8px;';
+  titleDiv.textContent = p.headline || p.field || 'Rebound Opportunity';
 
-  document.getElementById('step1Title').textContent = 'Background';
-  document.getElementById('step1Sub').textContent = sourceLabel + ' profile loaded.';
-  var step1Card = document.getElementById('step1Card');
-  step1Card.insertBefore(detail, document.getElementById('step1Body'));
-  step1Card.insertBefore(bar, detail);
+  var bodyDiv = document.createElement('div');
+  bodyDiv.style.cssText = 'font-size:13px;color:#888899;line-height:1.7;margin-bottom:10px;';
+  bodyDiv.textContent = 'We brought over the opportunity area and available background. Review it below before building your plan.';
+
+  var learnDiv = null;
+  if (learnText) {
+    learnDiv = document.createElement('div');
+    learnDiv.style.cssText = 'font-size:12px;color:#E8E8F0;margin-bottom:8px;';
+    learnDiv.innerHTML = '<strong>Recommended Learning Areas:</strong> ' + learnText;
+  }
+
+  var clearBtn = document.createElement('button');
+  clearBtn.textContent = 'Clear Import';
+  clearBtn.style.cssText = 'font-family:"DM Mono",monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:5px;border:1px solid rgba(30,144,255,0.3);color:#888899;background:transparent;cursor:pointer;margin-top:4px;';
+  clearBtn.onclick = clearReboundImport;
+
+  card.appendChild(labelDiv);
+  card.appendChild(titleDiv);
+  card.appendChild(bodyDiv);
+  if (learnDiv) card.appendChild(learnDiv);
+  card.appendChild(clearBtn);
+  document.getElementById('step1Card').prepend(card);
 }
+
 
 function showReboundPartial() {
   if (typeof setMode === 'function') setMode('lp');
@@ -1378,8 +1342,10 @@ function showReboundPartial() {
 function clearReboundImport() {
   reboundImportPayload = null;
   try { localStorage.removeItem('landorsCurveReboundRoadmapHandoff'); } catch(e) {}
-  ['importSummaryBar','importDetailCard'].forEach(function(id){ var el=document.getElementById(id); if(el) el.remove(); });
-  document.getElementById('step1Body').classList.remove('collapsed');
+  const card = document.getElementById('reboundImportCard');
+  if (card) card.remove();
+  const uploadArea = document.getElementById('resumeUploadArea');
+  if (uploadArea) uploadArea.style.display = 'block';
   document.getElementById('step1Title').textContent = 'Your Background';
   document.getElementById('step1Sub').textContent = 'Upload your resume or describe your current experience and goals';
   const bg = document.getElementById('background');
@@ -1390,8 +1356,10 @@ function clearImport() {
   if (!confirm('This will remove the imported Career Assessment profile from this Roadmap session. Continue?')) return;
   caImportPayload = null;
   try { sessionStorage.removeItem('ca_handoff'); localStorage.removeItem('ca_handoff'); } catch(e) {}
-  ['importSummaryBar','importDetailCard','caImportCard','partialImportCard'].forEach(function(id){ var el=document.getElementById(id); if(el) el.remove(); });
-  document.getElementById('step1Body').classList.remove('collapsed');
+  const card = document.getElementById('caImportCard') || document.getElementById('partialImportCard');
+  if (card) card.remove();
+  const uploadArea = document.getElementById('resumeUploadArea');
+  if (uploadArea) uploadArea.style.display = 'block';
   document.getElementById('step1Title').textContent = 'Your Background';
   document.getElementById('step1Sub').textContent = 'Upload your resume or describe your current experience and goals';
   document.getElementById('cpRows').innerHTML = '';

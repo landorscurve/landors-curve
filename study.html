@@ -722,10 +722,39 @@ async function run() {
   const roles = cpGetRoles();
   const bgField = document.getElementById('background')?.value.trim() || '';
   let bg = extractedText || bgField;
+
+  // ── Pull background from handoff payloads if field is empty ──────────────
+  if (!bg && caImportPayload) {
+    if (caImportPayload.resumeText) {
+      bg = caImportPayload.resumeText;
+    } else {
+      const parts = [];
+      if (caImportPayload.profileSummary) parts.push(caImportPayload.profileSummary);
+      if (caImportPayload.resumeHandoffSummary) parts.push(caImportPayload.resumeHandoffSummary);
+      if (caImportPayload.roles && caImportPayload.roles.length) {
+        parts.push(caImportPayload.roles.map(r => r.title + (r.years ? ' - ' + r.years + ' years' : '')).join('\n'));
+      }
+      if (caImportPayload.crossoverStrengths && caImportPayload.crossoverStrengths.length) {
+        parts.push(caImportPayload.crossoverStrengths.join(', '));
+      }
+      if (caImportPayload.summary) parts.push(caImportPayload.summary);
+      if (caImportPayload.analysisSummary) parts.push(caImportPayload.analysisSummary);
+      bg = parts.join('\n\n');
+    }
+  }
+  if (!bg && reboundImportPayload) {
+    const p = reboundImportPayload;
+    const parts = [];
+    if (p.summary) parts.push(p.summary);
+    if (p.field)   parts.push('Field: ' + p.field);
+    if (p.headline) parts.push(p.headline);
+    bg = parts.join('\n\n');
+  }
+
   if (!bg && roles.length) {
     bg = roles.map(r=>r.title+(r.org?' at '+r.org:'')+(r.years?' ('+r.years+' yrs, '+r.expertise+')':'')).join('; ');
   }
-  if (!bg && !roles.length) { showErr('Please add your background in Step 1.'); return; }
+  if (!bg && !roles.length) { showErr('Please add your background in Step 1 or import from another tool.'); return; }
   if (!currentMode) { showErr('Please choose a mode: Find Job Paths or Build a Skill Plan.'); return; }
 
   document.getElementById('errBox').classList.remove('show');
@@ -756,6 +785,17 @@ async function run() {
     budget: chipState.budget || 'low-cost',
     goal: chipState.goal || 'get hired',
     careerShiftPreference: studyShiftPreference,
+    // Pass handoff context directly so API can use it
+    caImport: caImportPayload ? {
+      selectedDirection: caImportPayload.selectedDirection,
+      crossoverStrengths: caImportPayload.crossoverStrengths,
+      rarityIndex: caImportPayload.rarityIndex,
+      insight: caImportPayload.insight,
+      roles: (caImportPayload.roles || []).slice(0, 6),
+      profileSummary: caImportPayload.profileSummary,
+      resumeHandoffSummary: caImportPayload.resumeHandoffSummary,
+      analysisSummary: caImportPayload.analysisSummary,
+    } : null,
   };
 
   try {

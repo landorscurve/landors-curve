@@ -671,7 +671,7 @@ async function runAnalysis() {
     clearInterval(msgInt);
     document.getElementById('loadBox').classList.remove('show');
     if (!res.ok || data.error) {
-      showErr(data.error || 'Analysis failed. Please try again.');
+      showErr(typeof data.error === 'string' ? data.error : 'Analysis failed. Please try again.');
       return;
     }
     lastResult = data;
@@ -738,11 +738,11 @@ function renderResults(r) {
 
   // Future-proof options
   document.getElementById('futureOptionsEl').innerHTML = (r.futureProofOptions || []).map(function(f) {
-    var blocks = (f.buildingBlocks || []).map(function(b){ return '<span class="skill-tag">' + b + '</span>'; }).join('');
+    var title = f.path || f.title || 'Career Path';
+    var desc  = f.why  || f.rationale || '';
     return '<div class="future-card">'
-      + '<div class="future-title">' + f.title + '</div>'
-      + '<div class="future-rationale">' + (f.rationale || '') + '</div>'
-      + (blocks ? '<div class="tags-wrap">' + blocks + '</div>' : '')
+      + '<div class="future-title">' + title + '</div>'
+      + '<div class="future-rationale">' + desc + '</div>'
       + '</div>';
   }).join('');
 
@@ -931,7 +931,7 @@ function clearErr() {
 }
 function showSuccess(msg) {
   var el = document.getElementById('dropZone');
-  el.innerHTML = '<div style="font-size:13px;color:var(--green);">Resume loaded. ' + msg + '</div>';
+  el.innerHTML = '<div style="font-size:13px;color:var(--green);">' + msg + '</div>';
 }
 </script>
 </body>

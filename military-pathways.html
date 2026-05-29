@@ -645,6 +645,10 @@ async function runAnalysis() {
   clearErr();
   document.getElementById('loadBox').classList.add('show');
   document.getElementById('resultsArea').classList.remove('show');
+  // Lock shift buttons and analyze button while running
+  document.querySelectorAll('.preset-btn').forEach(function(b){ b.disabled = true; b.style.opacity = '0.4'; b.style.cursor = 'not-allowed'; });
+  var analyzeBtn = document.querySelector('.btn-primary[onclick="runAnalysis()"]');
+  if (analyzeBtn) { analyzeBtn.disabled = true; analyzeBtn.style.opacity = '0.5'; }
 
   // Cycle loading messages
   var msgIdx = 0;
@@ -671,14 +675,21 @@ async function runAnalysis() {
     clearInterval(msgInt);
     document.getElementById('loadBox').classList.remove('show');
     if (!res.ok || data.error) {
+      document.querySelectorAll('.preset-btn').forEach(function(b){ b.disabled = false; b.style.opacity = ''; b.style.cursor = ''; });
+      if (analyzeBtn) { analyzeBtn.disabled = false; analyzeBtn.style.opacity = ''; }
       showErr(typeof data.error === 'string' ? data.error : 'Analysis failed. Please try again.');
       return;
     }
+    // Unlock buttons
+    document.querySelectorAll('.preset-btn').forEach(function(b){ b.disabled = false; b.style.opacity = ''; b.style.cursor = ''; });
+    if (analyzeBtn) { analyzeBtn.disabled = false; analyzeBtn.style.opacity = ''; }
     lastResult = data;
     renderResults(data);
   } catch(e) {
     clearInterval(msgInt);
     document.getElementById('loadBox').classList.remove('show');
+    document.querySelectorAll('.preset-btn').forEach(function(b){ b.disabled = false; b.style.opacity = ''; b.style.cursor = ''; });
+    if (analyzeBtn) { analyzeBtn.disabled = false; analyzeBtn.style.opacity = ''; }
     showErr('Could not reach the analysis service. Please try again.');
   }
 }

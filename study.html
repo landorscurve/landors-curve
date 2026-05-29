@@ -761,8 +761,6 @@ async function run() {
   document.getElementById('resBox').classList.remove('show');
   document.getElementById('loadBox').classList.add('show');
   document.getElementById('buildBtn').disabled = true;
-  // Lock shift preference buttons while running
-  document.querySelectorAll('#rs-conservative,#rs-moderate,#rs-aggressive,#rs-reinvention').forEach(function(b){ b.disabled=true; b.style.opacity='0.4'; b.style.cursor='not-allowed'; });
 
   const msgs = currentMode==='cm' ? CM_MSGS : LP_MSGS;
   let mi=0;
@@ -809,7 +807,6 @@ async function run() {
     clearInterval(msgInt);
     document.getElementById('loadBox').classList.remove('show');
     document.getElementById('buildBtn').disabled = false;
-    document.querySelectorAll('#rs-conservative,#rs-moderate,#rs-aggressive,#rs-reinvention').forEach(function(b){ b.disabled=false; b.style.opacity=''; b.style.cursor=''; });
     if(!res.ok){const e=await res.json();throw new Error(e.error||'Server error');}
     const r = await res.json();
     renderResults(r);
@@ -817,7 +814,6 @@ async function run() {
     clearInterval(msgInt);
     document.getElementById('loadBox').classList.remove('show');
     document.getElementById('buildBtn').disabled = false;
-    document.querySelectorAll('#rs-conservative,#rs-moderate,#rs-aggressive,#rs-reinvention').forEach(function(b){ b.disabled=false; b.style.opacity=''; b.style.cursor=''; });
     showErr('We had trouble building your results. Please try again.');
   }
 }

@@ -60,6 +60,9 @@ body{background:#050505;color:var(--text);font-family:'DM Sans',sans-serif;min-h
 .hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px;}
 .btn-primary{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:12px 24px;border-radius:8px;background:var(--gold);color:#000;border:none;cursor:pointer;font-weight:600;transition:opacity 0.2s;text-decoration:none;display:inline-block;}
 .btn-primary:hover{opacity:0.85;}
+.preset-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:8px 14px;border-radius:6px;border:1px solid var(--border);color:var(--muted);background:transparent;cursor:pointer;transition:all 0.18s;}
+.preset-btn:hover{border-color:rgba(240,165,0,0.4);color:var(--gold);}
+.preset-btn.active{background:rgba(240,165,0,0.1);border-color:var(--gold);color:var(--gold);}
 .btn-secondary{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:12px 24px;border-radius:8px;background:transparent;color:var(--gold);border:1px solid rgba(240,165,0,0.35);cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block;}
 .btn-secondary:hover{background:rgba(240,165,0,0.06);}
 
@@ -369,6 +372,18 @@ body{background:#050505;color:var(--text);font-family:'DM Sans',sans-serif;min-h
       <textarea class="form-textarea" id="bgTextarea" placeholder="Paste your resume, describe your military experience, or list key responsibilities and accomplishments..." style="min-height:120px;"></textarea>
     </div>
 
+    <!-- CAREER SHIFT PREFERENCE -->
+    <div style="margin-bottom:18px;padding:16px 18px;background:var(--panel2);border:1px solid var(--border);border-radius:10px;">
+      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);opacity:0.8;margin-bottom:10px;">How far do you want to transition?</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+        <button class="preset-btn" id="mil-shift-conservative" onclick="setMilShift('conservative')">Direct equivalent</button>
+        <button class="preset-btn active" id="mil-shift-moderate" onclick="setMilShift('moderate')">Adjacent roles</button>
+        <button class="preset-btn" id="mil-shift-aggressive" onclick="setMilShift('aggressive')">Major pivot</button>
+        <button class="preset-btn" id="mil-shift-reinvention" onclick="setMilShift('reinvention')">Full reinvention</button>
+      </div>
+      <div id="mil-shift-desc" style="font-size:11px;color:var(--muted);line-height:1.6;">Recommend equivalent and adjacent civilian roles. Some stretch paths labeled.</div>
+    </div>
+
     <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
       <button class="btn-primary" onclick="runAnalysis()">Analyze Military Experience</button>
       <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);opacity:0.5;">Results appear below in 10-20 seconds</span>
@@ -523,6 +538,24 @@ if(typeof pdfjsLib!=='undefined'){pdfjsLib.GlobalWorkerOptions.workerSrc='https:
 
 // ── STATE ─────────────────────────────────────────────────────────────────
 let lastResult = null;
+let milShiftPreference = 'moderate'; // conservative | moderate | aggressive | reinvention
+
+const MIL_SHIFT_DESCS = {
+  conservative: 'Recommend direct civilian equivalents of your military role. Minimal retraining paths.',
+  moderate:     'Recommend equivalent and adjacent civilian roles. Some stretch paths labeled.',
+  aggressive:   'Show broader civilian options including significant pivots. Stretch paths ranked higher.',
+  reinvention:  'Show all paths including major career reinvention. Everything labeled honestly.'
+};
+
+function setMilShift(key) {
+  milShiftPreference = key;
+  ['conservative','moderate','aggressive','reinvention'].forEach(function(k) {
+    var btn = document.getElementById('mil-shift-' + k);
+    if (btn) btn.classList.toggle('active', k === key);
+  });
+  var desc = document.getElementById('mil-shift-desc');
+  if (desc) desc.textContent = MIL_SHIFT_DESCS[key];
+}
 let extractedResume = '';
 
 const CODE_TYPES = {
@@ -630,14 +663,15 @@ async function runAnalysis() {
         yearsExp: years, certifications: certs,
         clearance: clearance || undefined,
         resumeText: resume.slice(0, 6000),
-        background: bg.slice(0, 3000)
+        background: bg.slice(0, 3000),
+        careerShiftPreference: milShiftPreference
       })
     });
     var data = await res.json();
     clearInterval(msgInt);
     document.getElementById('loadBox').classList.remove('show');
     if (!res.ok || data.error) {
-      showErr(data.error || 'Analysis failed. Please try again.');
+      showErr(typeof data.error === 'string' ? data.error : 'Analysis failed. Please try again.');
       return;
     }
     lastResult = data;
@@ -704,11 +738,11 @@ function renderResults(r) {
 
   // Future-proof options
   document.getElementById('futureOptionsEl').innerHTML = (r.futureProofOptions || []).map(function(f) {
-    var blocks = (f.buildingBlocks || []).map(function(b){ return '<span class="skill-tag">' + b + '</span>'; }).join('');
+    var title = f.path || f.title || 'Career Path';
+    var desc  = f.why  || f.rationale || '';
     return '<div class="future-card">'
-      + '<div class="future-title">' + f.title + '</div>'
-      + '<div class="future-rationale">' + (f.rationale || '') + '</div>'
-      + (blocks ? '<div class="tags-wrap">' + blocks + '</div>' : '')
+      + '<div class="future-title">' + title + '</div>'
+      + '<div class="future-rationale">' + desc + '</div>'
       + '</div>';
   }).join('');
 
@@ -897,7 +931,7 @@ function clearErr() {
 }
 function showSuccess(msg) {
   var el = document.getElementById('dropZone');
-  el.innerHTML = '<div style="font-size:13px;color:var(--green);">Resume loaded. ' + msg + '</div>';
+  el.innerHTML = '<div style="font-size:13px;color:var(--green);">' + msg + '</div>';
 }
 </script>
 </body>

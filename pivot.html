@@ -812,7 +812,7 @@ function exportToStudy() {
   }
 
   const url = topSkill ? '/study?career=' + encodeURIComponent(topSkill) + '&ca_import=1' : '/study?ca_import=1';
-  window.open(url, '_blank', 'noopener,noreferrer');
+  window.open(url, '_blank');
 }
 
 addRow('', '', ['Mon','Tue','Wed','Thu','Fri'], 8);

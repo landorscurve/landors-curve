@@ -860,7 +860,7 @@ function sendToTool(handoffType) {
         exportedAt: Date.now()
       }));
     } catch(e) {}
-    window.open('/?preset=military', '_blank', 'noopener,noreferrer');
+    window.open('/?preset=military', '_blank');
     return;
   }
 
@@ -876,7 +876,7 @@ function sendToTool(handoffType) {
         exportedAt: Date.now()
       }));
     } catch(e) {}
-    window.open('/study?rebound_import=1', '_blank', 'noopener,noreferrer');
+    window.open('/study?rebound_import=1', '_blank');
     return;
   }
 
@@ -894,7 +894,7 @@ function sendToTool(handoffType) {
     }));
   } catch(e) {}
   var modeParam = mode === 'target-job' ? 'target-job' : 'future-direction';
-  window.open('/target-resume?mode=' + modeParam, '_blank', 'noopener,noreferrer');
+  window.open('/target-resume?mode=' + modeParam, '_blank');
 }
 
 // ── CODE EXPLORER ─────────────────────────────────────────────────────────

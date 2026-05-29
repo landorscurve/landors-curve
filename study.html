@@ -803,25 +803,41 @@ async function run() {
     } : null,
   };
 
+  const unlock = () => {
+    clearInterval(msgInt);
+    document.getElementById('loadBox').classList.remove('show');
+    document.getElementById('buildBtn').disabled = false;
+    document.querySelectorAll('#rs-conservative,#rs-moderate,#rs-aggressive,#rs-reinvention').forEach(function(b){ b.disabled=false; b.style.opacity=''; b.style.cursor=''; });
+  };
+
   try {
     const res = await fetch('/api/pivot-tool', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify(payload)
     });
-    clearInterval(msgInt);
-    document.getElementById('loadBox').classList.remove('show');
-    document.getElementById('buildBtn').disabled = false;
-    document.querySelectorAll('#rs-conservative,#rs-moderate,#rs-aggressive,#rs-reinvention').forEach(function(b){ b.disabled=false; b.style.opacity=''; b.style.cursor=''; });
-    if(!res.ok){const e=await res.json();throw new Error(e.error||'Server error');}
-    const r = await res.json();
+    unlock();
+    if(!res.ok){
+      let errMsg = 'Server error ' + res.status;
+      try { const e = await res.json(); errMsg = e.error || errMsg; } catch(pe){}
+      showErr('API error: ' + errMsg);
+      return;
+    }
+    let r;
+    try {
+      r = await res.json();
+    } catch(je) {
+      showErr('Could not read response from server. Please try again. (parse error)');
+      return;
+    }
+    if (!r || typeof r !== 'object') {
+      showErr('Unexpected response format. Please try again.');
+      return;
+    }
     renderResults(r);
   } catch(err) {
-    clearInterval(msgInt);
-    document.getElementById('loadBox').classList.remove('show');
-    document.getElementById('buildBtn').disabled = false;
-    document.querySelectorAll('#rs-conservative,#rs-moderate,#rs-aggressive,#rs-reinvention').forEach(function(b){ b.disabled=false; b.style.opacity=''; b.style.cursor=''; });
-    showErr('We had trouble building your results. Please try again.');
+    unlock();
+    showErr('Connection error: ' + (err.message || 'Please try again.'));
   }
 }
 

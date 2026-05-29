@@ -1185,6 +1185,7 @@ function initImport() {
   const hasImportFlag = params.get('ca_import') === '1';
   const hasReboundFlag = params.get('rebound_import') === '1';
   const careerParam = params.get('career');
+  console.log('[initImport] flags:', {hasImportFlag, hasReboundFlag, careerParam});
 
   // ── REBOUND RADAR IMPORT ──────────────────────────────────────────────
   if (hasReboundFlag) {
@@ -1217,9 +1218,18 @@ function initImport() {
     }
   } catch(e) {}
 
+  console.log('[initImport] payload:', payload ? {source: payload.source, roles: (payload.roles||[]).length, exportedAt: payload.exportedAt} : null);
   if (payload && payload.source === 'career-assessment') {
     caImportPayload = payload;
-    showFullImport(payload);
+    try {
+      showFullImport(payload);
+      console.log('[showFullImport] completed OK');
+    } catch(e) {
+      console.error('[showFullImport] CRASHED:', e.message, e.stack);
+      // Fallback — just show the upload area normally
+      const uploadArea = document.getElementById('resumeUploadArea');
+      if (uploadArea) uploadArea.style.display = 'block';
+    }
   } else if (careerParam) {
     showPartialImport(decodeURIComponent(careerParam));
   }

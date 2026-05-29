@@ -373,7 +373,7 @@ body::before { display: none; }
     <a href="/how-to-use">How to Use</a>
     <div class="nav-dropdown" id="toolsDropdown">
       <button class="nav-dropdown-btn" onclick="toggleDropdown()">Tools
-        <svg width="10" height="6" viewBox="0 0 10 6" fill="none" style="margin-left:4px;"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       </button>
       <div class="nav-dropdown-menu">
         <a href="/#analyzer">Analyzer</a>
@@ -483,6 +483,23 @@ body::before { display: none; }
     <a href="/sources#source-layers" style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--muted);text-decoration:none;opacity:0.55;display:inline-block;margin-top:10px;">About these sources →</a>
   </div>
 
+  <!-- CAREER SHIFT PREFERENCE -->
+  <div class="preset-wrap" style="margin-top:12px;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+      <div class="preset-wrap-label" style="margin-bottom:0;">Career Shift Preference</div>
+      <div style="position:relative;display:inline-block;">
+        <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);cursor:pointer;opacity:0.5;border:1px solid var(--border);border-radius:50%;width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;" onmouseenter="document.getElementById('shiftTooltip').style.display='block'" onmouseleave="document.getElementById('shiftTooltip').style.display='none'">?</span>
+        <div id="shiftTooltip" style="display:none;position:absolute;left:24px;top:-4px;width:260px;background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:11px;color:var(--muted);line-height:1.6;z-index:50;">Choose how far the system should stretch beyond your current experience when recommending career paths.</div>
+      </div>
+    </div>
+    <div class="preset-row">
+      <button class="preset-btn active" id="shift-conservative" onclick="setShift('conservative')">Conservative</button>
+      <button class="preset-btn" id="shift-moderate" onclick="setShift('moderate')">Moderate</button>
+      <button class="preset-btn" id="shift-aggressive" onclick="setShift('aggressive')">Aggressive</button>
+      <button class="preset-btn" id="shift-reinvention" onclick="setShift('reinvention')">Reinvention</button>
+    </div>
+    <div id="shift-desc" style="font-size:12px;color:var(--muted);line-height:1.6;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);">Prioritize roles closely adjacent to existing experience. Avoid major retraining unless clearly labeled optional.</div>
+  </div>
 
   <div class="sources-row" id="sourcesRow">
     <span class="src-badge" id="sb-onet">O*NET</span>
@@ -763,6 +780,22 @@ body::before { display: none; }
 <script>
 const SRCS = ['sb-onet','sb-bls','sb-brookings','sb-gs','sb-mckinsey','sb-wef','sb-linkedin','sb-oecd'];
 let currentPreset = 'balanced';
+let careerShiftPreference = 'conservative'; // conservative | moderate | aggressive | reinvention
+
+const SHIFT_DESCS = {
+  conservative: 'Prioritize roles closely adjacent to existing experience. Avoid major retraining unless clearly labeled optional.',
+  moderate:     'Prioritize related roles that may require some retraining, certification, or skill refresh.',
+  aggressive:   'Allow larger pivots when the upside is strong. Stretch paths are clearly labeled.',
+  reinvention:  'Allow major career changes, new industries, and deep upskilling. All paths shown with labels.'
+};
+
+function setShift(key) {
+  careerShiftPreference = key;
+  ['conservative','moderate','aggressive','reinvention'].forEach(k => {
+    document.getElementById('shift-' + k).classList.toggle('active', k === key);
+  });
+  document.getElementById('shift-desc').textContent = SHIFT_DESCS[key];
+}
 
 const PRESETS = {
   balanced:     { label:'Balanced',          sources:['O*NET','BLS','Brookings','Goldman Sachs','McKinsey','WEF','LinkedIn Workforce Reports','OECD'], badges:['sb-onet','sb-bls','sb-brookings','sb-gs','sb-mckinsey','sb-wef','sb-linkedin','sb-oecd'] },
@@ -837,7 +870,7 @@ async function analyze() {
     const res = await fetch('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ profession: prof, preset: currentPreset, sources: PRESETS[currentPreset].sources })
+      body: JSON.stringify({ profession: prof, preset: currentPreset, sources: PRESETS[currentPreset].sources, careerShiftPreference })
     });
     clearInterval(msgInt); stopSrc();
     document.getElementById('loadBox').classList.remove('show');

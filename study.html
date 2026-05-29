@@ -431,6 +431,18 @@ input[type=file]#pivotFile{display:none;}
       </div>
     </div>
     <div class="mode-helper">Not sure which to choose? Start with Find Job Paths. If those options do not feel right, switch to Build a Skill Plan for a longer-term approach.</div>
+
+    <!-- CAREER SHIFT PREFERENCE -->
+    <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border);">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);opacity:0.8;margin-bottom:10px;">How much change are you willing to make?</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="preset-btn" id="rs-conservative" onclick="setStudyShift('conservative')">Minimal change</button>
+        <button class="preset-btn active" id="rs-moderate" onclick="setStudyShift('moderate')">Some retraining</button>
+        <button class="preset-btn" id="rs-aggressive" onclick="setStudyShift('aggressive')">Major pivot</button>
+        <button class="preset-btn" id="rs-reinvention" onclick="setStudyShift('reinvention')">Complete reinvention</button>
+      </div>
+      <div id="rs-shift-desc" style="font-size:12px;color:var(--muted);margin-top:8px;line-height:1.6;">Prioritize related roles that may require some retraining or certification.</div>
+    </div>
   </div>
 
   <!-- STEP 4: MODE-SPECIFIC FIELDS -->
@@ -626,6 +638,24 @@ input[type=file]#pivotFile{display:none;}
 if(typeof pdfjsLib!=='undefined'){pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';}
 
 let currentMode = '';
+let studyShiftPreference = 'moderate'; // conservative | moderate | aggressive | reinvention
+
+const STUDY_SHIFT_MAP = {
+  conservative: { label: 'Minimal change',        desc: 'Focus on roles closely adjacent to your existing experience with minimal retraining.' },
+  moderate:     { label: 'Some retraining',        desc: 'Prioritize related roles that may require some retraining or certification.' },
+  aggressive:   { label: 'Major pivot',            desc: 'Allow larger career pivots. Stretch paths will be clearly labeled.' },
+  reinvention:  { label: 'Complete reinvention',   desc: 'Open to major career changes, new industries, and significant upskilling.' }
+};
+
+function setStudyShift(key) {
+  studyShiftPreference = key;
+  ['conservative','moderate','aggressive','reinvention'].forEach(k => {
+    var btn = document.getElementById('rs-' + k);
+    if (btn) btn.classList.toggle('active', k === key);
+  });
+  var desc = document.getElementById('rs-shift-desc');
+  if (desc) desc.textContent = STUDY_SHIFT_MAP[key].desc;
+}
 let extractedText = '';
 const chipState = {};
 
@@ -720,6 +750,7 @@ async function run() {
     hoursPerWeek: parseInt(document.getElementById('hoursSlider').value) || 8,
     budget: chipState.budget || 'low-cost',
     goal: chipState.goal || 'get hired',
+    careerShiftPreference: studyShiftPreference,
   };
 
   try {

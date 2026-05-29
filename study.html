@@ -1226,11 +1226,11 @@ function initImport() {
 }
 
 function showFullImport(p) {
-  // Hide upload area — we have data
+  // Hide upload area
   const uploadArea = document.getElementById('resumeUploadArea');
   if (uploadArea) uploadArea.style.display = 'none';
 
-  // Populate CP module with imported roles (into the collapsible section)
+  // Populate CP module with imported roles — elements stay in place
   if (p.roles && p.roles.length) {
     document.getElementById('cpRows').innerHTML = '';
     cpRowCount = 0;
@@ -1243,50 +1243,43 @@ function showFullImport(p) {
   }
 
   // Pre-fill background with summary
-  const bg = document.getElementById('background');
-  if (bg && p.profileSummary) bg.value = p.profileSummary;
+  const bgEl = document.getElementById('background');
+  if (bgEl && p.profileSummary) bgEl.value = p.profileSummary;
 
-  // Build summary line for the bar
+  // Hide the busy inner content — just toggle visibility, never move DOM nodes
+  const cpModule = document.querySelector('.cp-module');
+  const bgLabel = document.querySelector('#step1Card .form-label');
+  const bgInput = document.getElementById('background');
+  const orDividers = document.querySelectorAll('#step1Card .or-divider');
+  const step1Inner = [cpModule, bgLabel, bgInput, ...orDividers].filter(Boolean);
+  step1Inner.forEach(el => { el.style.display = 'none'; el.dataset.importHidden = '1'; });
+
+  // Build summary bar
   const roleNames = (p.roles||[]).slice(0,3).map(r=>r.title).filter(Boolean).join(' · ');
   const direction = p.selectedDirection ? ' → ' + p.selectedDirection : '';
   const barSummary = (roleNames || 'Profile loaded') + direction;
-
-  // Build the collapsible wrapper around the whole step1 inner content
-  const step1Card = document.getElementById('step1Card');
-
-  // Move existing CP module + background field into a collapsible div
-  const cpModule = step1Card.querySelector('.cp-module');
-  const orDividers = step1Card.querySelectorAll('.or-divider');
-  const bgLabel = step1Card.querySelector('.form-label');
-  const bgInput = document.getElementById('background');
-
-  const collapsible = document.createElement('div');
-  collapsible.className = 'import-collapsible';
-  collapsible.id = 'importCollapsible';
-
-  // Detail card inside collapsible
   const strengths = (p.crossoverStrengths||[]).slice(0,4).join(' · ');
-  const detailCard = document.createElement('div');
-  detailCard.className = 'import-card';
-  detailCard.style.marginBottom = '16px';
-  detailCard.innerHTML =
-    '<div class="import-card-label">Career Assessment Import</div>' +
-    (p.selectedDirection ? '<div class="import-detail" style="margin-bottom:8px;"><div class="import-detail-label">Selected Direction</div><div class="import-detail-value">' + p.selectedDirection + '</div></div>' : '') +
-    (strengths ? '<div class="import-detail" style="margin-bottom:8px;"><div class="import-detail-label">Crossover Strengths</div><div class="import-detail-value">' + strengths + '</div></div>' : '') +
-    (p.rarityIndex ? '<div class="import-detail" style="margin-bottom:8px;"><div class="import-detail-label">Rarity Index</div><div class="import-detail-value">' + p.rarityIndex + '</div></div>' : '') +
-    '<div style="margin-top:10px;"><button class="import-action-btn import-clear-btn" onclick="clearImport()">Clear Import</button></div>';
 
-  collapsible.appendChild(detailCard);
-  if (cpModule) collapsible.appendChild(cpModule);
-  orDividers.forEach(d => collapsible.appendChild(d));
-  if (bgLabel) collapsible.appendChild(bgLabel);
-  if (bgInput) collapsible.appendChild(bgInput);
-
-  // Update step header to minimal
   document.getElementById('step1Title').textContent = 'Background';
   document.getElementById('step1Sub').textContent = 'Career Assessment profile loaded.';
 
-  // Build the import bar
+  const step1Card = document.getElementById('step1Card');
+
+  // Collapsible detail panel — inserted before hidden content, never wrapping it
+  const collapsible = document.createElement('div');
+  collapsible.id = 'importCollapsible';
+  collapsible.className = 'import-collapsible';
+  collapsible.innerHTML =
+    '<div class="import-card" style="margin-bottom:16px;">' +
+      '<div class="import-card-label">Career Assessment Import</div>' +
+      (p.selectedDirection ? '<div class="import-detail" style="margin-bottom:8px;"><div class="import-detail-label">Selected Direction</div><div class="import-detail-value">' + p.selectedDirection + '</div></div>' : '') +
+      (strengths ? '<div class="import-detail" style="margin-bottom:8px;"><div class="import-detail-label">Crossover Strengths</div><div class="import-detail-value">' + strengths + '</div></div>' : '') +
+      (p.rarityIndex ? '<div class="import-detail" style="margin-bottom:8px;"><div class="import-detail-label">Rarity Index</div><div class="import-detail-value">' + p.rarityIndex + '</div></div>' : '') +
+    '</div>' +
+    '<div id="importExpandedContent"></div>' +
+    '<div style="margin-top:10px;"><button class="import-action-btn import-clear-btn" onclick="clearImport()">Clear Import</button></div>';
+
+  // Import bar — collapsed by default
   const bar = document.createElement('div');
   bar.className = 'import-bar';
   bar.id = 'importBar';
@@ -1310,6 +1303,10 @@ function toggleImportCollapsible() {
   if (!col) return;
   const isOpen = col.classList.toggle('open');
   if (toggle) toggle.textContent = isOpen ? '▲ Collapse' : '▼ Review / Edit';
+  // Show or re-hide the original CP/background elements
+  document.querySelectorAll('[data-import-hidden]').forEach(function(el) {
+    el.style.display = isOpen ? '' : 'none';
+  });
 }
 
 function showPartialImport(career) {
@@ -1329,47 +1326,43 @@ function showReboundImport(p) {
   const uploadArea = document.getElementById('resumeUploadArea');
   if (uploadArea) uploadArea.style.display = 'none';
 
-  const bg = document.getElementById('background');
-  if (bg && p.summary) bg.value = p.summary;
+  const bgEl = document.getElementById('background');
+  if (bgEl && p.summary) bgEl.value = p.summary;
 
-  const step1Card = document.getElementById('step1Card');
+  // Hide inner elements in place — no DOM moves
+  const cpModule = document.querySelector('.cp-module');
+  const bgLabel = document.querySelector('#step1Card .form-label');
+  const bgInput = document.getElementById('background');
+  const orDividers = document.querySelectorAll('#step1Card .or-divider');
+  [cpModule, bgLabel, bgInput, ...orDividers].filter(Boolean).forEach(function(el){
+    el.style.display = 'none'; el.dataset.importHidden = '1';
+  });
+
   const learnText = (p.learn || []).slice(0,3).map(function(l){ return l.skill || l; }).join(' · ');
   const barSummary = (p.headline || p.field || 'Rebound Opportunity') + (learnText ? ' · ' + learnText : '');
-
-  // Move CP module and background into collapsible
-  const cpModule = step1Card.querySelector('.cp-module');
-  const orDividers = step1Card.querySelectorAll('.or-divider');
-  const bgLabel = step1Card.querySelector('.form-label');
-  const bgInput = document.getElementById('background');
-
-  const collapsible = document.createElement('div');
-  collapsible.className = 'import-collapsible';
-  collapsible.id = 'importCollapsible';
-
-  const detailCard = document.createElement('div');
-  detailCard.style.cssText = 'background:rgba(30,144,255,0.07);border:1px solid rgba(30,144,255,0.2);border-radius:10px;padding:14px 16px;margin-bottom:14px;';
-  detailCard.innerHTML =
-    '<div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#1e90ff;margin-bottom:8px;">Rebound Radar Import</div>' +
-    '<div style="font-size:14px;font-family:'Bebas Neue',sans-serif;color:#E8E8F0;margin-bottom:6px;">' + (p.headline || p.field || 'Rebound Opportunity') + '</div>' +
-    (learnText ? '<div style="font-size:12px;color:#888899;margin-bottom:8px;"><strong style="color:#E8E8F0;">Learning Areas:</strong> ' + learnText + '</div>' : '') +
-    '<button onclick="clearReboundImport()" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:5px;border:1px solid rgba(30,144,255,0.3);color:#888899;background:transparent;cursor:pointer;margin-top:4px;">Clear Import</button>';
-
-  collapsible.appendChild(detailCard);
-  if (cpModule) collapsible.appendChild(cpModule);
-  orDividers.forEach(function(d){ collapsible.appendChild(d); });
-  if (bgLabel) collapsible.appendChild(bgLabel);
-  if (bgInput) collapsible.appendChild(bgInput);
+  var sourceLabel = (p.source === 'military-pathways') ? 'Military Pathways' : 'Rebound Radar';
 
   document.getElementById('step1Title').textContent = 'Background';
-  document.getElementById('step1Sub').textContent = 'Rebound Radar profile loaded.';
+  document.getElementById('step1Sub').textContent = sourceLabel + ' profile loaded.';
+
+  const step1Card = document.getElementById('step1Card');
+
+  const collapsible = document.createElement('div');
+  collapsible.id = 'importCollapsible';
+  collapsible.className = 'import-collapsible';
+  collapsible.innerHTML =
+    '<div style="background:rgba(30,144,255,0.07);border:1px solid rgba(30,144,255,0.2);border-radius:10px;padding:14px 16px;margin-bottom:14px;">' +
+      '<div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#1e90ff;margin-bottom:8px;">' + sourceLabel + ' Import</div>' +
+      '<div style="font-size:14px;font-family:'Bebas Neue',sans-serif;color:#E8E8F0;margin-bottom:6px;">' + (p.headline || p.field || 'Opportunity') + '</div>' +
+      (learnText ? '<div style="font-size:12px;color:#888899;margin-bottom:8px;"><strong style="color:#E8E8F0;">Learning Areas:</strong> ' + learnText + '</div>' : '') +
+      '<button onclick="clearReboundImport()" style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:5px;border:1px solid rgba(30,144,255,0.3);color:#888899;background:transparent;cursor:pointer;margin-top:4px;">Clear Import</button>' +
+    '</div>';
 
   const bar = document.createElement('div');
   bar.className = 'import-bar';
   bar.id = 'importBar';
-  bar.style.borderColor = 'rgba(30,144,255,0.2)';
-  bar.style.background = 'rgba(30,144,255,0.06)';
+  bar.style.cssText = 'border-color:rgba(30,144,255,0.2);background:rgba(30,144,255,0.06);';
   bar.onclick = function(){ toggleImportCollapsible(); };
-  var sourceLabel = (p.source === 'military-pathways') ? 'Military Pathways' : 'Rebound Radar';
   bar.innerHTML =
     '<div class="import-bar-left">' +
       '<div class="import-bar-dot" style="background:#1e90ff;"></div>' +
@@ -1401,8 +1394,14 @@ function showReboundPartial() {
 function clearReboundImport() {
   reboundImportPayload = null;
   try { localStorage.removeItem('landorsCurveReboundRoadmapHandoff'); } catch(e) {}
-  const card = document.getElementById('reboundImportCard');
-  if (card) card.remove();
+  // Remove new bar/collapsible elements
+  ['importBar','importCollapsible','reboundImportCard'].forEach(function(id){
+    var el = document.getElementById(id); if (el) el.remove();
+  });
+  // Restore hidden elements
+  document.querySelectorAll('[data-import-hidden]').forEach(function(el){
+    el.style.display = ''; delete el.dataset.importHidden;
+  });
   const uploadArea = document.getElementById('resumeUploadArea');
   if (uploadArea) uploadArea.style.display = 'block';
   document.getElementById('step1Title').textContent = 'Your Background';
@@ -1415,8 +1414,14 @@ function clearImport() {
   if (!confirm('This will remove the imported Career Assessment profile from this Roadmap session. Continue?')) return;
   caImportPayload = null;
   try { sessionStorage.removeItem('ca_handoff'); localStorage.removeItem('ca_handoff'); } catch(e) {}
-  const card = document.getElementById('caImportCard') || document.getElementById('partialImportCard');
-  if (card) card.remove();
+  // Remove new bar/collapsible elements
+  ['importBar','importCollapsible','caImportCard','partialImportCard'].forEach(function(id){
+    var el = document.getElementById(id); if (el) el.remove();
+  });
+  // Restore hidden elements
+  document.querySelectorAll('[data-import-hidden]').forEach(function(el){
+    el.style.display = ''; delete el.dataset.importHidden;
+  });
   const uploadArea = document.getElementById('resumeUploadArea');
   if (uploadArea) uploadArea.style.display = 'block';
   document.getElementById('step1Title').textContent = 'Your Background';

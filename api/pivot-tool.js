@@ -6,7 +6,20 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { background, years, intent, mode, direction, industry, risk, timeHorizon,
-          target, hoursPerWeek, budget, goal, caImport } = req.body;
+          target, hoursPerWeek, budget, goal, caImport, careerShiftPreference } = req.body;
+
+  // ── CAREER SHIFT PREFERENCE ─────────────────────────────────────────────
+  // Source weighting decides which evidence sources matter.
+  // Transition distance decides how realistic the recommendation is for this user.
+  const shift = careerShiftPreference || 'moderate';
+
+  const SHIFT_ROLE_RULES = {
+    conservative: 'Recommend roles with transitionDistance "low" or "medium" only. Label any "high" distance role as a Stretch Path. Do NOT recommend "extreme" distance roles unless they directly match the user's stated background.',
+    moderate:     'Recommend roles up to transitionDistance "high". Label "extreme" paths clearly as Reinvention Paths requiring significant retraining.',
+    aggressive:   'Recommend roles across all transitionDistance levels. "High" and "extreme" paths must be labeled as stretch or reinvention paths but can rank higher.',
+    reinvention:  'All transitionDistance levels allowed. Even extreme pivots must be labeled honestly. User has chosen major change — honor that with ambitious but honest output.'
+  };
+  const shiftRule = SHIFT_ROLE_RULES[shift] || SHIFT_ROLE_RULES.moderate;
 
   if (!background) return res.status(400).json({ error: 'Background is required' });
   if (!mode) return res.status(400).json({ error: 'Mode is required' });
@@ -23,6 +36,12 @@ export default async function handler(req, res) {
 
   const system = isCM
     ? `You are the Pivot Tool in Career Movement mode for Landors Curve. Your job is to help someone understand which roles they may already be close to based on their existing experience — without requiring major new study, certifications, or a full career reset.
+
+CAREER SHIFT PREFERENCE: ${shift}
+${shiftRule}
+
+Each role in your output must include a "transitionDistance" field: low | medium | high | extreme.
+Roles with high or extreme transitionDistance must include a "pathLabel" field: "Stretch Path" or "Reinvention Path" with a brief reason.
 
 CRITICAL RULES:
 - This tool does not replace a job board. Do not list hundreds of jobs.
@@ -70,6 +89,11 @@ Respond with exactly this JSON:
 Provide exactly 5 strengths and 4 roles. Make the roles varied — at least one obvious adjacent role, one less obvious but logical, one emerging role.`
 
     : `You are the Pivot Tool in Learning Pivot mode for Landors Curve. Your job is to help someone build a realistic study, certification, or portfolio plan for a career transition while maintaining their current work schedule.
+
+CAREER SHIFT PREFERENCE: ${shift}
+${shiftRule}
+
+The learning plan's target role must reflect the user's shift preference. If conservative, prioritize adjacent roles that leverage existing skills. If reinvention, clearly label the gap between current experience and target role.
 
 CRITICAL RULES:
 - Be realistic about timelines given the available study hours per week.

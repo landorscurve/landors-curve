@@ -7,7 +7,20 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { branch, code, militaryTitle, rank, yearsExp, certifications, clearance, resumeText, background } = req.body;
+  const { branch, code, militaryTitle, rank, yearsExp, certifications, clearance, resumeText, background, careerShiftPreference } = req.body;
+
+  // ── CAREER SHIFT PREFERENCE ─────────────────────────────────────────────
+  // Source weighting decides which evidence sources matter.
+  // Transition distance decides how realistic the recommendation is for this user.
+  const shift = careerShiftPreference || 'moderate';
+
+  const MIL_SHIFT_RULES = {
+    conservative: 'Recommend direct civilian equivalent roles first (low transitionDistance). Adjacent roles second. Do NOT recommend major reinvention paths (extreme distance) unless labeled as optional long-term options.',
+    moderate:     'Recommend direct civilian equivalents and adjacent roles. Include some stretch paths (high distance) but label them. Avoid extreme reinvention as primary recommendations.',
+    aggressive:   'Recommend across all transition distances. Clearly label high and extreme distance paths. A veteran wanting an aggressive pivot can see stretch paths ranked higher.',
+    reinvention:  'All paths allowed. Even extreme reinvention paths are shown, but must be labeled: "Major Reinvention: Significant retraining required beyond military-to-civilian translation."'
+  };
+  const shiftRule = MIL_SHIFT_RULES[shift] || MIL_SHIFT_RULES.moderate;
 
   if (!branch && !code && !militaryTitle && !resumeText && !background) {
     return res.status(400).json({ error: 'Please provide at least your branch and occupation code or background.' });
@@ -70,6 +83,13 @@ Respond with exactly this JSON structure:
   "nextSteps": ["Immediate action 1", "Action 2", "Action 3", "Action 4"],
   "resumeHandoffSummary": "2-3 sentence summary of their military background written in civilian-friendly language, suitable for a resume objective or LinkedIn summary."
 }
+
+CAREER SHIFT PREFERENCE: ${shift}
+${shiftRule}
+
+Each civilianMatch must include a "transitionDistance" field: low | medium | high | extreme
+Matches with high or extreme distance must include a "pathLabel" field explaining why it is a stretch or reinvention path.
+Group your civilianMatches by preference: best adjacent paths first, then moderate stretch, then aggressive, then reinvention — unless the user selected reinvention, in which case ambitious paths can appear higher.
 
 Provide 4-5 civilianMatches, 8+ transferableSkills, 3-4 credentialGaps, 4-5 resumeSuggestions, 3 futureProofOptions, 4 nextSteps.
 futureProofScore is 0-100 (higher = more future-proof vs AI/automation).

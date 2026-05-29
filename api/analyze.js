@@ -5,7 +5,44 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  let { profession, preset, sources } = req.body;
+  let { profession, preset, sources, careerShiftPreference } = req.body;
+
+  // ── CAREER SHIFT PREFERENCE ─────────────────────────────────────────────
+  // Source weighting (preset) decides which evidence sources matter.
+  // Transition distance decides how realistic the recommendation is for this user.
+  // These are separate scoring layers — do not conflate them.
+  const shift = careerShiftPreference || 'conservative';
+
+  const SHIFT_INSTRUCTIONS = {
+    conservative: `CAREER SHIFT PREFERENCE: Conservative.
+- Prioritize roles closely adjacent to the user's existing experience.
+- transitionDistance must be "low" or "medium" for top recommendations.
+- If you suggest a "high" or "extreme" distance role, you MUST label it: "Stretch Path: This option requires significant retraining and is not the most direct next step."
+- Do NOT rank high-demand jobs above realistic adjacent jobs simply because of market demand.`,
+
+    moderate: `CAREER SHIFT PREFERENCE: Moderate.
+- Prioritize related roles that may require some retraining or certification.
+- transitionDistance "low", "medium", and some "high" paths are acceptable.
+- Label any "extreme" paths clearly: "Reinvention Path: This option has strong market demand but requires significant retraining."`,
+
+    aggressive: `CAREER SHIFT PREFERENCE: Aggressive.
+- Allow larger pivots when the upside is strong.
+- All transitionDistance levels are acceptable, but "high" and "extreme" paths must be clearly labeled as stretch paths.
+- High laborMarketScore CAN outweigh transitionDistance for aggressive users, but label the path.`,
+
+    reinvention: `CAREER SHIFT PREFERENCE: Reinvention.
+- Allow major career changes, new industries, new credentials, and deep technical upskilling.
+- All transitionDistance levels are shown. Major reinvention paths must still be labeled: "Reinvention Path: Major retraining required."
+- This user has chosen to make a significant change — honor that with ambitious but honest recommendations.`
+  };
+
+  const shiftContext = SHIFT_INSTRUCTIONS[shift] || SHIFT_INSTRUCTIONS.conservative;
+
+  // ── TRANSITION DISTANCE DEFINITIONS ──────────────────────────────────────
+  // low:     Same or closely related field. Existing experience carries directly.
+  // medium:  Different role/industry, but strong transferable skills exist.
+  // high:    Significant retraining, credentialing, or repositioning required.
+  // extreme: Major reinvention. Existing experience helps only indirectly.
   if (!profession) return res.status(400).json({ error: 'Profession is required' });
   profession = profession.trim();
 
@@ -23,6 +60,17 @@ MILITARY TRANSITION CONTEXT: This analysis is for a transitioning service member
 ` : '';
 
   const system = `You are the Landors Curve Job Displacement Analyzer. Analyze any profession or job title entered, even if misspelled or informal — interpret it as the closest real profession and proceed.${militaryContext}
+
+${shiftContext}
+
+TRANSITION DISTANCE SCORING:
+When you generate any career recommendation or pivot suggestion, assign each role a transitionDistance:
+- low: Same or closely related field. Existing experience carries directly.
+- medium: Different role/industry but strong transferable skills exist.
+- high: Significant retraining, credentialing, or repositioning required.
+- extreme: Major reinvention. Existing experience helps only indirectly.
+
+SCORING RULE: A high laborMarketScore must NOT override a poor transitionDistance score unless the user selected aggressive or reinvention. Rank accordingly.
 
 CRITICAL JSON RULES:
 - Respond ONLY with a valid JSON object, nothing else

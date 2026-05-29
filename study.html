@@ -289,17 +289,7 @@ input[type=file]#pivotFile{display:none;}
 .cp-badge-level{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:4px;}
 .cp-add-btn{background:none;border:1px dashed rgba(240,165,0,0.3);border-radius:7px;color:var(--gold);padding:10px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;width:100%;margin-top:4px;transition:all 0.2s;}
 .cp-add-btn:hover{background:rgba(240,165,0,0.06);border-color:var(--gold);}
-.cp-entry--imported{display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:default;}
-.cp-imported-title{flex:1;font-size:13px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.cp-imported-org{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;}
-.cp-imported-field{font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);border:none;background:transparent;width:52px;text-align:center;cursor:pointer;padding:3px 4px;border-radius:4px;outline:none;}
-.cp-imported-field:hover,.cp-imported-field:focus{background:rgba(240,165,0,0.1);border:1px solid rgba(240,165,0,0.3);}
-.cp-imported-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);opacity:0.6;}
-.cp-imported-col{display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;}
-.cp-imported-remove{background:none;border:none;color:var(--muted);font-size:14px;cursor:pointer;padding:2px 6px;border-radius:4px;opacity:0.4;transition:opacity 0.15s;}
-.cp-imported-remove:hover{opacity:1;color:var(--red);}
 .cp-summary{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:8px;padding:6px 10px;background:var(--dark);border-radius:6px;opacity:0.7;}
-
 .limited-warning{background:rgba(240,165,0,0.06);border:1px solid rgba(240,165,0,0.25);border-radius:10px;padding:16px 18px;margin-bottom:14px;display:none;}
 .limited-warning-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--yellow);margin-bottom:6px;}
 .limited-warning-text{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:12px;}
@@ -309,11 +299,7 @@ input[type=file]#pivotFile{display:none;}
 .lw-continue:hover{background:rgba(240,165,0,0.08);}
 .lw-add{color:var(--green);border-color:rgba(46,213,115,0.35);}
 .lw-add:hover{background:rgba(46,213,115,0.08);}
-
-/* SHIFT PREFERENCE BUTTONS */
-.preset-btn{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:8px 14px;border-radius:6px;border:1px solid var(--border);color:var(--muted);background:transparent;cursor:pointer;transition:all 0.18s;}
-.preset-btn:hover{border-color:rgba(240,165,0,0.4);color:var(--gold);}
-.preset-btn.active{background:rgba(240,165,0,0.1);border-color:var(--gold);color:var(--gold);}</style>
+</style>
 </head>
 <body>
 <nav class="nav">
@@ -445,18 +431,6 @@ input[type=file]#pivotFile{display:none;}
       </div>
     </div>
     <div class="mode-helper">Not sure which to choose? Start with Find Job Paths. If those options do not feel right, switch to Build a Skill Plan for a longer-term approach.</div>
-
-    <!-- CAREER SHIFT PREFERENCE -->
-    <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border);">
-      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);opacity:0.8;margin-bottom:10px;">How much change are you willing to make?</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button class="preset-btn" id="rs-conservative" onclick="setStudyShift('conservative')">Minimal change</button>
-        <button class="preset-btn active" id="rs-moderate" onclick="setStudyShift('moderate')">Some retraining</button>
-        <button class="preset-btn" id="rs-aggressive" onclick="setStudyShift('aggressive')">Major pivot</button>
-        <button class="preset-btn" id="rs-reinvention" onclick="setStudyShift('reinvention')">Complete reinvention</button>
-      </div>
-      <div id="rs-shift-desc" style="font-size:12px;color:var(--muted);margin-top:8px;line-height:1.6;">Prioritize related roles that may require some retraining or certification.</div>
-    </div>
   </div>
 
   <!-- STEP 4: MODE-SPECIFIC FIELDS -->
@@ -652,24 +626,6 @@ input[type=file]#pivotFile{display:none;}
 if(typeof pdfjsLib!=='undefined'){pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';}
 
 let currentMode = '';
-let studyShiftPreference = 'moderate'; // conservative | moderate | aggressive | reinvention
-
-const STUDY_SHIFT_MAP = {
-  conservative: { label: 'Minimal change',        desc: 'Focus on roles closely adjacent to your existing experience with minimal retraining.' },
-  moderate:     { label: 'Some retraining',        desc: 'Prioritize related roles that may require some retraining or certification.' },
-  aggressive:   { label: 'Major pivot',            desc: 'Allow larger career pivots. Stretch paths will be clearly labeled.' },
-  reinvention:  { label: 'Complete reinvention',   desc: 'Open to major career changes, new industries, and significant upskilling.' }
-};
-
-function setStudyShift(key) {
-  studyShiftPreference = key;
-  ['conservative','moderate','aggressive','reinvention'].forEach(k => {
-    var btn = document.getElementById('rs-' + k);
-    if (btn) btn.classList.toggle('active', k === key);
-  });
-  var desc = document.getElementById('rs-shift-desc');
-  if (desc) desc.textContent = STUDY_SHIFT_MAP[key].desc;
-}
 let extractedText = '';
 const chipState = {};
 
@@ -731,47 +687,16 @@ async function run() {
   const roles = cpGetRoles();
   const bgField = document.getElementById('background')?.value.trim() || '';
   let bg = extractedText || bgField;
-
-  // ── Pull background from handoff payloads if field is empty ──────────────
-  if (!bg && caImportPayload) {
-    if (caImportPayload.resumeText) {
-      bg = caImportPayload.resumeText;
-    } else {
-      const parts = [];
-      if (caImportPayload.profileSummary) parts.push(caImportPayload.profileSummary);
-      if (caImportPayload.resumeHandoffSummary) parts.push(caImportPayload.resumeHandoffSummary);
-      if (caImportPayload.roles && caImportPayload.roles.length) {
-        parts.push(caImportPayload.roles.map(r => r.title + (r.years ? ' - ' + r.years + ' years' : '')).join('\n'));
-      }
-      if (caImportPayload.crossoverStrengths && caImportPayload.crossoverStrengths.length) {
-        parts.push(caImportPayload.crossoverStrengths.join(', '));
-      }
-      if (caImportPayload.summary) parts.push(caImportPayload.summary);
-      if (caImportPayload.analysisSummary) parts.push(caImportPayload.analysisSummary);
-      bg = parts.join('\n\n');
-    }
-  }
-  if (!bg && reboundImportPayload) {
-    const p = reboundImportPayload;
-    const parts = [];
-    if (p.summary) parts.push(p.summary);
-    if (p.field)   parts.push('Field: ' + p.field);
-    if (p.headline) parts.push(p.headline);
-    bg = parts.join('\n\n');
-  }
-
   if (!bg && roles.length) {
     bg = roles.map(r=>r.title+(r.org?' at '+r.org:'')+(r.years?' ('+r.years+' yrs, '+r.expertise+')':'')).join('; ');
   }
-  if (!bg && !roles.length) { showErr('Please add your background in Step 1 or import from another tool.'); return; }
+  if (!bg && !roles.length) { showErr('Please add your background in Step 1.'); return; }
   if (!currentMode) { showErr('Please choose a mode: Find Job Paths or Build a Skill Plan.'); return; }
 
   document.getElementById('errBox').classList.remove('show');
   document.getElementById('resBox').classList.remove('show');
   document.getElementById('loadBox').classList.add('show');
   document.getElementById('buildBtn').disabled = true;
-  // Lock shift preference buttons while running
-  document.querySelectorAll('#rs-conservative,#rs-moderate,#rs-aggressive,#rs-reinvention').forEach(function(b){ b.disabled=true; b.style.opacity='0.4'; b.style.cursor='not-allowed'; });
 
   const msgs = currentMode==='cm' ? CM_MSGS : LP_MSGS;
   let mi=0;
@@ -795,28 +720,6 @@ async function run() {
     hoursPerWeek: parseInt(document.getElementById('hoursSlider').value) || 8,
     budget: chipState.budget || 'low-cost',
     goal: chipState.goal || 'get hired',
-    careerShiftPreference: studyShiftPreference,
-    // Rebound context
-    reboundContext: reboundImportPayload ? (reboundImportPayload.summary || '') : null,
-    reboundField:   reboundImportPayload ? (reboundImportPayload.field   || '') : null,
-    // Pass handoff context directly so API can use it
-    caImport: caImportPayload ? {
-      selectedDirection: caImportPayload.selectedDirection,
-      crossoverStrengths: caImportPayload.crossoverStrengths,
-      rarityIndex: caImportPayload.rarityIndex,
-      insight: caImportPayload.insight,
-      roles: (caImportPayload.roles || []).slice(0, 6),
-      profileSummary: caImportPayload.profileSummary,
-      resumeHandoffSummary: caImportPayload.resumeHandoffSummary,
-      analysisSummary: caImportPayload.analysisSummary,
-    } : null,
-  };
-
-  const unlock = () => {
-    clearInterval(msgInt);
-    document.getElementById('loadBox').classList.remove('show');
-    document.getElementById('buildBtn').disabled = false;
-    document.querySelectorAll('#rs-conservative,#rs-moderate,#rs-aggressive,#rs-reinvention').forEach(function(b){ b.disabled=false; b.style.opacity=''; b.style.cursor=''; });
   };
 
   try {
@@ -825,28 +728,17 @@ async function run() {
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify(payload)
     });
-    unlock();
-    if(!res.ok){
-      let errMsg = 'Server error ' + res.status;
-      try { const e = await res.json(); errMsg = e.error || errMsg; } catch(pe){}
-      showErr('API error: ' + errMsg);
-      return;
-    }
-    let r;
-    try {
-      r = await res.json();
-    } catch(je) {
-      showErr('Could not read response from server. Please try again. (parse error)');
-      return;
-    }
-    if (!r || typeof r !== 'object') {
-      showErr('Unexpected response format. Please try again.');
-      return;
-    }
+    clearInterval(msgInt);
+    document.getElementById('loadBox').classList.remove('show');
+    document.getElementById('buildBtn').disabled = false;
+    if(!res.ok){const e=await res.json();throw new Error(e.error||'Server error');}
+    const r = await res.json();
     renderResults(r);
   } catch(err) {
-    unlock();
-    showErr('Connection error: ' + (err.message || 'Please try again.'));
+    clearInterval(msgInt);
+    document.getElementById('loadBox').classList.remove('show');
+    document.getElementById('buildBtn').disabled = false;
+    showErr('We had trouble building your results. Please try again.');
   }
 }
 
@@ -1089,67 +981,17 @@ function cpAddRow(title='', org='', years='', activeDays=['Mon','Tue','Wed','Thu
 function cpGetRoles() {
   const roles = [];
   document.querySelectorAll('.cp-entry').forEach(row => {
-    if (row.classList.contains('cp-entry--imported')) {
-      // Compact imported card — read directly from data attributes / inputs
-      const title = row.dataset.title || '';
-      const org = row.dataset.org || '';
-      const yearsEl = row.querySelector('.cp-imported-field[data-field="years"]');
-      const hoursEl = row.querySelector('.cp-imported-field[data-field="hours"]');
-      const years = parseFloat(yearsEl?.value) || 0;
-      const estimatedHours = parseFloat(hoursEl?.value) || Math.round(years * 48 * 5 * 8);
-      const exp = cpExpertise(estimatedHours);
-      if (title) roles.push({ title, org, years, hrsPerDay: 8, activeDays: 5, estimatedHours, expertise: exp.label });
-    } else {
-      // Full manual editor row
-      const inputs = row.querySelectorAll('.cp-title-input');
-      const title = inputs[0]?.value.trim() || '';
-      const org = inputs[1]?.value.trim() || '';
-      const years = parseFloat(row.querySelector('.cp-years-input')?.value) || 0;
-      const hrsPerDay = parseFloat(row.querySelector('.cp-hrs-slider')?.value) || 0;
-      const activeDays = row.querySelectorAll('.cp-day-btn.active').length;
-      const estimatedHours = Math.round(years * 48 * activeDays * hrsPerDay);
-      const exp = cpExpertise(estimatedHours);
-      if (title) roles.push({ title, org, years, hrsPerDay, activeDays, estimatedHours, expertise: exp.label });
-    }
+    const inputs = row.querySelectorAll('.cp-title-input');
+    const title = inputs[0]?.value.trim() || '';
+    const org = inputs[1]?.value.trim() || '';
+    const years = parseFloat(row.querySelector('.cp-years-input')?.value) || 0;
+    const hrsPerDay = parseFloat(row.querySelector('.cp-hrs-slider')?.value) || 0;
+    const activeDays = row.querySelectorAll('.cp-day-btn.active').length;
+    const estimatedHours = Math.round(years * 48 * activeDays * hrsPerDay);
+    const exp = cpExpertise(estimatedHours);
+    if (title) roles.push({ title, org, years, hrsPerDay, activeDays, estimatedHours, expertise: exp.label });
   });
   return roles;
-}
-
-// ── IMPORTED ROLE CARD (compact, double-click to edit years/hours) ────────
-function cpAddImportedRow(title, org, years, estimatedHours) {
-  cpRowCount++;
-  const id = cpRowCount;
-  const hrs = estimatedHours || Math.round((years||0) * 48 * 5 * 8);
-  const div = document.createElement('div');
-  div.className = 'cp-entry cp-entry--imported';
-  div.id = 'cprow-' + id;
-  div.dataset.title = title || '';
-  div.dataset.org = org || '';
-  div.innerHTML =
-    '<div style="flex:1;min-width:0;">' +
-      '<div class="cp-imported-title">' + (title || 'Untitled Role') + '</div>' +
-      (org ? '<div class="cp-imported-org">' + org + '</div>' : '') +
-    '</div>' +
-    '<div class="cp-imported-col">' +
-      '<input class="cp-imported-field" data-field="years" type="number" value="' + (years||0) + '" min="0" max="60" step="0.5" title="Double-click to edit years" oninput="cpImportedRecalc(' + id + ')" onfocus="this.select()">' +
-      '<div class="cp-imported-label">yrs</div>' +
-    '</div>' +
-    '<div class="cp-imported-col">' +
-      '<input class="cp-imported-field" data-field="hours" type="number" value="' + Math.round(hrs) + '" min="0" step="100" title="Double-click to edit total hours" onfocus="this.select()" oninput="cpUpdateSummary()">' +
-      '<div class="cp-imported-label">hrs</div>' +
-    '</div>' +
-    '<button class="cp-imported-remove" onclick="document.getElementById('cprow-' + id + '').remove();cpUpdateSummary();" title="Remove">&#215;</button>';
-  document.getElementById('cpRows').appendChild(div);
-  cpUpdateSummary();
-}
-
-function cpImportedRecalc(id) {
-  const row = document.getElementById('cprow-' + id);
-  if (!row) return;
-  const years = parseFloat(row.querySelector('[data-field="years"]')?.value) || 0;
-  const hoursEl = row.querySelector('[data-field="hours"]');
-  if (hoursEl) hoursEl.value = Math.round(years * 48 * 5 * 8);
-  cpUpdateSummary();
 }
 
 // ── HANDLE FILE UPLOAD - EXTRACT ROLES ───────────────────────────────────
@@ -1182,8 +1024,8 @@ async function handleFile(file) {
           cpRowCount = 0;
           skills.forEach(s => {
             const yrs = s.years || 0;
-            const hrs = s.estimatedHours || Math.round(yrs * 48 * 5 * 8);
-            cpAddImportedRow(s.skill || s.title || '', s.org || '', yrs, hrs);
+            const hpd = yrs > 0 ? 8 : 0;
+            cpAddRow(s.skill || s.title || '', s.org || '', yrs, ['Mon','Tue','Wed','Thu','Fri'], hpd);
           });
           setDS('ok', words.toLocaleString() + ' words extracted. Found ' + skills.length + ' role' + (skills.length!==1?'s':'') + ' in your resume. Review and adjust before generating your roadmap.');
           cpUpdateSummary();
@@ -1234,7 +1076,6 @@ function initImport() {
   const hasImportFlag = params.get('ca_import') === '1';
   const hasReboundFlag = params.get('rebound_import') === '1';
   const careerParam = params.get('career');
-  console.log('[initImport] flags:', {hasImportFlag, hasReboundFlag, careerParam});
 
   // ── REBOUND RADAR IMPORT ──────────────────────────────────────────────
   if (hasReboundFlag) {
@@ -1267,18 +1108,9 @@ function initImport() {
     }
   } catch(e) {}
 
-  console.log('[initImport] payload:', payload ? {source: payload.source, roles: (payload.roles||[]).length, exportedAt: payload.exportedAt} : null);
   if (payload && payload.source === 'career-assessment') {
     caImportPayload = payload;
-    try {
-      showFullImport(payload);
-      console.log('[showFullImport] completed OK');
-    } catch(e) {
-      console.error('[showFullImport] CRASHED:', e.message, e.stack);
-      // Fallback — just show the upload area normally
-      const uploadArea = document.getElementById('resumeUploadArea');
-      if (uploadArea) uploadArea.style.display = 'block';
-    }
+    showFullImport(payload);
   } else if (careerParam) {
     showPartialImport(decodeURIComponent(careerParam));
   }
@@ -1290,36 +1122,40 @@ function showFullImport(p) {
   const uploadArea = document.getElementById('resumeUploadArea');
   if (uploadArea) uploadArea.style.display = 'none';
 
+  // Populate CP module with imported roles
   if (p.roles && p.roles.length) {
     document.getElementById('cpRows').innerHTML = '';
     cpRowCount = 0;
     p.roles.forEach(r => {
       const yrs = parseFloat(r.years) || 0;
-      const hrs = r.estimatedHours || Math.round(yrs * 48 * 5 * 8);
-      cpAddImportedRow(r.title || '', r.organization || r.org || '', yrs, hrs);
+      const hpd = r.hoursPerDay || 8;
+      const days = r.activeDays || ['Mon','Tue','Wed','Thu','Fri'];
+      cpAddRow(r.title || '', r.organization || '', yrs, Array.isArray(days)?days:['Mon','Tue','Wed','Thu','Fri'], hpd);
     });
   }
 
+  // Pre-fill background with summary
   const bg = document.getElementById('background');
   if (bg && p.profileSummary) bg.value = p.profileSummary;
 
+  // Build import confirmation card
   const card = document.createElement('div');
   card.className = 'import-card';
   card.id = 'caImportCard';
   const strengths = (p.crossoverStrengths||[]).slice(0,4).join(' · ');
-  card.innerHTML =
-    '<div class="import-card-label">Imported from Career Assessment</div>' +
-    '<div class="import-card-title">Your Career Assessment Profile</div>' +
-    '<div class="import-card-body">Your Career Assessment profile has been brought into Roadmap. Your roles and experience are loaded below.</div>' +
-    (p.selectedDirection ? '<div class="import-detail"><div class="import-detail-label">Selected Direction</div><div class="import-detail-value">' + p.selectedDirection + '</div></div>' : '') +
-    (strengths ? '<div class="import-detail"><div class="import-detail-label">Crossover Strengths</div><div class="import-detail-value">' + strengths + '</div></div>' : '') +
-    (p.rarityIndex ? '<div class="import-detail"><div class="import-detail-label">Crossover Rarity Index</div><div class="import-detail-value">' + p.rarityIndex + '</div></div>' : '') +
-    '<div class="import-actions" style="margin-top:12px;"><button class="import-action-btn import-clear-btn" onclick="clearImport()">Clear Import and Upload Resume</button></div>';
+  card.innerHTML = `
+    <div class="import-card-label">Imported from Career Assessment</div>
+    <div class="import-card-title">Your Career Assessment Profile</div>
+    <div class="import-card-body">Your Career Assessment profile has been brought into Roadmap. Your roles and experience are loaded below. Review them before generating your roadmap.</div>
+    ${p.selectedDirection ? `<div class="import-detail"><div class="import-detail-label">Selected Direction</div><div class="import-detail-value">${p.selectedDirection}</div></div>` : ''}
+    ${strengths ? `<div class="import-detail"><div class="import-detail-label">Crossover Strengths</div><div class="import-detail-value">${strengths}</div></div>` : ''}
+    ${p.rarityIndex ? `<div class="import-detail"><div class="import-detail-label">Crossover Rarity Index</div><div class="import-detail-value">${p.rarityIndex}</div></div>` : ''}
+    <div class="import-actions" style="margin-top:12px;">
+      <button class="import-action-btn import-clear-btn" onclick="clearImport()">Clear Import and Upload Resume</button>
+    </div>`;
   document.getElementById('step1Card').prepend(card);
   cpUpdateSummary();
 }
-
-
 
 function showPartialImport(career) {
   const card = document.createElement('div');
@@ -1333,24 +1169,26 @@ function showPartialImport(career) {
 }
 
 function showReboundImport(p) {
+  // Default to Build a Skill Plan mode
   if (typeof setMode === 'function') setMode('lp');
+
   document.getElementById('step1Title').textContent = 'Imported from Rebound Radar';
   document.getElementById('step1Sub').textContent = 'Review the opportunity area and background below before building your plan.';
   const uploadArea = document.getElementById('resumeUploadArea');
   if (uploadArea) uploadArea.style.display = 'none';
 
+  // Pre-fill background with rebound summary
   const bg = document.getElementById('background');
   if (bg && p.summary) bg.value = p.summary;
 
+  // Build import card
   const card = document.createElement('div');
   card.className = 'rebound-import-card';
   card.id = 'reboundImportCard';
-  var learnText = (p.learn || []).slice(0,4).map(function(l){ return l.skill || l; }).join(', ');
-  var sourceLabel = (p.source === 'military-pathways') ? 'Military Pathways' : 'Rebound Radar';
-
+  var learnList = (p.learn || []).slice(0, 4).map(function(l){ return l.skill || l; }).join(', ');
   var labelDiv = document.createElement('div');
   labelDiv.style.cssText = 'font-family:"DM Mono",monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#1e90ff;margin-bottom:6px;';
-  labelDiv.textContent = 'Imported from ' + sourceLabel;
+  labelDiv.textContent = 'Imported from Rebound Radar';
 
   var titleDiv = document.createElement('div');
   titleDiv.style.cssText = 'font-size:15px;font-family:"Bebas Neue",sans-serif;letter-spacing:1px;color:#E8E8F0;margin-bottom:8px;';
@@ -1358,8 +1196,9 @@ function showReboundImport(p) {
 
   var bodyDiv = document.createElement('div');
   bodyDiv.style.cssText = 'font-size:13px;color:#888899;line-height:1.7;margin-bottom:10px;';
-  bodyDiv.textContent = 'We brought over the opportunity area and available background. Review it below before building your plan.';
+  bodyDiv.textContent = 'We brought over the opportunity area, recommended learning targets, and available background from Rebound Radar. Review it below before building your plan.';
 
+  var learnText = (p.learn || []).slice(0, 4).map(function(l){ return l.skill || l; }).join(', ');
   var learnDiv = null;
   if (learnText) {
     learnDiv = document.createElement('div');
@@ -1379,7 +1218,6 @@ function showReboundImport(p) {
   card.appendChild(clearBtn);
   document.getElementById('step1Card').prepend(card);
 }
-
 
 function showReboundPartial() {
   if (typeof setMode === 'function') setMode('lp');
@@ -1434,9 +1272,48 @@ function build() {
   run();
 }
 
-// ── FETCH INTERCEPTOR REMOVED ────────────────────────────────────────────
-// run() now builds the full enriched payload directly — no interceptor needed.
-// Keeping this comment so the block is traceable if searching for _origFetch.
+// ── ENRICH API PAYLOAD with full career profile ───────────────────────────
+const _origFetch = window.fetch;
+window.fetch = function(url, opts) {
+  if (url && url.includes('/api/pivot-tool') && opts && opts.body) {
+    try {
+      const body = JSON.parse(opts.body);
+      const roles = cpGetRoles();
+      const bg = document.getElementById('background')?.value.trim() || '';
+      // Build enriched background from CP roles
+      if (roles.length && !body.background) {
+        body.background = roles.map(r=>`${r.title}${r.org?' at '+r.org:''} (${r.years||0} yrs, ${r.expertise})`).join('; ');
+      }
+      // Attach rebound import if present
+      if (reboundImportPayload) {
+        body.reboundContext = reboundImportPayload.summary || '';
+        body.reboundField = reboundImportPayload.field || '';
+        if (!body.background && reboundImportPayload.summary) {
+          body.background = reboundImportPayload.summary;
+        }
+      }
+      // Always attach CP profile
+      body.careerProfile = {
+        roles,
+        totalRoles: roles.length,
+        totalCareerHours: roles.reduce((s,r)=>s+r.estimatedHours,0),
+        backgroundNote: bg
+      };
+      // Attach CA import if available
+      if (caImportPayload) {
+        body.caImport = {
+          selectedDirection: caImportPayload.selectedDirection,
+          crossoverStrengths: caImportPayload.crossoverStrengths,
+          rarityIndex: caImportPayload.rarityIndex,
+          insight: caImportPayload.insight,
+          careerOptions: caImportPayload.careerOptions
+        };
+      }
+      opts.body = JSON.stringify(body);
+    } catch(e) {}
+  }
+  return _origFetch.apply(this, arguments);
+};
 
 initImport();
 function toggleDropdown(){document.getElementById('toolsDropdown').classList.toggle('open');}

@@ -14,7 +14,7 @@ export default async function handler(req, res) {
   const shift = careerShiftPreference || 'moderate';
 
   const SHIFT_ROLE_RULES = {
-    conservative: 'Recommend roles with transitionDistance "low" or "medium" only. Label any "high" distance role as a Stretch Path. Do NOT recommend "extreme" distance roles unless they directly match the user's stated background.',
+    conservative: 'Recommend roles with transitionDistance "low" or "medium" only. Label any "high" distance role as a Stretch Path. Do NOT recommend "extreme" distance roles unless they directly match the stated background.',
     moderate:     'Recommend roles up to transitionDistance "high". Label "extreme" paths clearly as Reinvention Paths requiring significant retraining.',
     aggressive:   'Recommend roles across all transitionDistance levels. "High" and "extreme" paths must be labeled as stretch or reinvention paths but can rank higher.',
     reinvention:  'All transitionDistance levels allowed. Even extreme pivots must be labeled honestly. User has chosen major change — honor that with ambitious but honest output.'
@@ -168,7 +168,7 @@ ${years ? 'Years of experience: ' + years : ''}`;
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 2500,
         system,
         messages: [{ role: 'user', content: userMsg }]

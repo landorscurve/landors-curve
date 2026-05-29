@@ -92,7 +92,7 @@ Expertise levels: Master 10000+ hrs, Advanced 5000-9999, Proficient 2000-4999, C
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 1400,
         system,
         messages: [{ role: 'user', content: `Analyze career pivot opportunities for:\n\n${skillSummary}` }]
